@@ -1,3 +1,5 @@
+#include "study_substructure_jets.h"
+
 void study_substructure_jets(){
 
   // Path of the merged samples
@@ -12,60 +14,10 @@ void study_substructure_jets(){
   // Access the input tree
   TTree *inTree = (TTree*) inFile->Get("AnalysisMiniTree");
 
-  int nentries = inTree->GetEntries();
-  cout << "nentries: " << nentries << endl;
+  print_list_of_branches(inTree);
 
-
-  for(int ii = 0; ii < inTree->GetListOfBranches()->GetEntries(); ii++){
-    cout << ii << "\t" << inTree->GetListOfBranches()->At(ii)->GetName() << '\n';  
-  }
-
-  cout << "The list of branches that contains the flag passesOR for the " << name_config << " configuration are:"  << endl;
+  // Find all the branches with the words tau and jets
+  find_branches_names(inTree, name_config, "tau");
+  find_branches_names(inTree, name_config, "jet");
   
-  for(int ii = 0; ii < inTree->GetListOfBranches()->GetEntries(); ii++){
-
-    bool find_passOR_flag = false;
-    TString name_branch = inTree->GetListOfBranches()->At(ii)->GetName();
-
-    if(name_branch.Contains("passesOR")==true){
-      find_passOR_flag=true;
-    }
-
-    if(find_passOR_flag==true){
-      cout << ii << "\t" << inTree->GetListOfBranches()->At(ii)->GetName() << '\n';  
-    }
-  }
-
-  cout << "The list of branches that contains the word tau for the " << name_config << " configuration are:"  << endl;
-  
-  for(int ii = 0; ii < inTree->GetListOfBranches()->GetEntries(); ii++){
-
-    bool find_word = false;
-    TString name_branch = inTree->GetListOfBranches()->At(ii)->GetName();
-
-    if(name_branch.Contains("tau")==true){
-      find_word=true;
-    }
-
-    if(find_word==true){
-      cout << ii << "\t" << inTree->GetListOfBranches()->At(ii)->GetName() << '\n';  
-    }
-  }
-
- 
-  cout << "The list of branches that contains the word jet for the " << name_config << " configuration are:"  << endl;
-  
-  for(int ii = 0; ii < inTree->GetListOfBranches()->GetEntries(); ii++){
-
-    bool find_word = false;
-    TString name_branch = inTree->GetListOfBranches()->At(ii)->GetName();
-
-    if(name_branch.Contains("jet")==true){
-      find_word=true;
-    }
-
-    if(find_word==true){
-      cout << ii << "\t" << inTree->GetListOfBranches()->At(ii)->GetName() << '\n';  
-    }
-  }
 }
