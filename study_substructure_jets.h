@@ -46,19 +46,19 @@ TBranch *b_resolved_recojet_antikt4PFlow_NOSYS_passesOR;
 
 
 // Declaration of histograms for boosted variables
-TH1F *hist_tautau_pt_NOSYS_boosted = new TH1F("hist_tautau_pt_NOSYS_boosted", "Mass p_{T}(#tau #tau) comparison between boosted and resolved processes; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_mH_tautau_boosted = new TH1F("hist_mH_tautau_boosted", "Mass m_{#tau #tau} comparison between boosted and resolved processes; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_bb_pt_boosted = new TH1F("hist_bb_pt_boosted", "Mass p_{T}(bb) comparison between boosted and resolved processes; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_mH_bb_boosted = new TH1F("hist_mH_bb_boosted", "Mass m_{bb} comparison between boosted and resolved processes; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_tautau_pt_NOSYS_boosted = new TH1F("hist_tautau_pt_NOSYS_boosted", "P_{T}(#tau #tau) comparison between boosted and resolved configurations; p_T(#tau #tau) [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_mH_tautau_boosted = new TH1F("hist_mH_tautau_boosted", "Mass m_{#tau #tau} comparison between boosted and resolved configurations; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_bb_pt_boosted = new TH1F("hist_bb_pt_boosted", "P_{T}(bb) comparison between boosted and resolved configurations; p_T(bb) [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_mH_bb_boosted = new TH1F("hist_mH_bb_boosted", "Mass m_{bb} comparison between boosted and resolved configurations; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
 TH1F *hist_tau_passesOR_boosted = new TH1F("hist_tau_passesOR_boosted", "Comparison of the number of tau objects passing the OR flag", 3, 0, 2);
 TH1F *hist_recojet_antikt4_passesOR_boosted = new TH1F("hist_recojet_antikt4_passesOR_boosted", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
 
 
 // Declaration of histograms for resolved variables
-TH1F *hist_tautau_pt_NOSYS_resolved = new TH1F("hist_tautau_pt_NOSYS_resolved", "Mass p_{T}(#tau #tau) comparison between boosted and resolved processes; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_mH_tautau_resolved = new TH1F("hist_mH_tautau_resolved", "Mass m_{#tau #tau} comparison between boosted and resolved processes; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_bb_pt_resolved = new TH1F("hist_bb_pt_resolved", "Mass p_{T}(bb) comparison between boosted and resolved processes; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_mH_bb_resolved = new TH1F("Mass m_{bb} comparison between boosted and resolved processes; hist_mH_bb_resolved", "$m_{bb}$ [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_tautau_pt_NOSYS_resolved = new TH1F("hist_tautau_pt_NOSYS_resolved", "P_{T}(#tau #tau) comparison between boosted and resolved configurations; p_T(#tau #tau) [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_mH_tautau_resolved = new TH1F("hist_mH_tautau_resolved", "Mass m_{#tau #tau} comparison between boosted and resolved configurations; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_bb_pt_resolved = new TH1F("hist_bb_pt_resolved", "P_{T}(bb) comparison between boosted and resolved configurations; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_mH_bb_resolved = new TH1F("hist_mH_bb_resolved", "Mass m_{bb} comparison between boosted and resolved configurations; hist_mH_bb_resolved; $m_{bb}$ [GeV]; Events / 5 bins", 100, 0, 500);
 TH1F *hist_tau_passesOR_resolved = new TH1F("hist_tau_passesOR_resolved", "Comparison of the number of tau objects passing the OR flag", 3, 0, 2);
 TH1F *hist_recojet_antikt4_passesOR_resolved = new TH1F("hist_recojet_antikt4_passesOR_resolved", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
 
