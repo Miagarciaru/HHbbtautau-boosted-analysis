@@ -7,12 +7,20 @@ Float_t boosted_bbtt_H_vis_tautau_pt_NOSYS;
 Float_t boosted_bbtt_H_vis_tautau_m;
 Float_t boosted_bbtt_H_bb_pt_NOSYS;
 Float_t boosted_bbtt_H_bb_m;
+Float_t boosted_generatorWeight_NOSYS;
+vector<char> *boosted_tau_NOSYS_passesOR;
+vector<char> *boosted_recojet_antikt4PFlow_NOSYS_passesOR;
+
 
 // Declaration of leaf types for resolved tree
 Float_t resolved_bbtt_H_vis_tautau_pt_NOSYS;
 Float_t resolved_bbtt_H_vis_tautau_m;
 Float_t resolved_bbtt_H_bb_pt_NOSYS;
 Float_t resolved_bbtt_H_bb_m;
+Float_t resolved_generatorWeight_NOSYS;
+vector<char> *resolved_tau_NOSYS_passesOR;
+vector<char> *resolved_recojet_antikt4PFlow_NOSYS_passesOR;
+
 
 // *************************************
 // Declaration of branches
@@ -23,26 +31,44 @@ TBranch *b_boosted_bbtt_H_vis_tautau_pt_NOSYS;
 TBranch *b_boosted_bbtt_H_vis_tautau_m;
 TBranch *b_boosted_bbtt_H_bb_pt_NOSYS;
 TBranch *b_boosted_bbtt_H_bb_m;
+TBranch *b_boosted_generatorWeight_NOSYS;
+TBranch *b_boosted_tau_NOSYS_passesOR;
+TBranch *b_boosted_recojet_antikt4PFlow_NOSYS_passesOR;
 
 // Declaration of branches for resolved tree
 TBranch *b_resolved_bbtt_H_vis_tautau_pt_NOSYS;
 TBranch *b_resolved_bbtt_H_vis_tautau_m;
 TBranch *b_resolved_bbtt_H_bb_pt_NOSYS;
 TBranch *b_resolved_bbtt_H_bb_m;
+TBranch *b_resolved_generatorWeight_NOSYS;
+TBranch *b_resolved_tau_NOSYS_passesOR;
+TBranch *b_resolved_recojet_antikt4PFlow_NOSYS_passesOR;
 
 
 // Declaration of histograms for boosted variables
-TH1F *hist_mH_tautau_boosted = new TH1F("hist_mH_tautau_boosted", "; m_{#tau #tau} [GeV];Events / bin", 100, 0, 500);
-TH1F *hist_mH_bb_boosted = new TH1F("hist_mH_bb_boosted", "$m_{bb}$ [GeV];Events / bin", 100, 0, 500);
+TH1F *hist_tautau_pt_NOSYS_boosted = new TH1F("hist_tautau_pt_NOSYS_boosted", "Mass p_{T}(#tau #tau) comparison between boosted and resolved processes; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_mH_tautau_boosted = new TH1F("hist_mH_tautau_boosted", "Mass m_{#tau #tau} comparison between boosted and resolved processes; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_bb_pt_boosted = new TH1F("hist_bb_pt_boosted", "Mass p_{T}(bb) comparison between boosted and resolved processes; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_mH_bb_boosted = new TH1F("hist_mH_bb_boosted", "Mass m_{bb} comparison between boosted and resolved processes; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_tau_passesOR_boosted = new TH1F("hist_tau_passesOR_boosted", "Comparison of the number of tau objects passing the OR flag", 3, 0, 2);
+TH1F *hist_recojet_antikt4_passesOR_boosted = new TH1F("hist_recojet_antikt4_passesOR_boosted", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
+
 
 // Declaration of histograms for resolved variables
-TH1F *hist_mH_tautau_resolved = new TH1F("hist_mH_tautau_resolved", " ; m_{#tau #tau} [GeV];Events / bin", 100, 0, 500);
+TH1F *hist_tautau_pt_NOSYS_resolved = new TH1F("hist_tautau_pt_NOSYS_resolved", "Mass p_{T}(#tau #tau) comparison between boosted and resolved processes; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_mH_tautau_resolved = new TH1F("hist_mH_tautau_resolved", "Mass m_{#tau #tau} comparison between boosted and resolved processes; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_bb_pt_resolved = new TH1F("hist_bb_pt_resolved", "Mass p_{T}(bb) comparison between boosted and resolved processes; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_mH_bb_resolved = new TH1F("Mass m_{bb} comparison between boosted and resolved processes; hist_mH_bb_resolved", "$m_{bb}$ [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_tau_passesOR_resolved = new TH1F("hist_tau_passesOR_resolved", "Comparison of the number of tau objects passing the OR flag", 3, 0, 2);
+TH1F *hist_recojet_antikt4_passesOR_resolved = new TH1F("hist_recojet_antikt4_passesOR_resolved", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
+
 
 // *************************************
 // Declaration of some functions
 // *************************************
 
-void plot_distributions(TTree* boosted_tree, TTree* resolved_tree);
+void plot_distributions(TTree* boosted_tree, TTree* resolved_tree, TString name_plot);
+void fill_histograms(TTree* boosted_tree, TTree* resolved_tree);
 void set_branch_address(TTree* boosted_tree, TTree* resolved_tree);
 void print_list_of_branches(TTree* tree);
 void find_branches_names(TTree* tree, TString name_config, TString word);
@@ -50,54 +76,108 @@ void find_branches_names(TTree* tree, TString name_config, TString word);
 
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions
 // for the two configurations, boosted and resolved
-void plot_distributions(TTree* boosted_tree, TTree* resolved_tree){
+void plot_distributions(TTree* boosted_tree, TTree* resolved_tree, TString name_plot){
+
+  TLegend *leg = new TLegend(0.75, 0.8, 0.9, 0.9);
+  TH1F *hist_boosted = new TH1F();
+  TH1F *hist_resolved = new TH1F();
+  TString name_image = "plots/";
+  name_image+=name_plot+".png";
+  
+  if(name_plot=="tautau_m"){
+    hist_boosted = hist_mH_tautau_boosted;
+    hist_resolved = hist_mH_tautau_resolved;
+  }
+
+  if(name_plot=="bb_m"){
+    hist_boosted = hist_mH_bb_boosted;
+    hist_resolved = hist_mH_bb_resolved;
+  }
+  if(name_plot=="tautau_pT"){
+    hist_boosted = hist_tautau_pt_NOSYS_boosted;
+    hist_resolved = hist_tautau_pt_NOSYS_resolved;
+  }
+  if(name_plot=="bb_pT"){
+    hist_boosted = hist_bb_pt_boosted;
+    hist_resolved = hist_bb_pt_resolved;
+  }
+  if(name_plot=="tau_passesOR"){
+    hist_boosted = hist_tau_passesOR_boosted;
+    hist_resolved = hist_tau_passesOR_resolved;
+  }
+  if(name_plot=="recojet_antikt4_passesOR"){
+    hist_boosted = hist_recojet_antikt4_passesOR_boosted;
+    hist_resolved = hist_recojet_antikt4_passesOR_resolved;
+  }
+  
+  hist_boosted->SetStats(0);
+  hist_boosted->SetFillStyle(3001);
+  hist_boosted->SetFillColorAlpha(kBlue, 0.45);
+  hist_boosted->SetLineColor(4);
+  
+  hist_resolved->SetStats(0);
+  hist_resolved->SetFillStyle(3003);
+  hist_resolved->SetFillColorAlpha(kRed, 0.45);
+  hist_resolved->SetLineColor(2);
+  
+  ///// Plotting
+  TCanvas *can = new TCanvas("can","", 800, 600);
+
+  hist_boosted->Draw("H");
+  hist_resolved->Draw("sameH");
+  
+  leg->AddEntry(hist_boosted, "boosted", "l");
+  leg->AddEntry(hist_resolved,"resolved","l");
+  leg->SetBorderSize();
+  leg->Draw();
+  
+  can->Draw();
+  can->Print(name_image);
+}
+
+// This functions plots some distributions for the H_bb and H_tautau and compare the distributions
+// for the two configurations, boosted and resolved
+void fill_histograms(TTree* boosted_tree, TTree* resolved_tree){
 
   Int_t b_entries = boosted_tree->GetEntries();
   Int_t r_entries = resolved_tree->GetEntries();
   int nbytes = 0;
   
-  for(int ii=0; ii < b_entries; ii++){
-
+  for(int ii = 0; ii < b_entries; ii++){
     nbytes = boosted_tree->GetEntry(ii);
     hist_mH_tautau_boosted->Fill(boosted_bbtt_H_vis_tautau_m/1000.);
+    hist_mH_bb_boosted->Fill(boosted_bbtt_H_bb_m/1000.);
+    hist_tautau_pt_NOSYS_boosted->Fill(boosted_bbtt_H_vis_tautau_pt_NOSYS/1000., boosted_generatorWeight_NOSYS);
+    hist_bb_pt_boosted->Fill(boosted_bbtt_H_bb_pt_NOSYS/1000., boosted_generatorWeight_NOSYS);
+    if(boosted_tau_NOSYS_passesOR->size() > 0){
+      for(int jj=0; jj < boosted_tau_NOSYS_passesOR->size(); jj++){
+	hist_tau_passesOR_boosted->Fill(boosted_tau_NOSYS_passesOR->at(jj));	  
+      }
+    }
+    if(boosted_recojet_antikt4PFlow_NOSYS_passesOR->size() > 0){
+      for(int jj=0; jj < boosted_recojet_antikt4PFlow_NOSYS_passesOR->size(); jj++){
+        hist_recojet_antikt4_passesOR_boosted->Fill(boosted_recojet_antikt4PFlow_NOSYS_passesOR->at(jj));	  
+      }
+    }
   }
-
+  
   for(int ii=0; ii < r_entries; ii++){
-    
     nbytes = resolved_tree->GetEntry(ii);
     hist_mH_tautau_resolved->Fill(resolved_bbtt_H_vis_tautau_m/1000.);
+    hist_mH_bb_resolved->Fill(resolved_bbtt_H_bb_m/1000.);
+    hist_tautau_pt_NOSYS_resolved->Fill(resolved_bbtt_H_vis_tautau_pt_NOSYS/1000., resolved_generatorWeight_NOSYS);
+    hist_bb_pt_resolved->Fill(resolved_bbtt_H_bb_pt_NOSYS/1000., resolved_generatorWeight_NOSYS);
+    if(resolved_tau_NOSYS_passesOR->size() > 0){
+      for(int jj=0; jj < resolved_tau_NOSYS_passesOR->size(); jj++){
+	hist_tau_passesOR_resolved->Fill(resolved_tau_NOSYS_passesOR->at(jj));	  
+      }
+    }
+    if(resolved_recojet_antikt4PFlow_NOSYS_passesOR->size() > 0){
+      for(int jj=0; jj < resolved_recojet_antikt4PFlow_NOSYS_passesOR->size(); jj++){
+        hist_recojet_antikt4_passesOR_resolved->Fill(resolved_recojet_antikt4PFlow_NOSYS_passesOR->at(jj));	  
+      }
+    }
   }
-
-  TLegend *leg = new TLegend(0.55, 0.70, 0.90, 0.82);
-
-  //hist_mH_tautau_boosted->SetMarkerStyle(20);
-  //hist_mH_tautau_boosted->SetMarkerColor(kBlack);
-  hist_mH_tautau_boosted->SetStats(0);
-  hist_mH_tautau_boosted->SetFillStyle(3001);
-  hist_mH_tautau_boosted->SetFillColorAlpha(kBlue, 0.45);
-  hist_mH_tautau_boosted->SetLineColor(4);
-  hist_mH_tautau_boosted->SetTitle("Mass m_{#tau #tau} comparison between boosted and resolved processes");
-  
-  //hist_mH_tautau_resolved->SetMarkerStyle(20);
-  //hist_mH_tautau_resolved->SetMarkerColor(kBlack);
-  hist_mH_tautau_resolved->SetStats(0);
-  hist_mH_tautau_resolved->SetFillStyle(3003);
-  hist_mH_tautau_resolved->SetFillColorAlpha(kRed, 0.45);
-  hist_mH_tautau_resolved->SetLineColor(2);
-  hist_mH_tautau_resolved->SetTitle("Mass m_{#tau #tau} comparison between boosted and resolved processes");
-
-  ///// Plotting
-  TCanvas *can = new TCanvas("can","", 600, 800);
-
-  hist_mH_tautau_boosted->Draw("H");
-  hist_mH_tautau_resolved->Draw("sameH");
-  
-  leg->AddEntry(hist_mH_tautau_boosted, "m_{HH} for the boosted process", "l");
-  leg->AddEntry(hist_mH_tautau_resolved,"m_{HH} for the resolved process","l");
-  leg->SetBorderSize();
-  leg->Draw();
-  
-  can->Draw();
 }
 
 
@@ -108,12 +188,19 @@ void set_branch_address(TTree* boosted_tree, TTree* resolved_tree){
   boosted_tree->SetBranchAddress("bbtt_H_vis_tautau_m", &boosted_bbtt_H_vis_tautau_m, &b_boosted_bbtt_H_vis_tautau_m);
   boosted_tree->SetBranchAddress("bbtt_H_bb_pt_NOSYS", &boosted_bbtt_H_bb_pt_NOSYS, &b_boosted_bbtt_H_bb_pt_NOSYS);
   boosted_tree->SetBranchAddress("bbtt_H_bb_m", &boosted_bbtt_H_bb_m, &b_boosted_bbtt_H_bb_m);
-  
+  boosted_tree->SetBranchAddress("generatorWeight_NOSYS", &boosted_generatorWeight_NOSYS, &b_boosted_generatorWeight_NOSYS);
+  boosted_tree->SetBranchAddress("tau_NOSYS_passesOR", &boosted_tau_NOSYS_passesOR, &b_boosted_tau_NOSYS_passesOR);
+  boosted_tree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_passesOR", &boosted_recojet_antikt4PFlow_NOSYS_passesOR, &b_boosted_recojet_antikt4PFlow_NOSYS_passesOR);
 
+  
   resolved_tree->SetBranchAddress("bbtt_H_vis_tautau_pt_NOSYS", &resolved_bbtt_H_vis_tautau_pt_NOSYS, &b_resolved_bbtt_H_vis_tautau_pt_NOSYS);
   resolved_tree->SetBranchAddress("bbtt_H_vis_tautau_m", &resolved_bbtt_H_vis_tautau_m, &b_resolved_bbtt_H_vis_tautau_m);
   resolved_tree->SetBranchAddress("bbtt_H_bb_pt_NOSYS", &resolved_bbtt_H_bb_pt_NOSYS, &b_resolved_bbtt_H_bb_pt_NOSYS);
   resolved_tree->SetBranchAddress("bbtt_H_bb_m", &resolved_bbtt_H_bb_m, &b_resolved_bbtt_H_bb_m);
+  resolved_tree->SetBranchAddress("generatorWeight_NOSYS", &resolved_generatorWeight_NOSYS, &b_resolved_generatorWeight_NOSYS);
+  resolved_tree->SetBranchAddress("tau_NOSYS_passesOR", &resolved_tau_NOSYS_passesOR, &b_resolved_tau_NOSYS_passesOR);
+  resolved_tree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_passesOR", &resolved_recojet_antikt4PFlow_NOSYS_passesOR, &b_resolved_recojet_antikt4PFlow_NOSYS_passesOR);
+  
 }
 
 
