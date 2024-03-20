@@ -2,20 +2,6 @@
 
 void study_substructure_jets(){
 
-  // Path of the merged samples
-  
-  TString path="/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/outputfiles-easyjet-march7-2024/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
-  TString path_boosted_sample=path+"boosted_config.root";
-  TString path_resolved_sample=path+"resolved_config.root";
-
-  // Open the input files and access to the trees
-
-  TFile* boosted_inFile = TFile::Open(path_boosted_sample);
-  TTree* boosted_inTree = (TTree*) boosted_inFile->Get("AnalysisMiniTree");
-
-  TFile* resolved_inFile = TFile::Open(path_resolved_sample);
-  TTree* resolved_inTree = (TTree*) resolved_inFile->Get("AnalysisMiniTree");
-
   // Print the names of the branches in the given tree
   
   // print_list_of_branches(boosted_inTree);
@@ -23,31 +9,28 @@ void study_substructure_jets(){
   
   // Find all the branches with the words tau and jets for the boosted config
 
-  // find_branches_names(boosted_inTree, "boosted", "bbtt_H");
-
-  // find_branches_names(resolved_inTree, "resolved", "bbtt_H");
-  // find_branches_names(resolved_inTree, "resolved", "passesOR");
+  find_branches_names(boosted_inTree, "boosted", "bbtt_H");
+  find_branches_names(resolved_inTree, "resolved", "bbtt_H");
 
   // find_branches_names(resolved_inTree, "resolved", "Weight");
   // find_branches_names(resolved_inTree, "resolved", "weight");
 
-  // find_branches_names(boosted_inTree, "boosted", "OR");
+  find_branches_names(boosted_inTree, "boosted", "OR");
   // find_branches_names(boosted_inTree, "boosted", "passesOR");
   
-  // find_branches_names(resolved_inTree, "resolved", "OR");
+  find_branches_names(resolved_inTree, "resolved", "OR");
   // find_branches_names(resolved_inTree, "resolved", "passesOR");
 
-  set_branch_address(boosted_inTree, resolved_inTree);
+  set_branch_address();
   
   Int_t entries = boosted_inTree->GetEntries();
   int b_nbytes=0;
   int r_nbytes=0;
-
   
   // Fill some histograms
   
-  fill_histograms(boosted_inTree, resolved_inTree);
-  
+  fill_histograms();
+ 
   int b_entries = boosted_inTree->GetEntries();
   int r_entries = resolved_inTree->GetEntries();
   int boosted_mbb_neg_values = 0;
@@ -85,12 +68,12 @@ void study_substructure_jets(){
 
   // Ploting distributions for boosted and resolved configs
   
-  plot_distributions(boosted_inTree, resolved_inTree, "tautau_m");
-  plot_distributions(boosted_inTree, resolved_inTree, "bb_m");
-  plot_distributions(boosted_inTree, resolved_inTree, "tautau_pT");
-  plot_distributions(boosted_inTree, resolved_inTree, "bb_pT");
-  plot_distributions(boosted_inTree, resolved_inTree, "tau_passesOR");
-  plot_distributions(boosted_inTree, resolved_inTree, "recojet_antikt4_passesOR");
+  plot_distributions("tautau_m");
+  plot_distributions("bb_m");
+  plot_distributions("tautau_pT");
+  plot_distributions("bb_pT");
+  // plot_distributions("tau_passesOR");
+  // plot_distributions("recojet_antikt4_passesOR");
   
   // Close the files
   
