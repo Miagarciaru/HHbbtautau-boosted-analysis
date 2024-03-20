@@ -2,80 +2,61 @@
 
 void study_substructure_jets(){
 
+  // ************************************* 
   // Print the names of the branches in the given tree
+  // *************************************
   
   // print_list_of_branches(boosted_inTree);
   // print_list_of_branches(resolved_inTree);
-  
+
+  // ************************************* 
   // Find all the branches with the words tau and jets for the boosted config
+  // *************************************
 
-  find_branches_names(boosted_inTree, "boosted", "bbtt_H");
-  find_branches_names(resolved_inTree, "resolved", "bbtt_H");
+  vector <string> list_names_of_branches = {"bbtt_H", "passesOR", "truth"};
 
-  // find_branches_names(resolved_inTree, "resolved", "Weight");
-  // find_branches_names(resolved_inTree, "resolved", "weight");
-
-  find_branches_names(boosted_inTree, "boosted", "OR");
-  // find_branches_names(boosted_inTree, "boosted", "passesOR");
-  
-  find_branches_names(resolved_inTree, "resolved", "OR");
-  // find_branches_names(resolved_inTree, "resolved", "passesOR");
+  for(int ii = 0; ii < list_names_of_branches.size(); ii++){
+    find_branches_names(list_names_of_branches[ii]);
+  }
+  // *************************************
+  // Set Branch Address for the leafs on each tree
+  // ************************************* 
 
   set_branch_address();
   
   Int_t entries = boosted_inTree->GetEntries();
   int b_nbytes=0;
   int r_nbytes=0;
-  
+
+  // ************************************* 
   // Fill some histograms
+  // *************************************
   
   fill_histograms();
- 
-  int b_entries = boosted_inTree->GetEntries();
-  int r_entries = resolved_inTree->GetEntries();
-  int boosted_mbb_neg_values = 0;
-  int resolved_mbb_neg_values = 0;
-  int boosted_bbpT_neg_values = 0;
-  int resolved_bbpT_neg_values = 0;
-  
-  for(int ii=0; ii < b_entries; ii++){
-    b_nbytes = boosted_inTree->GetEntry(ii);
-    if(boosted_bbtt_H_bb_m < 0){
-      boosted_mbb_neg_values += 1;
-    }
-    if(boosted_bbtt_H_bb_pt_NOSYS < 0){
-      boosted_bbpT_neg_values += 1;
-    }
-  }
 
-  for(int ii=0; ii < r_entries; ii++){
-    r_nbytes = resolved_inTree->GetEntry(ii);
-    if(resolved_bbtt_H_bb_m < 0){
-      resolved_mbb_neg_values += 1;
-    }
-    if(resolved_bbtt_H_bb_pt_NOSYS < 0){
-      resolved_bbpT_neg_values += 1;
-    }
-  }
-  
-  cout << "The number of entries for mbb that are negative for boosted and resolved cases are respectively:"  << endl;
-
-  cout << boosted_mbb_neg_values << "\t" << resolved_mbb_neg_values << endl;
-  
-  cout << "The number of entries for bbpT that are negative for boosted and resolved cases are respectively:"  << endl;
-
-  cout << boosted_bbpT_neg_values << "\t" << resolved_bbpT_neg_values << endl;
-
+  // ************************************* 
   // Ploting distributions for boosted and resolved configs
+  // *************************************
   
-  plot_distributions("tautau_m");
-  plot_distributions("bb_m");
-  plot_distributions("tautau_pT");
-  plot_distributions("bb_pT");
+  vector<string> list_of_plots = {"tautau_m", "tautau_pT", "bb_m", "bb_pT", "recojet_antikt4_passesOR"};
+
+  for(int ii=0; ii < list_of_plots.size(); ii++){
+    plot_distributions(list_of_plots[ii]);
+  }
+  
   // plot_distributions("tau_passesOR");
   // plot_distributions("recojet_antikt4_passesOR");
+ 
+
+  // ************************************* 
+  // Print some values for some branches, etc
+  // *************************************
+
+  print_some_values();
   
+  // ************************************* 
   // Close the files
+  // *************************************
   
   boosted_inFile->Close();
   resolved_inFile->Close(); 

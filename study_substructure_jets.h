@@ -29,8 +29,7 @@ Float_t boosted_bbtt_H_bb_pt_NOSYS;
 Float_t boosted_bbtt_H_bb_m;
 Float_t boosted_generatorWeight_NOSYS;
 //vector<char> *boosted_tau_NOSYS_passesOR;
-//vector<char> *boosted_recojet_antikt4PFlow_NOSYS_passesOR;
-
+vector<char> *boosted_recojet_antikt4PFlow_NOSYS_passesOR;
 
 // Declaration of leaf types for resolved tree
 Float_t resolved_bbtt_H_vis_tautau_pt_NOSYS;
@@ -39,7 +38,7 @@ Float_t resolved_bbtt_H_bb_pt_NOSYS;
 Float_t resolved_bbtt_H_bb_m;
 Float_t resolved_generatorWeight_NOSYS;
 //vector<char> *resolved_tau_NOSYS_passesOR;
-//vector<char> *resolved_recojet_antikt4PFlow_NOSYS_passesOR;
+vector<char> *resolved_recojet_antikt4PFlow_NOSYS_passesOR;
 
 
 // *************************************
@@ -53,7 +52,7 @@ TBranch *b_boosted_bbtt_H_bb_pt_NOSYS;
 TBranch *b_boosted_bbtt_H_bb_m;
 TBranch *b_boosted_generatorWeight_NOSYS;
 //TBranch *b_boosted_tau_NOSYS_passesOR;
-//TBranch *b_boosted_recojet_antikt4PFlow_NOSYS_passesOR;
+TBranch *b_boosted_recojet_antikt4PFlow_NOSYS_passesOR;
 
 // Declaration of branches for resolved tree
 TBranch *b_resolved_bbtt_H_vis_tautau_pt_NOSYS;
@@ -62,7 +61,7 @@ TBranch *b_resolved_bbtt_H_bb_pt_NOSYS;
 TBranch *b_resolved_bbtt_H_bb_m;
 TBranch *b_resolved_generatorWeight_NOSYS;
 //TBranch *b_resolved_tau_NOSYS_passesOR;
-//TBranch *b_resolved_recojet_antikt4PFlow_NOSYS_passesOR;
+TBranch *b_resolved_recojet_antikt4PFlow_NOSYS_passesOR;
 
 
 // Declaration of histograms for boosted variables
@@ -71,7 +70,7 @@ TH1F *hist_mH_tautau_boosted = new TH1F("hist_mH_tautau_boosted", "Mass m_{#tau 
 TH1F *hist_bb_pt_boosted = new TH1F("hist_bb_pt_boosted", "P_{T}(bb) comparison between boosted and resolved configurations; p_T(bb) [GeV];Events / 5 bins", 100, 0, 500);
 TH1F *hist_mH_bb_boosted = new TH1F("hist_mH_bb_boosted", "Mass m_{bb} comparison between boosted and resolved configurations; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
 //TH1F *hist_tau_passesOR_boosted = new TH1F("hist_tau_passesOR_boosted", "Comparison of the number of tau objects passing the OR flag", 3, 0, 2);
-//TH1F *hist_recojet_antikt4_passesOR_boosted = new TH1F("hist_recojet_antikt4_passesOR_boosted", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
+TH1F *hist_recojet_antikt4_passesOR_boosted = new TH1F("hist_recojet_antikt4_passesOR_boosted", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
 
 
 // Declaration of histograms for resolved variables
@@ -80,7 +79,7 @@ TH1F *hist_mH_tautau_resolved = new TH1F("hist_mH_tautau_resolved", "Mass m_{#ta
 TH1F *hist_bb_pt_resolved = new TH1F("hist_bb_pt_resolved", "P_{T}(bb) comparison between boosted and resolved configurations; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
 TH1F *hist_mH_bb_resolved = new TH1F("hist_mH_bb_resolved", "Mass m_{bb} comparison between boosted and resolved configurations; hist_mH_bb_resolved; $m_{bb}$ [GeV]; Events / 5 bins", 100, 0, 500);
 //TH1F *hist_tau_passesOR_resolved = new TH1F("hist_tau_passesOR_resolved", "Comparison of the number of tau objects passing the OR flag", 3, 0, 2);
-//TH1F *hist_recojet_antikt4_passesOR_resolved = new TH1F("hist_recojet_antikt4_passesOR_resolved", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
+TH1F *hist_recojet_antikt4_passesOR_resolved = new TH1F("hist_recojet_antikt4_passesOR_resolved", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
 
 
 // *************************************
@@ -91,8 +90,8 @@ void plot_distributions(TString name_plot);
 void fill_histograms();
 void set_branch_address();
 void print_list_of_branches(TTree* tree);
-void find_branches_names(TTree* tree, TString name_config, TString word);
-
+void find_branches_names(TString word);
+void print_some_values();
 
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions
 // for the two configurations, boosted and resolved
@@ -126,11 +125,12 @@ void plot_distributions(TString name_plot){
     hist_boosted = hist_tau_passesOR_boosted;
     hist_resolved = hist_tau_passesOR_resolved;
   }
+  */
   if(name_plot=="recojet_antikt4_passesOR"){
     hist_boosted = hist_recojet_antikt4_passesOR_boosted;
     hist_resolved = hist_recojet_antikt4_passesOR_resolved;
   }
-  */
+  
   hist_boosted->SetStats(0);
   hist_boosted->SetFillStyle(3001);
   hist_boosted->SetFillColorAlpha(kBlue, 0.45);
@@ -165,43 +165,55 @@ void fill_histograms(){
   int nbytes = 0;
   
   for(int ii = 0; ii < b_entries; ii++){
+    
     nbytes = boosted_inTree->GetEntry(ii);
-    hist_mH_tautau_boosted->Fill(boosted_bbtt_H_vis_tautau_m/1000.);
-    hist_mH_bb_boosted->Fill(boosted_bbtt_H_bb_m/1000.);
-    hist_tautau_pt_NOSYS_boosted->Fill(boosted_bbtt_H_vis_tautau_pt_NOSYS/1000., boosted_generatorWeight_NOSYS);
+
+    if(boosted_bbtt_H_vis_tautau_pt_NOSYS > 0){
+      hist_tautau_pt_NOSYS_boosted->Fill(boosted_bbtt_H_vis_tautau_pt_NOSYS/1000., boosted_generatorWeight_NOSYS);
+    }
+    if(boosted_bbtt_H_vis_tautau_m > 0){
+      hist_mH_tautau_boosted->Fill(boosted_bbtt_H_vis_tautau_m/1000.);
+    }
     hist_bb_pt_boosted->Fill(boosted_bbtt_H_bb_pt_NOSYS/1000., boosted_generatorWeight_NOSYS);
+    hist_mH_bb_boosted->Fill(boosted_bbtt_H_bb_m/1000.);
+    
     /*
     if(boosted_tau_NOSYS_passesOR->size() > 0){
       for(int jj=0; jj < boosted_tau_NOSYS_passesOR->size(); jj++){
 	hist_tau_passesOR_boosted->Fill(boosted_tau_NOSYS_passesOR->at(jj));	  
       }
     }
+    */
     if(boosted_recojet_antikt4PFlow_NOSYS_passesOR->size() > 0){
       for(int jj=0; jj < boosted_recojet_antikt4PFlow_NOSYS_passesOR->size(); jj++){
         hist_recojet_antikt4_passesOR_boosted->Fill(boosted_recojet_antikt4PFlow_NOSYS_passesOR->at(jj));	  
       }
     }
-    */
   }
   
   for(int ii=0; ii < r_entries; ii++){
     nbytes = resolved_inTree->GetEntry(ii);
-    hist_mH_tautau_resolved->Fill(resolved_bbtt_H_vis_tautau_m/1000.);
-    hist_mH_bb_resolved->Fill(resolved_bbtt_H_bb_m/1000.);
-    hist_tautau_pt_NOSYS_resolved->Fill(resolved_bbtt_H_vis_tautau_pt_NOSYS/1000., resolved_generatorWeight_NOSYS);
+
+    if(resolved_bbtt_H_vis_tautau_pt_NOSYS > 0){
+      hist_tautau_pt_NOSYS_resolved->Fill(resolved_bbtt_H_vis_tautau_pt_NOSYS/1000., resolved_generatorWeight_NOSYS);
+    }
+    if(resolved_bbtt_H_vis_tautau_m > 0){
+      hist_mH_tautau_resolved->Fill(resolved_bbtt_H_vis_tautau_m/1000.);
+    }
     hist_bb_pt_resolved->Fill(resolved_bbtt_H_bb_pt_NOSYS/1000., resolved_generatorWeight_NOSYS);
+    hist_mH_bb_resolved->Fill(resolved_bbtt_H_bb_m/1000.);
     /*
     if(resolved_tau_NOSYS_passesOR->size() > 0){
       for(int jj=0; jj < resolved_tau_NOSYS_passesOR->size(); jj++){
 	hist_tau_passesOR_resolved->Fill(resolved_tau_NOSYS_passesOR->at(jj));	  
       }
     }
+    */
     if(resolved_recojet_antikt4PFlow_NOSYS_passesOR->size() > 0){
       for(int jj=0; jj < resolved_recojet_antikt4PFlow_NOSYS_passesOR->size(); jj++){
         hist_recojet_antikt4_passesOR_resolved->Fill(resolved_recojet_antikt4PFlow_NOSYS_passesOR->at(jj));	  
       }
     }
-    */
   }
 }
 
@@ -215,7 +227,7 @@ void set_branch_address(){
   boosted_inTree->SetBranchAddress("bbtt_H_bb_m", &boosted_bbtt_H_bb_m, &b_boosted_bbtt_H_bb_m);
   boosted_inTree->SetBranchAddress("generatorWeight_NOSYS", &boosted_generatorWeight_NOSYS, &b_boosted_generatorWeight_NOSYS);
   //boosted_inTree->SetBranchAddress("tau_NOSYS_passesOR", &boosted_tau_NOSYS_passesOR, &b_boosted_tau_NOSYS_passesOR);
-  //boosted_inTree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_passesOR", &boosted_recojet_antikt4PFlow_NOSYS_passesOR, &b_boosted_recojet_antikt4PFlow_NOSYS_passesOR);
+  boosted_inTree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_passesOR", &boosted_recojet_antikt4PFlow_NOSYS_passesOR, &b_boosted_recojet_antikt4PFlow_NOSYS_passesOR);
 
   
   resolved_inTree->SetBranchAddress("bbtt_H_vis_tautau_pt_NOSYS", &resolved_bbtt_H_vis_tautau_pt_NOSYS, &b_resolved_bbtt_H_vis_tautau_pt_NOSYS);
@@ -224,7 +236,7 @@ void set_branch_address(){
   resolved_inTree->SetBranchAddress("bbtt_H_bb_m", &resolved_bbtt_H_bb_m, &b_resolved_bbtt_H_bb_m);
   resolved_inTree->SetBranchAddress("generatorWeight_NOSYS", &resolved_generatorWeight_NOSYS, &b_resolved_generatorWeight_NOSYS);
   //resolved_inTree->SetBranchAddress("tau_NOSYS_passesOR", &resolved_tau_NOSYS_passesOR, &b_resolved_tau_NOSYS_passesOR);
-  //resolved_inTree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_passesOR", &resolved_recojet_antikt4PFlow_NOSYS_passesOR, &b_resolved_recojet_antikt4PFlow_NOSYS_passesOR);
+  resolved_inTree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_passesOR", &resolved_recojet_antikt4PFlow_NOSYS_passesOR, &b_resolved_recojet_antikt4PFlow_NOSYS_passesOR);
   
 }
 
@@ -243,22 +255,79 @@ void print_list_of_branches(TTree* tree){
 
 // This function prints the branches of a tree that contain an specific word, and it would be useful to find the branches
 // that contain some info related with some objects
-void find_branches_names(TTree* tree, TString name_config, TString word){
+void find_branches_names(TString word){
 
-  cout << "The list of branches that contain the word " << word << " for the " << name_config << " configuration are:"  << endl;
-  
-  for(int ii = 0; ii < tree->GetListOfBranches()->GetEntries(); ii++){
-    
-    bool find_word = false;
-    TString name_branch = tree->GetListOfBranches()->At(ii)->GetName();
-    
+  cout << "The list of branches that contain the word " << word << " for the boosted configuration are:"  << endl;
+  for(int ii = 0; ii < boosted_inTree->GetListOfBranches()->GetEntries(); ii++){
+    TString name_branch = boosted_inTree->GetListOfBranches()->At(ii)->GetName();
     if(name_branch.Contains(word)==true){
-      find_word=true;
-    }
-    
-    if(find_word==true){
-      cout << ii << "\t" << tree->GetListOfBranches()->At(ii)->GetName() << '\n';  
+      cout << ii << "\t" << boosted_inTree->GetListOfBranches()->At(ii)->GetName() << endl;  
     }
   }
+  
+  cout << "The list of branches that contain the word " << word << " for the resolved configuration are:"  << endl;
+  for(int ii = 0; ii < resolved_inTree->GetListOfBranches()->GetEntries(); ii++){
+    TString name_branch = resolved_inTree->GetListOfBranches()->At(ii)->GetName();
+    if(name_branch.Contains(word)==true){
+      cout << ii << "\t" << resolved_inTree->GetListOfBranches()->At(ii)->GetName() << endl;  
+    }
+  }
+}
 
+// This function prints some values for some needed info, i.e, number of negative values, 0, etc for each tree to compare if those
+// trees for boosted and resolved configs keep the same number of entries for some branches
+void print_some_values(){
+
+  Int_t b_entries = boosted_inTree->GetEntries();
+  Int_t r_entries = resolved_inTree->GetEntries();
+  int b_nbytes = 0;
+  int r_nbytes = 0;
+  int boosted_mbb_neg_values = 0;
+  int resolved_mbb_neg_values = 0;
+  int boosted_bbpT_neg_values = 0;
+  int resolved_bbpT_neg_values = 0;
+  int boosted_mtautau_zero_values = 0;
+  int resolved_mtautau_zero_values = 0;
+  int boosted_mtautau_neg_values = 0;
+  int resolved_mtautau_neg_values = 0;
+
+  
+  for(int ii=0; ii < b_entries; ii++){
+    b_nbytes = boosted_inTree->GetEntry(ii);
+    if(boosted_bbtt_H_bb_m < 0){
+      boosted_mbb_neg_values += 1;
+    }
+    if(boosted_bbtt_H_bb_pt_NOSYS < 0){
+      boosted_bbpT_neg_values += 1;
+    }
+    if(boosted_bbtt_H_vis_tautau_m == 0){
+      boosted_mtautau_zero_values += 1;
+    }
+    if(boosted_bbtt_H_vis_tautau_m < 0){
+      boosted_mtautau_neg_values += 1;
+    }
+  }
+  for(int ii=0; ii < r_entries; ii++){
+    r_nbytes = resolved_inTree->GetEntry(ii);
+    if(resolved_bbtt_H_bb_m < 0){
+      resolved_mbb_neg_values += 1;
+    }
+    if(resolved_bbtt_H_bb_pt_NOSYS < 0){
+      resolved_bbpT_neg_values += 1;
+    }
+    if(resolved_bbtt_H_vis_tautau_m == 0){
+      resolved_mtautau_zero_values += 1;
+    }
+    if(resolved_bbtt_H_vis_tautau_m < 0){
+      resolved_mtautau_neg_values += 1;
+    }
+  }
+  cout << "The number of entries for mbb that are negative for boosted and resolved cases are respectively:"  << endl;
+  cout << boosted_mbb_neg_values << "\t" << resolved_mbb_neg_values << endl;
+  cout << "The number of entries for bbpT that are negative for boosted and resolved cases are respectively:"  << endl;
+  cout << boosted_bbpT_neg_values << "\t" << resolved_bbpT_neg_values << endl;
+  cout << "The number of entries for m_tautau that are equal to zero for boosted and resolved cases are respectively:"  << endl;
+  cout << boosted_mtautau_zero_values << "\t" << resolved_mtautau_zero_values << endl;
+  cout << "The number of entries for m_tautau that are negative for boosted and resolved cases are respectively:"  << endl;
+  cout << boosted_mtautau_neg_values << "\t" << resolved_mtautau_neg_values << endl;
 }
