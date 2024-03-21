@@ -4,8 +4,10 @@
 
 // Path of the merged samples                                                                                                               
 
-TString path="/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/outputfiles-easyjet-march19-2024/mc20_13TeV_502985_vbf_hadhad_l1cvv1\
+//TString path="/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/outputfiles-easyjet-march21-2024/mc20_13TeV_502985_vbf_hadhad_l1cvv1 \
 p5cv1_PHYS_merged_";
+
+TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
 TString path_boosted_sample=path+"boosted_bypass_config.root";
 TString path_resolved_sample=path+"resolved_bypass_config.root";
 
@@ -27,6 +29,8 @@ Float_t boosted_bbtt_H_vis_tautau_pt_NOSYS;
 Float_t boosted_bbtt_H_vis_tautau_m;
 Float_t boosted_bbtt_H_bb_pt_NOSYS;
 Float_t boosted_bbtt_H_bb_m;
+Float_t boosted_bbtt_Jet_b1_pt_NOSYS;
+Float_t boosted_bbtt_Jet_b2_pt_NOSYS;
 Float_t boosted_generatorWeight_NOSYS;
 //vector<char> *boosted_tau_NOSYS_passesOR;
 vector<char> *boosted_recojet_antikt4PFlow_NOSYS_passesOR;
@@ -36,6 +40,8 @@ Float_t resolved_bbtt_H_vis_tautau_pt_NOSYS;
 Float_t resolved_bbtt_H_vis_tautau_m;
 Float_t resolved_bbtt_H_bb_pt_NOSYS;
 Float_t resolved_bbtt_H_bb_m;
+Float_t resolved_bbtt_Jet_b1_pt_NOSYS;
+Float_t resolved_bbtt_Jet_b2_pt_NOSYS;
 Float_t resolved_generatorWeight_NOSYS;
 //vector<char> *resolved_tau_NOSYS_passesOR;
 vector<char> *resolved_recojet_antikt4PFlow_NOSYS_passesOR;
@@ -50,6 +56,8 @@ TBranch *b_boosted_bbtt_H_vis_tautau_pt_NOSYS;
 TBranch *b_boosted_bbtt_H_vis_tautau_m;
 TBranch *b_boosted_bbtt_H_bb_pt_NOSYS;
 TBranch *b_boosted_bbtt_H_bb_m;
+TBranch *b_boosted_bbtt_Jet_b1_pt_NOSYS;
+TBranch *b_boosted_bbtt_Jet_b2_pt_NOSYS;
 TBranch *b_boosted_generatorWeight_NOSYS;
 //TBranch *b_boosted_tau_NOSYS_passesOR;
 TBranch *b_boosted_recojet_antikt4PFlow_NOSYS_passesOR;
@@ -59,6 +67,8 @@ TBranch *b_resolved_bbtt_H_vis_tautau_pt_NOSYS;
 TBranch *b_resolved_bbtt_H_vis_tautau_m;
 TBranch *b_resolved_bbtt_H_bb_pt_NOSYS;
 TBranch *b_resolved_bbtt_H_bb_m;
+TBranch *b_resolved_bbtt_Jet_b1_pt_NOSYS;
+TBranch *b_resolved_bbtt_Jet_b2_pt_NOSYS;
 TBranch *b_resolved_generatorWeight_NOSYS;
 //TBranch *b_resolved_tau_NOSYS_passesOR;
 TBranch *b_resolved_recojet_antikt4PFlow_NOSYS_passesOR;
@@ -68,6 +78,10 @@ TBranch *b_resolved_recojet_antikt4PFlow_NOSYS_passesOR;
 TH1F *hist_tautau_pt_NOSYS_boosted = new TH1F("hist_tautau_pt_NOSYS_boosted", "P_{T}(#tau #tau) comparison between boosted and resolved configurations; p_T(#tau #tau) [GeV];Events / 5 bins", 100, 0, 500);
 TH1F *hist_mH_tautau_boosted = new TH1F("hist_mH_tautau_boosted", "Mass m_{#tau #tau} comparison between boosted and resolved configurations; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
 TH1F *hist_bb_pt_boosted = new TH1F("hist_bb_pt_boosted", "P_{T}(bb) comparison between boosted and resolved configurations; p_T(bb) [GeV];Events / 5 bins", 100, 0, 500);
+
+TH1F *hist_bbtt_Jet_b1_pt_boosted = new TH1F("hist_bbtt_Jet_b1_pt_boosted", "P_{T}(b1) comparison between boosted and resolved configurations; p_T(b1) [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_bbtt_Jet_b2_pt_boosted = new TH1F("hist_bbtt_Jet_b2_pt_boosted", "P_{T}(b2) comparison between boosted and resolved configurations; p_T(b2) [GeV];Events / 5 bins", 100, 0, 500);
+
 TH1F *hist_mH_bb_boosted = new TH1F("hist_mH_bb_boosted", "Mass m_{bb} comparison between boosted and resolved configurations; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
 //TH1F *hist_tau_passesOR_boosted = new TH1F("hist_tau_passesOR_boosted", "Comparison of the number of tau objects passing the OR flag", 3, 0, 2);
 TH1F *hist_recojet_antikt4_passesOR_boosted = new TH1F("hist_recojet_antikt4_passesOR_boosted", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
@@ -77,6 +91,10 @@ TH1F *hist_recojet_antikt4_passesOR_boosted = new TH1F("hist_recojet_antikt4_pas
 TH1F *hist_tautau_pt_NOSYS_resolved = new TH1F("hist_tautau_pt_NOSYS_resolved", "P_{T}(#tau #tau) comparison between boosted and resolved configurations; p_T(#tau #tau) [GeV];Events / 5 bins", 100, 0, 500);
 TH1F *hist_mH_tautau_resolved = new TH1F("hist_mH_tautau_resolved", "Mass m_{#tau #tau} comparison between boosted and resolved configurations; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
 TH1F *hist_bb_pt_resolved = new TH1F("hist_bb_pt_resolved", "P_{T}(bb) comparison between boosted and resolved configurations; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
+
+TH1F *hist_bbtt_Jet_b1_pt_resolved = new TH1F("hist_bbtt_Jet_b1_pt_resolved", "P_{T}(b1) comparison between boosted and resolved configurations; p_T(b1) [GeV];Events / 5 bins", 100, 0, 500);
+TH1F *hist_bbtt_Jet_b2_pt_resolved = new TH1F("hist_bbtt_Jet_b2_pt_resolved", "P_{T}(b2) comparison between boosted and resolved configurations; p_T(b2) [GeV];Events / 5 bins", 100, 0, 500);
+
 TH1F *hist_mH_bb_resolved = new TH1F("hist_mH_bb_resolved", "Mass m_{bb} comparison between boosted and resolved configurations; hist_mH_bb_resolved; $m_{bb}$ [GeV]; Events / 5 bins", 100, 0, 500);
 //TH1F *hist_tau_passesOR_resolved = new TH1F("hist_tau_passesOR_resolved", "Comparison of the number of tau objects passing the OR flag", 3, 0, 2);
 TH1F *hist_recojet_antikt4_passesOR_resolved = new TH1F("hist_recojet_antikt4_passesOR_resolved", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
@@ -130,7 +148,14 @@ void plot_distributions(TString name_plot){
     hist_boosted = hist_recojet_antikt4_passesOR_boosted;
     hist_resolved = hist_recojet_antikt4_passesOR_resolved;
   }
-  
+  if(name_plot=="bbtt_Jet_b1_pt"){
+    hist_boosted = hist_bbtt_Jet_b1_pt_boosted;
+    hist_resolved = hist_bbtt_Jet_b1_pt_resolved;
+  }
+  if(name_plot=="bbtt_Jet_b2_pt"){
+    hist_boosted = hist_bbtt_Jet_b2_pt_boosted;
+    hist_resolved = hist_bbtt_Jet_b2_pt_resolved;
+  }
   hist_boosted->SetStats(0);
   hist_boosted->SetFillStyle(3001);
   hist_boosted->SetFillColorAlpha(kBlue, 0.45);
@@ -169,12 +194,17 @@ void fill_histograms(){
     nbytes = boosted_inTree->GetEntry(ii);
 
     if(boosted_bbtt_H_vis_tautau_pt_NOSYS > 0){
-      hist_tautau_pt_NOSYS_boosted->Fill(boosted_bbtt_H_vis_tautau_pt_NOSYS/1000., boosted_generatorWeight_NOSYS);
+      hist_tautau_pt_NOSYS_boosted->Fill(boosted_bbtt_H_vis_tautau_pt_NOSYS/1000.);
+      // hist_tautau_pt_NOSYS_boosted->Fill(boosted_bbtt_H_vis_tautau_pt_NOSYS/1000., boosted_generatorWeight_NOSYS);
     }
     if(boosted_bbtt_H_vis_tautau_m > 0){
       hist_mH_tautau_boosted->Fill(boosted_bbtt_H_vis_tautau_m/1000.);
     }
-    hist_bb_pt_boosted->Fill(boosted_bbtt_H_bb_pt_NOSYS/1000., boosted_generatorWeight_NOSYS);
+    hist_bb_pt_boosted->Fill(boosted_bbtt_H_bb_pt_NOSYS/1000.);
+    //hist_bb_pt_boosted->Fill(boosted_bbtt_H_bb_pt_NOSYS/1000., boosted_generatorWeight_NOSYS);
+    hist_bbtt_Jet_b1_pt_boosted->Fill(boosted_bbtt_Jet_b1_pt_NOSYS/1000.);
+    hist_bbtt_Jet_b2_pt_boosted->Fill(boosted_bbtt_Jet_b2_pt_NOSYS/1000.);
+ 
     hist_mH_bb_boosted->Fill(boosted_bbtt_H_bb_m/1000.);
     
     /*
@@ -189,18 +219,25 @@ void fill_histograms(){
         hist_recojet_antikt4_passesOR_boosted->Fill(boosted_recojet_antikt4PFlow_NOSYS_passesOR->at(jj));	  
       }
     }
+    
   }
   
   for(int ii=0; ii < r_entries; ii++){
     nbytes = resolved_inTree->GetEntry(ii);
 
     if(resolved_bbtt_H_vis_tautau_pt_NOSYS > 0){
-      hist_tautau_pt_NOSYS_resolved->Fill(resolved_bbtt_H_vis_tautau_pt_NOSYS/1000., resolved_generatorWeight_NOSYS);
+      hist_tautau_pt_NOSYS_resolved->Fill(resolved_bbtt_H_vis_tautau_pt_NOSYS/1000.);
+      // hist_tautau_pt_NOSYS_resolved->Fill(resolved_bbtt_H_vis_tautau_pt_NOSYS/1000., resolved_generatorWeight_NOSYS);
     }
     if(resolved_bbtt_H_vis_tautau_m > 0){
       hist_mH_tautau_resolved->Fill(resolved_bbtt_H_vis_tautau_m/1000.);
     }
-    hist_bb_pt_resolved->Fill(resolved_bbtt_H_bb_pt_NOSYS/1000., resolved_generatorWeight_NOSYS);
+    hist_bb_pt_resolved->Fill(resolved_bbtt_H_bb_pt_NOSYS/1000.);
+    // hist_bb_pt_resolved->Fill(resolved_bbtt_H_bb_pt_NOSYS/1000., resolved_generatorWeight_NOSYS);
+
+    hist_bbtt_Jet_b1_pt_resolved->Fill(resolved_bbtt_Jet_b1_pt_NOSYS/1000.);
+    hist_bbtt_Jet_b2_pt_resolved->Fill(resolved_bbtt_Jet_b2_pt_NOSYS/1000.);
+
     hist_mH_bb_resolved->Fill(resolved_bbtt_H_bb_m/1000.);
     /*
     if(resolved_tau_NOSYS_passesOR->size() > 0){
@@ -224,6 +261,10 @@ void set_branch_address(){
   boosted_inTree->SetBranchAddress("bbtt_H_vis_tautau_pt_NOSYS", &boosted_bbtt_H_vis_tautau_pt_NOSYS, &b_boosted_bbtt_H_vis_tautau_pt_NOSYS);
   boosted_inTree->SetBranchAddress("bbtt_H_vis_tautau_m", &boosted_bbtt_H_vis_tautau_m, &b_boosted_bbtt_H_vis_tautau_m);
   boosted_inTree->SetBranchAddress("bbtt_H_bb_pt_NOSYS", &boosted_bbtt_H_bb_pt_NOSYS, &b_boosted_bbtt_H_bb_pt_NOSYS);
+  
+  boosted_inTree->SetBranchAddress("bbtt_Jet_b1_pt_NOSYS", &boosted_bbtt_Jet_b1_pt_NOSYS, &b_boosted_bbtt_Jet_b1_pt_NOSYS);
+  boosted_inTree->SetBranchAddress("bbtt_Jet_b2_pt_NOSYS", &boosted_bbtt_Jet_b2_pt_NOSYS, &b_boosted_bbtt_Jet_b2_pt_NOSYS);
+  
   boosted_inTree->SetBranchAddress("bbtt_H_bb_m", &boosted_bbtt_H_bb_m, &b_boosted_bbtt_H_bb_m);
   boosted_inTree->SetBranchAddress("generatorWeight_NOSYS", &boosted_generatorWeight_NOSYS, &b_boosted_generatorWeight_NOSYS);
   //boosted_inTree->SetBranchAddress("tau_NOSYS_passesOR", &boosted_tau_NOSYS_passesOR, &b_boosted_tau_NOSYS_passesOR);
@@ -233,6 +274,10 @@ void set_branch_address(){
   resolved_inTree->SetBranchAddress("bbtt_H_vis_tautau_pt_NOSYS", &resolved_bbtt_H_vis_tautau_pt_NOSYS, &b_resolved_bbtt_H_vis_tautau_pt_NOSYS);
   resolved_inTree->SetBranchAddress("bbtt_H_vis_tautau_m", &resolved_bbtt_H_vis_tautau_m, &b_resolved_bbtt_H_vis_tautau_m);
   resolved_inTree->SetBranchAddress("bbtt_H_bb_pt_NOSYS", &resolved_bbtt_H_bb_pt_NOSYS, &b_resolved_bbtt_H_bb_pt_NOSYS);
+
+  resolved_inTree->SetBranchAddress("bbtt_Jet_b1_pt_NOSYS", &resolved_bbtt_Jet_b1_pt_NOSYS, &b_resolved_bbtt_Jet_b1_pt_NOSYS);
+  resolved_inTree->SetBranchAddress("bbtt_Jet_b2_pt_NOSYS", &resolved_bbtt_Jet_b2_pt_NOSYS, &b_resolved_bbtt_Jet_b2_pt_NOSYS);
+  
   resolved_inTree->SetBranchAddress("bbtt_H_bb_m", &resolved_bbtt_H_bb_m, &b_resolved_bbtt_H_bb_m);
   resolved_inTree->SetBranchAddress("generatorWeight_NOSYS", &resolved_generatorWeight_NOSYS, &b_resolved_generatorWeight_NOSYS);
   //resolved_inTree->SetBranchAddress("tau_NOSYS_passesOR", &resolved_tau_NOSYS_passesOR, &b_resolved_tau_NOSYS_passesOR);
