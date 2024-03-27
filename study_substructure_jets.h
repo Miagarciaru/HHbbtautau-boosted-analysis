@@ -1,3 +1,4 @@
+#include <TMath.h>
 // *************************************
 // Reading the input files
 // *************************************
@@ -8,113 +9,267 @@
 p5cv1_PHYS_merged_";
 
 TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
-TString path_boosted_sample=path+"boosted_bypass_config.root";
-TString path_resolved_sample=path+"resolved_bypass_config.root";
+TString path_sample=path+"boosted_bypass_config.root";
 
 // Open the input files and access to the trees                                                                                             
 
-TFile* boosted_inFile = TFile::Open(path_boosted_sample);
-TTree* boosted_inTree = (TTree*) boosted_inFile->Get("AnalysisMiniTree");
-
-TFile* resolved_inFile = TFile::Open(path_resolved_sample);
-TTree* resolved_inTree = (TTree*) resolved_inFile->Get("AnalysisMiniTree");
-
+TFile* inFile = TFile::Open(path_sample);
+TTree* inTree = (TTree*) inFile->Get("AnalysisMiniTree");
 
 // *************************************
 // Declaration of leaf variables
 // *************************************
 
-// Declaration of leaf types for boosted tree
-Float_t boosted_bbtt_H_vis_tautau_pt_NOSYS;
-Float_t boosted_bbtt_H_vis_tautau_m;
-Float_t boosted_bbtt_H_bb_pt_NOSYS;
-Float_t boosted_bbtt_H_bb_m;
-Float_t boosted_bbtt_Jet_b1_pt_NOSYS;
-Float_t boosted_bbtt_Jet_b2_pt_NOSYS;
-Float_t boosted_generatorWeight_NOSYS;
-//vector<char> *boosted_tau_NOSYS_passesOR;
-vector<char> *boosted_recojet_antikt4PFlow_NOSYS_passesOR;
 
-// Declaration of leaf types for resolved tree
-Float_t resolved_bbtt_H_vis_tautau_pt_NOSYS;
-Float_t resolved_bbtt_H_vis_tautau_m;
-Float_t resolved_bbtt_H_bb_pt_NOSYS;
-Float_t resolved_bbtt_H_bb_m;
-Float_t resolved_bbtt_Jet_b1_pt_NOSYS;
-Float_t resolved_bbtt_Jet_b2_pt_NOSYS;
-Float_t resolved_generatorWeight_NOSYS;
-//vector<char> *resolved_tau_NOSYS_passesOR;
-vector<char> *resolved_recojet_antikt4PFlow_NOSYS_passesOR;
+// Declaration of leaf types for truth_children branches for boosted tree variables
 
+// truth childre from Higgs
+vector<int> *truth_children_fromH1_pdgId;
+vector<int> *truth_children_fromH2_pdgId;
+vector<float> *truth_children_fromH1_pt;
+vector<float> *truth_children_fromH1_eta;
+vector<float> *truth_children_fromH1_phi;
+vector<float> *truth_children_fromH1_m;
+vector<float> *truth_children_fromH2_pt;
+vector<float> *truth_children_fromH2_eta;
+vector<float> *truth_children_fromH2_phi;
+vector<float> *truth_children_fromH2_m;
+
+// Matching of truth b and tau jets from truth children
+Float_t truth_b1_pt;
+Float_t truth_b1_eta;
+Float_t truth_b1_phi;
+Float_t truth_b1_m;
+
+Float_t truth_b2_pt;
+Float_t truth_b2_eta;
+Float_t truth_b2_phi;
+Float_t truth_b2_m;
+
+Float_t truth_tau1_pt;
+Float_t truth_tau1_eta;
+Float_t truth_tau1_phi;
+Float_t truth_tau1_m;
+
+Float_t truth_tau2_pt;
+Float_t truth_tau2_eta;
+Float_t truth_tau2_phi;
+Float_t truth_tau2_m;
+
+
+// Declaration of leaf types for bbtt_H boosted tree variables
+Float_t bbtt_H_vis_tautau_pt_NOSYS;
+Float_t bbtt_H_vis_tautau_m;
+Float_t bbtt_H_bb_pt_NOSYS;
+Float_t bbtt_H_bb_m;
+Float_t bbtt_Jet_b1_pt_NOSYS;
+Float_t bbtt_Jet_b2_pt_NOSYS;
+Float_t generatorWeight_NOSYS;
+//vector<char> *tau_NOSYS_passesOR;
+vector<char> *recojet_antikt4PFlow_NOSYS_passesOR;
 
 // *************************************
 // Declaration of branches
 // *************************************
 
+
+// truth childre from Higgs
+TBranch *b_truth_children_fromH1_pdgId;
+TBranch *b_truth_children_fromH2_pdgId;
+TBranch *b_truth_children_fromH1_pt;
+TBranch *b_truth_children_fromH1_eta;
+TBranch *b_truth_children_fromH1_phi;
+TBranch *b_truth_children_fromH1_m;
+TBranch *b_truth_children_fromH2_pt;
+TBranch *b_truth_children_fromH2_eta;
+TBranch *b_truth_children_fromH2_phi;
+TBranch *b_truth_children_fromH2_m;
+
+// Matching of truth b and tau jets from truth children
+TBranch *b_truth_b1_pt;
+TBranch *b_truth_b1_eta;
+TBranch *b_truth_b1_phi;
+TBranch *b_truth_b1_m;
+
+TBranch *b_truth_b2_pt;
+TBranch *b_truth_b2_eta;
+TBranch *b_truth_b2_phi;
+TBranch *b_truth_b2_m;
+
+TBranch *b_truth_tau1_pt;
+TBranch *b_truth_tau1_eta;
+TBranch *b_truth_tau1_phi;
+TBranch *b_truth_tau1_m;
+
+TBranch *b_truth_tau2_pt;
+TBranch *b_truth_tau2_eta;
+TBranch *b_truth_tau2_phi;
+TBranch *b_truth_tau2_m;
+
+
 // Declaration of branches for boosted tree
-TBranch *b_boosted_bbtt_H_vis_tautau_pt_NOSYS;
-TBranch *b_boosted_bbtt_H_vis_tautau_m;
-TBranch *b_boosted_bbtt_H_bb_pt_NOSYS;
-TBranch *b_boosted_bbtt_H_bb_m;
-TBranch *b_boosted_bbtt_Jet_b1_pt_NOSYS;
-TBranch *b_boosted_bbtt_Jet_b2_pt_NOSYS;
-TBranch *b_boosted_generatorWeight_NOSYS;
-//TBranch *b_boosted_tau_NOSYS_passesOR;
-TBranch *b_boosted_recojet_antikt4PFlow_NOSYS_passesOR;
-
-// Declaration of branches for resolved tree
-TBranch *b_resolved_bbtt_H_vis_tautau_pt_NOSYS;
-TBranch *b_resolved_bbtt_H_vis_tautau_m;
-TBranch *b_resolved_bbtt_H_bb_pt_NOSYS;
-TBranch *b_resolved_bbtt_H_bb_m;
-TBranch *b_resolved_bbtt_Jet_b1_pt_NOSYS;
-TBranch *b_resolved_bbtt_Jet_b2_pt_NOSYS;
-TBranch *b_resolved_generatorWeight_NOSYS;
-//TBranch *b_resolved_tau_NOSYS_passesOR;
-TBranch *b_resolved_recojet_antikt4PFlow_NOSYS_passesOR;
+TBranch *b_bbtt_H_vis_tautau_pt_NOSYS;
+TBranch *b_bbtt_H_vis_tautau_m;
+TBranch *b_bbtt_H_bb_pt_NOSYS;
+TBranch *b_bbtt_H_bb_m;
+TBranch *b_bbtt_Jet_b1_pt_NOSYS;
+TBranch *b_bbtt_Jet_b2_pt_NOSYS;
+TBranch *b_generatorWeight_NOSYS;
+//TBranch *b_tau_NOSYS_passesOR;
+TBranch *b_recojet_antikt4PFlow_NOSYS_passesOR;
 
 
-// Declaration of histograms for boosted variables
-TH1F *hist_tautau_pt_NOSYS_boosted = new TH1F("hist_tautau_pt_NOSYS_boosted", "P_{T}(#tau #tau) comparison between boosted and resolved configurations; p_T(#tau #tau) [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_mH_tautau_boosted = new TH1F("hist_mH_tautau_boosted", "Mass m_{#tau #tau} comparison between boosted and resolved configurations; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_bb_pt_boosted = new TH1F("hist_bb_pt_boosted", "P_{T}(bb) comparison between boosted and resolved configurations; p_T(bb) [GeV];Events / 5 bins", 100, 0, 500);
+// *************************************
+// Declaration of histograms
+// *************************************
 
-TH1F *hist_bbtt_Jet_b1_pt_boosted = new TH1F("hist_bbtt_Jet_b1_pt_boosted", "P_{T}(b1) comparison between boosted and resolved configurations; p_T(b1) [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_bbtt_Jet_b2_pt_boosted = new TH1F("hist_bbtt_Jet_b2_pt_boosted", "P_{T}(b2) comparison between boosted and resolved configurations; p_T(b2) [GeV];Events / 5 bins", 100, 0, 500);
+// Declaration of histograms for truth b-jets variables
 
-TH1F *hist_mH_bb_boosted = new TH1F("hist_mH_bb_boosted", "Mass m_{bb} comparison between boosted and resolved configurations; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
-//TH1F *hist_tau_passesOR_boosted = new TH1F("hist_tau_passesOR_boosted", "Comparison of the number of tau objects passing the OR flag", 3, 0, 2);
-TH1F *hist_recojet_antikt4_passesOR_boosted = new TH1F("hist_recojet_antikt4_passesOR_boosted", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
-
-
-// Declaration of histograms for resolved variables
-TH1F *hist_tautau_pt_NOSYS_resolved = new TH1F("hist_tautau_pt_NOSYS_resolved", "P_{T}(#tau #tau) comparison between boosted and resolved configurations; p_T(#tau #tau) [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_mH_tautau_resolved = new TH1F("hist_mH_tautau_resolved", "Mass m_{#tau #tau} comparison between boosted and resolved configurations; m_{#tau #tau} [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_bb_pt_resolved = new TH1F("hist_bb_pt_resolved", "P_{T}(bb) comparison between boosted and resolved configurations; m_{bb} [GeV];Events / 5 bins", 100, 0, 500);
-
-TH1F *hist_bbtt_Jet_b1_pt_resolved = new TH1F("hist_bbtt_Jet_b1_pt_resolved", "P_{T}(b1) comparison between boosted and resolved configurations; p_T(b1) [GeV];Events / 5 bins", 100, 0, 500);
-TH1F *hist_bbtt_Jet_b2_pt_resolved = new TH1F("hist_bbtt_Jet_b2_pt_resolved", "P_{T}(b2) comparison between boosted and resolved configurations; p_T(b2) [GeV];Events / 5 bins", 100, 0, 500);
-
-TH1F *hist_mH_bb_resolved = new TH1F("hist_mH_bb_resolved", "Mass m_{bb} comparison between boosted and resolved configurations; hist_mH_bb_resolved; $m_{bb}$ [GeV]; Events / 5 bins", 100, 0, 500);
-//TH1F *hist_tau_passesOR_resolved = new TH1F("hist_tau_passesOR_resolved", "Comparison of the number of tau objects passing the OR flag", 3, 0, 2);
-TH1F *hist_recojet_antikt4_passesOR_resolved = new TH1F("hist_recojet_antikt4_passesOR_resolved", "Comparison of the number of recojet antikt4 objects passing the OR flag", 3, 0, 2);
+TH1F *hist_truth_b1_m = new TH1F("hist_truth_b1_m", "Mass of the truth b1; m(b_1) [GeV];Events / 5 bins", 100, 0, 5000);
+TH1F *hist_truth_b2_m = new TH1F("hist_truth_b2_m", "Mass of the truth b2; m(b_2) [GeV];Events / 5 bins", 100, 0, 5000);
+TH1F *hist_truth_b1_plus_b2_m = new TH1F("hist_truth_b1_plus_b2_m", "Mass of the two truth b; m(b_1+b_2) [GeV];Events / 5 bins", 100, 0, 5000);
 
 
 // *************************************
 // Declaration of some functions
 // *************************************
 
-void plot_distributions(TString name_plot);
+//void plot_distributions(TString name_plot);
+
+void random_function(int &sum_type_per_event);
+void define_truth_tau_and_b_jets();
 void fill_histograms();
 void set_branch_address();
 void print_list_of_branches(TTree* tree);
-void find_branches_names(TString word);
-void print_some_values();
+
+
+void random_function(int &sum_type_per_event){
+
+  sum_type_per_event = TMath::Abs(truth_children_fromH1_pdgId->at(0)) + TMath::Abs(truth_children_fromH1_pdgId->at(1)) + TMath::Abs(truth_children_fromH2_pdgId->at(0)) + TMath::Abs(truth_children_fromH2_pdgId->at(1));
+  
+}
+
+void define_truth_tau_and_b_jets(){
+
+  int nentries = inTree->GetEntries();
+  int nbytes = 0;
+
+  /*
+  // Bool to use only those events that have two elements for the truth children decays of the Higgs boson
+  bool cond_1 = (truth_children_fromH1_pdgId->size() == 2) && (truth_children_fromH2_pdgId->size() == 2);
+  // Bool to see if the H1 and H2 truth decays are combination of bbtautau or tautaubb, only the Higgs can decay in a pair of bb or tautau
+  bool cond_2 = true;
+  */
+  if((truth_children_fromH1_pdgId->size() == 2) && (truth_children_fromH2_pdgId->size() == 2)){
+
+    int sum_type_H1 = TMath::Abs(truth_children_fromH1_pdgId->at(0)) + TMath::Abs(truth_children_fromH1_pdgId->at(1));
+    int sum_type_H2 = TMath::Abs(truth_children_fromH2_pdgId->at(0)) + TMath::Abs(truth_children_fromH2_pdgId->at(1));
+
+    bool is_H1_bb = false;
+    bool is_H2_bb = false;
+
+    if(sum_type_H1 == 10){ is_H1_bb = true;} 
+    if(sum_type_H1 == 30){ is_H2_bb = true;}
+
+    // Here we assume that all the jets are listed from the highest pT to the lowest pT
+    int index_b1 = 0;
+    int index_b2 = 1;
+    int index_tau1 = 0;
+    int index_tau2 = 1;
+      
+    // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1_bb scenario
+    if(is_H1_bb){
+      if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
+	index_b1 = 1;
+	index_b2 = 0;
+      } 
+      if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
+	index_tau1 = 1;
+	index_tau2 = 0;
+      }
+      
+      truth_b1_pt = truth_children_fromH1_pt->at(index_b1);
+      truth_b1_eta = truth_children_fromH1_eta->at(index_b1);
+      truth_b1_phi = truth_children_fromH1_phi->at(index_b1);
+      truth_b1_m = truth_children_fromH1_m->at(index_b1);
+
+      truth_b2_pt = truth_children_fromH1_pt->at(index_b2);
+      truth_b2_eta = truth_children_fromH1_eta->at(index_b2);
+      truth_b2_phi = truth_children_fromH1_phi->at(index_b2);
+      truth_b2_m = truth_children_fromH1_m->at(index_b2);
+
+      truth_tau1_pt = truth_children_fromH2_pt->at(index_tau1);
+      truth_tau1_eta = truth_children_fromH2_eta->at(index_tau1);
+      truth_tau1_phi = truth_children_fromH2_phi->at(index_tau1);
+      truth_tau1_m = truth_children_fromH2_m->at(index_tau1);	
+      
+      truth_tau2_pt = truth_children_fromH2_pt->at(index_tau2);
+      truth_tau2_eta = truth_children_fromH2_eta->at(index_tau2);
+      truth_tau2_phi = truth_children_fromH2_phi->at(index_tau2);
+      truth_tau2_m = truth_children_fromH2_m->at(index_tau2);	
+      
+    }
+
+    // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H2_bb scenario
+    if(is_H2_bb){
+      if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
+	index_b1 = 1;
+	index_b2 = 0;
+      } 
+      if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
+	index_tau1 = 1;
+	index_tau2 = 0;
+      }
+	
+      truth_b1_pt = truth_children_fromH2_pt->at(index_b1);
+      truth_b1_eta = truth_children_fromH2_eta->at(index_b1);
+      truth_b1_phi = truth_children_fromH2_phi->at(index_b1);
+      truth_b1_m = truth_children_fromH2_m->at(index_b1);
+      
+      truth_b2_pt = truth_children_fromH2_pt->at(index_b2);
+      truth_b2_eta = truth_children_fromH2_eta->at(index_b2);
+      truth_b2_phi = truth_children_fromH2_phi->at(index_b2);
+      truth_b2_m = truth_children_fromH2_m->at(index_b2);
+      
+      truth_tau1_pt = truth_children_fromH1_pt->at(index_tau1);
+      truth_tau1_eta = truth_children_fromH1_eta->at(index_tau1);
+      truth_tau1_phi = truth_children_fromH1_phi->at(index_tau1);
+      truth_tau1_m = truth_children_fromH1_m->at(index_tau1);	
+      
+      truth_tau2_pt = truth_children_fromH1_pt->at(index_tau2);
+      truth_tau2_eta = truth_children_fromH1_eta->at(index_tau2);
+      truth_tau2_phi = truth_children_fromH1_phi->at(index_tau2);
+      truth_tau2_m = truth_children_fromH1_m->at(index_tau2);	
+    }	
+  }
+  else{
+    truth_b1_pt = -99;
+    truth_b1_eta = -99;
+    truth_b1_phi = -99;
+    truth_b1_m = -99;
+    
+    truth_b2_pt = -99;
+    truth_b2_eta = -99;
+    truth_b2_phi = -99;
+    truth_b2_m = -99;
+
+    truth_tau1_pt = -99;
+    truth_tau1_eta = -99;
+    truth_tau1_phi = -99;
+    truth_tau1_m = -99;
+    
+    truth_tau2_pt = -99;
+    truth_tau2_eta = -99;
+    truth_tau2_phi = -99;
+    truth_tau2_m = -99;
+  }
+}
 
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions
 // for the two configurations, boosted and resolved
-void plot_distributions(TString name_plot){
 
+void plot_distributions(TString name_plot){
+  /*
   TLegend *leg = new TLegend(0.7, 0.75, 0.85, 0.85);
   TH1F *hist_boosted = new TH1F();
   TH1F *hist_resolved = new TH1F();
@@ -126,56 +281,37 @@ void plot_distributions(TString name_plot){
     hist_resolved = hist_mH_tautau_resolved;
   }
 
-  if(name_plot=="bb_m"){
-    hist_boosted = hist_mH_bb_boosted;
-    hist_resolved = hist_mH_bb_resolved;
-  }
-  if(name_plot=="tautau_pT"){
-    hist_boosted = hist_tautau_pt_NOSYS_boosted;
-    hist_resolved = hist_tautau_pt_NOSYS_resolved;
-  }
-  if(name_plot=="bb_pT"){
-    hist_boosted = hist_bb_pt_boosted;
-    hist_resolved = hist_bb_pt_resolved;
-  }
-  /*
-  if(name_plot=="tau_passesOR"){
-    hist_boosted = hist_tau_passesOR_boosted;
-    hist_resolved = hist_tau_passesOR_resolved;
-  }
-  */
-  if(name_plot=="recojet_antikt4_passesOR"){
-    hist_boosted = hist_recojet_antikt4_passesOR_boosted;
-    hist_resolved = hist_recojet_antikt4_passesOR_resolved;
-  }
-  if(name_plot=="bbtt_Jet_b1_pt"){
-    hist_boosted = hist_bbtt_Jet_b1_pt_boosted;
-    hist_resolved = hist_bbtt_Jet_b1_pt_resolved;
-  }
-  if(name_plot=="bbtt_Jet_b2_pt"){
-    hist_boosted = hist_bbtt_Jet_b2_pt_boosted;
-    hist_resolved = hist_bbtt_Jet_b2_pt_resolved;
-  }
   hist_boosted->SetStats(0);
   hist_boosted->SetFillStyle(3001);
   hist_boosted->SetFillColorAlpha(kBlue, 0.45);
   hist_boosted->SetLineColor(4);
-  
-  hist_resolved->SetStats(0);
-  hist_resolved->SetFillStyle(3003);
-  hist_resolved->SetFillColorAlpha(kRed, 0.45);
-  hist_resolved->SetLineColor(2);
+
+  */
+
+  TString name_image=name_plot+".png";
   
   ///// Plotting
   TCanvas *can = new TCanvas("can","", 800, 600);
+  TH1F *hist = new TH1F();
 
-  hist_boosted->Draw("H");
-  hist_resolved->Draw("sameH");
+  if(name_plot == "truth_b1_m"){
+    hist = hist_truth_b1_m;
+  }
+  if(name_plot == "truth_b2_m"){
+    hist = hist_truth_b2_m;
+  }
+  if(name_plot == "truth_b1_plus_b2_m"){
+    hist = hist_truth_b1_plus_b2_m;
+  }
   
+  hist->Draw();
+  
+  /*
   leg->AddEntry(hist_boosted, "boosted", "l");
   leg->AddEntry(hist_resolved,"resolved","l");
   leg->SetBorderSize();
   leg->Draw();
+  */
   
   can->Draw();
   can->Print(name_image);
@@ -185,70 +321,24 @@ void plot_distributions(TString name_plot){
 // for the two configurations, boosted and resolved
 void fill_histograms(){
 
-  Int_t b_entries = boosted_inTree->GetEntries();
-  Int_t r_entries = resolved_inTree->GetEntries();
+  Int_t nentries = inTree->GetEntries();
   int nbytes = 0;
-  
-  for(int ii = 0; ii < b_entries; ii++){
+
+  float sum = 0;
     
-    nbytes = boosted_inTree->GetEntry(ii);
-
-    if(boosted_bbtt_H_vis_tautau_pt_NOSYS > 0){
-      hist_tautau_pt_NOSYS_boosted->Fill(boosted_bbtt_H_vis_tautau_pt_NOSYS/1000.);
-      // hist_tautau_pt_NOSYS_boosted->Fill(boosted_bbtt_H_vis_tautau_pt_NOSYS/1000., boosted_generatorWeight_NOSYS);
-    }
-    if(boosted_bbtt_H_vis_tautau_m > 0){
-      hist_mH_tautau_boosted->Fill(boosted_bbtt_H_vis_tautau_m/1000.);
-    }
-    hist_bb_pt_boosted->Fill(boosted_bbtt_H_bb_pt_NOSYS/1000.);
-    //hist_bb_pt_boosted->Fill(boosted_bbtt_H_bb_pt_NOSYS/1000., boosted_generatorWeight_NOSYS);
-    hist_bbtt_Jet_b1_pt_boosted->Fill(boosted_bbtt_Jet_b1_pt_NOSYS/1000.);
-    hist_bbtt_Jet_b2_pt_boosted->Fill(boosted_bbtt_Jet_b2_pt_NOSYS/1000.);
- 
-    hist_mH_bb_boosted->Fill(boosted_bbtt_H_bb_m/1000.);
+  for(int ii = 0; ii < nentries; ii++){
     
-    /*
-    if(boosted_tau_NOSYS_passesOR->size() > 0){
-      for(int jj=0; jj < boosted_tau_NOSYS_passesOR->size(); jj++){
-	hist_tau_passesOR_boosted->Fill(boosted_tau_NOSYS_passesOR->at(jj));	  
-      }
-    }
-    */
-    if(boosted_recojet_antikt4PFlow_NOSYS_passesOR->size() > 0){
-      for(int jj=0; jj < boosted_recojet_antikt4PFlow_NOSYS_passesOR->size(); jj++){
-        hist_recojet_antikt4_passesOR_boosted->Fill(boosted_recojet_antikt4PFlow_NOSYS_passesOR->at(jj));	  
-      }
-    }
-    
-  }
-  
-  for(int ii=0; ii < r_entries; ii++){
-    nbytes = resolved_inTree->GetEntry(ii);
-
-    if(resolved_bbtt_H_vis_tautau_pt_NOSYS > 0){
-      hist_tautau_pt_NOSYS_resolved->Fill(resolved_bbtt_H_vis_tautau_pt_NOSYS/1000.);
-      // hist_tautau_pt_NOSYS_resolved->Fill(resolved_bbtt_H_vis_tautau_pt_NOSYS/1000., resolved_generatorWeight_NOSYS);
-    }
-    if(resolved_bbtt_H_vis_tautau_m > 0){
-      hist_mH_tautau_resolved->Fill(resolved_bbtt_H_vis_tautau_m/1000.);
-    }
-    hist_bb_pt_resolved->Fill(resolved_bbtt_H_bb_pt_NOSYS/1000.);
-    // hist_bb_pt_resolved->Fill(resolved_bbtt_H_bb_pt_NOSYS/1000., resolved_generatorWeight_NOSYS);
-
-    hist_bbtt_Jet_b1_pt_resolved->Fill(resolved_bbtt_Jet_b1_pt_NOSYS/1000.);
-    hist_bbtt_Jet_b2_pt_resolved->Fill(resolved_bbtt_Jet_b2_pt_NOSYS/1000.);
-
-    hist_mH_bb_resolved->Fill(resolved_bbtt_H_bb_m/1000.);
-    /*
-    if(resolved_tau_NOSYS_passesOR->size() > 0){
-      for(int jj=0; jj < resolved_tau_NOSYS_passesOR->size(); jj++){
-	hist_tau_passesOR_resolved->Fill(resolved_tau_NOSYS_passesOR->at(jj));	  
-      }
-    }
-    */
-    if(resolved_recojet_antikt4PFlow_NOSYS_passesOR->size() > 0){
-      for(int jj=0; jj < resolved_recojet_antikt4PFlow_NOSYS_passesOR->size(); jj++){
-        hist_recojet_antikt4_passesOR_resolved->Fill(resolved_recojet_antikt4PFlow_NOSYS_passesOR->at(jj));	  
+    nbytes = inTree->GetEntry(ii);
+    if(truth_children_fromH1_pdgId->size() == 2){
+      if((TMath::Abs(truth_children_fromH1_pdgId->at(0)) == 5) && (TMath::Abs(truth_children_fromH1_pdgId->at(1)) == 5)){
+	sum = truth_children_fromH1_m->at(0) + truth_children_fromH1_m->at(1);
+	hist_truth_b1_plus_b2_m->Fill(sum);
+	hist_truth_b1_m->Fill(truth_children_fromH1_m->at(0));
+	hist_truth_b2_m->Fill(truth_children_fromH1_m->at(1));
+	/*
+	if(ii%100 == 0){
+	  cout << sum << endl;
+	  }*/
       }
     }
   }
@@ -258,30 +348,49 @@ void fill_histograms(){
 // This function saves the branches info for a given tree in the variables defined above
 void set_branch_address(){
 
-  boosted_inTree->SetBranchAddress("bbtt_H_vis_tautau_pt_NOSYS", &boosted_bbtt_H_vis_tautau_pt_NOSYS, &b_boosted_bbtt_H_vis_tautau_pt_NOSYS);
-  boosted_inTree->SetBranchAddress("bbtt_H_vis_tautau_m", &boosted_bbtt_H_vis_tautau_m, &b_boosted_bbtt_H_vis_tautau_m);
-  boosted_inTree->SetBranchAddress("bbtt_H_bb_pt_NOSYS", &boosted_bbtt_H_bb_pt_NOSYS, &b_boosted_bbtt_H_bb_pt_NOSYS);
-  
-  boosted_inTree->SetBranchAddress("bbtt_Jet_b1_pt_NOSYS", &boosted_bbtt_Jet_b1_pt_NOSYS, &b_boosted_bbtt_Jet_b1_pt_NOSYS);
-  boosted_inTree->SetBranchAddress("bbtt_Jet_b2_pt_NOSYS", &boosted_bbtt_Jet_b2_pt_NOSYS, &b_boosted_bbtt_Jet_b2_pt_NOSYS);
-  
-  boosted_inTree->SetBranchAddress("bbtt_H_bb_m", &boosted_bbtt_H_bb_m, &b_boosted_bbtt_H_bb_m);
-  boosted_inTree->SetBranchAddress("generatorWeight_NOSYS", &boosted_generatorWeight_NOSYS, &b_boosted_generatorWeight_NOSYS);
-  //boosted_inTree->SetBranchAddress("tau_NOSYS_passesOR", &boosted_tau_NOSYS_passesOR, &b_boosted_tau_NOSYS_passesOR);
-  boosted_inTree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_passesOR", &boosted_recojet_antikt4PFlow_NOSYS_passesOR, &b_boosted_recojet_antikt4PFlow_NOSYS_passesOR);
+  inTree->SetBranchAddress("truth_children_fromH1_pdgId", &truth_children_fromH1_pdgId, &b_truth_children_fromH1_pdgId);
+  inTree->SetBranchAddress("truth_children_fromH1_pt", &truth_children_fromH1_pt, &b_truth_children_fromH1_pt);
+  inTree->SetBranchAddress("truth_children_fromH1_eta", &truth_children_fromH1_eta, &b_truth_children_fromH1_eta);
+  inTree->SetBranchAddress("truth_children_fromH1_phi", &truth_children_fromH1_phi, &b_truth_children_fromH1_phi);
+  inTree->SetBranchAddress("truth_children_fromH1_m", &truth_children_fromH1_m, &b_truth_children_fromH1_m);
 
-  
-  resolved_inTree->SetBranchAddress("bbtt_H_vis_tautau_pt_NOSYS", &resolved_bbtt_H_vis_tautau_pt_NOSYS, &b_resolved_bbtt_H_vis_tautau_pt_NOSYS);
-  resolved_inTree->SetBranchAddress("bbtt_H_vis_tautau_m", &resolved_bbtt_H_vis_tautau_m, &b_resolved_bbtt_H_vis_tautau_m);
-  resolved_inTree->SetBranchAddress("bbtt_H_bb_pt_NOSYS", &resolved_bbtt_H_bb_pt_NOSYS, &b_resolved_bbtt_H_bb_pt_NOSYS);
+  inTree->SetBranchAddress("truth_children_fromH2_pdgId", &truth_children_fromH2_pdgId, &b_truth_children_fromH2_pdgId);
+  inTree->SetBranchAddress("truth_children_fromH2_pt", &truth_children_fromH2_pt, &b_truth_children_fromH2_pt);
+  inTree->SetBranchAddress("truth_children_fromH2_eta", &truth_children_fromH2_eta, &b_truth_children_fromH2_eta);
+  inTree->SetBranchAddress("truth_children_fromH2_phi", &truth_children_fromH2_phi, &b_truth_children_fromH2_phi);
+  inTree->SetBranchAddress("truth_children_fromH2_m", &truth_children_fromH2_m, &b_truth_children_fromH2_m);
 
-  resolved_inTree->SetBranchAddress("bbtt_Jet_b1_pt_NOSYS", &resolved_bbtt_Jet_b1_pt_NOSYS, &b_resolved_bbtt_Jet_b1_pt_NOSYS);
-  resolved_inTree->SetBranchAddress("bbtt_Jet_b2_pt_NOSYS", &resolved_bbtt_Jet_b2_pt_NOSYS, &b_resolved_bbtt_Jet_b2_pt_NOSYS);
+  /*
+  inTree->SetBranchAddress("truth_b1_pt", &truth_b1_pt, b_truth_b1_pt);
+  inTree->SetBranchAddress("truth_b1_eta", &truth_b1_eta, b_truth_b1_eta);
+  inTree->SetBranchAddress("truth_b1_phi", &truth_b1_phi, b_truth_b1_phi);
+  inTree->SetBranchAddress("truth_b1_m", &truth_b1_m, b_truth_b1_m);
+
+  inTree->SetBranchAddress("truth_b2_pt", &truth_b2_pt, b_truth_b2_pt);
+  inTree->SetBranchAddress("truth_b2_eta", &truth_b2_eta, b_truth_b2_eta);
+  inTree->SetBranchAddress("truth_b2_phi", &truth_b2_phi, b_truth_b2_phi);
+  inTree->SetBranchAddress("truth_b2_m", &truth_b2_m, b_truth_b2_m);
+
+  inTree->SetBranchAddress("truth_tau1_pt", &truth_tau1_pt, b_truth_tau1_pt);
+  inTree->SetBranchAddress("truth_tau1_eta", &truth_tau1_eta, b_truth_tau1_eta);
+  inTree->SetBranchAddress("truth_tau1_phi", &truth_tau1_phi, b_truth_tau1_phi);
+  inTree->SetBranchAddress("truth_tau1_m", &truth_tau1_m, b_truth_tau1_m);
   
-  resolved_inTree->SetBranchAddress("bbtt_H_bb_m", &resolved_bbtt_H_bb_m, &b_resolved_bbtt_H_bb_m);
-  resolved_inTree->SetBranchAddress("generatorWeight_NOSYS", &resolved_generatorWeight_NOSYS, &b_resolved_generatorWeight_NOSYS);
-  //resolved_inTree->SetBranchAddress("tau_NOSYS_passesOR", &resolved_tau_NOSYS_passesOR, &b_resolved_tau_NOSYS_passesOR);
-  resolved_inTree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_passesOR", &resolved_recojet_antikt4PFlow_NOSYS_passesOR, &b_resolved_recojet_antikt4PFlow_NOSYS_passesOR);
+  inTree->SetBranchAddress("truth_tau2_pt", &truth_tau2_pt, b_truth_tau2_pt);
+  inTree->SetBranchAddress("truth_tau2_eta", &truth_tau2_eta, b_truth_tau2_eta);
+  inTree->SetBranchAddress("truth_tau2_phi", &truth_tau2_phi, b_truth_tau2_phi);
+  inTree->SetBranchAddress("truth_tau2_m", &truth_tau2_m, b_truth_tau2_m);
+  */
+  
+  inTree->SetBranchAddress("bbtt_H_vis_tautau_pt_NOSYS", &bbtt_H_vis_tautau_pt_NOSYS, &b_bbtt_H_vis_tautau_pt_NOSYS);
+  inTree->SetBranchAddress("bbtt_H_vis_tautau_m", &bbtt_H_vis_tautau_m, &b_bbtt_H_vis_tautau_m);
+  inTree->SetBranchAddress("bbtt_H_bb_pt_NOSYS", &bbtt_H_bb_pt_NOSYS, &b_bbtt_H_bb_pt_NOSYS);
+  inTree->SetBranchAddress("bbtt_Jet_b1_pt_NOSYS", &bbtt_Jet_b1_pt_NOSYS, &b_bbtt_Jet_b1_pt_NOSYS);
+  inTree->SetBranchAddress("bbtt_Jet_b2_pt_NOSYS", &bbtt_Jet_b2_pt_NOSYS, &b_bbtt_Jet_b2_pt_NOSYS);
+  inTree->SetBranchAddress("bbtt_H_bb_m", &bbtt_H_bb_m, &b_bbtt_H_bb_m);
+  inTree->SetBranchAddress("generatorWeight_NOSYS", &generatorWeight_NOSYS, &b_generatorWeight_NOSYS);
+  //inTree->SetBranchAddress("tau_NOSYS_passesOR", &tau_NOSYS_passesOR, &b_tau_NOSYS_passesOR);
+  inTree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_passesOR", &recojet_antikt4PFlow_NOSYS_passesOR, &b_recojet_antikt4PFlow_NOSYS_passesOR);
   
 }
 
@@ -290,89 +399,18 @@ void set_branch_address(){
 void print_list_of_branches(TTree* tree){
 
   cout << "The number of entries is: " << tree->GetEntries() << endl;
-  cout << "The list of branches is shown below:"  << endl;
 
-  for(int ii = 0; ii < tree->GetListOfBranches()->GetEntries(); ii++){
-    cout << ii << "\t" << tree->GetListOfBranches()->At(ii)->GetName() << endl;  
-  }
+  // Get the list of branches
+  TObjArray *branchList = tree->GetListOfBranches();
   
-}
+  // Loop over branches and print their names and types
+  for (int ii = 0; ii < branchList->GetEntries(); ++ii) {
+    TBranch *branch = dynamic_cast<TBranch*>(branchList->At(ii));
+    if (!branch) continue;
+    
+    const char* branchName = branch->GetName();
+    const char* typeName = branch->GetClassName(); // Get the class name of the branch type
 
-// This function prints the branches of a tree that contain an specific word, and it would be useful to find the branches
-// that contain some info related with some objects
-void find_branches_names(TString word){
-
-  cout << "The list of branches that contain the word " << word << " for the boosted configuration are:"  << endl;
-  for(int ii = 0; ii < boosted_inTree->GetListOfBranches()->GetEntries(); ii++){
-    TString name_branch = boosted_inTree->GetListOfBranches()->At(ii)->GetName();
-    if(name_branch.Contains(word)==true){
-      cout << ii << "\t" << boosted_inTree->GetListOfBranches()->At(ii)->GetName() << endl;  
-    }
+    std::cout << "Branch: " << branchName << "\t Type: " << (typeName ? typeName : "Unknown") << std::endl;
   }
-  
-  cout << "The list of branches that contain the word " << word << " for the resolved configuration are:"  << endl;
-  for(int ii = 0; ii < resolved_inTree->GetListOfBranches()->GetEntries(); ii++){
-    TString name_branch = resolved_inTree->GetListOfBranches()->At(ii)->GetName();
-    if(name_branch.Contains(word)==true){
-      cout << ii << "\t" << resolved_inTree->GetListOfBranches()->At(ii)->GetName() << endl;  
-    }
-  }
-}
-
-// This function prints some values for some needed info, i.e, number of negative values, 0, etc for each tree to compare if those
-// trees for boosted and resolved configs keep the same number of entries for some branches
-void print_some_values(){
-
-  Int_t b_entries = boosted_inTree->GetEntries();
-  Int_t r_entries = resolved_inTree->GetEntries();
-  int b_nbytes = 0;
-  int r_nbytes = 0;
-  int boosted_mbb_neg_values = 0;
-  int resolved_mbb_neg_values = 0;
-  int boosted_bbpT_neg_values = 0;
-  int resolved_bbpT_neg_values = 0;
-  int boosted_mtautau_zero_values = 0;
-  int resolved_mtautau_zero_values = 0;
-  int boosted_mtautau_neg_values = 0;
-  int resolved_mtautau_neg_values = 0;
-
-  
-  for(int ii=0; ii < b_entries; ii++){
-    b_nbytes = boosted_inTree->GetEntry(ii);
-    if(boosted_bbtt_H_bb_m < 0){
-      boosted_mbb_neg_values += 1;
-    }
-    if(boosted_bbtt_H_bb_pt_NOSYS < 0){
-      boosted_bbpT_neg_values += 1;
-    }
-    if(boosted_bbtt_H_vis_tautau_m == 0){
-      boosted_mtautau_zero_values += 1;
-    }
-    if(boosted_bbtt_H_vis_tautau_m < 0){
-      boosted_mtautau_neg_values += 1;
-    }
-  }
-  for(int ii=0; ii < r_entries; ii++){
-    r_nbytes = resolved_inTree->GetEntry(ii);
-    if(resolved_bbtt_H_bb_m < 0){
-      resolved_mbb_neg_values += 1;
-    }
-    if(resolved_bbtt_H_bb_pt_NOSYS < 0){
-      resolved_bbpT_neg_values += 1;
-    }
-    if(resolved_bbtt_H_vis_tautau_m == 0){
-      resolved_mtautau_zero_values += 1;
-    }
-    if(resolved_bbtt_H_vis_tautau_m < 0){
-      resolved_mtautau_neg_values += 1;
-    }
-  }
-  cout << "The number of entries for mbb that are negative for boosted and resolved cases are respectively:"  << endl;
-  cout << boosted_mbb_neg_values << "\t" << resolved_mbb_neg_values << endl;
-  cout << "The number of entries for bbpT that are negative for boosted and resolved cases are respectively:"  << endl;
-  cout << boosted_bbpT_neg_values << "\t" << resolved_bbpT_neg_values << endl;
-  cout << "The number of entries for m_tautau that are equal to zero for boosted and resolved cases are respectively:"  << endl;
-  cout << boosted_mtautau_zero_values << "\t" << resolved_mtautau_zero_values << endl;
-  cout << "The number of entries for m_tautau that are negative for boosted and resolved cases are respectively:"  << endl;
-  cout << boosted_mtautau_neg_values << "\t" << resolved_mtautau_neg_values << endl;
 }
