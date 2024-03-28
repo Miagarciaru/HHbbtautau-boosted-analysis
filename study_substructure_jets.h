@@ -1,4 +1,6 @@
 #include <TMath.h>
+#include <TLorentzVector.h>
+
 // *************************************
 // Reading the input files
 // *************************************
@@ -23,7 +25,7 @@ TTree* inTree = (TTree*) inFile->Get("AnalysisMiniTree");
 
 // Declaration of leaf types for truth_children branches for boosted tree variables
 
-// truth childre from Higgs
+// truth children from Higgs
 vector<int> *truth_children_fromH1_pdgId;
 vector<int> *truth_children_fromH2_pdgId;
 vector<float> *truth_children_fromH1_pt;
@@ -56,6 +58,12 @@ Float_t truth_tau2_eta;
 Float_t truth_tau2_phi;
 Float_t truth_tau2_m;
 
+// Declaration of leafs types for reconstructed_ak10UFO jets (fat-jets) branches for boosted tree variables
+vector<float> *recojet_antikt10UFO_NOSYS_pt;
+vector<float> *recojet_antikt10UFO_eta;
+vector<float> *recojet_antikt10UFO_phi;
+vector<float> *recojet_antikt10UFO_m;
+
 
 // Declaration of leaf types for bbtt_H boosted tree variables
 Float_t bbtt_H_vis_tautau_pt_NOSYS;
@@ -67,6 +75,19 @@ Float_t bbtt_Jet_b2_pt_NOSYS;
 Float_t generatorWeight_NOSYS;
 //vector<char> *tau_NOSYS_passesOR;
 vector<char> *recojet_antikt4PFlow_NOSYS_passesOR;
+
+// Declaration idx and dRmin values
+
+Int_t idx_b1truth_recoak10_dRmin;
+Int_t idx_b2truth_recoak10_dRmin;
+Int_t idx_tau1truth_recoak10_dRmin;
+Int_t idx_tau2truth_recoak10_dRmin;
+
+Float_t dR_min_b1truth_recoak10_fatjet = 1;
+Float_t dR_min_b2truth_recoak10_fatjet = 1;
+Float_t dR_min_tau1truth_recoak10_fatjet = 1;
+Float_t dR_min_tau2truth_recoak10_fatjet = 1;
+
 
 // *************************************
 // Declaration of branches
@@ -106,6 +127,11 @@ TBranch *b_truth_tau2_eta;
 TBranch *b_truth_tau2_phi;
 TBranch *b_truth_tau2_m;
 
+// Declaration branches for reconstructed_ak10UFO jets (fat-jets) branches for boosted tree variables
+TBranch *b_recojet_antikt10UFO_NOSYS_pt;
+TBranch *b_recojet_antikt10UFO_eta;
+TBranch *b_recojet_antikt10UFO_phi;
+TBranch *b_recojet_antikt10UFO_m;
 
 // Declaration of branches for boosted tree
 TBranch *b_bbtt_H_vis_tautau_pt_NOSYS;
@@ -117,6 +143,18 @@ TBranch *b_bbtt_Jet_b2_pt_NOSYS;
 TBranch *b_generatorWeight_NOSYS;
 //TBranch *b_tau_NOSYS_passesOR;
 TBranch *b_recojet_antikt4PFlow_NOSYS_passesOR;
+
+// Declaration idx and dRmin values
+
+TBranch *b_idx_b1truth_recoak10_dRmin;
+TBranch *b_idx_b2truth_recoak10_dRmin;
+TBranch *b_idx_tau1truth_recoak10_dRmin;
+TBranch *b_idx_tau2truth_recoak10_dRmin;
+
+TBranch *b_dR_min_b1truth_recoak10_fatjet;
+TBranch *b_dR_min_b2truth_recoak10_fatjet;
+TBranch *b_dR_min_tau1truth_recoak10_fatjet;
+TBranch *b_dR_min_tau2truth_recoak10_fatjet;
 
 
 // *************************************
@@ -136,11 +174,130 @@ TH1F *hist_truth_b1_plus_b2_m = new TH1F("hist_truth_b1_plus_b2_m", "Mass of the
 
 //void plot_distributions(TString name_plot);
 
+void truth_matching_reco_objects_asserts(int ii, int &count_b_tau_matched);
+void compute_dR_min_index_fat_jets();
+void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m);
+void truth_objects_asserts(int ii);
 void random_function(int &sum_type_per_event);
 void define_truth_tau_and_b_jets();
 void fill_histograms();
 void set_branch_address();
 void print_list_of_branches(TTree* tree);
+
+// *************************************
+// Definition of the functions declared above
+// *************************************
+
+void truth_matching_reco_objects_asserts(int ii, int &count_b_tau_matched){
+
+  if ( (idx_b1truth_recoak10_dRmin != -1) && (idx_b2truth_recoak10_dRmin != -1) && (idx_tau1truth_recoak10_dRmin != -1) && (idx_tau2truth_recoak10_dRmin != -1) ){
+    
+    if( (idx_b1truth_recoak10_dRmin == idx_tau1truth_recoak10_dRmin) || (idx_b1truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin) || (idx_b2truth_recoak10_dRmin == idx_tau1truth_recoak10_dRmin) || (idx_b2truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin) ){
+      cout << "A b jet and a tau jet were matched to the same reconstructed jet" << endl;
+      cout << ii << "\t idx for b1, b2, tau1 and tau2: " << "\t" << idx_b1truth_recoak10_dRmin << "\t" << idx_b2truth_recoak10_dRmin << "\t" << idx_tau1truth_recoak10_dRmin << "\t" << idx_tau2truth_recoak10_dRmin << endl;
+      cout << ii << "\t dRmin for b1, b2, tau1 and tau2: " << "\t" << dR_min_b1truth_recoak10_fatjet << "\t" << dR_min_b2truth_recoak10_fatjet << "\t" << dR_min_tau1truth_recoak10_fatjet << "\t" << dR_min_tau2truth_recoak10_fatjet << endl;
+
+      count_b_tau_matched += 1;
+    }
+  }
+}
+
+
+// This function give us the min deltaR between the truth_objects and the objects in the recojets_ak10UFO fat-jets
+void compute_dR_min_index_fat_jets(){
+  
+  if(recojet_antikt10UFO_NOSYS_pt->size() > 0){
+    compute_dR_min(idx_b1truth_recoak10_dRmin, dR_min_b1truth_recoak10_fatjet, truth_b1_pt, truth_b1_eta, truth_b1_phi, truth_b1_m);
+    compute_dR_min(idx_b2truth_recoak10_dRmin, dR_min_b2truth_recoak10_fatjet, truth_b2_pt, truth_b2_eta, truth_b2_phi, truth_b2_m);
+    compute_dR_min(idx_tau1truth_recoak10_dRmin, dR_min_tau1truth_recoak10_fatjet, truth_tau1_pt, truth_tau1_eta, truth_tau1_phi, truth_tau1_m);
+    compute_dR_min(idx_tau2truth_recoak10_dRmin, dR_min_tau2truth_recoak10_fatjet, truth_tau2_pt, truth_tau2_eta, truth_tau2_phi, truth_tau2_m);
+  }
+  
+}
+
+void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m){
+
+  idx = -1;
+  dR_min = 1;
+  
+  for(int ii = 0; ii < recojet_antikt10UFO_NOSYS_pt->size(); ii++){
+    
+    TLorentzVector truth_jet  = TLorentzVector();
+    TLorentzVector reco_jet  = TLorentzVector();
+    
+    float reco_pt = recojet_antikt10UFO_NOSYS_pt->at(ii);
+    float reco_eta = recojet_antikt10UFO_eta->at(ii);
+    float reco_phi = recojet_antikt10UFO_phi->at(ii);
+    float reco_m = recojet_antikt10UFO_m->at(ii);
+    
+    truth_jet.SetPtEtaPhiM(truth_pt/1000., truth_eta, truth_phi, truth_m/1000.);
+    reco_jet.SetPtEtaPhiM(reco_pt/1000., reco_eta, reco_phi, reco_m/1000.);
+    
+    float deltaR_truth_recojet = truth_jet.DeltaR(reco_jet);
+      
+    if( (deltaR_truth_recojet < dR_min) && (deltaR_truth_recojet < 1) ){
+      dR_min = deltaR_truth_recojet;
+      idx = ii;
+    }
+  }
+}
+
+
+void truth_objects_asserts(int ii){
+
+  // Print those vectors from the truth_childrenH1/H2_pdgID that has a different size of two elements
+  if((truth_children_fromH1_pdgId->size() != 2) || (truth_children_fromH2_pdgId->size() != 2)){
+    if(truth_children_fromH1_pdgId->size() != 2){
+      cout << ii << "\t H1 children: "  << truth_children_fromH1_pdgId->size() << endl;
+    }
+    if(truth_children_fromH2_pdgId->size() != 2){
+      cout << ii << "\t H2 children: "  << truth_children_fromH2_pdgId->size() << endl;
+    }
+  }
+
+  // Verify if the two objects in the truth_children_H1/H2 are a particle and its antiparticle (sum of the types should be equal to zero)
+  int sum_objects_type_H1 = 0;
+  if(truth_children_fromH1_pdgId->size() == 2){
+    sum_objects_type_H1 = truth_children_fromH1_pdgId->at(0) + truth_children_fromH1_pdgId->at(1);
+    if(sum_objects_type_H1 != 0){
+      cout << ii << "\t H1 sum type \t" << truth_children_fromH1_pdgId->at(0) << "\t" << truth_children_fromH1_pdgId->at(1) << endl;
+    }
+  }
+
+  int sum_objects_type_H2 = 0;
+  if(truth_children_fromH2_pdgId->size() == 2){
+    sum_objects_type_H2 = truth_children_fromH2_pdgId->at(0) + truth_children_fromH2_pdgId->at(1);
+    if(sum_objects_type_H2 != 0){
+      cout << ii << "\t H2 sum type \t"<< truth_children_fromH2_pdgId->at(0) << "\t" << truth_children_fromH2_pdgId->at(1) << endl;
+    }
+  }
+  
+  // Verify that the abs sum of the four objects coming from the truth_children H1/H2 is 40 for possible combinations (b=5, ~b=-5, tau=15, ~tau=-15), so it is useful to detrmine that we really have two bs and two taus as the decays product
+  int sum_abs_objects_type = 0;
+  if((truth_children_fromH1_pdgId->size() == 2) && (truth_children_fromH2_pdgId->size() == 2)){
+    sum_abs_objects_type = TMath::Abs(truth_children_fromH1_pdgId->at(0)) + TMath::Abs(truth_children_fromH1_pdgId->at(1)) + TMath::Abs(truth_children_fromH2_pdgId->at(0)) + TMath::Abs(truth_children_fromH2_pdgId->at(1));
+    if(sum_abs_objects_type != 40){
+      cout << ii << "\t H1 plus H2 abs sum type \t" << truth_children_fromH1_pdgId->at(0) << "\t" << truth_children_fromH1_pdgId->at(1) << "\t" << truth_children_fromH2_pdgId->at(0) << "\t" << truth_children_fromH2_pdgId->at(1) << endl;
+    }
+  } 
+
+  // Print the abs sum of the types for the four objects, as well as their pTs and masses
+  int abs_sum_type_children = 0;
+
+  if((truth_children_fromH1_pdgId->size() == 2) && (truth_children_fromH2_pdgId->size() == 2)){
+    random_function(abs_sum_type_children);
+  }
+  if((truth_children_fromH1_pdgId->size() != 2) || (truth_children_fromH2_pdgId->size() != 2)){
+    abs_sum_type_children = -99;
+  }
+  if(ii%5000 == 0){
+    cout << ii << "\t  Abs sum of type: " << abs_sum_type_children << "\t" << truth_b1_pt << "\t" << truth_b2_pt << "\t" << truth_tau1_pt << "\t" << truth_tau2_pt << "\t" << truth_b1_m << "\t" << truth_b2_m << "\t" << truth_tau1_m << "\t" << truth_tau2_m << endl;
+  }
+  if(abs_sum_type_children < 0){
+    cout << ii << "\t  Abs sum of type: " << abs_sum_type_children << "\t" << truth_b1_pt << "\t" << truth_b2_pt << "\t" << truth_tau1_pt << "\t" << truth_tau2_pt << "\t" << truth_b1_m << "\t" << truth_b2_m << "\t" << truth_tau1_m << "\t" << truth_tau2_m << endl;
+  }
+
+}
 
 
 void random_function(int &sum_type_per_event){
@@ -151,15 +308,6 @@ void random_function(int &sum_type_per_event){
 
 void define_truth_tau_and_b_jets(){
 
-  int nentries = inTree->GetEntries();
-  int nbytes = 0;
-
-  /*
-  // Bool to use only those events that have two elements for the truth children decays of the Higgs boson
-  bool cond_1 = (truth_children_fromH1_pdgId->size() == 2) && (truth_children_fromH2_pdgId->size() == 2);
-  // Bool to see if the H1 and H2 truth decays are combination of bbtautau or tautaubb, only the Higgs can decay in a pair of bb or tautau
-  bool cond_2 = true;
-  */
   if((truth_children_fromH1_pdgId->size() == 2) && (truth_children_fromH2_pdgId->size() == 2)){
 
     int sum_type_H1 = TMath::Abs(truth_children_fromH1_pdgId->at(0)) + TMath::Abs(truth_children_fromH1_pdgId->at(1));
@@ -381,6 +529,12 @@ void set_branch_address(){
   inTree->SetBranchAddress("truth_tau2_phi", &truth_tau2_phi, b_truth_tau2_phi);
   inTree->SetBranchAddress("truth_tau2_m", &truth_tau2_m, b_truth_tau2_m);
   */
+
+  inTree->SetBranchAddress("recojet_antikt10UFO_NOSYS_pt", &recojet_antikt10UFO_NOSYS_pt, &b_recojet_antikt10UFO_NOSYS_pt);
+  inTree->SetBranchAddress("recojet_antikt10UFO_eta", &recojet_antikt10UFO_eta, &b_recojet_antikt10UFO_eta);
+  inTree->SetBranchAddress("recojet_antikt10UFO_phi", &recojet_antikt10UFO_phi, &b_recojet_antikt10UFO_phi);
+  inTree->SetBranchAddress("recojet_antikt10UFO_m", &recojet_antikt10UFO_m, &b_recojet_antikt10UFO_m);
+  
   
   inTree->SetBranchAddress("bbtt_H_vis_tautau_pt_NOSYS", &bbtt_H_vis_tautau_pt_NOSYS, &b_bbtt_H_vis_tautau_pt_NOSYS);
   inTree->SetBranchAddress("bbtt_H_vis_tautau_m", &bbtt_H_vis_tautau_m, &b_bbtt_H_vis_tautau_m);
