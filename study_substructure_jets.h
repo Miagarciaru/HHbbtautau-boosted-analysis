@@ -88,6 +88,11 @@ Float_t dR_min_b2truth_recoak10_fatjet = 1;
 Float_t dR_min_tau1truth_recoak10_fatjet = 1;
 Float_t dR_min_tau2truth_recoak10_fatjet = 1;
 
+int truth_boosted_bb;
+int truth_boosted_tautau;
+int truth_resolved_bb;
+int truth_resolved_tautau;
+int class_event;
 
 // *************************************
 // Declaration of branches
@@ -156,6 +161,12 @@ TBranch *b_dR_min_b2truth_recoak10_fatjet;
 TBranch *b_dR_min_tau1truth_recoak10_fatjet;
 TBranch *b_dR_min_tau2truth_recoak10_fatjet;
 
+TBranch *b_truth_boosted_bb;
+TBranch *b_truth_boosted_tautau;
+TBranch *b_truth_resolved_bb;
+TBranch *b_truth_resolved_tautau;
+TBranch *b_class_event;
+
 
 // *************************************
 // Declaration of histograms
@@ -174,9 +185,12 @@ TH1F *hist_truth_b1_plus_b2_m = new TH1F("hist_truth_b1_plus_b2_m", "Mass of the
 
 //void plot_distributions(TString name_plot);
 
+void define_classes();
+void truth_and_fake_boosted_and_resolved_jets();
 void truth_matching_reco_objects_asserts(int ii, int &count_b_tau_matched);
 void compute_dR_min_index_fat_jets();
 void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m);
+void deltaR(float &dR, float jet1_pt, float jet1_eta, float jet1_phi, float jet1_m, float jet2_pt, float jet2_eta, float jet2_phi, float jet2_m);
 void truth_objects_asserts(int ii);
 void random_function(int &sum_type_per_event);
 void define_truth_tau_and_b_jets();
@@ -188,8 +202,189 @@ void print_list_of_branches(TTree* tree);
 // Definition of the functions declared above
 // *************************************
 
-void truth_matching_reco_objects_asserts(int ii, int &count_b_tau_matched){
+void define_classes(){
 
+  // class_event
+  /*
+  // Condition 1: To classify the events in the 4 classes, all the truth objects must have been matched to one recojet, i.e, all the truth
+  // idx must be different to -1. If not, the class_event will be set to -1 (no belong to any of the 4 casses)
+
+  // Condition 2: Those events where at least one b and one tau jets were matched to the same fat jet will be discarded because we
+  // already know that this wouldn't be possible, so the class_event will be set to -1 (no belong to any of the 4 casses)
+  
+  // Condition 3: For boosted events, we need to ensure at leats two conditions: 1- The two truth objects (bb or tautau) must be matched to
+  // the same fat jet and 2- the deltaR between these two truth objects must be less than 1. Thus, when we are considering the bb or tautau
+  // truth jets, these criteria is going to tell us when the two jets are boosted.
+
+  // Condition 4: For resolved events, we need to ensure that 1- the two truth objects (bb or tautau) have been matched to a different fat
+  // jet and 2- the deltaR between these two truth objects are higher than 1.
+
+  // Condition 4: Definition of the 4 classes:
+  For R_bb R_tautau we setup 0
+  For R_bb B_tautau we setup 1
+  For B_bb R_tautau we setup 2
+  For B_bb B_tautau we setup 3
+
+  // Condition 5: Definition of the fake classes
+  For fake R_bb R_tautau: Both of the two pairs (bb or tautau) must have a deltaR < 1, while being matched two different fat jets, i.e, 
+  the two truth taus were matched to different fatjets, but they have a deltaR(tautau) < 1. The same for the two bb.
+  For fake R_bb B_tautau: The R_bb must be correct, but the B_tautau don't. So here, the two taus must have been matched to the same fatjet
+  while having a deltaR(tautau) > 1.
+  For fake B_bb R_tautau: The R_tautau must be correct, but the B_bb don't. So here, the two bb must have been matched to the same fatjet
+  while having a deltaR(bb) > 1.
+  For fake B_bb B_tautau: Both of the two pairs (bb or tautau) must have a deltaR > 1, while being matched two the same fatjets, i.e, 
+  the two truth taus were matched to the same fatjet, but they have a deltaR(tautau) > 1. The same for the two bb.
+  For fakeR_bb R_tautau we setup 4
+  For fakeR_bb B_tautau we setup 5
+  For fakeB_bb R_tautau we setup 6
+  For fakeB_bb B_tautau we setup 7
+  */
+
+  class_event = -1;
+
+  truth_and_fake_boosted_and_resolved_jets();
+  
+  if( (idx_b1truth_recoak10_dRmin != -1) && (idx_b2truth_recoak10_dRmin != -1) && (idx_tau1truth_recoak10_dRmin != -1) && (idx_tau2truth_recoak10_dRmin != -1) ){
+
+    bool are_boosted_bb_matched = false;
+    bool are_boosted_tautau_matched = false;
+
+    if( idx_b1truth_recoak10_dRmin == idx_b2truth_recoak10_dRmin ){
+      are_boosted_bb_matched = true;
+    }
+    if( idx_tau1truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin ){
+      are_boosted_tautau_matched = true;
+    }
+
+    // ************************************
+    // For the boosted and resolved jets that are correctly identified
+ 
+    // For the truth R_bb R_tautau class
+    if( (are_boosted_bb_matched==false) && (are_boosted_tautau_matched==false) && (truth_resolved_bb == 1) && (truth_resolved_tautau == 1) ){
+      class_event = 0;
+    }
+
+    // For the truth R_bb B_tautau class
+    if( (are_boosted_bb_matched==false) && (are_boosted_tautau_matched==true) && (truth_resolved_bb == 1) && (truth_boosted_tautau == 1) ){
+      class_event = 1;
+    }
+
+    // For the truth B_bb R_tautau class
+    if( (are_boosted_bb_matched==true) && (are_boosted_tautau_matched==false) && (truth_boosted_bb == 1) && (truth_resolved_tautau == 1) ){
+      class_event = 2;
+    }
+
+    // For the truth B_bb B_tautau class
+    if( (are_boosted_bb_matched==true) && (are_boosted_tautau_matched==true) && (truth_boosted_bb == 1) && (truth_boosted_tautau == 1) ){
+      class_event = 3;
+    }
+
+    // ************************************
+    // For the boosted and resolved jets that are wronly identified
+    
+    // For the fake R_bb R_tautau class
+    if( (are_boosted_bb_matched==false) && (are_boosted_tautau_matched==false) && (truth_resolved_bb == 0) && (truth_resolved_tautau == 0) ){
+      class_event = 4;
+    }
+
+    // For the fake R_bb B_tautau class: the R_bb must be correct, but the B_tautau don't
+    if( (are_boosted_bb_matched==false) && (are_boosted_tautau_matched==true) && (truth_resolved_bb == 1) && (truth_boosted_tautau == 0) ){
+      class_event = 5;
+    }
+
+    // For the fake B_bb R_tautau class: the B_bb must be wrong and the R_tautau must be correct
+    if( (are_boosted_bb_matched==true) && (are_boosted_tautau_matched==false) && (truth_boosted_bb == 0) && (truth_resolved_tautau == 1) ){
+      class_event = 6;
+    }
+
+    // For the fake B_bb B_tautau class: Both B_bb and B_tautau must be wrong
+    if( (are_boosted_bb_matched==true) && (are_boosted_tautau_matched==true) && (truth_boosted_bb == 0) && (truth_boosted_tautau == 0) ){
+      class_event = 7;
+    }
+  }
+}
+
+
+void truth_and_fake_boosted_and_resolved_jets(){
+
+  /*
+    For a fake boosted jet, we need to ensure that the all the truth objects were matched to one fat jet, 2- the two objects were matched 
+    to the same fatjet and have a deltaR > 1 
+    
+    For a fake resolved jet, we need to ensure that the all the truth objects were matched to one fat jet, 2- the two objects were matched 
+    to different fatjets and have a deltaR < 1 
+    
+    The value -1 is for those events where any of the truth objects was not able to be matched. The 0 value is for a fake boosted or 
+    resolved match, and 1 is for a correct boosted or truth match.
+  */
+  
+  truth_boosted_bb = -1;
+  truth_boosted_tautau = -1;
+  truth_resolved_bb = -1;
+  truth_resolved_tautau = -1;
+
+  if( (idx_b1truth_recoak10_dRmin != -1) && (idx_b2truth_recoak10_dRmin != -1) && (idx_tau1truth_recoak10_dRmin != -1) && (idx_tau2truth_recoak10_dRmin != -1) ){
+    
+    if( (idx_b1truth_recoak10_dRmin == idx_tau1truth_recoak10_dRmin) || (idx_b1truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin) || (idx_b2truth_recoak10_dRmin == idx_tau1truth_recoak10_dRmin) || (idx_b2truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin) ){
+      return;
+    }
+
+    // After verifying that all the truth objects were matched, we set 0 as the default value for the classes, because we now know that
+    // these events will be in one of the 8 possible classes (4 truth classes or 4 fake classes). So these values should be -1, which is
+    // the default value to say these events are not classified into a class.
+    
+    truth_boosted_bb = 0;
+    truth_boosted_tautau = 0;
+    truth_resolved_bb = 0;
+    truth_resolved_tautau = 0;
+  
+    // Checking if the events has boosted or resolved jets for the two b
+    float dR_bb = 0;
+    deltaR(dR_bb, truth_b1_pt, truth_b1_eta, truth_b1_phi, truth_b1_m, truth_b2_pt, truth_b2_eta, truth_b2_phi, truth_b2_m);
+    // Checking if the bb are boosted 
+    if( idx_b1truth_recoak10_dRmin == idx_b2truth_recoak10_dRmin ){
+      if(dR_bb < 1){
+	truth_boosted_bb = 1;
+      }
+      if(dR_bb > 1){
+	truth_boosted_bb = 0;
+      }
+    }
+    // Checking if the bb are resolved
+    if( idx_b1truth_recoak10_dRmin != idx_b2truth_recoak10_dRmin ){
+      if(dR_bb > 1){
+	truth_resolved_bb = 1;
+      }
+      if(dR_bb < 1){
+	truth_resolved_bb = 0;
+      }
+    }
+    // Checking if the events has boosted or resolved jets for the two taus
+    float dR_tautau = 0;
+    deltaR(dR_tautau, truth_tau1_pt, truth_tau1_eta, truth_tau1_phi, truth_tau1_m, truth_tau2_pt, truth_tau2_eta, truth_tau2_phi, truth_tau2_m);
+    // Checking if the tautau are boosted 
+    if( idx_tau1truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin ){
+      if(dR_tautau < 1){
+	truth_boosted_tautau = 1;
+      }
+      if(dR_tautau > 1){
+	truth_boosted_tautau = 0;
+      }
+    }
+    // Checking if the tautau are resolved
+    if( idx_tau1truth_recoak10_dRmin != idx_tau2truth_recoak10_dRmin ){
+      if(dR_tautau > 1){
+	truth_resolved_tautau = 1;
+      }
+      if(dR_tautau < 1){
+	truth_resolved_tautau = 0;
+      }
+    }
+  }
+}
+
+void truth_matching_reco_objects_asserts(int ii, int &count_b_tau_matched){
+  /*
   if ( (idx_b1truth_recoak10_dRmin != -1) && (idx_b2truth_recoak10_dRmin != -1) && (idx_tau1truth_recoak10_dRmin != -1) && (idx_tau2truth_recoak10_dRmin != -1) ){
     
     if( (idx_b1truth_recoak10_dRmin == idx_tau1truth_recoak10_dRmin) || (idx_b1truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin) || (idx_b2truth_recoak10_dRmin == idx_tau1truth_recoak10_dRmin) || (idx_b2truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin) ){
@@ -199,6 +394,25 @@ void truth_matching_reco_objects_asserts(int ii, int &count_b_tau_matched){
 
       count_b_tau_matched += 1;
     }
+  }
+  */
+
+  if ( (idx_b1truth_recoak10_dRmin != -1) && (idx_b2truth_recoak10_dRmin != -1) && (idx_tau1truth_recoak10_dRmin != -1) && (idx_tau2truth_recoak10_dRmin != -1) && (count_b_tau_matched < 15) ){
+
+    if( (idx_b1truth_recoak10_dRmin == idx_tau1truth_recoak10_dRmin) || (idx_b1truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin) || (idx_b2truth_recoak10_dRmin == idx_tau1truth_recoak10_dRmin) || (idx_b2truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin) ){
+      count_b_tau_matched += 1;
+      cout << "A b jet and a tau jet were matched to the same fat jet j(b, tau): " << endl;
+      cout << ii << "\t idx for b1, b2, tau1 and tau2: " << "\t" << idx_b1truth_recoak10_dRmin << "\t" << idx_b2truth_recoak10_dRmin << "\t" << idx_tau1truth_recoak10_dRmin << "\t" << idx_tau2truth_recoak10_dRmin << endl;
+      cout << ii << "\t truth_boosted_bb - truth_resolved_bb - truth_boosted_tautau - truth_resolved_tautau - class event: " << endl;
+      cout << ii << ": \t" << truth_boosted_bb << "\t" << truth_resolved_bb << "\t" << truth_boosted_tautau << "\t" << truth_resolved_tautau << "\t" << class_event << endl;
+    }
+  }
+
+  if(ii%5000 == 0){
+    cout << "Clases for the event " << ii << endl;
+    cout << ii << "\t idx for b1, b2, tau1 and tau2: " << "\t" << idx_b1truth_recoak10_dRmin << "\t" << idx_b2truth_recoak10_dRmin << "\t" << idx_tau1truth_recoak10_dRmin << "\t" << idx_tau2truth_recoak10_dRmin << endl;
+    cout << ii << "\t truth_boosted_bb - truth_resolved_bb - truth_boosted_tautau - truth_resolved_tautau - class event: " << endl;
+    cout << ii << ": \t" << truth_boosted_bb << "\t" << truth_resolved_bb << "\t" << truth_boosted_tautau << "\t" << truth_resolved_tautau << "\t" << class_event << endl;
   }
 }
 
@@ -214,6 +428,18 @@ void compute_dR_min_index_fat_jets(){
   }
   
 }
+
+void deltaR(float &dR, float jet1_pt, float jet1_eta, float jet1_phi, float jet1_m, float jet2_pt, float jet2_eta, float jet2_phi, float jet2_m){
+
+  TLorentzVector jet1  = TLorentzVector();
+  TLorentzVector jet2  = TLorentzVector();
+      
+  jet1.SetPtEtaPhiM(jet1_pt/1000., jet1_eta, jet1_phi, jet1_m/1000.);
+  jet2.SetPtEtaPhiM(jet2_pt/1000., jet2_eta, jet2_phi, jet2_m/1000.);
+
+  dR = jet1.DeltaR(jet2);
+}
+
 
 void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m){
 
