@@ -6,12 +6,14 @@
 
 //void plot_distributions(TString name_plot);
 
+void define_output_branches();
 void define_classes();
 void truth_and_fake_boosted_and_resolved_jets();
 void truth_matching_reco_objects_asserts(int ii, int &count_b_tau_matched);
 void compute_dR_min_index_fat_jets();
 void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m);
 void deltaR(float &dR, float jet1_pt, float jet1_eta, float jet1_phi, float jet1_m, float jet2_pt, float jet2_eta, float jet2_phi, float jet2_m);
+void plot_distributions(TString name_plot);
 void truth_objects_asserts(int ii);
 void random_function(int &sum_type_per_event);
 void define_truth_tau_and_b_jets();
@@ -22,6 +24,69 @@ void print_list_of_branches(TTree* tree);
 // *************************************
 // Definition of the functions declared above
 // *************************************
+
+void define_output_branches(){
+
+  outTree->Branch("truth_children_fromH1_pdgId", &truth_children_fromH1_pdgId);
+  outTree->Branch("truth_children_fromH1_pt", &truth_children_fromH1_pt);
+  outTree->Branch("truth_children_fromH1_eta", &truth_children_fromH1_eta);
+  outTree->Branch("truth_children_fromH1_phi", &truth_children_fromH1_phi);
+  outTree->Branch("truth_children_fromH1_m", &truth_children_fromH1_m);
+
+  outTree->Branch("truth_children_fromH2_pdgId", &truth_children_fromH2_pdgId);
+  outTree->Branch("truth_children_fromH2_pt", &truth_children_fromH2_pt);
+  outTree->Branch("truth_children_fromH2_eta", &truth_children_fromH2_eta);
+  outTree->Branch("truth_children_fromH2_phi", &truth_children_fromH2_phi);
+  outTree->Branch("truth_children_fromH2_m", &truth_children_fromH2_m);
+
+  outTree->Branch("truth_b1_pt", &truth_b1_pt);
+  outTree->Branch("truth_b1_eta", &truth_b1_eta);
+  outTree->Branch("truth_b1_phi", &truth_b1_phi);
+  outTree->Branch("truth_b1_m", &truth_b1_m);
+
+  outTree->Branch("truth_b2_pt", &truth_b2_pt);
+  outTree->Branch("truth_b2_eta", &truth_b2_eta);
+  outTree->Branch("truth_b2_phi", &truth_b2_phi);
+  outTree->Branch("truth_b2_m", &truth_b2_m);
+
+  outTree->Branch("truth_tau1_pt", &truth_tau1_pt);
+  outTree->Branch("truth_tau1_eta", &truth_tau1_eta);
+  outTree->Branch("truth_tau1_phi", &truth_tau1_phi);
+  outTree->Branch("truth_tau1_m", &truth_tau1_m);
+  
+  outTree->Branch("truth_tau2_pt", &truth_tau2_pt);
+  outTree->Branch("truth_tau2_eta", &truth_tau2_eta);
+  outTree->Branch("truth_tau2_phi", &truth_tau2_phi);
+  outTree->Branch("truth_tau2_m", &truth_tau2_m);
+
+  outTree->Branch("recojet_antikt10UFO_NOSYS_pt", &recojet_antikt10UFO_NOSYS_pt);
+  outTree->Branch("recojet_antikt10UFO_eta", &recojet_antikt10UFO_eta);
+  outTree->Branch("recojet_antikt10UFO_phi", &recojet_antikt10UFO_phi);
+  outTree->Branch("recojet_antikt10UFO_m", &recojet_antikt10UFO_m);
+  
+  outTree->Branch("idx_b1truth_recoak10_dRmin", &idx_b1truth_recoak10_dRmin);
+  outTree->Branch("idx_b2truth_recoak10_dRmin", &idx_b2truth_recoak10_dRmin);
+  outTree->Branch("idx_tau1truth_recoak10_dRmin", &idx_tau1truth_recoak10_dRmin);
+  outTree->Branch("idx_tau2truth_recoak10_dRmin", &idx_tau2truth_recoak10_dRmin);
+
+  outTree->Branch("dR_min_b1truth_recoak10_fatjet", &dR_min_b1truth_recoak10_fatjet);
+  outTree->Branch("dR_min_b2truth_recoak10_fatjet", &dR_min_b2truth_recoak10_fatjet);
+  outTree->Branch("dR_min_tau1truth_recoak10_fatjet", &dR_min_tau1truth_recoak10_fatjet);
+  outTree->Branch("dR_min_tau2truth_recoak10_fatjet", &dR_min_tau2truth_recoak10_fatjet);
+
+  outTree->Branch("class_event", &class_event);
+
+  outTree->Branch("bbtt_H_vis_tautau_pt_NOSYS", &bbtt_H_vis_tautau_pt_NOSYS);
+  outTree->Branch("bbtt_H_vis_tautau_m", &bbtt_H_vis_tautau_m);
+  outTree->Branch("bbtt_H_bb_pt_NOSYS", &bbtt_H_bb_pt_NOSYS);
+  outTree->Branch("bbtt_Jet_b1_pt_NOSYS", &bbtt_Jet_b1_pt_NOSYS);
+  outTree->Branch("bbtt_Jet_b2_pt_NOSYS", &bbtt_Jet_b2_pt_NOSYS);
+  outTree->Branch("bbtt_H_bb_m", &bbtt_H_bb_m);
+  //outTree->Branch("generatorWeight_NOSYS", &generatorWeight_NOSYS);
+  //inTree->Branch("tau_NOSYS_passesOR", &tau_NOSYS_passesOR);
+  //outTree->Branch("recojet_antikt4PFlow_NOSYS_passesOR", &recojet_antikt4PFlow_NOSYS_passesOR);
+  
+}
 
 void define_classes(){
 
@@ -514,6 +579,19 @@ void plot_distributions(TString name_plot){
   if(name_plot == "recojet_tautau_m"){
     hist = hist_recojet_tautau_m;
   }
+  if(name_plot == "match_recojets_pt"){
+    hist = hist_matched_recojet_pt;
+  }
+  if(name_plot == "match_recojets_eta"){
+    hist = hist_matched_recojet_eta;
+  }
+  if(name_plot == "non_match_recojets_pt"){
+    hist = hist_non_matched_recojet_pt;
+  }
+  if(name_plot == "non_match_recojets_eta"){
+    hist = hist_non_matched_recojet_eta;
+  }
+
   
   hist->Draw();
   

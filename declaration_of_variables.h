@@ -15,6 +15,12 @@ TString path_sample=path+"boosted_bypass_config.root";
 TFile* inFile = TFile::Open(path_sample);
 TTree* inTree = (TTree*) inFile->Get("AnalysisMiniTree");
 
+// Open the output files and get access to the output tree
+
+TFile* outFile = new TFile("output/study_boosted_regions.root", "RECREATE");
+TTree* outTree = new TTree("AnalysisMiniTree", "AnalysisMiniTree");
+
+
 // *************************************
 // Declaration of leaf variables
 // *************************************
@@ -178,3 +184,17 @@ TH1F *hist_truth_b1_plus_b2_m = new TH1F("hist_truth_b1_plus_b2_m", "Mass of the
 // Histograms for the mass of the chosen fatjets for bb and tautau jets
 TH1F *hist_recojet_bb_m = new TH1F("hist_recojet_bb_m", "Mass of the recojets that were matched to the truth bb; m(bb) [GeV];Events / 10 bins", 100, 10, 1010);
 TH1F *hist_recojet_tautau_m = new TH1F("hist_recojet_tautau_m", "Mass of the recojets that were matched to the truth tau-tau; m(#tau #tau) [GeV];Events / 10 bins", 100, 10, 1010);
+
+
+// Histograms for the pT distributions of the non matched recojets
+TH1F *hist_matched_recojet_pt = new TH1F("hist_matched_recojet_pt", "pT distribution of the recojets that were matched to a truth object; p_T(j) [GeV];Events / 10 bins", 150, 0, 1500);
+
+// Histograms for the eta distributions of the non matched recojets
+TH1F *hist_matched_recojet_eta = new TH1F("hist_matched_recojet_eta", "#eta distribution of the recojets that were matched to a truth object; #eta_{j} [GeV];Events", 100, -4, 4);
+
+
+// Histograms for the pT distributions of the non matched recojets
+TH1F *hist_non_matched_recojet_pt = new TH1F("hist_non_matched_recojet_pt", "pT distribution of the recojets that were not matched to a truth object; p_T(j) [GeV];Events / 10 bins", 150, 0, 1500);
+
+// Histograms for the eta distributions of the non matched recojets
+TH1F *hist_non_matched_recojet_eta = new TH1F("hist_non_matched_recojet_eta", "#eta distribution of the recojets that were not matched to a truth object; #eta_{j} [GeV];Events", 100, -4, 4);
