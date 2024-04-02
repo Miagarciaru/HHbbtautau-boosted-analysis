@@ -47,16 +47,16 @@ void study_substructure_jets(){
   int count_fake_Bbb_Rtautau = 0;
   int count_fake_Bbb_Btautau = 0;
 
+  define_output_branches();
+  
   
   for(int ii=0; ii < nentries; ii++){
     
     nbytes = inTree->GetEntry(ii);  
     define_truth_tau_and_b_jets();
     compute_dR_min_index_fat_jets();
-    //    truth_objects_asserts(ii);
     define_classes();
-    // truth_matching_reco_objects_asserts(ii, count_b_tau_matched_recojets);
-
+    
     if(class_event != -1){
       
       TLorentzVector jet1  = TLorentzVector();
@@ -98,9 +98,24 @@ void study_substructure_jets(){
 	hist_recojet_tautau_m->Fill(sum_jet.Mag());
       }
       
-      
     }
-    
+
+    if( recojet_antikt10UFO_NOSYS_pt->size() > 0){
+      if( class_event == -1){
+	for(int jj=0; jj < recojet_antikt10UFO_NOSYS_pt->size(); jj++){
+	  hist_non_matched_recojet_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(jj)/1000.);
+	}
+      }
+    }
+
+    if( recojet_antikt10UFO_eta->size() > 0){
+      if( class_event == -1){
+	for(int jj=0; jj < recojet_antikt10UFO_eta->size(); jj++){
+	  hist_non_matched_recojet_eta->Fill(recojet_antikt10UFO_eta->at(jj));
+	}
+      }
+    }
+      
     if(class_event == -1){ count_non_matched_events+=1; }
     if(class_event == 0){ count_truth_Rbb_Rtautau+=1; } 
     if(class_event == 1){ count_truth_Rbb_Btautau+=1; }
@@ -110,8 +125,12 @@ void study_substructure_jets(){
     if(class_event == 5){ count_fake_Rbb_Btautau+=1; }
     if(class_event == 6){ count_fake_Bbb_Rtautau+=1; }
     if(class_event == 7){ count_fake_Bbb_Btautau+=1; }
+
+    outTree->Fill();
   }
 
+  outFile->Write();
+  
   /*
   cout << "The number of events in which there one of the two taus and one of the two bb jets were matched to the same recojet are " << count_b_tau_matched_recojets << " of a total nentries " << nentries << " (" << 100.0*count_b_tau_matched_recojets/nentries << "% of the total nentries)" << endl;
   */
@@ -146,7 +165,10 @@ void study_substructure_jets(){
 
   plot_distributions("recojet_bb_m");
   plot_distributions("recojet_tautau_m");
+  plot_distributions("non_match_recojets_pt");
+  plot_distributions("non_match_recojets_eta");
 
-  inFile->Close();
   
+  inFile->Close();
+  outFile->Close();
 }
