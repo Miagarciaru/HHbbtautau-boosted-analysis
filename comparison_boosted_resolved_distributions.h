@@ -7,7 +7,9 @@
 //TString path="/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/outputfiles-easyjet-march21-2024/mc20_13TeV_502985_vbf_hadhad_l1cvv1 \
 p5cv1_PHYS_merged_";
 
-TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
+//TString path="../run/mc20_13TeV_600459_ggf_hadhad_cHHH01d0/mc20_13TeV_600459_ggf_hadhad_cHHH01d0_PHYS_merged_";
+//TString path="../run/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1_PHYS_merged_";
+TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
 TString path_boosted_sample=path+"boosted_bypass_config.root";
 TString path_resolved_sample=path+"resolved_bypass_config.root";
 
@@ -125,7 +127,7 @@ void plot_distributions(TString name_plot){
   TLegend *leg = new TLegend(0.7, 0.75, 0.85, 0.85);
   TH1F *hist_boosted = new TH1F();
   TH1F *hist_resolved = new TH1F();
-  TString name_image = "plots/";
+  TString name_image = "plots_comparison/";
   name_image+=name_plot+".png";
   
   if(name_plot=="tautau_m"){

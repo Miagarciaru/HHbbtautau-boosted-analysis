@@ -7,7 +7,7 @@ void comparison_boosted_resolved_distributions(){
   // *************************************
   
   print_list_of_branches(boosted_inTree);
-  print_list_of_branches(resolved_inTree);
+  // print_list_of_branches(resolved_inTree);
 
   // ************************************* 
   // Find all the branches with the words tau and jets for the boosted config
@@ -39,7 +39,7 @@ void comparison_boosted_resolved_distributions(){
   // *************************************
   
   vector<string> list_of_plots = {"tautau_m", "tautau_pT", "bb_m", "bb_pT", "recojet_antikt4_passesOR", "bbtt_Jet_b1_pt", "bbtt_Jet_b2_pt"};
-  /* 
+  /*
   for(int ii=0; ii < list_of_plots.size(); ii++){
     plot_distributions(list_of_plots[ii]);
   }
