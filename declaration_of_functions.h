@@ -11,6 +11,7 @@ void define_classes();
 void compute_dR_min_index_fat_jets();
 void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m);
 void deltaR(float &dR, float jet1_pt, float jet1_eta, float jet1_phi, float jet1_m, float jet2_pt, float jet2_eta, float jet2_phi, float jet2_m);
+void plot_2D_distributions(TString name_plot);
 void plot_distributions(TString name_plot);
 void define_truth_tau_and_b_jets();
 void fill_histograms();
@@ -254,28 +255,34 @@ void define_truth_tau_and_b_jets(){
   }
 }
 
+
+// Plot 2d histograms
+
+void plot_2D_distributions(TString name_plot){
+
+  TString name_image="plots/"+name_plot+".png";
+  
+  ///// Plotting
+  TCanvas *can = new TCanvas("can","", 800, 600);
+  TH2F *hist = new TH2F();
+
+  if(name_plot == "dR_per_class_bb"){ hist = hist2d_dR_per_class_bb;}
+  if(name_plot == "dR_per_class_tautau"){ hist = hist2d_dR_per_class_tautau;}
+
+  gStyle->SetPalette(52);
+  TColor::InvertPalette();
+
+  hist->SetStats(0);
+  hist->Draw("colz");
+   
+  can->Draw();
+  can->Print(name_image);
+}
+
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions
 // for the two configurations, boosted and resolved
 
 void plot_distributions(TString name_plot){
-  /*
-  TLegend *leg = new TLegend(0.7, 0.75, 0.85, 0.85);
-  TH1F *hist_boosted = new TH1F();
-  TH1F *hist_resolved = new TH1F();
-  TString name_image = "plots/";
-  name_image+=name_plot+".png";
-  
-  if(name_plot=="tautau_m"){
-    hist_boosted = hist_mH_tautau_boosted;
-    hist_resolved = hist_mH_tautau_resolved;
-  }
-
-  hist_boosted->SetStats(0);
-  hist_boosted->SetFillStyle(3001);
-  hist_boosted->SetFillColorAlpha(kBlue, 0.45);
-  hist_boosted->SetLineColor(4);
-
-  */
 
   TString name_image="plots/"+name_plot+".png";
   
@@ -283,35 +290,30 @@ void plot_distributions(TString name_plot){
   TCanvas *can = new TCanvas("can","", 800, 600);
   TH1F *hist = new TH1F();
 
-  if(name_plot == "truth_b1_m"){
-    hist = hist_truth_b1_m;
-  }
-  if(name_plot == "truth_b2_m"){
-    hist = hist_truth_b2_m;
-  }
-  if(name_plot == "truth_b1_plus_b2_m"){
-    hist = hist_truth_b1_plus_b2_m;
-  }
-  if(name_plot == "recojet_bb_m"){
-    hist = hist_recojet_bb_m;
-  }
-  if(name_plot == "recojet_tautau_m"){
-    hist = hist_recojet_tautau_m;
-  }
-  if(name_plot == "match_recojets_pt"){
-    hist = hist_matched_recojet_pt;
-  }
-  if(name_plot == "match_recojets_eta"){
-    hist = hist_matched_recojet_eta;
-  }
-  if(name_plot == "non_match_recojets_pt"){
-    hist = hist_non_matched_recojet_pt;
-  }
-  if(name_plot == "non_match_recojets_eta"){
-    hist = hist_non_matched_recojet_eta;
-  }
-
+  if(name_plot == "truth_b1_m"){ hist = hist_truth_b1_m;}
+  if(name_plot == "truth_b2_m"){ hist = hist_truth_b2_m;}
+  if(name_plot == "truth_b1_plus_b2_m"){ hist = hist_truth_b1_plus_b2_m;}
   
+  if(name_plot == "matched_recojet_bb_m"){ hist = hist_matched_recojet_bb_m;}
+  if(name_plot == "matched_recojet_tautau_m"){ hist = hist_matched_recojet_tautau_m;}
+  
+  if(name_plot == "matched_recojets_bb_pt"){ hist = hist_matched_recojet_bb_pt;}
+  if(name_plot == "matched_recojets_tautau_pt"){ hist = hist_matched_recojet_tautau_pt;}
+  
+  if(name_plot == "matched_recojets_bb_eta"){ hist = hist_matched_recojet_bb_eta;}
+  if(name_plot == "matched_recojets_tautau_eta"){ hist = hist_matched_recojet_tautau_eta;}
+
+  if(name_plot == "matched_bb_dR"){ hist = hist_matched_recojet_bb_dR;}  
+  if(name_plot == "matched_tautau_dR"){ hist = hist_matched_recojet_tautau_dR;}
+  
+  if(name_plot == "non_matched_recojets_pt"){ hist = hist_non_matched_recojet_pt;}
+  if(name_plot == "non_matched_recojets_eta"){ hist = hist_non_matched_recojet_eta;}
+
+  if(name_plot == "non_matched_recojets_pt_no_class"){ hist = hist_non_matched_recojet_pt_no_class;}
+  if(name_plot == "non_matched_recojets_eta_no_class"){ hist = hist_non_matched_recojet_eta_no_class;}
+
+  if(name_plot == "events_per_class"){ hist = hist_nevents_per_class;}  
+
   hist->Draw();
   
   /*
@@ -329,29 +331,87 @@ void plot_distributions(TString name_plot){
 // for the two configurations, boosted and resolved
 void fill_histograms(){
 
-  Int_t nentries = inTree->GetEntries();
-  int nbytes = 0;
+  //**********************************************
+  // Filling truth objects histograms
+  //**********************************************
+  
+  if(truth_children_fromH1_pdgId->size() == 2){
+    if((TMath::Abs(truth_children_fromH1_pdgId->at(0)) == 5) && (TMath::Abs(truth_children_fromH1_pdgId->at(1)) == 5)){
+      float sum = truth_children_fromH1_m->at(0) + truth_children_fromH1_m->at(1);
+      hist_truth_b1_plus_b2_m->Fill(sum);
+      hist_truth_b1_m->Fill(truth_children_fromH1_m->at(0));
+      hist_truth_b2_m->Fill(truth_children_fromH1_m->at(1));
+    }
+  }
 
-  float sum = 0;
-    
-  for(int ii = 0; ii < nentries; ii++){
-    
-    nbytes = inTree->GetEntry(ii);
-    if(truth_children_fromH1_pdgId->size() == 2){
-      if((TMath::Abs(truth_children_fromH1_pdgId->at(0)) == 5) && (TMath::Abs(truth_children_fromH1_pdgId->at(1)) == 5)){
-	sum = truth_children_fromH1_m->at(0) + truth_children_fromH1_m->at(1);
-	hist_truth_b1_plus_b2_m->Fill(sum);
-	hist_truth_b1_m->Fill(truth_children_fromH1_m->at(0));
-	hist_truth_b2_m->Fill(truth_children_fromH1_m->at(1));
-	/*
-	if(ii%100 == 0){
-	  cout << sum << endl;
-	  }*/
+  //**********************************************
+  // Filling the mass, pT and eta distributions of the boosted bb and tautau objects
+  //**********************************************
+ 
+  if(class_event != -1){
+
+    // truth Boosted bb                                                                                                                     
+    if( (class_event == 2) || (class_event == 3) ){
+
+      float dR_bb = 0;
+      deltaR(dR_bb, truth_b1_pt, truth_b1_eta, truth_b1_phi, truth_b1_m, truth_b2_pt, truth_b2_eta, truth_b2_phi, truth_b2_m);
+      
+      hist_matched_recojet_bb_m->Fill(recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
+      hist_matched_recojet_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000.);
+      hist_matched_recojet_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin));
+      hist_matched_recojet_bb_dR->Fill(dR_bb);
+      hist2d_dR_per_class_bb->Fill(class_event, dR_bb);
+    }
+
+    // truth boosted tautau jets                                                                                                            
+    if( (class_event == 1) || (class_event == 3) ){
+
+      float dR_tautau = 0;
+      deltaR(dR_tautau, truth_tau1_pt, truth_tau1_eta, truth_tau1_phi, truth_tau1_m, truth_tau2_pt, truth_tau2_eta, truth_tau2_phi, truth_tau2_m);
+
+      hist_matched_recojet_tautau_m->Fill(recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
+      hist_matched_recojet_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000.);
+      hist_matched_recojet_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin));
+      hist_matched_recojet_tautau_dR->Fill(dR_tautau);
+      hist2d_dR_per_class_tautau->Fill(class_event, dR_tautau);
+    }
+
+    // Fill the pt and eta distribution of those recojets that were not matched to a truth object but are in RR, RB, BR or BB classes
+    if( recojet_antikt10UFO_NOSYS_pt->size() > 0 ){
+      for(int jj=0; jj < recojet_antikt10UFO_NOSYS_pt->size(); jj++){
+	if( (jj != idx_b1truth_recoak10_dRmin) && (jj != idx_b2truth_recoak10_dRmin) && (jj != idx_tau1truth_recoak10_dRmin) && (jj != idx_tau2truth_recoak10_dRmin) ){
+	  hist_non_matched_recojet_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(jj)/1000.);
+	}
+      }
+    }
+
+    if( recojet_antikt10UFO_eta->size() > 0){
+      for(int jj=0; jj < recojet_antikt10UFO_eta->size(); jj++){
+	if( (jj != idx_b1truth_recoak10_dRmin) && (jj != idx_b2truth_recoak10_dRmin) && (jj != idx_tau1truth_recoak10_dRmin) && (jj != idx_tau2truth_recoak10_dRmin) ){
+	  hist_non_matched_recojet_eta->Fill(recojet_antikt10UFO_eta->at(jj));
+	}
+      } 
+    }
+  }
+
+  // Fill the pt and eta distribution of those recojets that were not matched to a truth object and are not in RR, RB, BR or BB classes
+  if( class_event == -1){
+    if( recojet_antikt10UFO_NOSYS_pt->size() > 0 ){
+      for(int jj=0; jj < recojet_antikt10UFO_NOSYS_pt->size(); jj++){
+	hist_non_matched_recojet_pt_no_class->Fill(recojet_antikt10UFO_NOSYS_pt->at(jj)/1000.);
+      }
+    }
+
+    if( recojet_antikt10UFO_eta->size() > 0){
+      for(int jj=0; jj < recojet_antikt10UFO_eta->size(); jj++){
+	hist_non_matched_recojet_eta_no_class->Fill(recojet_antikt10UFO_eta->at(jj));
       }
     }
   }
-}
 
+  // Fill the number of events per class
+  hist_nevents_per_class->Fill(class_event);
+}
 
 // This function saves the branches info for a given tree in the variables defined above
 void set_branch_address(){
