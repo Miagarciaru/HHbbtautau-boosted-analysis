@@ -104,9 +104,11 @@ void cuts_implementation(){
 
   cout << "The number of positive values for truth_HH_m is: " << count_truth_HH_m_pos_values << endl;
  
-  mass_HH_cut(); // Fill the graphs of the r1 ratio after applying the massHH cut
+  applying_HH_cuts(); // Fill the graphs of the r1 ratio after applying the massHH cut
 
   plot_graphs_for_cuts_on_variables("massHH_cut_r1");
+  
+  plot_graphs_for_cuts_on_variables("ptHH_cut_r1");
 
   outFile->Close();
 }

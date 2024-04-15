@@ -106,6 +106,53 @@ Float_t bbtt_HH_eta;
 Float_t bbtt_HH_phi;
 Float_t bbtt_HH_m;
 
+// *************************************
+// Declaration of the ratios values (there is no need to save most of them)
+// *************************************
+
+// Count variables for the mHH cuts
+int evnt_RbbRtautau_passing_mHH_cut_and_RES = 0;
+int evnt_RbbBtautau_passing_mHH_cut_and_RES = 0;
+int evnt_BbbRtautau_passing_mHH_cut_and_RES = 0;
+int evnt_BbbBtautau_passing_mHH_cut_and_RES = 0;
+int evnt_passing_RES_and_mHH_cut = 0;
+int evnt_RbbRtautau_passing_mHH_cut = 0;
+int evnt_RbbBtautau_passing_mHH_cut = 0;
+int evnt_BbbRtautau_passing_mHH_cut = 0;
+int evnt_BbbBtautau_passing_mHH_cut = 0;
+
+// Ratios variables for mHH cuts
+float r1_class0_mHH_cut = 0;
+float r1_class1_mHH_cut = 0;
+float r1_class2_mHH_cut = 0;
+float r1_class3_mHH_cut = 0;
+
+float r2_class0_mHH_cut = 0;
+float r2_class1_mHH_cut = 0;
+float r2_class2_mHH_cut = 0;
+float r2_class3_mHH_cut = 0;
+
+// Count variables for the ptHH cuts
+int evnt_RbbRtautau_passing_ptHH_cut_and_RES = 0;
+int evnt_RbbBtautau_passing_ptHH_cut_and_RES = 0;
+int evnt_BbbRtautau_passing_ptHH_cut_and_RES = 0;
+int evnt_BbbBtautau_passing_ptHH_cut_and_RES = 0;
+int evnt_passing_RES_and_ptHH_cut = 0;
+int evnt_RbbRtautau_passing_ptHH_cut = 0;
+int evnt_RbbBtautau_passing_ptHH_cut = 0;
+int evnt_BbbRtautau_passing_ptHH_cut = 0;
+int evnt_BbbBtautau_passing_ptHH_cut = 0;
+
+// Ratios variables for ptHH cuts
+float r1_class0_ptHH_cut = 0;
+float r1_class1_ptHH_cut = 0;
+float r1_class2_ptHH_cut = 0;
+float r1_class3_ptHH_cut = 0;
+
+float r2_class0_ptHH_cut = 0;
+float r2_class1_ptHH_cut = 0;
+float r2_class2_ptHH_cut = 0;
+float r2_class3_ptHH_cut = 0;
 
 // *************************************
 // Declaration of branches
@@ -203,7 +250,7 @@ TBranch *b_bbtt_HH_m;
 // Declaration of histograms
 // *************************************
 
-// Histograms for mass of HH cuts ratio_1
+// Histograms for mass of HH cuts ratios
 
 TGraph *graph_mHH_cut_r1_class0 = new TGraph();
 TGraph *graph_mHH_cut_r1_class1 = new TGraph();
@@ -214,3 +261,15 @@ TGraph *graph_mHH_cut_r2_class0 = new TGraph();
 TGraph *graph_mHH_cut_r2_class1 = new TGraph();
 TGraph *graph_mHH_cut_r2_class2 = new TGraph();
 TGraph *graph_mHH_cut_r2_class3 = new TGraph();
+
+// Histograms for pT of HH cuts ratios
+
+TGraph *graph_ptHH_cut_r1_class0 = new TGraph();
+TGraph *graph_ptHH_cut_r1_class1 = new TGraph();
+TGraph *graph_ptHH_cut_r1_class2 = new TGraph();
+TGraph *graph_ptHH_cut_r1_class3 = new TGraph();
+
+TGraph *graph_ptHH_cut_r2_class0 = new TGraph();
+TGraph *graph_ptHH_cut_r2_class1 = new TGraph();
+TGraph *graph_ptHH_cut_r2_class2 = new TGraph();
+TGraph *graph_ptHH_cut_r2_class3 = new TGraph();

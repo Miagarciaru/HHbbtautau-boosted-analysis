@@ -7,7 +7,11 @@
 //void plot_distributions(TString name_plot);
 
 void plot_graphs_for_cuts_on_variables(TString name_plot);
-void mass_HH_cut();
+void reset_values();
+void applying_HH_cuts();
+void mHH_cut(float mHH_cut);
+void ptHH_cut(float ptHH_cut);
+void compute_ratios_and_fill_graphs(float mHH_cut, float ptHH_cut);
 void set_branch_address_outTree();
 void print_list_of_branches(TTree* tree);
 
@@ -29,18 +33,36 @@ void plot_graphs_for_cuts_on_variables(TString name_plot){
   TString name_image = "output/plots_ratios/";
   name_image+=name_plot+".png";
 
+  TString title_plot = "";
+  
   if(name_plot=="massHH_cut_r1"){
     graph0 = graph_mHH_cut_r1_class0;
     graph1 = graph_mHH_cut_r1_class1;
     graph2 = graph_mHH_cut_r1_class2;
     graph3 = graph_mHH_cut_r1_class3;
 
-    graph0->SetTitle("Ratios for mass mHH cuts; m(HH) [GeV];ratio value");
-    graph1->SetTitle("Ratios for mass mHH cuts; m(HH) [GeV];ratio value");
-    graph2->SetTitle("Ratios for mass mHH cuts; m(HH) [GeV];ratio value");
-    graph3->SetTitle("Ratios for mass mHH cuts; m(HH) [GeV];ratio value");
+    title_plot = "Ratios for mass mHH cuts; m(HH) [GeV];ratio value";
+    
+    graph0->SetTitle(title_plot);
+    graph1->SetTitle(title_plot);
+    graph2->SetTitle(title_plot);
+    graph3->SetTitle(title_plot);
   }
 
+  if(name_plot=="ptHH_cut_r1"){
+    graph0 = graph_ptHH_cut_r1_class0;
+    graph1 = graph_ptHH_cut_r1_class1;
+    graph2 = graph_ptHH_cut_r1_class2;
+    graph3 = graph_ptHH_cut_r1_class3;
+    
+    title_plot = "Ratios for pTHH cuts; p_{T}(HH) [GeV];ratio value";
+    
+    graph0->SetTitle(title_plot);
+    graph1->SetTitle(title_plot);
+    graph2->SetTitle(title_plot);
+    graph3->SetTitle(title_plot);
+  }
+    
   //graph0->SetLineWidth(2);
   //graph1->SetLineWidth(2);
   //graph2->SetLineWidth(2);
@@ -68,84 +90,178 @@ void plot_graphs_for_cuts_on_variables(TString name_plot){
 
 }
 
+void reset_values(){
 
-void mass_HH_cut(){
+  // For mass mHH
+  evnt_RbbRtautau_passing_mHH_cut_and_RES = 0;
+  evnt_RbbBtautau_passing_mHH_cut_and_RES = 0;
+  evnt_BbbRtautau_passing_mHH_cut_and_RES = 0;
+  evnt_BbbBtautau_passing_mHH_cut_and_RES = 0;
+  evnt_passing_RES_and_mHH_cut = 0;
+  evnt_RbbRtautau_passing_mHH_cut = 0;
+  evnt_RbbBtautau_passing_mHH_cut = 0;
+  evnt_BbbRtautau_passing_mHH_cut = 0;
+  evnt_BbbBtautau_passing_mHH_cut = 0;
+  
+  r1_class0_mHH_cut = 0;
+  r1_class1_mHH_cut = 0;
+  r1_class2_mHH_cut = 0;
+  r1_class3_mHH_cut = 0;
+
+  r2_class0_mHH_cut = 0;
+  r2_class1_mHH_cut = 0;
+  r2_class2_mHH_cut = 0;
+  r2_class3_mHH_cut = 0;
+
+  // For mass ptHH
+  evnt_RbbRtautau_passing_ptHH_cut_and_RES = 0;
+  evnt_RbbBtautau_passing_ptHH_cut_and_RES = 0;
+  evnt_BbbRtautau_passing_ptHH_cut_and_RES = 0;
+  evnt_BbbBtautau_passing_ptHH_cut_and_RES = 0;
+  evnt_passing_RES_and_ptHH_cut = 0;
+  evnt_RbbRtautau_passing_ptHH_cut = 0;
+  evnt_RbbBtautau_passing_ptHH_cut = 0;
+  evnt_BbbRtautau_passing_ptHH_cut = 0;
+  evnt_BbbBtautau_passing_ptHH_cut = 0;
+  
+  r1_class0_ptHH_cut = 0;
+  r1_class1_ptHH_cut = 0;
+  r1_class2_ptHH_cut = 0;
+  r1_class3_ptHH_cut = 0;
+
+  r2_class0_ptHH_cut = 0;
+  r2_class1_ptHH_cut = 0;
+  r2_class2_ptHH_cut = 0;
+  r2_class3_ptHH_cut = 0;
+
+}
+
+void compute_ratios_and_fill_graphs(float mHH_cut, float ptHH_cut){
+
+  // For mass mHH
+  r1_class0_mHH_cut = 1.0*evnt_RbbRtautau_passing_mHH_cut_and_RES/evnt_passing_RES_and_mHH_cut;
+  r1_class1_mHH_cut = 1.0*evnt_RbbBtautau_passing_mHH_cut_and_RES/evnt_passing_RES_and_mHH_cut;
+  r1_class2_mHH_cut = 1.0*evnt_BbbRtautau_passing_mHH_cut_and_RES/evnt_passing_RES_and_mHH_cut;
+  r1_class3_mHH_cut = 1.0*evnt_BbbBtautau_passing_mHH_cut_and_RES/evnt_passing_RES_and_mHH_cut;
+  
+  r2_class0_mHH_cut = 1.0*evnt_RbbRtautau_passing_mHH_cut_and_RES/evnt_RbbRtautau_passing_mHH_cut;
+  r2_class1_mHH_cut = 1.0*evnt_RbbBtautau_passing_mHH_cut_and_RES/evnt_RbbBtautau_passing_mHH_cut;
+  r2_class2_mHH_cut = 1.0*evnt_BbbRtautau_passing_mHH_cut_and_RES/evnt_BbbRtautau_passing_mHH_cut;
+  r2_class3_mHH_cut = 1.0*evnt_BbbBtautau_passing_mHH_cut_and_RES/evnt_BbbBtautau_passing_mHH_cut;
+
+  graph_mHH_cut_r1_class0->AddPoint(mHH_cut, r1_class0_mHH_cut);
+  graph_mHH_cut_r1_class1->AddPoint(mHH_cut, r1_class1_mHH_cut);
+  graph_mHH_cut_r1_class2->AddPoint(mHH_cut, r1_class2_mHH_cut);
+  graph_mHH_cut_r1_class3->AddPoint(mHH_cut, r1_class3_mHH_cut);
+  
+  graph_mHH_cut_r2_class0->AddPoint(mHH_cut, r2_class0_mHH_cut);
+  graph_mHH_cut_r2_class1->AddPoint(mHH_cut, r2_class1_mHH_cut);
+  graph_mHH_cut_r2_class2->AddPoint(mHH_cut, r2_class2_mHH_cut);
+  graph_mHH_cut_r2_class3->AddPoint(mHH_cut, r2_class3_mHH_cut);
+
+  // For pT ptHH
+  r1_class0_ptHH_cut = 1.0*evnt_RbbRtautau_passing_ptHH_cut_and_RES/evnt_passing_RES_and_ptHH_cut;
+  r1_class1_ptHH_cut = 1.0*evnt_RbbBtautau_passing_ptHH_cut_and_RES/evnt_passing_RES_and_ptHH_cut;
+  r1_class2_ptHH_cut = 1.0*evnt_BbbRtautau_passing_ptHH_cut_and_RES/evnt_passing_RES_and_ptHH_cut;
+  r1_class3_ptHH_cut = 1.0*evnt_BbbBtautau_passing_ptHH_cut_and_RES/evnt_passing_RES_and_ptHH_cut;
+  
+  r2_class0_ptHH_cut = 1.0*evnt_RbbRtautau_passing_ptHH_cut_and_RES/evnt_RbbRtautau_passing_ptHH_cut;
+  r2_class1_ptHH_cut = 1.0*evnt_RbbBtautau_passing_ptHH_cut_and_RES/evnt_RbbBtautau_passing_ptHH_cut;
+  r2_class2_ptHH_cut = 1.0*evnt_BbbRtautau_passing_ptHH_cut_and_RES/evnt_BbbRtautau_passing_ptHH_cut;
+  r2_class3_ptHH_cut = 1.0*evnt_BbbBtautau_passing_ptHH_cut_and_RES/evnt_BbbBtautau_passing_ptHH_cut;
+
+  graph_ptHH_cut_r1_class0->AddPoint(ptHH_cut, r1_class0_ptHH_cut);
+  graph_ptHH_cut_r1_class1->AddPoint(ptHH_cut, r1_class1_ptHH_cut);
+  graph_ptHH_cut_r1_class2->AddPoint(ptHH_cut, r1_class2_ptHH_cut);
+  graph_ptHH_cut_r1_class3->AddPoint(ptHH_cut, r1_class3_ptHH_cut);
+  
+  graph_ptHH_cut_r2_class0->AddPoint(ptHH_cut, r2_class0_ptHH_cut);
+  graph_ptHH_cut_r2_class1->AddPoint(ptHH_cut, r2_class1_ptHH_cut);
+  graph_ptHH_cut_r2_class2->AddPoint(ptHH_cut, r2_class2_ptHH_cut);
+  graph_ptHH_cut_r2_class3->AddPoint(ptHH_cut, r2_class3_ptHH_cut);
+
+}
+
+void applying_HH_cuts(){
 
   float steps = 400;
-  float max_mMax = 2000;
-  float dmass = max_mMax/steps;
-  float mHH_cut = 0;
-
+  float max_mHH = 2000;
+  float max_ptHH = 1000;
+  float dmass = max_mHH/steps;
+  float dpt = max_ptHH/steps;
+  
+  float mHH_cut_value = 0;
+  float ptHH_cut_value = 0;
+  
   int out_nentries = outTree->GetEntries();
   int out_nbytes = 0;
 
-  
-  cout << "mHH_cut"  << "\t \t" << "evnt_BbbBtautau_passing_mHH_cut" << "\t \t" << "evnt_passing_RES_and_mHH_cut" << "\t \t" << "ratio r1_class3" << endl;
+  //cout << "mHH_cut"  << "\t \t" << "evnt_BbbBtautau_passing_mHH_cut" << "\t \t" << "evnt_passing_RES_and_mHH_cut" << "\t \t" << "ratio r1_class3" << endl;
+  cout << "ptHH_cut"  << "\t \t" << "evnt_BbbBtautau_passing_ptHH_cut" << "\t \t" << "evnt_passing_RES_and_ptHH_cut" << "\t \t" << "ratio r1_class3" << endl;
   
   for(int ii=0; ii < steps; ii++){  
-    mHH_cut = ii*dmass;
 
-    int evnt_RbbRtautau_passing_mHH_cut_and_RES = 0;
-    int evnt_RbbBtautau_passing_mHH_cut_and_RES = 0;
-    int evnt_BbbRtautau_passing_mHH_cut_and_RES = 0;
-    int evnt_BbbBtautau_passing_mHH_cut_and_RES = 0;
-
-    int evnt_passing_RES_and_mHH_cut = 0;
-
-    int evnt_RbbRtautau_passing_mHH_cut = 0;
-    int evnt_RbbBtautau_passing_mHH_cut = 0;
-    int evnt_BbbRtautau_passing_mHH_cut = 0;
-    int evnt_BbbBtautau_passing_mHH_cut = 0;
+    reset_values();
+    mHH_cut_value = ii*dmass;
+    ptHH_cut_value = ii*dpt;
     
     for(int jj=0; jj<out_nentries; jj++){
       out_nbytes = outTree->GetEntry(jj);
-
-      if( (class_event!=-1) && (truth_HH_m/1000. > mHH_cut) ){
-	if(class_event == 0){ evnt_RbbRtautau_passing_mHH_cut+=1; }
-	if(class_event == 1){ evnt_RbbBtautau_passing_mHH_cut+=1; }
-	if(class_event == 2){ evnt_BbbRtautau_passing_mHH_cut+=1; }
-	if(class_event == 3){ evnt_BbbBtautau_passing_mHH_cut+=1; }
-      }
-
-      if( bbtt_HH_m/1000. > 0 ){
-
-	if(bbtt_HH_m/1000. > mHH_cut){ evnt_passing_RES_and_mHH_cut+=1; }
-    
-	if( (class_event!=-1) && (truth_HH_m/1000. > mHH_cut) ){ 	
-	  if(class_event == 0){ evnt_RbbRtautau_passing_mHH_cut_and_RES+=1; }
-	  if(class_event == 1){ evnt_RbbBtautau_passing_mHH_cut_and_RES+=1; }
-	  if(class_event == 2){ evnt_BbbRtautau_passing_mHH_cut_and_RES+=1; }
-	  if(class_event == 3){ evnt_BbbBtautau_passing_mHH_cut_and_RES+=1; }
-	}
-      }
+      mHH_cut(mHH_cut_value);
+      ptHH_cut(ptHH_cut_value);
     }
     
-    float r1_class0_mHH_cut = 1.0*evnt_RbbRtautau_passing_mHH_cut_and_RES/evnt_passing_RES_and_mHH_cut;
-    float r1_class1_mHH_cut = 1.0*evnt_RbbBtautau_passing_mHH_cut_and_RES/evnt_passing_RES_and_mHH_cut;
-    float r1_class2_mHH_cut = 1.0*evnt_BbbRtautau_passing_mHH_cut_and_RES/evnt_passing_RES_and_mHH_cut;
-    float r1_class3_mHH_cut = 1.0*evnt_BbbBtautau_passing_mHH_cut_and_RES/evnt_passing_RES_and_mHH_cut;
-
-    float r2_class0_mHH_cut = 1.0*evnt_RbbRtautau_passing_mHH_cut_and_RES/evnt_RbbRtautau_passing_mHH_cut;
-    float r2_class1_mHH_cut = 1.0*evnt_RbbBtautau_passing_mHH_cut_and_RES/evnt_RbbBtautau_passing_mHH_cut;
-    float r2_class2_mHH_cut = 1.0*evnt_BbbRtautau_passing_mHH_cut_and_RES/evnt_BbbRtautau_passing_mHH_cut;
-    float r2_class3_mHH_cut = 1.0*evnt_BbbBtautau_passing_mHH_cut_and_RES/evnt_BbbBtautau_passing_mHH_cut;
+    compute_ratios_and_fill_graphs(mHH_cut_value, ptHH_cut_value);
     
     if(ii%20==0){
-      cout << mHH_cut << "\t \t" << evnt_BbbBtautau_passing_mHH_cut_and_RES << "\t \t" << evnt_passing_RES_and_mHH_cut << "\t \t" << r1_class3_mHH_cut << endl;
+      //cout << mHH_cut_value << "\t \t" << evnt_BbbBtautau_passing_mHH_cut_and_RES << "\t \t" << evnt_passing_RES_and_mHH_cut << "\t \t" << r1_class3_mHH_cut << endl;
+      cout << ptHH_cut_value << "\t \t" << evnt_BbbBtautau_passing_ptHH_cut_and_RES << "\t \t" << evnt_passing_RES_and_ptHH_cut << "\t \t" << r1_class3_ptHH_cut << endl;
     }
-    
-    graph_mHH_cut_r1_class0->AddPoint(mHH_cut, r1_class0_mHH_cut);
-    graph_mHH_cut_r1_class1->AddPoint(mHH_cut, r1_class1_mHH_cut);
-    graph_mHH_cut_r1_class2->AddPoint(mHH_cut, r1_class2_mHH_cut);
-    graph_mHH_cut_r1_class3->AddPoint(mHH_cut, r1_class3_mHH_cut);
-
-    graph_mHH_cut_r2_class0->AddPoint(mHH_cut, r2_class0_mHH_cut);
-    graph_mHH_cut_r2_class1->AddPoint(mHH_cut, r2_class1_mHH_cut);
-    graph_mHH_cut_r2_class2->AddPoint(mHH_cut, r2_class2_mHH_cut);
-    graph_mHH_cut_r2_class3->AddPoint(mHH_cut, r2_class3_mHH_cut);
-    
   }
-  
+}
+
+void mHH_cut(float mHH_cut){
+
+  if( (class_event != -1) && (truth_HH_m/1000. > mHH_cut) ){
+    if(class_event == 0){ evnt_RbbRtautau_passing_mHH_cut+=1; }
+    if(class_event == 1){ evnt_RbbBtautau_passing_mHH_cut+=1; }
+    if(class_event == 2){ evnt_BbbRtautau_passing_mHH_cut+=1; }
+    if(class_event == 3){ evnt_BbbBtautau_passing_mHH_cut+=1; }
+  }
+
+  if( bbtt_HH_m/1000. > 0 ){
+    
+    if(bbtt_HH_m/1000. > mHH_cut){ evnt_passing_RES_and_mHH_cut+=1; }
+    
+    if( (class_event != -1) && (truth_HH_m/1000. > mHH_cut) ){ 	
+      if(class_event == 0){ evnt_RbbRtautau_passing_mHH_cut_and_RES+=1; }
+      if(class_event == 1){ evnt_RbbBtautau_passing_mHH_cut_and_RES+=1; }
+      if(class_event == 2){ evnt_BbbRtautau_passing_mHH_cut_and_RES+=1; }
+      if(class_event == 3){ evnt_BbbBtautau_passing_mHH_cut_and_RES+=1; }
+    }
+  }
+}
+
+
+void ptHH_cut(float ptHH_cut){
+
+  if( (class_event != -1) && (truth_HH_pt/1000. > ptHH_cut) ){
+    if(class_event == 0){ evnt_RbbRtautau_passing_ptHH_cut+=1; }
+    if(class_event == 1){ evnt_RbbBtautau_passing_ptHH_cut+=1; }
+    if(class_event == 2){ evnt_BbbRtautau_passing_ptHH_cut+=1; }
+    if(class_event == 3){ evnt_BbbBtautau_passing_ptHH_cut+=1; }
+  }
+
+  if( bbtt_HH_pt_NOSYS/1000. > 0 ){ 
+    if(bbtt_HH_pt_NOSYS/1000. > ptHH_cut){ evnt_passing_RES_and_ptHH_cut+=1; }
+    
+    if( (class_event != -1) && (truth_HH_pt/1000. > ptHH_cut) ){ 	
+      if(class_event == 0){ evnt_RbbRtautau_passing_ptHH_cut_and_RES+=1; }
+      if(class_event == 1){ evnt_RbbBtautau_passing_ptHH_cut_and_RES+=1; }
+      if(class_event == 2){ evnt_BbbRtautau_passing_ptHH_cut_and_RES+=1; }
+      if(class_event == 3){ evnt_BbbBtautau_passing_ptHH_cut_and_RES+=1; }
+    }
+  }
 }
 
 void set_branch_address_outTree(){
