@@ -44,6 +44,12 @@ vector<float> *truth_children_fromH2_eta;
 vector<float> *truth_children_fromH2_phi;
 vector<float> *truth_children_fromH2_m;
 
+// Truth HH variables
+Float_t truth_HH_pt;
+Float_t truth_HH_eta;
+Float_t truth_HH_phi;
+Float_t truth_HH_m;
+
 // Matching of truth b and tau jets from truth children
 Float_t truth_b1_pt;
 Float_t truth_b1_eta;
@@ -65,23 +71,13 @@ Float_t truth_tau2_eta;
 Float_t truth_tau2_phi;
 Float_t truth_tau2_m;
 
+
+
 // Declaration of leafs types for reconstructed_ak10UFO jets (fat-jets) branches for boosted tree variables
 vector<float> *recojet_antikt10UFO_NOSYS_pt;
 vector<float> *recojet_antikt10UFO_eta;
 vector<float> *recojet_antikt10UFO_phi;
 vector<float> *recojet_antikt10UFO_m;
-
-
-// Declaration of leaf types for bbtt_H boosted tree variables
-Float_t bbtt_H_vis_tautau_pt_NOSYS;
-Float_t bbtt_H_vis_tautau_m;
-Float_t bbtt_H_bb_pt_NOSYS;
-Float_t bbtt_H_bb_m;
-Float_t bbtt_Jet_b1_pt_NOSYS;
-Float_t bbtt_Jet_b2_pt_NOSYS;
-Float_t generatorWeight_NOSYS;
-//vector<char> *tau_NOSYS_passesOR;
-vector<char> *recojet_antikt4PFlow_NOSYS_passesOR;
 
 // Declaration idx and dRmin values
 
@@ -101,6 +97,37 @@ int truth_resolved_bb;
 int truth_resolved_tautau;
 int class_event;
 
+// Declaration of the resolved variables results
+
+Float_t bbtt_Jet_b1_pt_NOSYS;
+Float_t bbtt_Jet_b1_eta;
+Float_t bbtt_Jet_b1_phi;
+Float_t bbtt_Jet_b1_E;
+
+Float_t bbtt_Jet_b2_pt_NOSYS;
+Float_t bbtt_Jet_b2_eta;
+Float_t bbtt_Jet_b2_phi;
+Float_t bbtt_Jet_b2_E;
+
+Float_t bbtt_Tau1_pt_NOSYS;
+Float_t bbtt_Tau1_eta;
+Float_t bbtt_Tau1_phi;
+Float_t bbtt_Tau1_E;
+
+Float_t bbtt_Tau2_pt_NOSYS;
+Float_t bbtt_Tau2_eta;
+Float_t bbtt_Tau2_phi;
+Float_t bbtt_Tau2_E;
+
+Float_t bbtt_HH_pt_NOSYS;
+Float_t bbtt_HH_eta;
+Float_t bbtt_HH_phi;
+Float_t bbtt_HH_m;
+
+Float_t generatorWeight_NOSYS;
+vector<char> *recojet_antikt4PFlow_NOSYS_passesOR;
+
+
 // *************************************
 // Declaration of branches
 // *************************************
@@ -117,6 +144,12 @@ TBranch *b_truth_children_fromH2_pt;
 TBranch *b_truth_children_fromH2_eta;
 TBranch *b_truth_children_fromH2_phi;
 TBranch *b_truth_children_fromH2_m;
+
+// Truth HH variables
+TBranch *b_truth_HH_pt;
+TBranch *b_truth_HH_eta;
+TBranch *b_truth_HH_phi;
+TBranch *b_truth_HH_m;
 
 // Matching of truth b and tau jets from truth children
 TBranch *b_truth_b1_pt;
@@ -145,17 +178,6 @@ TBranch *b_recojet_antikt10UFO_eta;
 TBranch *b_recojet_antikt10UFO_phi;
 TBranch *b_recojet_antikt10UFO_m;
 
-// Declaration of branches for boosted tree
-TBranch *b_bbtt_H_vis_tautau_pt_NOSYS;
-TBranch *b_bbtt_H_vis_tautau_m;
-TBranch *b_bbtt_H_bb_pt_NOSYS;
-TBranch *b_bbtt_H_bb_m;
-TBranch *b_bbtt_Jet_b1_pt_NOSYS;
-TBranch *b_bbtt_Jet_b2_pt_NOSYS;
-TBranch *b_generatorWeight_NOSYS;
-//TBranch *b_tau_NOSYS_passesOR;
-TBranch *b_recojet_antikt4PFlow_NOSYS_passesOR;
-
 // Declaration idx and dRmin values
 
 TBranch *b_idx_b1truth_recoak10_dRmin;
@@ -174,6 +196,35 @@ TBranch *b_truth_resolved_bb;
 TBranch *b_truth_resolved_tautau;
 TBranch *b_class_event;
 
+// Declaration of the resolved variables results
+
+TBranch *b_bbtt_Jet_b1_pt_NOSYS;
+TBranch *b_bbtt_Jet_b1_eta;
+TBranch *b_bbtt_Jet_b1_phi;
+TBranch *b_bbtt_Jet_b1_E;
+
+TBranch *b_bbtt_Jet_b2_pt_NOSYS;
+TBranch *b_bbtt_Jet_b2_eta;
+TBranch *b_bbtt_Jet_b2_phi;
+TBranch *b_bbtt_Jet_b2_E;
+
+TBranch *b_bbtt_Tau1_pt_NOSYS;
+TBranch *b_bbtt_Tau1_eta;
+TBranch *b_bbtt_Tau1_phi;
+TBranch *b_bbtt_Tau1_E;
+
+TBranch *b_bbtt_Tau2_pt_NOSYS;
+TBranch *b_bbtt_Tau2_eta;
+TBranch *b_bbtt_Tau2_phi;
+TBranch *b_bbtt_Tau2_E;
+
+TBranch *b_bbtt_HH_pt_NOSYS;
+TBranch *b_bbtt_HH_eta;
+TBranch *b_bbtt_HH_phi;
+TBranch *b_bbtt_HH_m;
+
+TBranch *b_generatorWeight_NOSYS;
+TBranch *b_recojet_antikt4PFlow_NOSYS_passesOR;
 
 // *************************************
 // Declaration of histograms
@@ -226,3 +277,24 @@ TH1F *hist_nevents_per_class = new TH1F("hist_nevents_per_class", "Number of eve
 // 2D histogram for the dR values per each class
 TH2F *hist2d_dR_per_class_bb = new TH2F("hist2d_dR_per_class_bb", "dR values per each class for boosted bb jets; class; dR", 4, 0, 4, 50, 0, 5);
 TH2F *hist2d_dR_per_class_tautau = new TH2F("hist2d_dR_per_class_tautau", "dR values per each class for boosted #tau#tau jets; class; dR", 4, 0, 4, 50, 0, 5);
+
+
+// Histograms for comparison of distributions of pt
+TH1F *hist_truth_HH_pt = new TH1F("hist_truth_HH_pt", "Truth HH pT distribution comparison; p_{T}(HH) [GeV];Events / 10 bins", 100, 0, 1000);
+TH1F *hist_computed_HH_pt = new TH1F("hist_computed_HH_pt", "Truth HH pT distribution comparison; p_{T}(HH) [GeV];Events  / 10 bins", 100, 0, 1000);
+
+// Histograms for comparison of distributions of masses
+TH1F *hist_truth_HH_m = new TH1F("hist_truth_HH_m", "Truth HH mass distribution comparison; m(HH) [GeV];Events  / 10 bins", 300, 0, 3000);
+TH1F *hist_computed_HH_m = new TH1F("hist_computed_HH_m", "Truth HH mass distribution comparison; m(HH) [GeV];Events  / 10 bins", 300, 0, 3000);
+
+// Histograms for mass of HH cuts ratio_1
+
+TGraph *graph_mHH_cut_r1_class0 = new TGraph();
+TGraph *graph_mHH_cut_r1_class1 = new TGraph();
+TGraph *graph_mHH_cut_r1_class2 = new TGraph();
+TGraph *graph_mHH_cut_r1_class3 = new TGraph();
+
+TGraph *graph_mHH_cut_r2_class0 = new TGraph();
+TGraph *graph_mHH_cut_r2_class1 = new TGraph();
+TGraph *graph_mHH_cut_r2_class2 = new TGraph();
+TGraph *graph_mHH_cut_r2_class3 = new TGraph();

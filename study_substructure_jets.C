@@ -9,7 +9,7 @@ void study_substructure_jets(){
   // Set Branch Address for the leafs on each tree
   // ************************************* 
 
-  set_branch_address();
+  set_branch_address_inTree();
 
 
   Int_t nentries = inTree->GetEntries();
@@ -23,6 +23,22 @@ void study_substructure_jets(){
   int count_truth_Bbb_Rtautau = 0;
   int count_truth_Bbb_Btautau = 0;
 
+  int count_pos_resolved_b1_config = 0;
+  int count_pos_resolved_b2_config = 0;
+  int count_pos_resolved_tau1_config = 0;
+  int count_pos_resolved_tau2_config = 0;  
+
+  int count_pos_resolved_HH_pt_config = 0;
+  int count_pos_resolved_HH_phi_config = 0;
+  int count_pos_resolved_HH_eta_config = 0;
+  int count_pos_resolved_HH_m_config = 0;
+
+
+  int count_all_objects_resolved_config = 0;
+
+  int count_truth_HH_pt_pos_values = 0;
+  int count_truth_HH_m_pos_values = 0;
+  
   define_output_branches();
   
   
@@ -40,6 +56,23 @@ void study_substructure_jets(){
     if(class_event == 2){ count_truth_Bbb_Rtautau+=1; }
     if(class_event == 3){ count_truth_Bbb_Btautau+=1; }
 
+    if(bbtt_Jet_b1_pt_NOSYS > 0){ count_pos_resolved_b1_config+=1;}
+    if(bbtt_Jet_b2_pt_NOSYS > 0){ count_pos_resolved_b2_config+=1;}
+    if(bbtt_Tau1_pt_NOSYS > 0){ count_pos_resolved_tau1_config+=1;}
+    if(bbtt_Tau2_pt_NOSYS > 0){ count_pos_resolved_tau2_config+=1;}
+    
+    if(bbtt_HH_pt_NOSYS > 0){ count_pos_resolved_HH_pt_config+=1;}
+    if(bbtt_HH_eta > 0){ count_pos_resolved_HH_eta_config+=1;}
+    if(bbtt_HH_phi > 0){ count_pos_resolved_HH_phi_config+=1;}
+    if(bbtt_HH_m > 0){ count_pos_resolved_HH_m_config+=1;}
+    
+    if( (bbtt_Jet_b1_pt_NOSYS > 0) && (bbtt_Jet_b2_pt_NOSYS > 0) && (bbtt_Tau1_pt_NOSYS > 0) && (bbtt_Tau2_pt_NOSYS > 0) ){
+      count_all_objects_resolved_config+=1;
+    }
+
+    if(truth_HH_pt > 0){ count_truth_HH_pt_pos_values+=1;}
+    if(truth_HH_m > 0){ count_truth_HH_m_pos_values+=1;}
+    
     outTree->Fill();
   }
 
@@ -68,9 +101,22 @@ void study_substructure_jets(){
 
   cout << "Total entries: " << nentries << endl;
 
+  cout << "Number of events that passed the resolved selection (counting b1_pt positive values): " << count_pos_resolved_b1_config << endl;
+  cout << "Number of events that passed the resolved selection (counting b2_pt positive values): " << count_pos_resolved_b2_config << endl;
+  cout << "Number of events that passed the resolved selection (counting tau1_pt positive values): " << count_pos_resolved_tau1_config << endl;
+  cout << "Number of events that passed the resolved selection (counting tau2_pt positive values): " << count_pos_resolved_tau2_config << endl;
+  
+  cout << "Number of events that passed the resolved selection (counting HH_pt positive values): " << count_pos_resolved_HH_pt_config << endl;
+  cout << "Number of events that passed the resolved selection (counting HH_m positive values): " << count_pos_resolved_HH_m_config << endl;
+  
+  cout << "Number of events that passed the resolved selection (counting all possible objects values): " << count_all_objects_resolved_config << endl;
 
+  cout << "The number of positive values for truth_HH_pt is: " << count_truth_HH_pt_pos_values << endl;
+
+  cout << "The number of positive values for truth_HH_m is: " << count_truth_HH_m_pos_values << endl;
+  
   std::vector<TString> list_of_histograms = {"matched_recojet_bb_m", "matched_recojet_tautau_m", "matched_recojets_bb_pt", "matched_recojets_tautau_pt", "matched_recojets_bb_eta", "matched_recojets_tautau_eta", "non_matched_recojets_pt", "non_matched_recojets_eta", "non_matched_recojets_pt_no_class", "non_matched_recojets_eta_no_class", "events_per_class", "matched_bb_dR", "matched_tautau_dR"};
-
+  
   std::vector<TString> list_of_2D_histograms = {"dR_per_class_bb", "dR_per_class_tautau"};
   
   for(int ii=0; ii < list_of_histograms.size(); ii++){
@@ -80,7 +126,10 @@ void study_substructure_jets(){
   for(int ii=0; ii < list_of_2D_histograms.size(); ii++){
     plot_2D_distributions(list_of_2D_histograms[ii]);
   }
-  
+ 
+  plot_distributions_comparison("truth_HH_pt_comparison");
+  plot_distributions_comparison("truth_HH_m_comparison");
+
   inFile->Close();
   outFile->Close();
 }

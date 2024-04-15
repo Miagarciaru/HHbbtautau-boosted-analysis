@@ -4,49 +4,48 @@
 // Declaration of functions
 // *************************************
 
-//void plot_distributions(TString name_plot);
-
 void define_output_branches();
 void define_classes();
 void compute_dR_min_index_fat_jets();
 void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m);
 void deltaR(float &dR, float jet1_pt, float jet1_eta, float jet1_phi, float jet1_m, float jet2_pt, float jet2_eta, float jet2_phi, float jet2_m);
+void plot_distributions_comparison(TString name_plot);
 void plot_2D_distributions(TString name_plot);
 void plot_distributions(TString name_plot);
 void define_truth_tau_and_b_jets();
 void fill_histograms();
-void set_branch_address();
+void set_branch_address_inTree();
 void print_list_of_branches(TTree* tree);
+
 
 // *************************************
 // Definition of the functions declared above
 // *************************************
 
 
+// This function tell us on which class the event is given the next description:
+/*
+// Condition 1: To classify the events in the 4 classes, all the truth objects must have been matched to one recojet, i.e, all the truth
+// idx must be different to -1. If not, the class_event will be set to -1 (no belong to any of the 4 casses)
+
+// Condition 2: Those events where at least one b and one tau jets were matched to the same fat jet will be discarded because we
+// already know that this wouldn't be possible, so the class_event will be set to -1 (no belong to any of the 4 casses)
+
+// Condition 3: For boosted events, we need to ensure at leats two conditions: 1- The two truth objects (bb or tautau) must be matched to
+// the same fat jet and 2- the deltaR between these two truth objects must be less than 1. Thus, when we are considering the bb or tautau
+// truth jets, these criteria is going to tell us when the two jets are boosted.
+
+// Condition 4: For resolved events, we need to ensure that 1- the two truth objects (bb or tautau) have been matched to a different fat
+// jet and 2- the deltaR between these two truth objects are higher than 1.
+
+// Condition 4: Definition of the 4 classes:
+For R_bb R_tautau we setup 0
+For R_bb B_tautau we setup 1
+For B_bb R_tautau we setup 2
+For B_bb B_tautau we setup 3
+
+*/
 void define_classes(){
-
-  // class_event
-  /*
-  // Condition 1: To classify the events in the 4 classes, all the truth objects must have been matched to one recojet, i.e, all the truth
-  // idx must be different to -1. If not, the class_event will be set to -1 (no belong to any of the 4 casses)
-
-  // Condition 2: Those events where at least one b and one tau jets were matched to the same fat jet will be discarded because we
-  // already know that this wouldn't be possible, so the class_event will be set to -1 (no belong to any of the 4 casses)
-  
-  // Condition 3: For boosted events, we need to ensure at leats two conditions: 1- The two truth objects (bb or tautau) must be matched to
-  // the same fat jet and 2- the deltaR between these two truth objects must be less than 1. Thus, when we are considering the bb or tautau
-  // truth jets, these criteria is going to tell us when the two jets are boosted.
-
-  // Condition 4: For resolved events, we need to ensure that 1- the two truth objects (bb or tautau) have been matched to a different fat
-  // jet and 2- the deltaR between these two truth objects are higher than 1.
-
-  // Condition 4: Definition of the 4 classes:
-  For R_bb R_tautau we setup 0
-  For R_bb B_tautau we setup 1
-  For B_bb R_tautau we setup 2
-  For B_bb B_tautau we setup 3
-
-  */
 
   class_event = -1;
 
@@ -256,11 +255,56 @@ void define_truth_tau_and_b_jets(){
 }
 
 
+// Plot distribution comparisons
+
+void plot_distributions_comparison(TString name_plot){
+
+  TLegend *leg = new TLegend(0.7, 0.75, 0.85, 0.85);
+  TH1F *hist1 = new TH1F();
+  TH1F *hist2 = new TH1F();
+  TString name_image = "output/plots_comparison/";
+  name_image+=name_plot+".png";
+  
+  if(name_plot=="truth_HH_pt_comparison"){
+    hist1 = hist_truth_HH_pt;
+    hist2 = hist_computed_HH_pt;
+  }
+
+  if(name_plot=="truth_HH_m_comparison"){
+    hist1 = hist_truth_HH_m;
+    hist2 = hist_computed_HH_m;
+  }
+    
+  hist1->SetStats(0);
+  hist1->SetFillStyle(3001);
+  hist1->SetFillColorAlpha(kBlue, 0.45);
+  hist1->SetLineColor(4);
+
+  hist2->SetStats(0);
+  hist2->SetFillStyle(3003);
+  hist2->SetFillColorAlpha(kRed, 0.45);
+  hist2->SetLineColor(2);
+
+  ///// Plotting                                                                                                                              
+  TCanvas *can = new TCanvas("can","", 800, 600);
+
+  hist1->Draw("H");
+  hist2->Draw("sameH");
+
+  leg->AddEntry(hist1, "truth", "l");
+  leg->AddEntry(hist2, "computed","l");
+  leg->SetBorderSize();
+  leg->Draw();
+
+  can->Draw();
+  can->Print(name_image);
+}
+
 // Plot 2d histograms
 
 void plot_2D_distributions(TString name_plot){
 
-  TString name_image="plots/"+name_plot+".png";
+  TString name_image="output/plots_substructure_jets/"+name_plot+".png";
   
   ///// Plotting
   TCanvas *can = new TCanvas("can","", 800, 600);
@@ -269,12 +313,20 @@ void plot_2D_distributions(TString name_plot){
   if(name_plot == "dR_per_class_bb"){ hist = hist2d_dR_per_class_bb;}
   if(name_plot == "dR_per_class_tautau"){ hist = hist2d_dR_per_class_tautau;}
 
-  gStyle->SetPalette(52);
-  TColor::InvertPalette();
+  //gStyle->SetPalette(52);
+  //TColor::InvertPalette();
 
   hist->SetStats(0);
-  hist->Draw("colz");
-   
+  //hist->Draw("SURF");
+  hist->GetXaxis()->SetBinLabel(1, "R_{bb}-R_{#tau#tau}");
+  hist->GetXaxis()->SetBinLabel(2, "R_{bb}-B_{#tau#tau}");
+  hist->GetXaxis()->SetBinLabel(3, "B_{bb}-R_{#tau#tau}");
+  hist->GetXaxis()->SetBinLabel(4, "B_{bb}-B_{#tau#tau}");
+  
+  //  hist->Draw("SCAT");
+  //  hist->Draw("colz");
+  hist->Draw();
+  
   can->Draw();
   can->Print(name_image);
 }
@@ -284,7 +336,7 @@ void plot_2D_distributions(TString name_plot){
 
 void plot_distributions(TString name_plot){
 
-  TString name_image="plots/"+name_plot+".png";
+  TString name_image="output/plots_substructure_jets/"+name_plot+".png";
   
   ///// Plotting
   TCanvas *can = new TCanvas("can","", 800, 600);
@@ -316,13 +368,6 @@ void plot_distributions(TString name_plot){
 
   hist->Draw();
   
-  /*
-  leg->AddEntry(hist_boosted, "boosted", "l");
-  leg->AddEntry(hist_resolved,"resolved","l");
-  leg->SetBorderSize();
-  leg->Draw();
-  */
-  
   can->Draw();
   can->Print(name_image);
 }
@@ -337,7 +382,7 @@ void fill_histograms(){
   
   if(truth_children_fromH1_pdgId->size() == 2){
     if((TMath::Abs(truth_children_fromH1_pdgId->at(0)) == 5) && (TMath::Abs(truth_children_fromH1_pdgId->at(1)) == 5)){
-      float sum = truth_children_fromH1_m->at(0) + truth_children_fromH1_m->at(1);
+      float sum = truth_children_fromH1_m->at(0) + truth_children_fromH1_m->at(1); // Wrong assumption, we need to do it by using a TLorentzV
       hist_truth_b1_plus_b2_m->Fill(sum);
       hist_truth_b1_m->Fill(truth_children_fromH1_m->at(0));
       hist_truth_b2_m->Fill(truth_children_fromH1_m->at(1));
@@ -411,10 +456,32 @@ void fill_histograms(){
 
   // Fill the number of events per class
   hist_nevents_per_class->Fill(class_event);
+
+  // Fill the pT and mass distribution for truth and computed HH
+
+  TLorentzVector b1 = TLorentzVector();
+  TLorentzVector b2 = TLorentzVector();
+  TLorentzVector tau1 = TLorentzVector();
+  TLorentzVector tau2 = TLorentzVector();
+  TLorentzVector HH = TLorentzVector();
+ 
+  b1.SetPtEtaPhiM(truth_b1_pt/1000., truth_b1_eta, truth_b1_phi, truth_b1_m/1000.);
+  b2.SetPtEtaPhiM(truth_b2_pt/1000., truth_b2_eta, truth_b2_phi, truth_b2_m/1000.);
+  tau1.SetPtEtaPhiM(truth_tau1_pt/1000., truth_tau1_eta, truth_tau1_phi, truth_tau1_m/1000.);
+  tau2.SetPtEtaPhiM(truth_tau2_pt/1000., truth_tau2_eta, truth_tau2_phi, truth_tau2_m/1000.);
+
+  HH = b1 + b2 + tau1 + tau2;
+
+  hist_truth_HH_pt->Fill(truth_HH_pt/1000.);
+  hist_computed_HH_pt->Fill(HH.Pt()); // This value is already given in GeV
+
+  hist_truth_HH_m->Fill(truth_HH_m/1000.);
+  hist_computed_HH_m->Fill(HH.M()); // This value is already given in GeV
+  
 }
 
 // This function saves the branches info for a given tree in the variables defined above
-void set_branch_address(){
+void set_branch_address_inTree(){
 
   inTree->SetBranchAddress("truth_children_fromH1_pdgId", &truth_children_fromH1_pdgId, &b_truth_children_fromH1_pdgId);
   inTree->SetBranchAddress("truth_children_fromH1_pt", &truth_children_fromH1_pt, &b_truth_children_fromH1_pt);
@@ -428,42 +495,42 @@ void set_branch_address(){
   inTree->SetBranchAddress("truth_children_fromH2_phi", &truth_children_fromH2_phi, &b_truth_children_fromH2_phi);
   inTree->SetBranchAddress("truth_children_fromH2_m", &truth_children_fromH2_m, &b_truth_children_fromH2_m);
 
-  /*
-  inTree->SetBranchAddress("truth_b1_pt", &truth_b1_pt, b_truth_b1_pt);
-  inTree->SetBranchAddress("truth_b1_eta", &truth_b1_eta, b_truth_b1_eta);
-  inTree->SetBranchAddress("truth_b1_phi", &truth_b1_phi, b_truth_b1_phi);
-  inTree->SetBranchAddress("truth_b1_m", &truth_b1_m, b_truth_b1_m);
-
-  inTree->SetBranchAddress("truth_b2_pt", &truth_b2_pt, b_truth_b2_pt);
-  inTree->SetBranchAddress("truth_b2_eta", &truth_b2_eta, b_truth_b2_eta);
-  inTree->SetBranchAddress("truth_b2_phi", &truth_b2_phi, b_truth_b2_phi);
-  inTree->SetBranchAddress("truth_b2_m", &truth_b2_m, b_truth_b2_m);
-
-  inTree->SetBranchAddress("truth_tau1_pt", &truth_tau1_pt, b_truth_tau1_pt);
-  inTree->SetBranchAddress("truth_tau1_eta", &truth_tau1_eta, b_truth_tau1_eta);
-  inTree->SetBranchAddress("truth_tau1_phi", &truth_tau1_phi, b_truth_tau1_phi);
-  inTree->SetBranchAddress("truth_tau1_m", &truth_tau1_m, b_truth_tau1_m);
+  inTree->SetBranchAddress("truth_HH_pt", &truth_HH_pt, &b_truth_HH_pt);
+  inTree->SetBranchAddress("truth_HH_eta", &truth_HH_eta, &b_truth_HH_eta);
+  inTree->SetBranchAddress("truth_HH_phi", &truth_HH_phi, &b_truth_HH_phi);
+  inTree->SetBranchAddress("truth_HH_m", &truth_HH_m, &b_truth_HH_m);
   
-  inTree->SetBranchAddress("truth_tau2_pt", &truth_tau2_pt, b_truth_tau2_pt);
-  inTree->SetBranchAddress("truth_tau2_eta", &truth_tau2_eta, b_truth_tau2_eta);
-  inTree->SetBranchAddress("truth_tau2_phi", &truth_tau2_phi, b_truth_tau2_phi);
-  inTree->SetBranchAddress("truth_tau2_m", &truth_tau2_m, b_truth_tau2_m);
-  */
-
   inTree->SetBranchAddress("recojet_antikt10UFO_NOSYS_pt", &recojet_antikt10UFO_NOSYS_pt, &b_recojet_antikt10UFO_NOSYS_pt);
   inTree->SetBranchAddress("recojet_antikt10UFO_eta", &recojet_antikt10UFO_eta, &b_recojet_antikt10UFO_eta);
   inTree->SetBranchAddress("recojet_antikt10UFO_phi", &recojet_antikt10UFO_phi, &b_recojet_antikt10UFO_phi);
   inTree->SetBranchAddress("recojet_antikt10UFO_m", &recojet_antikt10UFO_m, &b_recojet_antikt10UFO_m);
-  
-  
-  inTree->SetBranchAddress("bbtt_H_vis_tautau_pt_NOSYS", &bbtt_H_vis_tautau_pt_NOSYS, &b_bbtt_H_vis_tautau_pt_NOSYS);
-  inTree->SetBranchAddress("bbtt_H_vis_tautau_m", &bbtt_H_vis_tautau_m, &b_bbtt_H_vis_tautau_m);
-  inTree->SetBranchAddress("bbtt_H_bb_pt_NOSYS", &bbtt_H_bb_pt_NOSYS, &b_bbtt_H_bb_pt_NOSYS);
+    
   inTree->SetBranchAddress("bbtt_Jet_b1_pt_NOSYS", &bbtt_Jet_b1_pt_NOSYS, &b_bbtt_Jet_b1_pt_NOSYS);
+  inTree->SetBranchAddress("bbtt_Jet_b1_eta", &bbtt_Jet_b1_eta, &b_bbtt_Jet_b1_eta);
+  inTree->SetBranchAddress("bbtt_Jet_b1_phi", &bbtt_Jet_b1_phi, &b_bbtt_Jet_b1_phi);
+  inTree->SetBranchAddress("bbtt_Jet_b1_E", &bbtt_Jet_b1_E, &b_bbtt_Jet_b1_E);
+
   inTree->SetBranchAddress("bbtt_Jet_b2_pt_NOSYS", &bbtt_Jet_b2_pt_NOSYS, &b_bbtt_Jet_b2_pt_NOSYS);
-  inTree->SetBranchAddress("bbtt_H_bb_m", &bbtt_H_bb_m, &b_bbtt_H_bb_m);
+  inTree->SetBranchAddress("bbtt_Jet_b2_eta", &bbtt_Jet_b2_eta, &b_bbtt_Jet_b2_eta);
+  inTree->SetBranchAddress("bbtt_Jet_b2_phi", &bbtt_Jet_b2_phi, &b_bbtt_Jet_b2_phi);
+  inTree->SetBranchAddress("bbtt_Jet_b2_E", &bbtt_Jet_b2_E, &b_bbtt_Jet_b2_E);
+
+  inTree->SetBranchAddress("bbtt_Tau1_pt_NOSYS", &bbtt_Tau1_pt_NOSYS, &b_bbtt_Tau1_pt_NOSYS);
+  inTree->SetBranchAddress("bbtt_Tau1_eta", &bbtt_Tau1_eta, &b_bbtt_Tau1_eta);
+  inTree->SetBranchAddress("bbtt_Tau1_phi", &bbtt_Tau1_phi, &b_bbtt_Tau1_phi);
+  inTree->SetBranchAddress("bbtt_Tau1_E", &bbtt_Tau1_E, &b_bbtt_Tau1_E);
+  
+  inTree->SetBranchAddress("bbtt_Tau2_pt_NOSYS", &bbtt_Tau2_pt_NOSYS, &b_bbtt_Tau2_pt_NOSYS);
+  inTree->SetBranchAddress("bbtt_Tau2_eta", &bbtt_Tau2_eta, &b_bbtt_Tau2_eta);
+  inTree->SetBranchAddress("bbtt_Tau2_phi", &bbtt_Tau2_phi, &b_bbtt_Tau2_phi);
+  inTree->SetBranchAddress("bbtt_Tau2_E", &bbtt_Tau2_E, &b_bbtt_Tau2_E);
+  
+  inTree->SetBranchAddress("bbtt_HH_pt_NOSYS", &bbtt_HH_pt_NOSYS, &b_bbtt_HH_pt_NOSYS);
+  inTree->SetBranchAddress("bbtt_HH_eta", &bbtt_HH_eta, &b_bbtt_HH_eta);
+  inTree->SetBranchAddress("bbtt_HH_phi", &bbtt_HH_phi, &b_bbtt_HH_phi);
+  inTree->SetBranchAddress("bbtt_HH_m", &bbtt_HH_m, &b_bbtt_HH_m);
+
   inTree->SetBranchAddress("generatorWeight_NOSYS", &generatorWeight_NOSYS, &b_generatorWeight_NOSYS);
-  //inTree->SetBranchAddress("tau_NOSYS_passesOR", &tau_NOSYS_passesOR, &b_tau_NOSYS_passesOR);
   inTree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_passesOR", &recojet_antikt4PFlow_NOSYS_passesOR, &b_recojet_antikt4PFlow_NOSYS_passesOR);
   
 }
@@ -481,6 +548,11 @@ void define_output_branches(){
   outTree->Branch("truth_children_fromH2_eta", &truth_children_fromH2_eta);
   outTree->Branch("truth_children_fromH2_phi", &truth_children_fromH2_phi);
   outTree->Branch("truth_children_fromH2_m", &truth_children_fromH2_m);
+
+  outTree->Branch("truth_HH_pt", &truth_HH_pt);
+  outTree->Branch("truth_HH_eta", &truth_HH_eta);
+  outTree->Branch("truth_HH_phi", &truth_HH_phi);
+  outTree->Branch("truth_HH_m", &truth_HH_m);
 
   outTree->Branch("truth_b1_pt", &truth_b1_pt);
   outTree->Branch("truth_b1_eta", &truth_b1_eta);
@@ -519,16 +591,31 @@ void define_output_branches(){
 
   outTree->Branch("class_event", &class_event);
 
-  outTree->Branch("bbtt_H_vis_tautau_pt_NOSYS", &bbtt_H_vis_tautau_pt_NOSYS);
-  outTree->Branch("bbtt_H_vis_tautau_m", &bbtt_H_vis_tautau_m);
-  outTree->Branch("bbtt_H_bb_pt_NOSYS", &bbtt_H_bb_pt_NOSYS);
-  outTree->Branch("bbtt_Jet_b1_pt_NOSYS", &bbtt_Jet_b1_pt_NOSYS);
-  outTree->Branch("bbtt_Jet_b2_pt_NOSYS", &bbtt_Jet_b2_pt_NOSYS);
-  outTree->Branch("bbtt_H_bb_m", &bbtt_H_bb_m);
-  //outTree->Branch("generatorWeight_NOSYS", &generatorWeight_NOSYS);
-  //inTree->Branch("tau_NOSYS_passesOR", &tau_NOSYS_passesOR);
-  //outTree->Branch("recojet_antikt4PFlow_NOSYS_passesOR", &recojet_antikt4PFlow_NOSYS_passesOR);
+  outTree->Branch("bbtt_Jet_b1_pt_NOSYS_Resolved_Selection", &bbtt_Jet_b1_pt_NOSYS);
+  outTree->Branch("bbtt_Jet_b1_eta_Resolved_Selection", &bbtt_Jet_b1_eta);
+  outTree->Branch("bbtt_Jet_b1_phi_Resolved_Selection", &bbtt_Jet_b1_phi);
+  outTree->Branch("bbtt_Jet_b1_E_Resolved_Selection", &bbtt_Jet_b1_E);
+
+  outTree->Branch("bbtt_Jet_b2_pt_NOSYS_Resolved_Selection", &bbtt_Jet_b2_pt_NOSYS);
+  outTree->Branch("bbtt_Jet_b2_eta_Resolved_Selection", &bbtt_Jet_b2_eta);
+  outTree->Branch("bbtt_Jet_b2_phi_Resolved_Selection", &bbtt_Jet_b2_phi);
+  outTree->Branch("bbtt_Jet_b2_E_Resolved_Selection", &bbtt_Jet_b2_E);
+
+  outTree->Branch("bbtt_Tau1_pt_NOSYS_Resolved_Selection", &bbtt_Tau1_pt_NOSYS);
+  outTree->Branch("bbtt_Tau1_eta_Resolved_Selection", &bbtt_Tau1_eta);
+  outTree->Branch("bbtt_Tau1_phi_Resolved_Selection", &bbtt_Tau1_phi);
+  outTree->Branch("bbtt_Tau1_E_Resolved_Selection", &bbtt_Tau1_E);
   
+  outTree->Branch("bbtt_Tau2_pt_NOSYS_Resolved_Selection", &bbtt_Tau2_pt_NOSYS);
+  outTree->Branch("bbtt_Tau2_eta_Resolved_Selection", &bbtt_Tau2_eta);
+  outTree->Branch("bbtt_Tau2_phi_Resolved_Selection", &bbtt_Tau2_phi);
+  outTree->Branch("bbtt_Tau2_E_Resolved_Selection", &bbtt_Tau2_E);
+  
+  outTree->Branch("bbtt_HH_pt_NOSYS_Resolved_Selection", &bbtt_HH_pt_NOSYS);
+  outTree->Branch("bbtt_HH_eta_Resolved_Selection", &bbtt_HH_eta);
+  outTree->Branch("bbtt_HH_phi_Resolved_Selection", &bbtt_HH_phi);
+  outTree->Branch("bbtt_HH_m_Resolved_Selection", &bbtt_HH_m);
+ 
 }
 
 // This function prints the list of branches of a given tree
