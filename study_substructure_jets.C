@@ -33,6 +33,9 @@ void study_substructure_jets(){
   int count_pos_resolved_HH_eta_config = 0;
   int count_pos_resolved_HH_m_config = 0;
 
+  int count_pos_resolved_HH_vis_pt_config = 0;
+  int count_pos_resolved_HH_vis_m_config = 0;
+
 
   int count_all_objects_resolved_config = 0;
 
@@ -49,6 +52,7 @@ void study_substructure_jets(){
     compute_dR_min_index_fat_jets();
     define_classes();
     fill_histograms();
+    acceptance_mHH_variable();
     
     if(class_event == -1){ count_non_matched_events+=1; }
     if(class_event == 0){ count_truth_Rbb_Rtautau+=1; } 
@@ -65,7 +69,10 @@ void study_substructure_jets(){
     if(bbtt_HH_eta > 0){ count_pos_resolved_HH_eta_config+=1;}
     if(bbtt_HH_phi > 0){ count_pos_resolved_HH_phi_config+=1;}
     if(bbtt_HH_m > 0){ count_pos_resolved_HH_m_config+=1;}
-    
+
+    if(bbtt_HH_vis_pt_NOSYS > 0){ count_pos_resolved_HH_vis_pt_config+=1;}
+    if(bbtt_HH_vis_m > 0){ count_pos_resolved_HH_vis_m_config+=1;}
+   
     if( (bbtt_Jet_b1_pt_NOSYS > 0) && (bbtt_Jet_b2_pt_NOSYS > 0) && (bbtt_Tau1_pt_NOSYS > 0) && (bbtt_Tau2_pt_NOSYS > 0) ){
       count_all_objects_resolved_config+=1;
     }
@@ -106,15 +113,18 @@ void study_substructure_jets(){
   cout << "Number of events that passed the resolved selection (counting tau1_pt positive values): " << count_pos_resolved_tau1_config << endl;
   cout << "Number of events that passed the resolved selection (counting tau2_pt positive values): " << count_pos_resolved_tau2_config << endl;
   
-  cout << "Number of events that passed the resolved selection (counting HH_pt positive values): " << count_pos_resolved_HH_pt_config << endl;
-  cout << "Number of events that passed the resolved selection (counting HH_m positive values): " << count_pos_resolved_HH_m_config << endl;
+  cout << "Number of events that passed the resolved selection (counting bbtt_HH_pt positive values): " << count_pos_resolved_HH_pt_config << endl;
+  cout << "Number of events that passed the resolved selection (counting bbtt_HH_m positive values): " << count_pos_resolved_HH_m_config << endl;
+
+  cout << "Number of events that passed the resolved selection (counting bbtt_HH_vis_pt positive values): " << count_pos_resolved_HH_vis_pt_config << endl;
+  cout << "Number of events that passed the resolved selection (counting bbtt_HH_vis_m positive values): " << count_pos_resolved_HH_vis_m_config << endl;
   
   cout << "Number of events that passed the resolved selection (counting all possible objects values): " << count_all_objects_resolved_config << endl;
 
   cout << "The number of positive values for truth_HH_pt is: " << count_truth_HH_pt_pos_values << endl;
 
   cout << "The number of positive values for truth_HH_m is: " << count_truth_HH_m_pos_values << endl;
-  
+
   std::vector<TString> list_of_histograms = {"matched_recojet_bb_m", "matched_recojet_tautau_m", "matched_recojets_bb_pt", "matched_recojets_tautau_pt", "matched_recojets_bb_eta", "matched_recojets_tautau_eta", "non_matched_recojets_pt", "non_matched_recojets_eta", "non_matched_recojets_pt_no_class", "non_matched_recojets_eta_no_class", "events_per_class", "matched_bb_dR", "matched_tautau_dR"};
   
   std::vector<TString> list_of_2D_histograms = {"dR_per_class_bb", "dR_per_class_tautau"};
@@ -127,9 +137,20 @@ void study_substructure_jets(){
     plot_2D_distributions(list_of_2D_histograms[ii]);
   }
  
-  plot_distributions_comparison("truth_HH_pt_comparison");
-  plot_distributions_comparison("truth_HH_m_comparison");
+  //plot_distributions_comparison("truth_HH_pt_comparison");
+  //plot_distributions_comparison("truth_HH_m_comparison");
+ 
+  
+  std::vector<TString> list_of_ratios_acceptance = {"class0_r1_mHH", "class1_r1_mHH", "class2_r1_mHH", "class3_r1_mHH", "class0_r2_mHH", "class1_r2_mHH", "class2_r2_mHH", "class3_r2_mHH"};
 
+  //std::vector<TString> list_of_ratios_acceptance = {"class0_r1_mHH"};
+
+  for(int ii=0; ii < list_of_ratios_acceptance.size(); ii++){
+    plot_ratios_acceptance(list_of_ratios_acceptance[ii]);
+  }
+  
+  //plot_ratios_acceptance_group("acceptance_mHH_r1");
+  
   inFile->Close();
   outFile->Close();
 }
