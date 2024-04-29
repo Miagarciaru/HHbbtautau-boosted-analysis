@@ -4,6 +4,9 @@
 // Declaration of functions
 // *************************************
 
+void plot_ratios_acceptance(TString name_plot);
+void plot_ratios_acceptance_group(TString name_plot);
+void acceptance_mHH_variable();
 void define_output_branches();
 void define_classes();
 void compute_dR_min_index_fat_jets();
@@ -21,6 +24,235 @@ void print_list_of_branches(TTree* tree);
 // *************************************
 // Definition of the functions declared above
 // *************************************
+
+void plot_ratios_acceptance(TString name_plot){
+
+  TLegend *leg = new TLegend(0.25, 0.70, 0.40, 0.80);
+
+  TString name_image = "output/plots_ratios/";
+  name_image+=name_plot+".png";
+  
+
+  TH1F *hist_ratio = new TH1F();
+  TH1F *hist_ratio_den = new TH1F();
+
+  TString label_leg = "";
+  TString title_plot = "";
+
+  TEfficiency *pEff = 0;
+  
+  if(name_plot == "class0_r1_mHH"){
+    TH1F *hist_ratio = (TH1F*)hist_acceptance_mHH_numerator_class0->Clone();
+    TH1F *hist_ratio_den = (TH1F*)hist_acceptance_mHH_denominator->Clone();
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHH_numerator_class0, *hist_acceptance_mHH_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHH_numerator_class0, *hist_acceptance_mHH_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }  
+    label_leg = "R_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  
+  if(name_plot == "class1_r1_mHH"){
+    hist_ratio = hist_acceptance_mHH_numerator_class1;
+    hist_ratio_den = hist_acceptance_mHH_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHH_numerator_class1, *hist_acceptance_mHH_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHH_numerator_class1, *hist_acceptance_mHH_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class2_r1_mHH"){
+    hist_ratio = hist_acceptance_mHH_numerator_class2;
+    hist_ratio_den = hist_acceptance_mHH_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHH_numerator_class2, *hist_acceptance_mHH_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHH_numerator_class2, *hist_acceptance_mHH_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class3_r1_mHH"){
+    hist_ratio = hist_acceptance_mHH_numerator_class3;
+    hist_ratio_den = hist_acceptance_mHH_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHH_numerator_class3, *hist_acceptance_mHH_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHH_numerator_class3, *hist_acceptance_mHH_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+
+  if(name_plot == "class0_r2_mHH"){
+    hist_ratio = hist_acceptance_mHH_numerator_class0;
+    hist_ratio_den = hist_acceptance_mHH_denominator_class0;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHH_numerator_class0, *hist_acceptance_mHH_denominator_class0)){
+      pEff = new TEfficiency(*hist_acceptance_mHH_numerator_class0, *hist_acceptance_mHH_denominator_class0);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class1_r2_mHH"){
+    hist_ratio = hist_acceptance_mHH_numerator_class1;
+    hist_ratio_den = hist_acceptance_mHH_denominator_class1;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHH_numerator_class1, *hist_acceptance_mHH_denominator_class1)){
+      pEff = new TEfficiency(*hist_acceptance_mHH_numerator_class1, *hist_acceptance_mHH_denominator_class1);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class2_r2_mHH"){
+    hist_ratio = hist_acceptance_mHH_numerator_class2;
+    hist_ratio_den = hist_acceptance_mHH_denominator_class2;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHH_numerator_class2, *hist_acceptance_mHH_denominator_class2)){
+      pEff = new TEfficiency(*hist_acceptance_mHH_numerator_class2, *hist_acceptance_mHH_denominator_class2);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class3_r2_mHH"){
+    hist_ratio = hist_acceptance_mHH_numerator_class3;
+    hist_ratio_den = hist_acceptance_mHH_denominator_class3;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHH_numerator_class3, *hist_acceptance_mHH_denominator_class3)){
+      pEff = new TEfficiency(*hist_acceptance_mHH_numerator_class3, *hist_acceptance_mHH_denominator_class3);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  
+  
+  hist_ratio->SetStats(0);
+  hist_ratio->Divide(hist_ratio_den);
+  hist_ratio->SetTitle(title_plot);
+  hist_ratio->SetLineColor(1);
+
+  ///// Plotting                                                                                                                              
+  TCanvas *can = new TCanvas("can","", 800, 600);
+
+  //hist_ratio_class0_r1->SetMaximum(1.05);
+
+  //hist_ratio->Draw("H");
+  
+  pEff->SetTitle(title_plot);
+  pEff->Draw("AP");
+  
+  leg->AddEntry(hist_ratio, label_leg, "l");
+  leg->SetBorderSize();
+  leg->Draw();
+
+  can->Draw();
+  can->Print(name_image);
+  
+}
+
+
+void plot_ratios_acceptance_group(TString name_plot){
+
+  TLegend *leg = new TLegend(0.15, 0.60, 0.30, 0.80);
+
+  TString name_image = "output/plots_ratios/";
+  name_image+=name_plot+".png";
+
+  TH1F *hist_ratio_class0_r1 = (TH1F*)hist_acceptance_mHH_numerator_class0->Clone("hist_ratio_class0_r1");
+  TH1F *hist_ratio_class1_r1 = (TH1F*)hist_acceptance_mHH_numerator_class1->Clone("hist_ratio_class1_r1");
+  TH1F *hist_ratio_class2_r1 = (TH1F*)hist_acceptance_mHH_numerator_class2->Clone("hist_ratio_class2_r1");
+  TH1F *hist_ratio_class3_r1 = (TH1F*)hist_acceptance_mHH_numerator_class3->Clone("hist_ratio_class3_r1");
+    
+  hist_ratio_class0_r1->SetStats(0);
+  hist_ratio_class0_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class0_r1->SetLineColor(2);
+
+  hist_ratio_class1_r1->SetStats(0);
+  hist_ratio_class1_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class1_r1->SetLineColor(3);
+
+  hist_ratio_class2_r1->SetStats(0);
+  hist_ratio_class2_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class2_r1->SetLineColor(6);
+
+  hist_ratio_class3_r1->SetStats(0);
+  hist_ratio_class3_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class3_r1->SetLineColor(4);
+  
+  ///// Plotting                                                                                                                              
+  TCanvas *can = new TCanvas("can","", 800, 600);
+  /*
+  hist_ratio_class0_r1->SetMaximum(1.05);
+  hist_ratio_class1_r1->SetMaximum(1.05);
+  hist_ratio_class2_r1->SetMaximum(1.05);
+  hist_ratio_class3_r1->SetMaximum(1.05);
+  */
+  
+  hist_ratio_class0_r1->Draw("H");
+  hist_ratio_class1_r1->Draw("sameH");
+  hist_ratio_class2_r1->Draw("sameH");
+  hist_ratio_class3_r1->Draw("sameH");
+ 
+  //hist_ratio_class3_r1->Draw("H");
+  
+  leg->AddEntry(hist_ratio_class0_r1, "R_{bb}-R_{#tau#tau}", "l");
+  leg->AddEntry(hist_ratio_class1_r1, "R_{bb}-B_{#tau#tau}", "l");
+  leg->AddEntry(hist_ratio_class2_r1, "B_{bb}-R_{#tau#tau}", "l");
+  leg->AddEntry(hist_ratio_class3_r1, "B_{bb}-B_{#tau#tau}", "l");
+
+  leg->SetBorderSize();
+  leg->Draw();
+
+  can->Draw();
+  can->Print(name_image);
+  
+}
+
+void acceptance_mHH_variable(){
+
+  if(bbtt_HH_vis_m > 0){
+    hist_acceptance_mHH_denominator->Fill(truth_HH_m/1000.);
+  }
+
+  if(class_event != -1){
+    if(class_event == 0){
+      hist_acceptance_mHH_denominator_class0->Fill(truth_HH_m/1000.);
+    }
+    if(class_event == 1){
+      hist_acceptance_mHH_denominator_class1->Fill(truth_HH_m/1000.);
+    }
+    if(class_event == 2){
+      hist_acceptance_mHH_denominator_class2->Fill(truth_HH_m/1000.);
+    }
+    if(class_event == 3){
+      hist_acceptance_mHH_denominator_class3->Fill(truth_HH_m/1000.);
+    }
+  }
+  
+  if( (bbtt_HH_vis_m > 0) && (class_event != -1)){
+
+    //cout << class_event << "\t \t" << bbtt_HH_m/1000. << "\t \t" << truth_HH_m/1000. << endl;
+    if(class_event == 0){
+      hist_acceptance_mHH_numerator_class0->Fill(truth_HH_m/1000.);
+    } // RbbRtautau
+    if(class_event == 1){
+      hist_acceptance_mHH_numerator_class1->Fill(truth_HH_m/1000.);
+    } // RbbBtautau
+    if(class_event == 2){
+      hist_acceptance_mHH_numerator_class2->Fill(truth_HH_m/1000.);
+    } // BbbRtautau
+    if(class_event == 3){
+      hist_acceptance_mHH_numerator_class3->Fill(truth_HH_m/1000.);
+    } // BbbBtautau
+  }
+}
 
 
 // This function tell us on which class the event is given the next description:
@@ -530,6 +762,9 @@ void set_branch_address_inTree(){
   inTree->SetBranchAddress("bbtt_HH_phi", &bbtt_HH_phi, &b_bbtt_HH_phi);
   inTree->SetBranchAddress("bbtt_HH_m", &bbtt_HH_m, &b_bbtt_HH_m);
 
+  inTree->SetBranchAddress("bbtt_HH_vis_pt_NOSYS", &bbtt_HH_vis_pt_NOSYS, &b_bbtt_HH_vis_pt_NOSYS);
+  inTree->SetBranchAddress("bbtt_HH_vis_m", &bbtt_HH_vis_m, &b_bbtt_HH_vis_m);
+  
   inTree->SetBranchAddress("generatorWeight_NOSYS", &generatorWeight_NOSYS, &b_generatorWeight_NOSYS);
   inTree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_passesOR", &recojet_antikt4PFlow_NOSYS_passesOR, &b_recojet_antikt4PFlow_NOSYS_passesOR);
   
@@ -615,7 +850,9 @@ void define_output_branches(){
   outTree->Branch("bbtt_HH_eta_Resolved_Selection", &bbtt_HH_eta);
   outTree->Branch("bbtt_HH_phi_Resolved_Selection", &bbtt_HH_phi);
   outTree->Branch("bbtt_HH_m_Resolved_Selection", &bbtt_HH_m);
- 
+
+  outTree->Branch("bbtt_HH_vis_pt_NOSYS", &bbtt_HH_vis_pt_NOSYS);
+  outTree->Branch("bbtt_HH_vis_m", &bbtt_HH_vis_m);
 }
 
 // This function prints the list of branches of a given tree

@@ -8,11 +8,16 @@
 
 //TString path="../run/mc20_13TeV_600459_ggf_hadhad_cHHH01d0/mc20_13TeV_600459_ggf_hadhad_cHHH01d0_PHYS_merged_";                            
 //TString path="../run/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1_PHYS_merged_";                      
-TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
+//TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
+//TString path="../run/boosted_sample.root"; // The vbf hadhad, lephad cvv1p5 and ggf SM
+TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/boosted_samples/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root";
 
 
 //TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
-TString path_sample=path+"boosted_bypass_config.root";
+//TString path_sample=path+"boosted_bypass_config.root";
+//TString path_sample="../run/boosted_sample.root";
+TString path_sample="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/boosted_samples/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root";
+
 
 // Open the input files and access to the trees                                                                                             
 
@@ -124,6 +129,10 @@ Float_t bbtt_HH_eta;
 Float_t bbtt_HH_phi;
 Float_t bbtt_HH_m;
 
+Float_t bbtt_HH_vis_pt_NOSYS;
+Float_t bbtt_HH_vis_m;
+
+
 Float_t generatorWeight_NOSYS;
 vector<char> *recojet_antikt4PFlow_NOSYS_passesOR;
 
@@ -133,7 +142,7 @@ vector<char> *recojet_antikt4PFlow_NOSYS_passesOR;
 // *************************************
 
 
-// truth childre from Higgs
+// truth children from Higgs
 TBranch *b_truth_children_fromH1_pdgId;
 TBranch *b_truth_children_fromH2_pdgId;
 TBranch *b_truth_children_fromH1_pt;
@@ -223,6 +232,9 @@ TBranch *b_bbtt_HH_eta;
 TBranch *b_bbtt_HH_phi;
 TBranch *b_bbtt_HH_m;
 
+TBranch *b_bbtt_HH_vis_pt_NOSYS;
+TBranch *b_bbtt_HH_vis_m;
+
 TBranch *b_generatorWeight_NOSYS;
 TBranch *b_recojet_antikt4PFlow_NOSYS_passesOR;
 
@@ -287,14 +299,29 @@ TH1F *hist_computed_HH_pt = new TH1F("hist_computed_HH_pt", "Truth HH pT distrib
 TH1F *hist_truth_HH_m = new TH1F("hist_truth_HH_m", "Truth HH mass distribution comparison; m(HH) [GeV];Events  / 10 bins", 300, 0, 3000);
 TH1F *hist_computed_HH_m = new TH1F("hist_computed_HH_m", "Truth HH mass distribution comparison; m(HH) [GeV];Events  / 10 bins", 300, 0, 3000);
 
-// Histograms for mass of HH cuts ratio_1
+// Histograms for mass of HH cuts ratio_1 and ratio_2
 
-TGraph *graph_mHH_cut_r1_class0 = new TGraph();
-TGraph *graph_mHH_cut_r1_class1 = new TGraph();
-TGraph *graph_mHH_cut_r1_class2 = new TGraph();
-TGraph *graph_mHH_cut_r1_class3 = new TGraph();
+TH1F *hist_acceptance_mHH_numerator_class0 = new TH1F("hist_acceptance_mHH_numerator_class0", "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHH_numerator_class1 = new TH1F("hist_acceptance_mHH_numerator_class1", "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHH_numerator_class2 = new TH1F("hist_acceptance_mHH_numerator_class2", "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHH_numerator_class3 = new TH1F("hist_acceptance_mHH_numerator_class3", "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio", 35, 200, 1200);
 
-TGraph *graph_mHH_cut_r2_class0 = new TGraph();
-TGraph *graph_mHH_cut_r2_class1 = new TGraph();
-TGraph *graph_mHH_cut_r2_class2 = new TGraph();
-TGraph *graph_mHH_cut_r2_class3 = new TGraph();
+TH1F *hist_acceptance_mHH_denominator = new TH1F("hist_acceptance_mHH_denominator", "Acceptance plot using the mass mHH variable; m(HH) [GeV];Ratio", 35, 200, 1200);
+
+TH1F *hist_acceptance_mHH_denominator_class0 = new TH1F("hist_acceptance_mHH_denominator_class0", "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHH_denominator_class1 = new TH1F("hist_acceptance_mHH_denominator_class1", "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHH_denominator_class2 = new TH1F("hist_acceptance_mHH_denominator_class2", "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHH_denominator_class3 = new TH1F("hist_acceptance_mHH_denominator_class3", "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio", 35, 200, 1200);
+
+
+TEfficiency *teff_acceptance_mHH_numerator_class0 = new TEfficiency("teff_acceptance_mHH_numerator_class0", "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TEfficiency *teff_acceptance_mHH_numerator_class1 = new TEfficiency("teff_acceptance_mHH_numerator_class1", "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TEfficiency *teff_acceptance_mHH_numerator_class2 = new TEfficiency("teff_acceptance_mHH_numerator_class2", "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TEfficiency *teff_acceptance_mHH_numerator_class3 = new TEfficiency("teff_acceptance_mHH_numerator_class3", "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio", 35, 200, 1200);
+
+TEfficiency *teff_acceptance_mHH_denominator = new TEfficiency("teff_acceptance_mHH_denominator", "Acceptance plot using the mass mHH variable; m(HH) [GeV];Ratio", 35, 200, 1200);
+
+TEfficiency *teff_acceptance_mHH_denominator_class0 = new TEfficiency("teff_acceptance_mHH_denominator_class0", "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TEfficiency *teff_acceptance_mHH_denominator_class1 = new TEfficiency("teff_acceptance_mHH_denominator_class1", "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TEfficiency *teff_acceptance_mHH_denominator_class2 = new TEfficiency("teff_acceptance_mHH_denominator_class2", "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio", 35, 200, 1200);
+TEfficiency *teff_acceptance_mHH_denominator_class3 = new TEfficiency("teff_acceptance_mHH_denominator_class3", "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio", 35, 200, 1200);
