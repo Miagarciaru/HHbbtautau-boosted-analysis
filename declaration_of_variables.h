@@ -10,13 +10,18 @@
 //TString path="../run/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1_PHYS_merged_";                      
 //TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
 //TString path="../run/boosted_sample.root"; // The vbf hadhad, lephad cvv1p5 and ggf SM
-TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/boosted_samples/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root";
+//TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/boosted_samples/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root";
 
 
 //TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
 //TString path_sample=path+"boosted_bypass_config.root";
 //TString path_sample="../run/boosted_sample.root";
-TString path_sample="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/boosted_samples/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root";
+//TString path_sample="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/boosted_samples/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root";
+
+// TString path_sample = "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted_samples/mc20_13TeV_502982_vbf_hadhad_l1cvv1cv1/boosted_samples/mc20_13TeV_502982_vbf_hadhad_l1cvv1cv1_PHYS_merged_boosted_bypass_config.root";
+
+/*
+TString path_sample = "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted_samples/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1/boosted_samples/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root";
 
 
 // Open the input files and access to the trees                                                                                             
@@ -28,7 +33,7 @@ TTree* inTree = (TTree*) inFile->Get("AnalysisMiniTree");
 
 TFile* outFile = new TFile("output/study_boosted_regions.root", "RECREATE");
 TTree* outTree = new TTree("AnalysisMiniTree", "AnalysisMiniTree");
-
+*/
 
 // *************************************
 // Declaration of leaf variables

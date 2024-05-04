@@ -4,20 +4,21 @@
 // Declaration of functions
 // *************************************
 
-void plot_ratios_acceptance(TString name_plot);
-void plot_ratios_acceptance_group(TString name_plot);
+void plot_ratios_acceptance(TString name_plot, TString output_folder);
+void plot_ratios_acceptance_group(TString name_plot, TString output_folder);
 void acceptance_mHH_variable();
 void define_output_branches();
 void define_classes();
 void compute_dR_min_index_fat_jets();
 void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m);
 void deltaR(float &dR, float jet1_pt, float jet1_eta, float jet1_phi, float jet1_m, float jet2_pt, float jet2_eta, float jet2_phi, float jet2_m);
-void plot_distributions_comparison(TString name_plot);
-void plot_2D_distributions(TString name_plot);
-void plot_distributions(TString name_plot);
+void plot_distributions_comparison(TString name_plot, TString output_folder);
+void plot_2D_distributions(TString name_plot, TString output_folder);
+void plot_distributions(TString name_plot, TString output_folder);
 void define_truth_tau_and_b_jets();
 void fill_histograms();
-void set_branch_address_inTree();
+void set_branch_address_inTree(TTree *inTree);
+void define_output_branches(TTree *outTree);
 void print_list_of_branches(TTree* tree);
 
 
@@ -25,19 +26,18 @@ void print_list_of_branches(TTree* tree);
 // Definition of the functions declared above
 // *************************************
 
-void plot_ratios_acceptance(TString name_plot){
+void plot_ratios_acceptance(TString name_plot, TString output_folder){
 
   TLegend *leg = new TLegend(0.25, 0.70, 0.40, 0.80);
 
-  TString name_image = "output/plots_ratios/";
-  name_image+=name_plot+".png";
+  TString name_image = output_folder+"/plots_ratios/"+name_plot+".png";
   
-
   TH1F *hist_ratio = new TH1F();
   TH1F *hist_ratio_den = new TH1F();
 
   TString label_leg = "";
   TString title_plot = "";
+  TString process_name = "VBF HH C_{2V}=1.5 had-had channel";
 
   TEfficiency *pEff = 0;
   
@@ -147,23 +147,38 @@ void plot_ratios_acceptance(TString name_plot){
   
   pEff->SetTitle(title_plot);
   pEff->Draw("AP");
-  
+
+  TLatex l;
+  l.SetNDC();
+  l.SetTextFont(42);
+  l.SetTextColor(kBlack);
+  l.SetTextSize(0.035);  
+  l.DrawLatex(0.15,0.8,Form(process_name));
+    
+  TLatex o;
+  o.SetNDC();
+  o.SetTextFont(42);
+  o.SetTextColor(kBlack);
+  o.SetTextSize(0.03);
+  double dely = 0.04; 
+  o.DrawLatex(0.15,0.8-dely, Form("for class:"));
+  o.DrawLatex(0.15,0.76-dely, Form(label_leg));  
+  /*
   leg->AddEntry(hist_ratio, label_leg, "l");
   leg->SetBorderSize();
   leg->Draw();
-
+  */
   can->Draw();
   can->Print(name_image);
   
 }
 
 
-void plot_ratios_acceptance_group(TString name_plot){
+void plot_ratios_acceptance_group(TString name_plot, TString output_folder){
 
   TLegend *leg = new TLegend(0.15, 0.60, 0.30, 0.80);
 
-  TString name_image = "output/plots_ratios/";
-  name_image+=name_plot+".png";
+  TString name_image = output_folder+"/plots_ratios/"+name_plot+".png";
 
   TH1F *hist_ratio_class0_r1 = (TH1F*)hist_acceptance_mHH_numerator_class0->Clone("hist_ratio_class0_r1");
   TH1F *hist_ratio_class1_r1 = (TH1F*)hist_acceptance_mHH_numerator_class1->Clone("hist_ratio_class1_r1");
@@ -489,13 +504,12 @@ void define_truth_tau_and_b_jets(){
 
 // Plot distribution comparisons
 
-void plot_distributions_comparison(TString name_plot){
+void plot_distributions_comparison(TString name_plot, TString output_folder){
 
   TLegend *leg = new TLegend(0.7, 0.75, 0.85, 0.85);
   TH1F *hist1 = new TH1F();
   TH1F *hist2 = new TH1F();
-  TString name_image = "output/plots_comparison/";
-  name_image+=name_plot+".png";
+  TString name_image = output_folder+"/plots_comparison/"+name_plot+".png";
   
   if(name_plot=="truth_HH_pt_comparison"){
     hist1 = hist_truth_HH_pt;
@@ -534,9 +548,9 @@ void plot_distributions_comparison(TString name_plot){
 
 // Plot 2d histograms
 
-void plot_2D_distributions(TString name_plot){
+void plot_2D_distributions(TString name_plot, TString output_folder){
 
-  TString name_image="output/plots_substructure_jets/"+name_plot+".png";
+  TString name_image = output_folder+"/plots_substructure_jets/"+name_plot+".png";
   
   ///// Plotting
   TCanvas *can = new TCanvas("can","", 800, 600);
@@ -566,9 +580,9 @@ void plot_2D_distributions(TString name_plot){
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions
 // for the two configurations, boosted and resolved
 
-void plot_distributions(TString name_plot){
+void plot_distributions(TString name_plot, TString output_folder){
 
-  TString name_image="output/plots_substructure_jets/"+name_plot+".png";
+  TString name_image = output_folder+"/plots_substructure_jets/"+name_plot+".png";
   
   ///// Plotting
   TCanvas *can = new TCanvas("can","", 800, 600);
@@ -713,7 +727,7 @@ void fill_histograms(){
 }
 
 // This function saves the branches info for a given tree in the variables defined above
-void set_branch_address_inTree(){
+void set_branch_address_inTree(TTree *inTree){
 
   inTree->SetBranchAddress("truth_children_fromH1_pdgId", &truth_children_fromH1_pdgId, &b_truth_children_fromH1_pdgId);
   inTree->SetBranchAddress("truth_children_fromH1_pt", &truth_children_fromH1_pt, &b_truth_children_fromH1_pt);
@@ -770,7 +784,7 @@ void set_branch_address_inTree(){
   
 }
 
-void define_output_branches(){
+void define_output_branches(TTree *outTree){
 
   outTree->Branch("truth_children_fromH1_pdgId", &truth_children_fromH1_pdgId);
   outTree->Branch("truth_children_fromH1_pt", &truth_children_fromH1_pt);

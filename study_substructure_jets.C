@@ -3,13 +3,33 @@
 #include "declaration_of_functions.h"
 
 
-void study_substructure_jets(){
+void study_substructure_jets(TString sample, TString output_folder){
 
   // *************************************
   // Set Branch Address for the leafs on each tree
   // ************************************* 
 
-  set_branch_address_inTree();
+  //TString path_sample = ;
+
+  // Open the input files and access to the trees                                                                                               
+
+  //  TFile* inFile = TFile::Open(path_sample);
+  //  TTree* inTree = (TTree*) inFile->Get("AnalysisMiniTree");
+
+  TFile* inFile = TFile::Open(sample);
+  TTree* inTree = (TTree*) inFile->Get("AnalysisMiniTree");
+  
+  // Open the output files and get access to the output tree                                                                                    
+  //  TFile* outFile = new TFile("output/study_boosted_regions.root", "RECREATE");
+  //  TTree* outTree = new TTree("AnalysisMiniTree", "AnalysisMiniTree");
+
+  TString name_output = output_folder+"/output_file.root";
+  
+  TFile* outFile = new TFile(name_output, "RECREATE");
+  TTree* outTree = new TTree("AnalysisMiniTree", "AnalysisMiniTree");
+  
+  
+  set_branch_address_inTree(inTree);
 
 
   Int_t nentries = inTree->GetEntries();
@@ -42,7 +62,7 @@ void study_substructure_jets(){
   int count_truth_HH_pt_pos_values = 0;
   int count_truth_HH_m_pos_values = 0;
   
-  define_output_branches();
+  define_output_branches(outTree);
   
   
   for(int ii=0; ii < nentries; ii++){
@@ -130,25 +150,25 @@ void study_substructure_jets(){
   std::vector<TString> list_of_2D_histograms = {"dR_per_class_bb", "dR_per_class_tautau"};
   
   for(int ii=0; ii < list_of_histograms.size(); ii++){
-    plot_distributions(list_of_histograms[ii]);
+    plot_distributions(list_of_histograms[ii], output_folder);
   }
   
   for(int ii=0; ii < list_of_2D_histograms.size(); ii++){
-    plot_2D_distributions(list_of_2D_histograms[ii]);
+    plot_2D_distributions(list_of_2D_histograms[ii], output_folder);
   }
- 
-  //plot_distributions_comparison("truth_HH_pt_comparison");
-  //plot_distributions_comparison("truth_HH_m_comparison");
+  
+  plot_distributions_comparison("truth_HH_pt_comparison", output_folder);
+  plot_distributions_comparison("truth_HH_m_comparison", output_folder);
  
   
   std::vector<TString> list_of_ratios_acceptance = {"class0_r1_mHH", "class1_r1_mHH", "class2_r1_mHH", "class3_r1_mHH", "class0_r2_mHH", "class1_r2_mHH", "class2_r2_mHH", "class3_r2_mHH"};
 
   //std::vector<TString> list_of_ratios_acceptance = {"class0_r1_mHH"};
-
-  for(int ii=0; ii < list_of_ratios_acceptance.size(); ii++){
-    plot_ratios_acceptance(list_of_ratios_acceptance[ii]);
-  }
   
+  for(int ii=0; ii < list_of_ratios_acceptance.size(); ii++){
+    plot_ratios_acceptance(list_of_ratios_acceptance[ii], output_folder);
+  }
+ 
   //plot_ratios_acceptance_group("acceptance_mHH_r1");
   
   inFile->Close();
