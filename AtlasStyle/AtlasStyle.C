@@ -42,6 +42,7 @@ TStyle* AtlasStyle()
   atlasStyle->SetPadLeftMargin(0.16);
 
   // set title offsets (for axis label)
+  atlasStyle->SetTitleOffset(1.4);
   atlasStyle->SetTitleXOffset(1.4);
   atlasStyle->SetTitleYOffset(1.4);
 

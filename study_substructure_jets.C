@@ -28,9 +28,13 @@ void study_substructure_jets(TString sample, TString output_folder){
   TFile* outFile = new TFile(name_output, "RECREATE");
   TTree* outTree = new TTree("AnalysisMiniTree", "AnalysisMiniTree");
   
+  process_label(sample);
+
+  cout << "----------------------------------------------------------------------------------------------------------------" << endl;
+  cout << "Processing: " << process_name << endl;
+  cout << "----------------------------------------------------------------------------------------------------------------" << endl;
   
   set_branch_address_inTree(inTree);
-
 
   Int_t nentries = inTree->GetEntries();
   int nbytes = 0;
@@ -61,9 +65,8 @@ void study_substructure_jets(TString sample, TString output_folder){
 
   int count_truth_HH_pt_pos_values = 0;
   int count_truth_HH_m_pos_values = 0;
-  
-  define_output_branches(outTree);
-  
+
+  define_output_branches(outTree);  
   
   for(int ii=0; ii < nentries; ii++){
     
@@ -148,7 +151,8 @@ void study_substructure_jets(TString sample, TString output_folder){
   std::vector<TString> list_of_histograms = {"matched_recojet_bb_m", "matched_recojet_tautau_m", "matched_recojets_bb_pt", "matched_recojets_tautau_pt", "matched_recojets_bb_eta", "matched_recojets_tautau_eta", "non_matched_recojets_pt", "non_matched_recojets_eta", "non_matched_recojets_pt_no_class", "non_matched_recojets_eta_no_class", "events_per_class", "matched_bb_dR", "matched_tautau_dR"};
   
   std::vector<TString> list_of_2D_histograms = {"dR_per_class_bb", "dR_per_class_tautau"};
-  
+
+  /*  
   for(int ii=0; ii < list_of_histograms.size(); ii++){
     plot_distributions(list_of_histograms[ii], output_folder);
   }
@@ -159,7 +163,7 @@ void study_substructure_jets(TString sample, TString output_folder){
   
   plot_distributions_comparison("truth_HH_pt_comparison", output_folder);
   plot_distributions_comparison("truth_HH_m_comparison", output_folder);
- 
+  */
   
   std::vector<TString> list_of_ratios_acceptance = {"class0_r1_mHH", "class1_r1_mHH", "class2_r1_mHH", "class3_r1_mHH", "class0_r2_mHH", "class1_r2_mHH", "class2_r2_mHH", "class3_r2_mHH"};
 

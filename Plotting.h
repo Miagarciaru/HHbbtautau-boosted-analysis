@@ -23,7 +23,7 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
   
   TString label_leg = "";
   TString title_plot = "";
-  TString process_name = "VBF HH C_{2V}=1.5 had-had channel";
+  // TString process_name = "VBF HH C_{2V}=1.5 had-had channel";
   
   TEfficiency *pEff = 0;
   
@@ -117,10 +117,12 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
     title_plot = "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio";
     cout << "The copy of the histograms was succesful" << endl;
   }
+  /*
   hist_ratio->SetStats(0);
   hist_ratio->Divide(hist_ratio_den);
   hist_ratio->SetTitle(title_plot);
   hist_ratio->SetLineColor(1);
+  */
   
   ///// Plotting                                                                                                                                            
   TCanvas *can = new TCanvas("can","", 800, 600);
@@ -128,10 +130,25 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
   //hist_ratio_class0_r1->SetMaximum(1.05);                                                                                                   
   
   //hist_ratio->Draw("H");                                                                                                                    
-  
-  pEff->SetTitle(title_plot);
+  //ATLASLabel(0.2, 0.7, "Work in Progress", kBlack);
+
+  //SetAtlasStyle();
+
+  //pEff->SetTitle(title_plot);
+  //hist_ratio->SetTitle(title_plot);
+  //pEff->SetTitle(title_plot);
   pEff->Draw("AP");
 
+  // SetAtlasStyle();
+  // ATLASLabel(0.2, 0.8, "Work in Progress", kBlack);
+  double dely = 0.04;
+  myText(0.2, 0.8, kBlack, process_name);
+  myText(0.2, 0.8-dely, kBlack, "for class: "+label_leg);
+  myText(0.2, 0.8-2*dely, kBlack, name_plot);
+
+  //myBoxText(0.2, 0.6 , 1.5, kBlack, "sample");
+
+  /*
   TLatex l;
   l.SetNDC();
   l.SetTextFont(42);
@@ -147,7 +164,9 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
   double dely = 0.04;
   o.DrawLatex(0.15,0.8-dely, Form("for class:"));
   o.DrawLatex(0.15,0.76-dely, Form(label_leg));
-  /*                                                                                                                                          
+  */
+
+/*                                                                                                                                          
 																	      leg->AddEntry(hist_ratio, label_leg, "l");                                                                                                  
 																	      leg->SetBorderSize();                                                                                                                       
 																	      leg->Draw();                                                                                                                                
@@ -196,7 +215,11 @@ void plot_distributions(TString name_plot, TString output_folder){
   if(name_plot == "events_per_class"){ hist = hist_nevents_per_class;}
   
   hist->Draw();
-  
+
+  double dely = 0.04;
+  myText(0.2, 0.8, kBlack, process_name);
+  //  myText(0.2, 0.8-dely, kBlack, "for class: "+label_leg);
+  myText(0.2, 0.8-dely, kBlack, name_plot);
   can->Draw();
   can->Print(name_image);
 }
@@ -219,7 +242,7 @@ void plot_2D_distributions(TString name_plot, TString output_folder){
   //gStyle->SetPalette(52);                                                                                                                   
   //TColor::InvertPalette();                                                                                                                  
   
-  hist->SetStats(0);
+  //hist->SetStats(0);
   //hist->Draw("SURF");
   hist->GetXaxis()->SetBinLabel(1, "R_{bb}-R_{#tau#tau}");
   hist->GetXaxis()->SetBinLabel(2, "R_{bb}-B_{#tau#tau}");
@@ -229,6 +252,11 @@ void plot_2D_distributions(TString name_plot, TString output_folder){
   //  hist->Draw("SCAT");                                                                                                                     
   //  hist->Draw("colz");                                                                                                                     
   hist->Draw();
+
+  double dely = 0.04;
+  myText(0.2, 0.8, kBlack, process_name);
+  //myText(0.2, 0.8-dely, kBlack, "for class: "+label_leg);
+  myText(0.2, 0.8-2*dely, kBlack, name_plot);
   
   can->Draw();
   can->Print(name_image);
@@ -277,6 +305,11 @@ void plot_distributions_comparison(TString name_plot, TString output_folder){
   leg->AddEntry(hist2, "computed","l");
   leg->SetBorderSize();
   leg->Draw();
+
+  double dely = 0.04;
+  myText(0.2, 0.8, kBlack, process_name);
+  //myText(0.2, 0.8-dely, kBlack, "for class: "+label_leg);
+  myText(0.2, 0.8-dely, kBlack, name_plot);
   
   can->Draw();
   can->Print(name_image);

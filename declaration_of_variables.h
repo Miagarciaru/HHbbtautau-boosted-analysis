@@ -1,44 +1,12 @@
 // *************************************
-// Reading the input files
+// Declaration of global variables
 // *************************************
 
-// Path of the input samples                                                                                                               
-
-//TString path="/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/outputfiles-easyjet-march21-2024/mc20_13TeV_502985_vbf_hadhad_l1cvv1 \p5cv1_PHYS_merged_";
-
-//TString path="../run/mc20_13TeV_600459_ggf_hadhad_cHHH01d0/mc20_13TeV_600459_ggf_hadhad_cHHH01d0_PHYS_merged_";                            
-//TString path="../run/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1_PHYS_merged_";                      
-//TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
-//TString path="../run/boosted_sample.root"; // The vbf hadhad, lephad cvv1p5 and ggf SM
-//TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/boosted_samples/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root";
-
-
-//TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
-//TString path_sample=path+"boosted_bypass_config.root";
-//TString path_sample="../run/boosted_sample.root";
-//TString path_sample="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/boosted_samples/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root";
-
-// TString path_sample = "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted_samples/mc20_13TeV_502982_vbf_hadhad_l1cvv1cv1/boosted_samples/mc20_13TeV_502982_vbf_hadhad_l1cvv1cv1_PHYS_merged_boosted_bypass_config.root";
-
-/*
-TString path_sample = "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted_samples/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1/boosted_samples/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root";
-
-
-// Open the input files and access to the trees                                                                                             
-
-TFile* inFile = TFile::Open(path_sample);
-TTree* inTree = (TTree*) inFile->Get("AnalysisMiniTree");
-
-// Open the output files and get access to the output tree
-
-TFile* outFile = new TFile("output/study_boosted_regions.root", "RECREATE");
-TTree* outTree = new TTree("AnalysisMiniTree", "AnalysisMiniTree");
-*/
+TString process_name = "";
 
 // *************************************
 // Declaration of leaf variables
 // *************************************
-
 
 // Declaration of leaf types for truth_children branches for boosted tree variables
 

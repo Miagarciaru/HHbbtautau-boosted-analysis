@@ -4,6 +4,7 @@
 // Declaration of functions
 // *************************************
 
+void process_label(TString name_sample);
 void acceptance_mHH_variable();
 void define_output_branches();
 void define_classes();
@@ -21,6 +22,33 @@ void print_list_of_branches(TTree* tree);
 // Definition of the functions declared above
 // *************************************
 
+void process_label(TString name_sample){
+
+  // ggF processes had-had channel
+  if(name_sample.Contains("600459")==true){ process_name = "ggF HH SM had-had channel"; }
+  if(name_sample.Contains("600460")==true){ process_name = "ggF HH #lambda = 10 had-had channel"; }
+
+  // ggF processes lep-had channel
+  if(name_sample.Contains("600461")==true){ process_name = "ggF HH SM lep-had channel"; }
+  if(name_sample.Contains("600462")==true){ process_name = "ggF HH #lambda = 10 lep-had channel"; }
+
+  //vbf processes had-had channel
+  if(name_sample.Contains("502982")==true){ process_name = "VBF HH SM had-had channel"; }
+  if(name_sample.Contains("502985")==true){ process_name = "VBF HH C_{VV} = 1.5 had-had channel"; }
+  if(name_sample.Contains("502989")==true){ process_name = "VBF HH #lambda = 2.0 had-had channel"; }
+  if(name_sample.Contains("502990")==true){ process_name = "VBF HH #lambda = 10.0 had-had channel"; }
+  if(name_sample.Contains("502991")==true){ process_name = "VBF HH C_{V} = 0.5 had-had channel"; }
+  if(name_sample.Contains("508690")==true){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 had-had channel"; }
+
+  //vbf processes lep-had channel
+  if(name_sample.Contains("502993")==true){ process_name = "VBF HH SM lep-had channel"; }
+  if(name_sample.Contains("502996")==true){ process_name = "VBF HH C_{VV} = 1.5 lep-had channel"; }
+  if(name_sample.Contains("503000")==true){ process_name = "VBF HH #lambda = 2.0 lep-had channel"; }
+  if(name_sample.Contains("503001")==true){ process_name = "VBF HH #lambda = 10.0 lep-had channel"; }
+  if(name_sample.Contains("503002")==true){ process_name = "VBF HH C_{V} = 0.5 lep-had channel"; }
+  if(name_sample.Contains("508691")==true){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 lep-had channel"; }
+  
+}
 
 void plot_ratios_acceptance_group(TString name_plot, TString output_folder){
 
