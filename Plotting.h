@@ -26,10 +26,14 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
   // TString process_name = "VBF HH C_{2V}=1.5 had-had channel";
   
   TEfficiency *pEff = 0;
+
+  //***********************************************
+  // For mHH
+  //***********************************************
   
   if(name_plot == "class0_r1_mHH"){
-    TH1F *hist_ratio = (TH1F*)hist_acceptance_mHH_numerator_class0->Clone();
-    TH1F *hist_ratio_den = (TH1F*)hist_acceptance_mHH_denominator->Clone();
+    hist_ratio = hist_acceptance_mHH_numerator_class0;
+    hist_ratio_den = hist_acceptance_mHH_denominator;
     if(TEfficiency::CheckConsistency(*hist_acceptance_mHH_numerator_class0, *hist_acceptance_mHH_denominator)){
       pEff = new TEfficiency(*hist_acceptance_mHH_numerator_class0, *hist_acceptance_mHH_denominator);
       cout << "Both histograms were consistent" << endl;
@@ -38,7 +42,6 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
     title_plot = "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio";
     cout << "The copy of the histograms was succesful" << endl;
   }
-  
   if(name_plot == "class1_r1_mHH"){
     hist_ratio = hist_acceptance_mHH_numerator_class1;
     hist_ratio_den = hist_acceptance_mHH_denominator;
@@ -71,6 +74,7 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
     label_leg = "B_{bb}-B_{#tau#tau}";
     title_plot = "Acceptance plot using the mass mHH variable (r_{1}); m(HH) [GeV];Ratio";
     cout << "The copy of the histograms was succesful" << endl;
+    // name_image = "output_analysis/plots_ratios_BB/"+name_plot+".png";
   }
   
   if(name_plot == "class0_r2_mHH"){
@@ -116,61 +120,312 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
     label_leg = "B_{bb}-B_{#tau#tau}";
     title_plot = "Acceptance plot using the mass mHH variable (r_{2}); m(HH) [GeV];Ratio";
     cout << "The copy of the histograms was succesful" << endl;
+    //name_image = "output_analysis/plots_ratios_BB/"+name_plot+".png";
   }
-  /*
-  hist_ratio->SetStats(0);
-  hist_ratio->Divide(hist_ratio_den);
-  hist_ratio->SetTitle(title_plot);
-  hist_ratio->SetLineColor(1);
-  */
+
+  //***********************************************
+  // For ptHH
+  //***********************************************
   
+  if(name_plot == "class0_r1_ptHH"){
+    hist_ratio = hist_acceptance_ptHH_numerator_class0;
+    hist_ratio_den = hist_acceptance_ptHH_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_ptHH_numerator_class0, *hist_acceptance_ptHH_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_ptHH_numerator_class0, *hist_acceptance_ptHH_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass ptHH variable (r_{1}); pt(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  
+  if(name_plot == "class1_r1_ptHH"){
+    hist_ratio = hist_acceptance_ptHH_numerator_class1;
+    hist_ratio_den = hist_acceptance_ptHH_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_ptHH_numerator_class1, *hist_acceptance_ptHH_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_ptHH_numerator_class1, *hist_acceptance_ptHH_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass ptHH variable (r_{1}); pt(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class2_r1_ptHH"){
+    hist_ratio = hist_acceptance_ptHH_numerator_class2;
+    hist_ratio_den = hist_acceptance_ptHH_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_ptHH_numerator_class2, *hist_acceptance_ptHH_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_ptHH_numerator_class2, *hist_acceptance_ptHH_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass ptHH variable (r_{1}); pt(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class3_r1_ptHH"){
+    hist_ratio = hist_acceptance_ptHH_numerator_class3;
+    hist_ratio_den = hist_acceptance_ptHH_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_ptHH_numerator_class3, *hist_acceptance_ptHH_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_ptHH_numerator_class3, *hist_acceptance_ptHH_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass ptHH variable (r_{1}); pt(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+    //name_image = "output_analysis/plots_ratios_BB/"+name_plot+".png";
+  }
+  
+  if(name_plot == "class0_r2_ptHH"){
+    hist_ratio = hist_acceptance_ptHH_numerator_class0;
+    hist_ratio_den = hist_acceptance_ptHH_denominator_class0;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_ptHH_numerator_class0, *hist_acceptance_ptHH_denominator_class0)){
+      pEff = new TEfficiency(*hist_acceptance_ptHH_numerator_class0, *hist_acceptance_ptHH_denominator_class0);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass ptHH variable (r_{2}); pt(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class1_r2_ptHH"){
+    hist_ratio = hist_acceptance_ptHH_numerator_class1;
+    hist_ratio_den = hist_acceptance_ptHH_denominator_class1;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_ptHH_numerator_class1, *hist_acceptance_ptHH_denominator_class1)){
+      pEff = new TEfficiency(*hist_acceptance_ptHH_numerator_class1, *hist_acceptance_ptHH_denominator_class1);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass ptHH variable (r_{2}); pt(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class2_r2_ptHH"){
+    hist_ratio = hist_acceptance_ptHH_numerator_class2;
+    hist_ratio_den = hist_acceptance_ptHH_denominator_class2;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_ptHH_numerator_class2, *hist_acceptance_ptHH_denominator_class2)){
+      pEff = new TEfficiency(*hist_acceptance_ptHH_numerator_class2, *hist_acceptance_ptHH_denominator_class2);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass ptHH variable (r_{2}); pt(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class3_r2_ptHH"){
+    hist_ratio = hist_acceptance_ptHH_numerator_class3;
+    hist_ratio_den = hist_acceptance_ptHH_denominator_class3;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_ptHH_numerator_class3, *hist_acceptance_ptHH_denominator_class3)){
+      pEff = new TEfficiency(*hist_acceptance_ptHH_numerator_class3, *hist_acceptance_ptHH_denominator_class3);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass ptHH variable (r_{2}); pt(HH) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+    //name_image = "output_analysis/plots_ratios_BB/"+name_plot+".png";
+  }
+
+  //***********************************************
+  // For mHbb
+  //***********************************************
+
+  if(name_plot == "class0_r1_mHbb"){
+    hist_ratio = hist_acceptance_mHbb_numerator_class0;
+    hist_ratio_den = hist_acceptance_mHbb_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHbb_numerator_class0, *hist_acceptance_mHbb_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHbb_numerator_class0, *hist_acceptance_mHbb_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+
+  if(name_plot == "class1_r1_mHbb"){
+    hist_ratio = hist_acceptance_mHbb_numerator_class1;
+    hist_ratio_den = hist_acceptance_mHbb_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHbb_numerator_class1, *hist_acceptance_mHbb_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHbb_numerator_class1, *hist_acceptance_mHbb_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class2_r1_mHbb"){
+    hist_ratio = hist_acceptance_mHbb_numerator_class2;
+    hist_ratio_den = hist_acceptance_mHbb_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHbb_numerator_class2, *hist_acceptance_mHbb_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHbb_numerator_class2, *hist_acceptance_mHbb_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class3_r1_mHbb"){
+    hist_ratio = hist_acceptance_mHbb_numerator_class3;
+    hist_ratio_den = hist_acceptance_mHbb_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHbb_numerator_class3, *hist_acceptance_mHbb_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHbb_numerator_class3, *hist_acceptance_mHbb_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+    //name_image = "output_analysis/plots_ratios_BB/"+name_plot+".png";
+  }
+
+  if(name_plot == "class0_r2_mHbb"){
+    hist_ratio = hist_acceptance_mHbb_numerator_class0;
+    hist_ratio_den = hist_acceptance_mHbb_denominator_class0;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHbb_numerator_class0, *hist_acceptance_mHbb_denominator_class0)){
+      pEff = new TEfficiency(*hist_acceptance_mHbb_numerator_class0, *hist_acceptance_mHbb_denominator_class0);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class1_r2_mHbb"){
+    hist_ratio = hist_acceptance_mHbb_numerator_class1;
+    hist_ratio_den = hist_acceptance_mHbb_denominator_class1;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHbb_numerator_class1, *hist_acceptance_mHbb_denominator_class1)){
+      pEff = new TEfficiency(*hist_acceptance_mHbb_numerator_class1, *hist_acceptance_mHbb_denominator_class1);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class2_r2_mHbb"){
+    hist_ratio = hist_acceptance_mHbb_numerator_class2;
+    hist_ratio_den = hist_acceptance_mHbb_denominator_class2;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHbb_numerator_class2, *hist_acceptance_mHbb_denominator_class2)){
+      pEff = new TEfficiency(*hist_acceptance_mHbb_numerator_class2, *hist_acceptance_mHbb_denominator_class2);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class3_r2_mHbb"){
+    hist_ratio = hist_acceptance_mHbb_numerator_class3;
+    hist_ratio_den = hist_acceptance_mHbb_denominator_class3;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHbb_numerator_class3, *hist_acceptance_mHbb_denominator_class3)){
+      pEff = new TEfficiency(*hist_acceptance_mHbb_numerator_class3, *hist_acceptance_mHbb_denominator_class3);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+    //name_image = "output_analysis/plots_ratios_BB/"+name_plot+".png";
+  }
+
+  //***********************************************
+  // For mHtautau
+  //***********************************************
+
+  if(name_plot == "class0_r1_mHtautau"){
+    hist_ratio = hist_acceptance_mHtautau_numerator_class0;
+    hist_ratio_den = hist_acceptance_mHtautau_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHtautau_numerator_class0, *hist_acceptance_mHtautau_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHtautau_numerator_class0, *hist_acceptance_mHtautau_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+
+  if(name_plot == "class1_r1_mHtautau"){
+    hist_ratio = hist_acceptance_mHtautau_numerator_class1;
+    hist_ratio_den = hist_acceptance_mHtautau_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHtautau_numerator_class1, *hist_acceptance_mHtautau_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHtautau_numerator_class1, *hist_acceptance_mHtautau_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class2_r1_mHtautau"){
+    hist_ratio = hist_acceptance_mHtautau_numerator_class2;
+    hist_ratio_den = hist_acceptance_mHtautau_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHtautau_numerator_class2, *hist_acceptance_mHtautau_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHtautau_numerator_class2, *hist_acceptance_mHtautau_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class3_r1_mHtautau"){
+    hist_ratio = hist_acceptance_mHtautau_numerator_class3;
+    hist_ratio_den = hist_acceptance_mHtautau_denominator;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHtautau_numerator_class3, *hist_acceptance_mHtautau_denominator)){
+      pEff = new TEfficiency(*hist_acceptance_mHtautau_numerator_class3, *hist_acceptance_mHtautau_denominator);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+    //name_image = "output_analysis/plots_ratios_BB/"+name_plot+".png";
+  }
+
+  if(name_plot == "class0_r2_mHtautau"){
+    hist_ratio = hist_acceptance_mHtautau_numerator_class0;
+    hist_ratio_den = hist_acceptance_mHtautau_denominator_class0;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHtautau_numerator_class0, *hist_acceptance_mHtautau_denominator_class0)){
+      pEff = new TEfficiency(*hist_acceptance_mHtautau_numerator_class0, *hist_acceptance_mHtautau_denominator_class0);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class1_r2_mHtautau"){
+    hist_ratio = hist_acceptance_mHtautau_numerator_class1;
+    hist_ratio_den = hist_acceptance_mHtautau_denominator_class1;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHtautau_numerator_class1, *hist_acceptance_mHtautau_denominator_class1)){
+      pEff = new TEfficiency(*hist_acceptance_mHtautau_numerator_class1, *hist_acceptance_mHtautau_denominator_class1);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "R_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class2_r2_mHtautau"){
+    hist_ratio = hist_acceptance_mHtautau_numerator_class2;
+    hist_ratio_den = hist_acceptance_mHtautau_denominator_class2;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHtautau_numerator_class2, *hist_acceptance_mHtautau_denominator_class2)){
+      pEff = new TEfficiency(*hist_acceptance_mHtautau_numerator_class2, *hist_acceptance_mHtautau_denominator_class2);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-R_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+  }
+  if(name_plot == "class3_r2_mHtautau"){
+    hist_ratio = hist_acceptance_mHtautau_numerator_class3;
+    hist_ratio_den = hist_acceptance_mHtautau_denominator_class3;
+    if(TEfficiency::CheckConsistency(*hist_acceptance_mHtautau_numerator_class3, *hist_acceptance_mHtautau_denominator_class3)){
+      pEff = new TEfficiency(*hist_acceptance_mHtautau_numerator_class3, *hist_acceptance_mHtautau_denominator_class3);
+      cout << "Both histograms were consistent" << endl;
+    }
+    label_leg = "B_{bb}-B_{#tau#tau}";
+    title_plot = "Acceptance plot using the mass mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio";
+    cout << "The copy of the histograms was succesful" << endl;
+    //name_image = "output_analysis/plots_ratios_BB/"+name_plot+".png";
+  }
+
   ///// Plotting                                                                                                                                            
   TCanvas *can = new TCanvas("can","", 800, 600);
-  
-  //hist_ratio_class0_r1->SetMaximum(1.05);                                                                                                   
-  
-  //hist_ratio->Draw("H");                                                                                                                    
-  //ATLASLabel(0.2, 0.7, "Work in Progress", kBlack);
 
-  //SetAtlasStyle();
-
-  //pEff->SetTitle(title_plot);
-  //hist_ratio->SetTitle(title_plot);
-  //pEff->SetTitle(title_plot);
   pEff->Draw("AP");
 
   // SetAtlasStyle();
   // ATLASLabel(0.2, 0.8, "Work in Progress", kBlack);
-  double dely = 0.04;
+  double dely = 0.05;
   myText(0.2, 0.8, kBlack, process_name);
   myText(0.2, 0.8-dely, kBlack, "for class: "+label_leg);
   myText(0.2, 0.8-2*dely, kBlack, name_plot);
 
-  //myBoxText(0.2, 0.6 , 1.5, kBlack, "sample");
-
-  /*
-  TLatex l;
-  l.SetNDC();
-  l.SetTextFont(42);
-  l.SetTextColor(kBlack);
-  l.SetTextSize(0.035);
-  l.DrawLatex(0.15,0.8,Form(process_name));
-  
-  TLatex o;
-  o.SetNDC();
-  o.SetTextFont(42);
-  o.SetTextColor(kBlack);
-  o.SetTextSize(0.03);
-  double dely = 0.04;
-  o.DrawLatex(0.15,0.8-dely, Form("for class:"));
-  o.DrawLatex(0.15,0.76-dely, Form(label_leg));
-  */
-
-/*                                                                                                                                          
-																	      leg->AddEntry(hist_ratio, label_leg, "l");                                                                                                  
-																	      leg->SetBorderSize();                                                                                                                       
-																	      leg->Draw();                                                                                                                                
-  */
   can->Draw();
   can->Print(name_image);
 }

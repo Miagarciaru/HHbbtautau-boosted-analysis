@@ -21,6 +21,8 @@ output_root_folder = "output_analysis"
 # Ensure the root folder exists
 os.makedirs(output_root_folder, exist_ok=True)
 
+#os.makedirs("output_analysis/plots_ratios_BB", exist_ok=True)
+
 # Loop over each sample
 for sample in sample_paths:
     # Get the sample name (useful for naming the output folder)

@@ -5,6 +5,7 @@
 // *************************************
 
 void process_label(TString name_sample);
+void acceptance_ptHH_variable();
 void acceptance_mHH_variable();
 void define_output_branches();
 void define_classes();
@@ -105,6 +106,155 @@ void plot_ratios_acceptance_group(TString name_plot, TString output_folder){
   can->Print(name_image);
   
 }
+
+
+void acceptance_mHtautau_variable(){
+  //***************************************************
+  // For m(H->tautau)
+  //***************************************************
+
+  TLorentzVector tau1 = TLorentzVector();
+  TLorentzVector tau2 = TLorentzVector();
+  TLorentzVector tautau = TLorentzVector();
+  float mHtautau = 0;
+
+  if(class_event != -1){
+    tau1.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
+    tau2.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau2truth_recoak10_dRmin)/1000.);
+    tautau = tau1 + tau2;
+    if( (class_event == 0) || (class_event == 2) ){ mHtautau = tautau.M();}
+    if( (class_event == 1) || (class_event == 3) ){ mHtautau = recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.; } 
+  }
+
+  if(bbtt_HH_vis_m > 0){
+    hist_acceptance_mHtautau_denominator->Fill(mHtautau);
+  }
+
+  if(class_event != -1){
+    if(class_event == 0){
+      hist_acceptance_mHtautau_denominator_class0->Fill(mHtautau);
+    }
+    if(class_event == 1){
+      hist_acceptance_mHtautau_denominator_class1->Fill(mHtautau);
+    }
+    if(class_event == 2){
+      hist_acceptance_mHtautau_denominator_class2->Fill(mHtautau);
+    }
+    if(class_event == 3){
+      hist_acceptance_mHtautau_denominator_class3->Fill(mHtautau);
+    }
+  }
+
+  if((bbtt_HH_vis_m > 0) && (class_event != -1)){
+    //cout << class_event << "\t \t" << bbtt_HH_m/1000. << "\t \t" << truth_HH_m/1000. << endl;
+    if(class_event == 0){
+      hist_acceptance_mHtautau_numerator_class0->Fill(mHtautau);
+    } // RbbRtautau
+    if(class_event == 1){
+      hist_acceptance_mHtautau_numerator_class1->Fill(mHtautau);
+    } // RbbBtautau
+    if(class_event == 2){
+      hist_acceptance_mHtautau_numerator_class2->Fill(mHtautau);
+    } // BbbRtautau
+    if(class_event == 3){
+      hist_acceptance_mHtautau_numerator_class3->Fill(mHtautau);
+    } // BbbBtautau
+  }
+}
+
+void acceptance_mHbb_variable(){
+
+  //***************************************************
+  // For m(H->bb)
+  //***************************************************
+  TLorentzVector b1  = TLorentzVector();
+  TLorentzVector b2  = TLorentzVector();
+  TLorentzVector bb  = TLorentzVector();
+  float mHbb = 0;
+  
+  if(class_event!=-1){
+    b1.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
+    b2.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b2truth_recoak10_dRmin)/1000.);
+    bb = b1 + b2;
+    if( (class_event == 0) || (class_event == 1) ){ mHbb = bb.M();}
+    if( (class_event == 2) || (class_event == 3) ){ mHbb = recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.; } 
+  }
+  
+  if(bbtt_HH_vis_m > 0){
+    hist_acceptance_mHbb_denominator->Fill(mHbb);
+  }
+  
+  if(class_event != -1){
+    if(class_event == 0){
+      hist_acceptance_mHbb_denominator_class0->Fill(mHbb);
+    }
+    if(class_event == 1){
+      hist_acceptance_mHbb_denominator_class1->Fill(mHbb);
+    }
+    if(class_event == 2){
+      hist_acceptance_mHbb_denominator_class2->Fill(mHbb);
+    }
+    if(class_event == 3){
+      hist_acceptance_mHbb_denominator_class3->Fill(mHbb);
+    }
+  }
+  
+  if((bbtt_HH_vis_m > 0) && (class_event != -1)){
+    //cout << class_event << "\t \t" << bbtt_HH_m/1000. << "\t \t" << truth_HH_m/1000. << endl;
+    if(class_event == 0){
+      hist_acceptance_mHbb_numerator_class0->Fill(mHbb);
+    } // RbbRtautau
+    if(class_event == 1){
+      hist_acceptance_mHbb_numerator_class1->Fill(mHbb);
+    } // RbbBtautau
+    if(class_event == 2){
+      hist_acceptance_mHbb_numerator_class2->Fill(mHbb);
+    } // BbbRtautau
+    if(class_event == 3){
+      hist_acceptance_mHbb_numerator_class3->Fill(mHbb);
+    } // BbbBtautau
+  } 
+}
+
+void acceptance_ptHH_variable(){
+
+  if(bbtt_HH_vis_pt_NOSYS > 0){
+    hist_acceptance_ptHH_denominator->Fill(truth_HH_pt/1000.);
+  }
+
+  if(class_event != -1){
+    if(class_event == 0){
+      hist_acceptance_ptHH_denominator_class0->Fill(truth_HH_pt/1000.);
+    }
+    if(class_event == 1){
+      hist_acceptance_ptHH_denominator_class1->Fill(truth_HH_pt/1000.);
+    }
+    if(class_event == 2){
+      hist_acceptance_ptHH_denominator_class2->Fill(truth_HH_pt/1000.);
+    }
+    if(class_event == 3){
+      hist_acceptance_ptHH_denominator_class3->Fill(truth_HH_pt/1000.);
+    }
+  }
+
+  if( (bbtt_HH_vis_pt_NOSYS > 0) && (class_event != -1)){
+
+    //cout << class_event << "\t \t" << bbtt_HH_m/1000. << "\t \t" << truth_HH_m/1000. << endl;
+    if(class_event == 0){
+      hist_acceptance_ptHH_numerator_class0->Fill(truth_HH_pt/1000.);
+    } // RbbRtautau
+    if(class_event == 1){
+      hist_acceptance_ptHH_numerator_class1->Fill(truth_HH_pt/1000.);
+    } // RbbBtautau
+    if(class_event == 2){
+      hist_acceptance_ptHH_numerator_class2->Fill(truth_HH_pt/1000.);
+    } // BbbRtautau
+    if(class_event == 3){
+      hist_acceptance_ptHH_numerator_class3->Fill(truth_HH_pt/1000.);
+    } // BbbBtautau
+  }
+}
+
 
 void acceptance_mHH_variable(){
 
