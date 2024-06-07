@@ -16,6 +16,8 @@ void study_substructure_jets(TString sample, TString output_folder){
   //  TFile* inFile = TFile::Open(path_sample);
   //  TTree* inTree = (TTree*) inFile->Get("AnalysisMiniTree");
 
+  auto start = chrono::steady_clock::now(); //Start the clock
+  
   TFile* inFile = TFile::Open(sample);
   TTree* inTree = (TTree*) inFile->Get("AnalysisMiniTree");
   
@@ -183,4 +185,10 @@ void study_substructure_jets(TString sample, TString output_folder){
   
   inFile->Close();
   outFile->Close();
+
+  auto end = chrono::steady_clock::now();
+  auto elapsed = chrono::duration_cast<chrono::seconds>(end - start).count();
+  auto time_in_min = elapsed/60.;
+  cout << "Time taken: " << time_in_min << " min" << endl;
+
 }
