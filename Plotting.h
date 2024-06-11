@@ -27,19 +27,67 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
     pEff->SetTitle(title_plot);
     pEff->SetName(name_plot);
 
+    //pEff->SetMaximum(1.5*pEff->GetMaximum());
+    
     ///// Plotting                                                                                                                           
 
     TCanvas *can = new TCanvas("can","can", 800, 600);
     //TLegend *leg = new TLegend(0.25, 0.70, 0.40, 0.80);
-
-    pEff->Draw("AP");
     
+    pEff->Draw("AP");
+
+    /*
+    // Get the painted TGraphAsymmErrors
+    TGraphAsymmErrors* graph = pEff->GetPaintedGraph();
+
+    // Find the maximum value in the graph
+    Double_t maxValue = 0;
+    for (int i = 0; i < graph->GetN(); ++i) {
+      Double_t x, y;
+      graph->GetPoint(i, x, y);
+      if (y > maxValue) {
+	maxValue = y;
+      }
+    }
+
+    // Set the maximum value of the Y axis
+    Double_t newYMax = 1.5 * maxValue;
+    pEff->SetMaximum(newYMax);
+    pEff->Draw("AP");
+    */
     double dely = 0.05;
-    myText(0.2, 0.8, kBlack, process_name);
-    myText(0.2, 0.8-dely, kBlack, "for class: "+label_leg);
-    myText(0.2, 0.8-2*dely, kBlack, name_plot);
+    myText(0.2, 0.9, kBlack, process_name);
+    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);
+    myText(0.2, 0.9-2*dely, kBlack, name_plot);
 
     //can->Draw();
+    can->SaveAs(name_image);
+    TString process_label = process_name.ReplaceAll(" ", "_");
+    //process_label = process_label.replace(" ", "_");
+    //can->SaveAs("output_analysis/temp_folder/"+name_plot+"_"+process_label+".png");
+
+    // ***********************************************
+    // hist numerator
+    // ***********************************************
+
+    //    TCanvas *can = new TCanvas("can","can", 800, 600);
+    hist_num->Draw("H");
+    name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_num.png";
+    myText(0.2, 0.9, kBlack, process_name);
+    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);
+    myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_num.png");
+    can->SaveAs(name_image);
+
+    // ***********************************************
+    // hist denominator
+    // ***********************************************
+
+    //    TCanvas *can = new TCanvas("can","can", 800, 600);
+    hist_den->Draw("H");
+    name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_den.png";
+    myText(0.2, 0.9, kBlack, process_name);
+    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);
+    myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_den.png");
     can->SaveAs(name_image);
   }
   else {
@@ -47,6 +95,57 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
     std::cout << "Plot name " << name_plot << " not found!" << endl;
   }    
 }
+
+
+void plot_ratios_acceptance_group(TString name_plot, TString output_folder){
+
+  TLegend *leg = new TLegend(0.15, 0.60, 0.30, 0.80);
+
+  TString name_image = output_folder+"/plots_ratios/"+name_plot+".png";
+
+  TH1F *hist_ratio_class0_r1 = (TH1F*)hist_acceptance_mHH_numerator_class0->Clone("hist_ratio_class0_r1");
+  TH1F *hist_ratio_class1_r1 = (TH1F*)hist_acceptance_mHH_numerator_class1->Clone("hist_ratio_class1_r1");
+  TH1F *hist_ratio_class2_r1 = (TH1F*)hist_acceptance_mHH_numerator_class2->Clone("hist_ratio_class2_r1");
+  TH1F *hist_ratio_class3_r1 = (TH1F*)hist_acceptance_mHH_numerator_class3->Clone("hist_ratio_class3_r1");
+
+  hist_ratio_class0_r1->SetStats(0);
+  hist_ratio_class0_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class0_r1->SetLineColor(2);
+
+  hist_ratio_class1_r1->SetStats(0);
+  hist_ratio_class1_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class1_r1->SetLineColor(3);
+
+  hist_ratio_class2_r1->SetStats(0);
+  hist_ratio_class2_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class2_r1->SetLineColor(6);
+
+  hist_ratio_class3_r1->SetStats(0);
+  hist_ratio_class3_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class3_r1->SetLineColor(4);
+
+  ///// Plotting
+  
+  TCanvas *can = new TCanvas("can","", 800, 600);
+
+  hist_ratio_class0_r1->Draw("H");
+  hist_ratio_class1_r1->Draw("sameH");
+  hist_ratio_class2_r1->Draw("sameH");
+  hist_ratio_class3_r1->Draw("sameH");
+
+  leg->AddEntry(hist_ratio_class0_r1, "R_{bb}-R_{#tau#tau}", "l");
+  leg->AddEntry(hist_ratio_class1_r1, "R_{bb}-B_{#tau#tau}", "l");
+  leg->AddEntry(hist_ratio_class2_r1, "B_{bb}-R_{#tau#tau}", "l");
+  leg->AddEntry(hist_ratio_class3_r1, "B_{bb}-B_{#tau#tau}", "l");
+
+  leg->SetBorderSize();
+  leg->Draw();
+
+  can->Draw();
+  can->Print(name_image);
+
+}
+
 
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions                                            
 // for the two configurations, boosted and resolved                                                                                           
@@ -145,12 +244,12 @@ void plot_distributions_comparison(TString name_plot, TString output_folder){
   TH1F *hist2 = new TH1F();
   TString name_image = output_folder+"/plots_comparison/"+name_plot+".png";
   
-  if(name_plot=="truth_HH_pt_comparison"){
+  if(name_plot=="HH_pt_comparison"){
     hist1 = hist_truth_HH_pt;
     hist2 = hist_computed_HH_pt;
   }
   
-  if(name_plot=="truth_HH_m_comparison"){
+  if(name_plot=="HH_m_comparison"){
     hist1 = hist_truth_HH_m;
     hist2 = hist_computed_HH_m;
   }
@@ -183,5 +282,9 @@ void plot_distributions_comparison(TString name_plot, TString output_folder){
   myText(0.2, 0.8-dely, kBlack, name_plot);
   
   can->Draw();
-  can->Print(name_image);
+  //can->Print(name_image);
+  
+  TString process_label = process_name.ReplaceAll(" ", "_");
+  //process_label = process_label.replace(" ", "_");
+  can->SaveAs("output_analysis/temp_folder/"+name_plot+"_"+process_label+".png");
 }

@@ -6,30 +6,13 @@
 void study_substructure_jets(TString sample, TString output_folder){
 
   // *************************************
-  // Set Branch Address for the leafs on each tree
-  // ************************************* 
-
-  //TString path_sample = ;
-
-  // Open the input files and access to the trees                                                                                               
-
-  //  TFile* inFile = TFile::Open(path_sample);
-  //  TTree* inTree = (TTree*) inFile->Get("AnalysisMiniTree");
-
+  // Open the input files and access to the trees                                                                                              // *************************************
+  
   auto start = chrono::steady_clock::now(); //Start the clock
   
   TFile* inFile = TFile::Open(sample);
   TTree* inTree = (TTree*) inFile->Get("AnalysisMiniTree");
-  
-  // Open the output files and get access to the output tree                                                                                    
-  //  TFile* outFile = new TFile("output/study_boosted_regions.root", "RECREATE");
-  //  TTree* outTree = new TTree("AnalysisMiniTree", "AnalysisMiniTree");
-
-  TString name_output = output_folder+"/output_file.root";
-  
-  TFile* outFile = new TFile(name_output, "RECREATE");
-  TTree* outTree = new TTree("AnalysisMiniTree", "AnalysisMiniTree");
-  
+    
   process_label(sample);
 
   cout << "----------------------------------------------------------------------------------------------------------------" << endl;
@@ -68,7 +51,7 @@ void study_substructure_jets(TString sample, TString output_folder){
   int count_truth_HH_pt_pos_values = 0;
   int count_truth_HH_m_pos_values = 0;
 
-  define_output_branches(outTree);  
+  //  define_output_branches(outTree);  
   
   for(int ii=0; ii < nentries; ii++){
     
@@ -76,11 +59,12 @@ void study_substructure_jets(TString sample, TString output_folder){
     define_truth_tau_and_b_jets();
     compute_dR_min_index_fat_jets();
     define_classes();
+
+    //if( class_event != 3) continue;
+    
+    define_reconstructed_objects();
     fill_histograms();
-    acceptance_mHH_variable();
-    acceptance_ptHH_variable();
-    acceptance_mHbb_variable();
-    acceptance_mHtautau_variable();
+    fill_acceptance_ratios();
     
     if(class_event == -1){ count_non_matched_events+=1; }
     if(class_event == 0){ count_truth_Rbb_Rtautau+=1; } 
@@ -108,10 +92,10 @@ void study_substructure_jets(TString sample, TString output_folder){
     if(truth_HH_pt > 0){ count_truth_HH_pt_pos_values+=1;}
     if(truth_HH_m > 0){ count_truth_HH_m_pos_values+=1;}
     
-    outTree->Fill();
+    //    outTree->Fill();
   }
 
-  outFile->Write();
+  //  outFile->Write();
   
   
   int sum_all_events = count_non_matched_events + count_truth_Rbb_Rtautau + count_truth_Rbb_Btautau + count_truth_Bbb_Rtautau + count_truth_Bbb_Btautau;
@@ -166,17 +150,17 @@ void study_substructure_jets(TString sample, TString output_folder){
   }
   */
 
-  //plot_distributions_comparison("truth_HH_pt_comparison", output_folder);
-  //plot_distributions_comparison("truth_HH_m_comparison", output_folder);
+  plot_distributions_comparison("HH_pt_comparison", output_folder);
+  plot_distributions_comparison("HH_m_comparison", output_folder);
   
-  //std::vector<TString> list_of_ratios_acceptance = {"class0_r1_mHH", "class1_r1_mHH", "class2_r1_mHH", "class3_r1_mHH", "class0_r2_mHH", "class1_r2_mHH", "class2_r2_mHH", "class3_r2_mHH"};
-
   //std::vector<TString> list_of_ratios_acceptance = {"class0_r1_mHH", "class1_r1_mHH", "class2_r1_mHH", "class3_r1_mHH", "class0_r2_mHH", "class1_r2_mHH", "class2_r2_mHH", "class3_r2_mHH", "class0_r1_ptHH", "class1_r1_ptHH", "class2_r1_ptHH", "class3_r1_ptHH", "class0_r2_ptHH", "class1_r2_ptHH", "class2_r2_ptHH", "class3_r2_ptHH"};
 
-  std::vector<TString> list_of_ratios_acceptance = {"class3_r1_mHH", "class3_r2_mHH", "class3_r1_ptHH", "class3_r2_ptHH", "class3_r1_mHbb", "class3_r2_mHbb", "class3_r1_mHtautau", "class3_r2_mHtautau"};
+  //  std::vector<TString> list_of_ratios_acceptance = {"class3_r1_mHH", "class3_r2_mHH", "class3_r1_ptHH", "class3_r2_ptHH", "class3_r1_mHbb", "class3_r2_mHbb", "class3_r1_mHtautau", "class3_r2_mHtautau", "class3_r1_ptHbb", "class3_r2_ptHbb", "class3_r1_ptHtautau", "class3_r2_ptHtautau"};
 
   //std::vector<TString> list_of_ratios_acceptance = {"class0_r1_mHH"};
-    
+
+  std::vector<TString> list_of_ratios_acceptance = {"class3_r1_mHH", "class3_r2_mHH", "class3_r1_mHbb", "class3_r2_mHbb", "class3_r1_mHtautau", "class3_r2_mHtautau"};
+  
   for(int ii=0; ii < list_of_ratios_acceptance.size(); ii++){
     plot_ratios_acceptance(list_of_ratios_acceptance[ii], output_folder);
   }
@@ -184,7 +168,7 @@ void study_substructure_jets(TString sample, TString output_folder){
   //plot_ratios_acceptance_group("acceptance_mHH_r1");
   
   inFile->Close();
-  outFile->Close();
+  //  outFile->Close();
 
   auto end = chrono::steady_clock::now();
   auto elapsed = chrono::duration_cast<chrono::seconds>(end - start).count();
