@@ -27,7 +27,7 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
     pEff->SetTitle(title_plot);
     pEff->SetName(name_plot);
 
-    //pEff->SetMaximum(1.5*pEff->GetMaximum());
+    //pEff->SetMaximum(1.25);
     
     ///// Plotting                                                                                                                           
 
@@ -35,26 +35,12 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
     //TLegend *leg = new TLegend(0.25, 0.70, 0.40, 0.80);
     
     pEff->Draw("AP");
+    gPad->Update(); 
+    auto graph = pEff->GetPaintedGraph(); 
+    graph->SetMinimum(0);
+    graph->SetMaximum(1.25); 
+    gPad->Update(); 
 
-    /*
-    // Get the painted TGraphAsymmErrors
-    TGraphAsymmErrors* graph = pEff->GetPaintedGraph();
-
-    // Find the maximum value in the graph
-    Double_t maxValue = 0;
-    for (int i = 0; i < graph->GetN(); ++i) {
-      Double_t x, y;
-      graph->GetPoint(i, x, y);
-      if (y > maxValue) {
-	maxValue = y;
-      }
-    }
-
-    // Set the maximum value of the Y axis
-    Double_t newYMax = 1.5 * maxValue;
-    pEff->SetMaximum(newYMax);
-    pEff->Draw("AP");
-    */
     double dely = 0.05;
     myText(0.2, 0.9, kBlack, process_name);
     myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);
@@ -62,7 +48,8 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
 
     //can->Draw();
     can->SaveAs(name_image);
-    TString process_label = process_name.ReplaceAll(" ", "_");
+    //TString process_label = process_name;
+    //process_label = process_label.ReplaceAll(" ", "_");
     //process_label = process_label.replace(" ", "_");
     //can->SaveAs("output_analysis/temp_folder/"+name_plot+"_"+process_label+".png");
 
@@ -282,9 +269,9 @@ void plot_distributions_comparison(TString name_plot, TString output_folder){
   myText(0.2, 0.8-dely, kBlack, name_plot);
   
   can->Draw();
-  //can->Print(name_image);
+  can->SaveAs(name_image);
   
-  TString process_label = process_name.ReplaceAll(" ", "_");
+  //TString process_label = process_name.ReplaceAll(" ", "_");
   //process_label = process_label.replace(" ", "_");
-  can->SaveAs("output_analysis/temp_folder/"+name_plot+"_"+process_label+".png");
+  //can->SaveAs("output_analysis/temp_folder/"+name_plot+"_"+process_label+".png");
 }
