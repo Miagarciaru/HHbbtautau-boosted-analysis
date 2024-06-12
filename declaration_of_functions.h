@@ -6,6 +6,7 @@
 
 void process_label(TString name_sample);
 void fill_acceptance_ratios();
+void fill_acceptance_ratios_with_weights();
 void define_reconstructed_objects();
 void define_output_branches();
 void define_classes();
@@ -48,7 +49,18 @@ void process_label(TString name_sample){
   if(name_sample.Contains("503001")==true){ process_name = "VBF HH #lambda = 10.0 lep-had channel"; }
   if(name_sample.Contains("503002")==true){ process_name = "VBF HH C_{V} = 0.5 lep-had channel"; }
   if(name_sample.Contains("508691")==true){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 lep-had channel"; }
-  
+
+  //vbf SM processes both channels channel
+  if(name_sample.Contains("vbf_SM_both_channels")==true){ process_name = "VBF HH SM"; }
+
+  //vbf SM processes both channels channel
+  if(name_sample.Contains("ggf_SM_both_channels")==true){ process_name = "ggF HH SM"; }
+
+  //vbf Cvv=1.5 processes both channels channel
+  if(name_sample.Contains("vbf_l1cvv1p5cv1_both_channels")==true){ process_name = "VBF HH C_{VV} = 1.5"; }
+
+  //ggf cHHH = 10 processes both channels channel
+  if(name_sample.Contains("ggf_cHHH10d0_both_channels")==true){ process_name = "ggF HH #lambda = 10"; }
 }
 
 void fill_acceptance_ratios(){
@@ -132,6 +144,91 @@ void fill_acceptance_ratios(){
       hist_acceptance_ptHH_numerator_class3->Fill(reco_bbtt_HH_pt_BA);
       hist_acceptance_ptHbb_numerator_class3->Fill(reco_bbtt_bb_pt_BA);
       hist_acceptance_ptHtautau_numerator_class3->Fill(reco_bbtt_tautau_pt_BA);
+    } 
+  }
+}
+
+void fill_acceptance_ratios_with_weights(){
+  
+  if(bbtt_HH_vis_m > 0){
+    hist_acceptance_mHH_denominator->Fill(reco_bbtt_HH_m_BA, generatorWeight_NOSYS);
+    hist_acceptance_mHbb_denominator->Fill(reco_bbtt_bb_m_BA, generatorWeight_NOSYS);
+    hist_acceptance_mHtautau_denominator->Fill(reco_bbtt_tautau_m_BA, generatorWeight_NOSYS);
+    hist_acceptance_ptHH_denominator->Fill(reco_bbtt_HH_pt_BA, generatorWeight_NOSYS);
+    hist_acceptance_ptHbb_denominator->Fill(reco_bbtt_bb_pt_BA, generatorWeight_NOSYS);
+    hist_acceptance_ptHtautau_denominator->Fill(reco_bbtt_tautau_pt_BA, generatorWeight_NOSYS);
+  }
+
+  if(class_event != -1){
+    if(class_event == 0){
+      hist_acceptance_mHH_denominator_class0->Fill(reco_bbtt_HH_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHbb_denominator_class0->Fill(reco_bbtt_bb_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHtautau_denominator_class0->Fill(reco_bbtt_tautau_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHH_denominator_class0->Fill(reco_bbtt_HH_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHbb_denominator_class0->Fill(reco_bbtt_bb_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHtautau_denominator_class0->Fill(reco_bbtt_tautau_pt_BA, generatorWeight_NOSYS);
+    }
+    if(class_event == 1){
+      hist_acceptance_mHH_denominator_class1->Fill(reco_bbtt_HH_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHbb_denominator_class1->Fill(reco_bbtt_bb_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHtautau_denominator_class1->Fill(reco_bbtt_tautau_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHH_denominator_class1->Fill(reco_bbtt_HH_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHbb_denominator_class1->Fill(reco_bbtt_bb_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHtautau_denominator_class1->Fill(reco_bbtt_tautau_pt_BA, generatorWeight_NOSYS);
+    }
+    if(class_event == 2){
+      hist_acceptance_mHH_denominator_class2->Fill(reco_bbtt_HH_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHbb_denominator_class2->Fill(reco_bbtt_bb_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHtautau_denominator_class2->Fill(reco_bbtt_tautau_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHH_denominator_class2->Fill(reco_bbtt_HH_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHbb_denominator_class2->Fill(reco_bbtt_bb_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHtautau_denominator_class2->Fill(reco_bbtt_tautau_pt_BA, generatorWeight_NOSYS);
+    }
+    if(class_event == 3){
+      hist_acceptance_mHH_denominator_class3->Fill(reco_bbtt_HH_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHbb_denominator_class3->Fill(reco_bbtt_bb_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHtautau_denominator_class3->Fill(reco_bbtt_tautau_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHH_denominator_class3->Fill(reco_bbtt_HH_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHbb_denominator_class3->Fill(reco_bbtt_bb_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHtautau_denominator_class3->Fill(reco_bbtt_tautau_pt_BA, generatorWeight_NOSYS);
+    }
+  }
+  // Rbb-Rtautau
+  if((bbtt_HH_vis_m > 0) && (class_event != -1)){
+    if(class_event == 0){
+      hist_acceptance_mHH_numerator_class0->Fill(reco_bbtt_HH_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHbb_numerator_class0->Fill(reco_bbtt_bb_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHtautau_numerator_class0->Fill(reco_bbtt_tautau_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHH_numerator_class0->Fill(reco_bbtt_HH_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHbb_numerator_class0->Fill(reco_bbtt_bb_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHtautau_numerator_class0->Fill(reco_bbtt_tautau_pt_BA, generatorWeight_NOSYS);
+    }
+    // Rbb-Btautau
+    if(class_event == 1){
+      hist_acceptance_mHH_numerator_class1->Fill(reco_bbtt_HH_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHbb_numerator_class1->Fill(reco_bbtt_bb_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHtautau_numerator_class1->Fill(reco_bbtt_tautau_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHH_numerator_class1->Fill(reco_bbtt_HH_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHbb_numerator_class1->Fill(reco_bbtt_bb_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHtautau_numerator_class1->Fill(reco_bbtt_tautau_pt_BA, generatorWeight_NOSYS);
+    }
+    // Bbb-Rtautau
+    if(class_event == 2){
+      hist_acceptance_mHH_numerator_class2->Fill(reco_bbtt_HH_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHbb_numerator_class2->Fill(reco_bbtt_bb_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHtautau_numerator_class2->Fill(reco_bbtt_tautau_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHH_numerator_class2->Fill(reco_bbtt_HH_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHbb_numerator_class2->Fill(reco_bbtt_bb_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHtautau_numerator_class2->Fill(reco_bbtt_tautau_pt_BA, generatorWeight_NOSYS);
+    }
+    // Bbb-Btautau
+    if(class_event == 3){
+      hist_acceptance_mHH_numerator_class3->Fill(reco_bbtt_HH_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHbb_numerator_class3->Fill(reco_bbtt_bb_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_mHtautau_numerator_class3->Fill(reco_bbtt_tautau_m_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHH_numerator_class3->Fill(reco_bbtt_HH_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHbb_numerator_class3->Fill(reco_bbtt_bb_pt_BA, generatorWeight_NOSYS);
+      hist_acceptance_ptHtautau_numerator_class3->Fill(reco_bbtt_tautau_pt_BA, generatorWeight_NOSYS);
     } 
   }
 }

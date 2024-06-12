@@ -330,60 +330,60 @@ TH1F *hist_acceptance_ptHH_denominator_class3 = new TH1F("hist_acceptance_ptHH_d
 
 // Histograms for mass of H->bb cuts ratio_1 and ratio_2
 
-TH1F *hist_acceptance_mHbb_numerator_class0 = new TH1F("hist_acceptance_mHbb_numerator_class0", "Acceptance plot using the mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHbb_numerator_class1 = new TH1F("hist_acceptance_mHbb_numerator_class1", "Acceptance plot using the mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHbb_numerator_class2 = new TH1F("hist_acceptance_mHbb_numerator_class2", "Acceptance plot using the mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHbb_numerator_class3 = new TH1F("hist_acceptance_mHbb_numerator_class3", "Acceptance plot using the mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHbb_numerator_class0 = new TH1F("hist_acceptance_mHbb_numerator_class0", "Acceptance plot using the mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHbb_numerator_class1 = new TH1F("hist_acceptance_mHbb_numerator_class1", "Acceptance plot using the mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHbb_numerator_class2 = new TH1F("hist_acceptance_mHbb_numerator_class2", "Acceptance plot using the mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHbb_numerator_class3 = new TH1F("hist_acceptance_mHbb_numerator_class3", "Acceptance plot using the mHbb variable (r_{1}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 600);
 
-TH1F *hist_acceptance_mHbb_denominator = new TH1F("hist_acceptance_mHbb_denominator", "Acceptance plot using the mHbb variable; m(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHbb_denominator = new TH1F("hist_acceptance_mHbb_denominator", "Acceptance plot using the mHbb variable; m(H #rightarrow bb) [GeV];Ratio", 35, 200, 600);
 
-TH1F *hist_acceptance_mHbb_denominator_class0 = new TH1F("hist_acceptance_mHbb_denominator_class0", "Acceptance plot using the mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHbb_denominator_class1 = new TH1F("hist_acceptance_mHbb_denominator_class1", "Acceptance plot using the mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHbb_denominator_class2 = new TH1F("hist_acceptance_mHbb_denominator_class2", "Acceptance plot using the mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHbb_denominator_class3 = new TH1F("hist_acceptance_mHbb_denominator_class3", "Acceptance plot using the mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHbb_denominator_class0 = new TH1F("hist_acceptance_mHbb_denominator_class0", "Acceptance plot using the mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHbb_denominator_class1 = new TH1F("hist_acceptance_mHbb_denominator_class1", "Acceptance plot using the mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHbb_denominator_class2 = new TH1F("hist_acceptance_mHbb_denominator_class2", "Acceptance plot using the mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHbb_denominator_class3 = new TH1F("hist_acceptance_mHbb_denominator_class3", "Acceptance plot using the mHbb variable (r_{2}); m(H #rightarrow bb) [GeV];Ratio", 35, 200, 600);
 
 // Histograms for mass of H->tautau cuts ratio_1 and ratio_2
 
-TH1F *hist_acceptance_mHtautau_numerator_class0 = new TH1F("hist_acceptance_mHtautau_numerator_class0", "Acceptance plot using the mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHtautau_numerator_class1 = new TH1F("hist_acceptance_mHtautau_numerator_class1", "Acceptance plot using the mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHtautau_numerator_class2 = new TH1F("hist_acceptance_mHtautau_numerator_class2", "Acceptance plot using the mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHtautau_numerator_class3 = new TH1F("hist_acceptance_mHtautau_numerator_class3", "Acceptance plot using the mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHtautau_numerator_class0 = new TH1F("hist_acceptance_mHtautau_numerator_class0", "Acceptance plot using the mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHtautau_numerator_class1 = new TH1F("hist_acceptance_mHtautau_numerator_class1", "Acceptance plot using the mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHtautau_numerator_class2 = new TH1F("hist_acceptance_mHtautau_numerator_class2", "Acceptance plot using the mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHtautau_numerator_class3 = new TH1F("hist_acceptance_mHtautau_numerator_class3", "Acceptance plot using the mHtautau variable (r_{1}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 600);
 
-TH1F *hist_acceptance_mHtautau_denominator = new TH1F("hist_acceptance_mHtautau_denominator", "Acceptance plot using the mHtautau variable; m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHtautau_denominator = new TH1F("hist_acceptance_mHtautau_denominator", "Acceptance plot using the mHtautau variable; m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 600);
 
-TH1F *hist_acceptance_mHtautau_denominator_class0 = new TH1F("hist_acceptance_mHtautau_denominator_class0", "Acceptance plot using the mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHtautau_denominator_class1 = new TH1F("hist_acceptance_mHtautau_denominator_class1", "Acceptance plot using the mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHtautau_denominator_class2 = new TH1F("hist_acceptance_mHtautau_denominator_class2", "Acceptance plot using the mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_mHtautau_denominator_class3 = new TH1F("hist_acceptance_mHtautau_denominator_class3", "Acceptance plot using the mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_mHtautau_denominator_class0 = new TH1F("hist_acceptance_mHtautau_denominator_class0", "Acceptance plot using the mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHtautau_denominator_class1 = new TH1F("hist_acceptance_mHtautau_denominator_class1", "Acceptance plot using the mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHtautau_denominator_class2 = new TH1F("hist_acceptance_mHtautau_denominator_class2", "Acceptance plot using the mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 600);
+TH1F *hist_acceptance_mHtautau_denominator_class3 = new TH1F("hist_acceptance_mHtautau_denominator_class3", "Acceptance plot using the mHtautau variable (r_{2}); m(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 600);
 
 // Histograms for pT of H->bb cuts ratio_1 and ratio_2
 
-TH1F *hist_acceptance_ptHbb_numerator_class0 = new TH1F("hist_acceptance_ptHbb_numerator_class0", "Acceptance plot using the ptHbb variable (r_{1}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHbb_numerator_class1 = new TH1F("hist_acceptance_ptHbb_numerator_class1", "Acceptance plot using the ptHbb variable (r_{1}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHbb_numerator_class2 = new TH1F("hist_acceptance_ptHbb_numerator_class2", "Acceptance plot using the ptHbb variable (r_{1}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHbb_numerator_class3 = new TH1F("hist_acceptance_ptHbb_numerator_class3", "Acceptance plot using the ptHbb variable (r_{1}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_ptHbb_numerator_class0 = new TH1F("hist_acceptance_ptHbb_numerator_class0", "Acceptance plot using the ptHbb variable (r_{1}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHbb_numerator_class1 = new TH1F("hist_acceptance_ptHbb_numerator_class1", "Acceptance plot using the ptHbb variable (r_{1}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHbb_numerator_class2 = new TH1F("hist_acceptance_ptHbb_numerator_class2", "Acceptance plot using the ptHbb variable (r_{1}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHbb_numerator_class3 = new TH1F("hist_acceptance_ptHbb_numerator_class3", "Acceptance plot using the ptHbb variable (r_{1}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 700);
 
-TH1F *hist_acceptance_ptHbb_denominator = new TH1F("hist_acceptance_ptHbb_denominator", "Acceptance plot using the ptHbb variable; p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_ptHbb_denominator = new TH1F("hist_acceptance_ptHbb_denominator", "Acceptance plot using the ptHbb variable; p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 700);
 
-TH1F *hist_acceptance_ptHbb_denominator_class0 = new TH1F("hist_acceptance_ptHbb_denominator_class0", "Acceptance plot using the ptHbb variable (r_{2}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHbb_denominator_class1 = new TH1F("hist_acceptance_ptHbb_denominator_class1", "Acceptance plot using the ptHbb variable (r_{2}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHbb_denominator_class2 = new TH1F("hist_acceptance_ptHbb_denominator_class2", "Acceptance plot using the ptHbb variable (r_{2}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHbb_denominator_class3 = new TH1F("hist_acceptance_ptHbb_denominator_class3", "Acceptance plot using the ptHbb variable (r_{2}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_ptHbb_denominator_class0 = new TH1F("hist_acceptance_ptHbb_denominator_class0", "Acceptance plot using the ptHbb variable (r_{2}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHbb_denominator_class1 = new TH1F("hist_acceptance_ptHbb_denominator_class1", "Acceptance plot using the ptHbb variable (r_{2}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHbb_denominator_class2 = new TH1F("hist_acceptance_ptHbb_denominator_class2", "Acceptance plot using the ptHbb variable (r_{2}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHbb_denominator_class3 = new TH1F("hist_acceptance_ptHbb_denominator_class3", "Acceptance plot using the ptHbb variable (r_{2}); p_{T}(H #rightarrow bb) [GeV];Ratio", 35, 200, 700);
 
 
 // Histograms for pT of H->tautau cuts ratio_1 and ratio_2
 
-TH1F *hist_acceptance_ptHtautau_numerator_class0 = new TH1F("hist_acceptance_ptHtautau_numerator_class0", "Acceptance plot using the ptHtautau variable (r_{1}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHtautau_numerator_class1 = new TH1F("hist_acceptance_ptHtautau_numerator_class1", "Acceptance plot using the ptHtautau variable (r_{1}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHtautau_numerator_class2 = new TH1F("hist_acceptance_ptHtautau_numerator_class2", "Acceptance plot using the ptHtautau variable (r_{1}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHtautau_numerator_class3 = new TH1F("hist_acceptance_ptHtautau_numerator_class3", "Acceptance plot using the ptHtautau variable (r_{1}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_ptHtautau_numerator_class0 = new TH1F("hist_acceptance_ptHtautau_numerator_class0", "Acceptance plot using the ptHtautau variable (r_{1}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHtautau_numerator_class1 = new TH1F("hist_acceptance_ptHtautau_numerator_class1", "Acceptance plot using the ptHtautau variable (r_{1}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHtautau_numerator_class2 = new TH1F("hist_acceptance_ptHtautau_numerator_class2", "Acceptance plot using the ptHtautau variable (r_{1}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHtautau_numerator_class3 = new TH1F("hist_acceptance_ptHtautau_numerator_class3", "Acceptance plot using the ptHtautau variable (r_{1}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 700);
 
-TH1F *hist_acceptance_ptHtautau_denominator = new TH1F("hist_acceptance_ptHtautau_denominator", "Acceptance plot using the ptHtautau variable; p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_ptHtautau_denominator = new TH1F("hist_acceptance_ptHtautau_denominator", "Acceptance plot using the ptHtautau variable; p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 700);
 
-TH1F *hist_acceptance_ptHtautau_denominator_class0 = new TH1F("hist_acceptance_ptHtautau_denominator_class0", "Acceptance plot using the ptHtautau variable (r_{2}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHtautau_denominator_class1 = new TH1F("hist_acceptance_ptHtautau_denominator_class1", "Acceptance plot using the ptHtautau variable (r_{2}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHtautau_denominator_class2 = new TH1F("hist_acceptance_ptHtautau_denominator_class2", "Acceptance plot using the ptHtautau variable (r_{2}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
-TH1F *hist_acceptance_ptHtautau_denominator_class3 = new TH1F("hist_acceptance_ptHtautau_denominator_class3", "Acceptance plot using the ptHtautau variable (r_{2}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 1200);
+TH1F *hist_acceptance_ptHtautau_denominator_class0 = new TH1F("hist_acceptance_ptHtautau_denominator_class0", "Acceptance plot using the ptHtautau variable (r_{2}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHtautau_denominator_class1 = new TH1F("hist_acceptance_ptHtautau_denominator_class1", "Acceptance plot using the ptHtautau variable (r_{2}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHtautau_denominator_class2 = new TH1F("hist_acceptance_ptHtautau_denominator_class2", "Acceptance plot using the ptHtautau variable (r_{2}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 700);
+TH1F *hist_acceptance_ptHtautau_denominator_class3 = new TH1F("hist_acceptance_ptHtautau_denominator_class3", "Acceptance plot using the ptHtautau variable (r_{2}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio", 35, 200, 700);
 
 
 
