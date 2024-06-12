@@ -159,7 +159,7 @@ void study_substructure_jets(TString sample, TString output_folder){
 
   //std::vector<TString> list_of_ratios_acceptance = {"class0_r1_mHH"};
 
-  std::vector<TString> list_of_ratios_acceptance = {"class3_r1_mHH", "class3_r2_mHH", "class3_r1_mHbb", "class3_r2_mHbb", "class3_r1_mHtautau", "class3_r2_mHtautau"};
+  std::vector<TString> list_of_ratios_acceptance = {"class3_r1_mHH", "class3_r2_mHH", "class3_r1_mHbb", "class3_r2_mHbb", "class3_r1_mHtautau", "class3_r2_mHtautau", "class3_r1_ptHH", "class3_r2_ptHH", "class3_r1_ptHbb", "class3_r2_ptHbb", "class3_r1_ptHtautau", "class3_r2_ptHtautau"};
   
   for(int ii=0; ii < list_of_ratios_acceptance.size(); ii++){
     plot_ratios_acceptance(list_of_ratios_acceptance[ii], output_folder);
