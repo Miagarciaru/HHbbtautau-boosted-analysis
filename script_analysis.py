@@ -2,26 +2,27 @@ import os
 import subprocess
 
 # List of root files to analyze
-"""
+
 sample_paths = [
-    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_502982_vbf_hadhad_l1cvv1cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH SM had-had channel
-    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_502993_vbf_lephad_l1cvv1cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH SM lep-had channel
-    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH Cvv=1.5 had-had channel
-    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH Cvv=1.5 lep-had channel
-    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_600459_ggf_hadhad_cHHH01d0_PHYS_merged_boosted_bypass_config.root", # ggF SM had-had channel
-    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_600461_ggf_lephad_cHHH01d0_PHYS_merged_boosted_bypass_config.root", # ggF SM lep-had channel
-    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_600460_ggf_hadhad_cHHH10d0_PHYS_merged_boosted_bypass_config.root", # ggF cHHH=10 had-had channel
-    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_600462_ggf_lephad_cHHH10d0_PHYS_merged_boosted_bypass_config.root" # ggF cHHH=10 lep-had channel
+    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_502982_vbf_hadhad_l1cvv1cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH SM had-had channel
+    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_502993_vbf_lephad_l1cvv1cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH SM lep-had channel
+    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH Cvv=1.5 had-had channel
+    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH Cvv=1.5 lep-had channel
+    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_600459_ggf_hadhad_cHHH01d0_PHYS_merged_boosted_bypass_config.root", # ggF SM had-had channel
+    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_600461_ggf_lephad_cHHH01d0_PHYS_merged_boosted_bypass_config.root", # ggF SM lep-had channel
+    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_600460_ggf_hadhad_cHHH10d0_PHYS_merged_boosted_bypass_config.root", # ggF cHHH=10 had-had channel
+    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_600462_ggf_lephad_cHHH10d0_PHYS_merged_boosted_bypass_config.root" # ggF cHHH=10 lep-had channel
     # Add as many samples as you need
 ]
-"""
 
+"""
 sample_paths = [
     "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_vbf_SM_both_channels_PHYS_merged_boosted_bypass_config.root", # vbf HH SM both channels
     "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_ggf_SM_both_channels_PHYS_merged_boosted_bypass_config.root", # ggf HH SM both channels
     "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_vbf_l1cvv1p5cv1_both_channels_PHYS_merged_boosted_bypass_config.root", # vbf HH Cvv=1.5 both channels
     "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/boosted-samples/mc20_13TeV_ggf_cHHH10d0_both_channels_PHYS_merged_boosted_bypass_config.root", # ggf HH #lambda=10 both channels
 ]
+"""
 
 # Root folder for storing output
 output_root_folder = "output_analysis"

@@ -59,12 +59,10 @@ void study_substructure_jets(TString sample, TString output_folder){
     define_truth_tau_and_b_jets();
     compute_dR_min_index_fat_jets();
     define_classes();
-
-    //if( class_event != 3) continue;
-    
     define_reconstructed_objects();
     fill_histograms();
     fill_acceptance_ratios();
+    //fill_acceptance_ratios_with_weights();
     
     if(class_event == -1){ count_non_matched_events+=1; }
     if(class_event == 0){ count_truth_Rbb_Rtautau+=1; } 
@@ -138,13 +136,16 @@ void study_substructure_jets(TString sample, TString output_folder){
   cout << "The number of positive values for truth_HH_m is: " << count_truth_HH_m_pos_values << endl;
 
   //std::vector<TString> list_of_histograms = {"matched_recojet_bb_m", "matched_recojet_tautau_m", "matched_recojets_bb_pt", "matched_recojets_tautau_pt", "matched_recojets_bb_eta", "matched_recojets_tautau_eta", "non_matched_recojets_pt", "non_matched_recojets_eta", "non_matched_recojets_pt_no_class", "non_matched_recojets_eta_no_class", "events_per_class", "matched_bb_dR", "matched_tautau_dR"};
+
+  std::vector<TString> list_of_histograms = {"matched_recojet_bb_m", "matched_recojet_tautau_m", "matched_recojets_bb_pt", "matched_recojets_tautau_pt"};
   
-  //std::vector<TString> list_of_2D_histograms = {"dR_per_class_bb", "dR_per_class_tautau"};
-  /*
   for(int ii=0; ii < list_of_histograms.size(); ii++){
     plot_distributions(list_of_histograms[ii], output_folder);
   }
   
+  //std::vector<TString> list_of_2D_histograms = {"dR_per_class_bb", "dR_per_class_tautau"};
+  
+  /*
   for(int ii=0; ii < list_of_2D_histograms.size(); ii++){
     plot_2D_distributions(list_of_2D_histograms[ii], output_folder);
   }
