@@ -39,11 +39,11 @@ void comparison_boosted_resolved_distributions(){
   // *************************************
   
   vector<string> list_of_plots = {"tautau_m", "tautau_pT", "bb_m", "bb_pT", "recojet_antikt4_passesOR", "bbtt_Jet_b1_pt", "bbtt_Jet_b2_pt"};
-  /*
+  
   for(int ii=0; ii < list_of_plots.size(); ii++){
     plot_distributions(list_of_plots[ii]);
   }
-  */
+  
   // plot_distributions("tau_passesOR");
   // plot_distributions("recojet_antikt4_passesOR");
  

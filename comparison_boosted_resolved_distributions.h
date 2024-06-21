@@ -9,9 +9,9 @@ p5cv1_PHYS_merged_";
 
 //TString path="../run/mc20_13TeV_600459_ggf_hadhad_cHHH01d0/mc20_13TeV_600459_ggf_hadhad_cHHH01d0_PHYS_merged_";
 //TString path="../run/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1_PHYS_merged_";
-TString path="../run/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1/mc20_13TeV_502985_vbf_hadhad_l1cvv1p5cv1_PHYS_merged_";
-TString path_boosted_sample=path+"boosted_bypass_config.root";
-TString path_resolved_sample=path+"resolved_bypass_config.root";
+TString path="/afs/cern.ch/user/g/garciarm/easyjet-fork/run/";
+TString path_boosted_sample=path+"vbf_cvv1p5_boosted.root";
+TString path_resolved_sample=path+"vbf_cvv1p5_resolved.root";
 
 // Open the input files and access to the trees                                                                                             
 
