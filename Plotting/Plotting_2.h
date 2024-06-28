@@ -39,38 +39,22 @@ void plotEfficiencies(const std::string& ratio, const std::vector<string>& nameT
   TCanvas* canvas = new TCanvas();
   TLegend* leg = new TLegend(0.18, 0.75, 0.93, 0.90);
 
-  //int color = 1;
-
-  std::vector<TEfficiency*> TEff_list;
   const int colors[8] = { kRed, kBlue, kGreen, kMagenta, kCyan, kYellow, kBlack, kOrange };
-  
+
   for(int ii=0; ii<8; ii++){
-    TEff_list.push_back(TEff_ratios.at(ii));
-    //TEff_list->SetFillColor(colors[ii]);
-    //TEff_list->SetLineColor(colors[ii]);
-    TEff_list.at(ii)->SetMarkerStyle(20);
-    TEff_list.at(ii)->SetMarkerColor(colors[ii]);
-    leg->AddEntry(TEff_list.at(ii), (nameTEff.at(ii)+"_"+ratio).c_str(), "lep");
+    TEff_ratios.at(ii)->SetMarkerStyle(20);
+    TEff_ratios.at(ii)->SetMarkerColor(colors[ii]);
+    leg->AddEntry(TEff_ratios.at(ii), (nameTEff.at(ii)+"_"+ratio).c_str(), "lep");
     if(ii==0){
-      TEff_list.at(ii)->Draw("AP");
+      TEff_ratios.at(ii)->Draw("AP");
     }
     else{
-      TEff_list.at(ii)->Draw("PSAME");
+      TEff_ratios.at(ii)->Draw("PSAME");
     }
   }
-  /*
-  TEfficiency *pEff_r1 = TEff_ratios.at(0);
-  TEfficiency *pEff_r2 = TEff_ratios.at(1);
-  TEfficiency *pEff_r3 = TEff_ratios.at(2);
-  TEfficiency *pEff_r4 = TEff_ratios.at(3);
-  TEfficiency *pEff_r5 = TEff_ratios.at(4);
-  TEfficiency *pEff_r6 = TEff_ratios.at(5);
-  TEfficiency *pEff_r7 = TEff_ratios.at(6);
-  TEfficiency *pEff_r8 = TEff_ratios.at(7);
-  */
-  
+      
   gPad->Update();
-  auto graph = TEff_list.at(0)->GetPaintedGraph();
+  auto graph = TEff_ratios.at(0)->GetPaintedGraph();
   graph->SetMinimum(0);
   graph->SetMaximum(1.40);
       
@@ -80,7 +64,9 @@ void plotEfficiencies(const std::string& ratio, const std::vector<string>& nameT
   leg->SetLineColor(0);
   
   leg->Draw();
-  canvas->SaveAs("output_plots/mHH_ratios_r1_comparison.png");
+
+  string name_image = "output_plots/mHH_ratios_"+ratio+"_comparison.png";
+  canvas->SaveAs(name_image.c_str());
 }
 
 // Initialize the map_ratios_info
