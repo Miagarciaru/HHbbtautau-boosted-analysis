@@ -4,14 +4,9 @@
 
 // Path of the merged samples                                                                                                               
 
-//TString path="/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/outputfiles-easyjet-march21-2024/mc20_13TeV_502985_vbf_hadhad_l1cvv1 \
-p5cv1_PHYS_merged_";
-
-//TString path="../run/mc20_13TeV_600459_ggf_hadhad_cHHH01d0/mc20_13TeV_600459_ggf_hadhad_cHHH01d0_PHYS_merged_";
-//TString path="../run/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1_PHYS_merged_";
-TString path="/afs/cern.ch/user/g/garciarm/easyjet-fork/run/";
-TString path_boosted_sample=path+"vbf_cvv1p5_boosted.root";
-TString path_resolved_sample=path+"vbf_cvv1p5_resolved.root";
+TString path="/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/";
+TString path_boosted_sample=path+"boosted_samples/mc20_13TeV_503002_vbf_lephad_l1cvv1cv0p5_PHYS_merged_boosted_bypass_config.root";
+TString path_resolved_sample=path+"resolved_samples/mc20_13TeV_503002_vbf_lephad_l1cvv1cv0p5_PHYS_merged_resolved_bypass_config.root";
 
 // Open the input files and access to the trees                                                                                             
 
@@ -187,7 +182,7 @@ void plot_distributions(TString name_plot){
   leg->Draw();
   
   can->Draw();
-  can->Print(name_image);
+  can->SaveAs(name_image);
 }
 
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions
