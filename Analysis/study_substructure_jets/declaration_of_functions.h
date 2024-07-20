@@ -382,22 +382,10 @@ void define_classes(){
 // This function give us the min deltaR between the truth_objects and the objects in the recojets_ak10UFO fat-jets
 void compute_dR_min_index_fat_jets(){
   
-  if(recojet_antikt10UFO_NOSYS_pt->size() > 0){
-    compute_dR_min(idx_b1truth_recoak10_dRmin, dR_min_b1truth_recoak10_fatjet, truth_b1_pt, truth_b1_eta, truth_b1_phi, truth_b1_m);
-    compute_dR_min(idx_b2truth_recoak10_dRmin, dR_min_b2truth_recoak10_fatjet, truth_b2_pt, truth_b2_eta, truth_b2_phi, truth_b2_m);
-    compute_dR_min(idx_tau1truth_recoak10_dRmin, dR_min_tau1truth_recoak10_fatjet, truth_tau1_pt, truth_tau1_eta, truth_tau1_phi, truth_tau1_m);
-    compute_dR_min(idx_tau2truth_recoak10_dRmin, dR_min_tau2truth_recoak10_fatjet, truth_tau2_pt, truth_tau2_eta, truth_tau2_phi, truth_tau2_m);
-  }
-  else{
-    idx_b1truth_recoak10_dRmin = -1;
-    dR_min_b1truth_recoak10_fatjet = -1;
-    idx_b2truth_recoak10_dRmin = -1;
-    dR_min_b2truth_recoak10_fatjet = -1;
-    idx_tau1truth_recoak10_dRmin = -1;
-    dR_min_tau1truth_recoak10_fatjet = -1;
-    idx_tau2truth_recoak10_dRmin = -1;
-    dR_min_tau2truth_recoak10_fatjet = -1;
-  }
+  compute_dR_min(idx_b1truth_recoak10_dRmin, dR_min_b1truth_recoak10_fatjet, truth_b1_pt, truth_b1_eta, truth_b1_phi, truth_b1_m);
+  compute_dR_min(idx_b2truth_recoak10_dRmin, dR_min_b2truth_recoak10_fatjet, truth_b2_pt, truth_b2_eta, truth_b2_phi, truth_b2_m);
+  compute_dR_min(idx_tau1truth_recoak10_dRmin, dR_min_tau1truth_recoak10_fatjet, truth_tau1_pt, truth_tau1_eta, truth_tau1_phi, truth_tau1_m);
+  compute_dR_min(idx_tau2truth_recoak10_dRmin, dR_min_tau2truth_recoak10_fatjet, truth_tau2_pt, truth_tau2_eta, truth_tau2_phi, truth_tau2_m);
   
 }
 
@@ -415,28 +403,33 @@ void deltaR(float &dR, float jet1_pt, float jet1_eta, float jet1_phi, float jet1
 
 void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m){
 
-  idx = -1;
-  dR_min = 1;
+  dR_min = 1; // Min dR value for which a truth object can be matched to a recojet
   
-  for(int ii = 0; ii < recojet_antikt10UFO_NOSYS_pt->size(); ii++){
-    
-    TLorentzVector truth_jet  = TLorentzVector();
-    TLorentzVector reco_jet  = TLorentzVector();
-    
-    float reco_pt = recojet_antikt10UFO_NOSYS_pt->at(ii);
-    float reco_eta = recojet_antikt10UFO_eta->at(ii);
-    float reco_phi = recojet_antikt10UFO_phi->at(ii);
-    float reco_m = recojet_antikt10UFO_m->at(ii);
-    
-    truth_jet.SetPtEtaPhiM(truth_pt/1000., truth_eta, truth_phi, truth_m/1000.);
-    reco_jet.SetPtEtaPhiM(reco_pt/1000., reco_eta, reco_phi, reco_m/1000.);
-    
-    float deltaR_truth_recojet = truth_jet.DeltaR(reco_jet);
+  if(recojet_antikt10UFO_NOSYS_pt->size() > 0){
+    for(int ii = 0; ii < recojet_antikt10UFO_NOSYS_pt->size(); ii++){
       
-    if( (deltaR_truth_recojet < dR_min) && (deltaR_truth_recojet < 1) ){
-      dR_min = deltaR_truth_recojet;
-      idx = ii;
+      TLorentzVector truth_jet  = TLorentzVector();
+      TLorentzVector reco_jet  = TLorentzVector();
+      
+      float reco_pt = recojet_antikt10UFO_NOSYS_pt->at(ii);
+      float reco_eta = recojet_antikt10UFO_eta->at(ii);
+      float reco_phi = recojet_antikt10UFO_phi->at(ii);
+      float reco_m = recojet_antikt10UFO_m->at(ii);
+      
+      truth_jet.SetPtEtaPhiM(truth_pt/1000., truth_eta, truth_phi, truth_m/1000.);
+      reco_jet.SetPtEtaPhiM(reco_pt/1000., reco_eta, reco_phi, reco_m/1000.);
+      
+      float deltaR_truth_recojet = truth_jet.DeltaR(reco_jet);
+      
+      if( (deltaR_truth_recojet < dR_min) ){
+	dR_min = deltaR_truth_recojet;
+	idx = ii;
+      }
     }
+  }
+  else{
+    idx = -1;
+    dR_min = -1;
   }
 }
 
@@ -447,20 +440,14 @@ void define_truth_tau_and_b_jets(){
     int sum_type_H1 = TMath::Abs(truth_children_fromH1_pdgId->at(0)) + TMath::Abs(truth_children_fromH1_pdgId->at(1));
     int sum_type_H2 = TMath::Abs(truth_children_fromH2_pdgId->at(0)) + TMath::Abs(truth_children_fromH2_pdgId->at(1));
 
-    bool is_H1_bb = false;
-    bool is_H2_bb = false;
-
-    if(sum_type_H1 == 10){ is_H1_bb = true;} 
-    if(sum_type_H1 == 30){ is_H2_bb = true;}
-
     // Here we assume that all the jets are listed from the highest pT to the lowest pT
     int index_b1 = 0;
     int index_b2 = 1;
     int index_tau1 = 0;
     int index_tau2 = 1;
-      
-    // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1_bb scenario
-    if(is_H1_bb){
+
+    // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1bb_H2tautau scenario
+    if( (sum_type_H1 == 10) && (sum_type_H2 == 30) ){
       if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
 	index_b1 = 1;
 	index_b2 = 0;
@@ -488,12 +475,12 @@ void define_truth_tau_and_b_jets(){
       truth_tau2_pt = truth_children_fromH2_pt->at(index_tau2);
       truth_tau2_eta = truth_children_fromH2_eta->at(index_tau2);
       truth_tau2_phi = truth_children_fromH2_phi->at(index_tau2);
-      truth_tau2_m = truth_children_fromH2_m->at(index_tau2);	
-      
-    }
+      truth_tau2_m = truth_children_fromH2_m->at(index_tau2);
+    } 
 
-    // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H2_bb scenario
-    if(is_H2_bb){
+    else if( (sum_type_H1 == 30) && (sum_type_H2 == 10) ){
+    
+      // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1tautau_H2bb scenario
       if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
 	index_b1 = 1;
 	index_b2 = 0;
