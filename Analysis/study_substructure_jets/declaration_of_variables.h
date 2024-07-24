@@ -90,6 +90,12 @@ Float_t truth_HH_eta;
 Float_t truth_HH_phi;
 Float_t truth_HH_m;
 
+vector<float> *truthjet_antikt4_pt;
+vector<float> *truthjet_antikt4_eta;
+vector<float> *truthjet_antikt4_phi;
+vector<float> *truthjet_antikt4_m;
+vector<int> *truthjet_antikt4_HadronConeExclTruthLabelID;
+
 // Matching of truth b and tau jets from truth children
 Float_t truth_b1_pt;
 Float_t truth_b1_eta;
@@ -110,8 +116,6 @@ Float_t truth_tau2_pt;
 Float_t truth_tau2_eta;
 Float_t truth_tau2_phi;
 Float_t truth_tau2_m;
-
-
 
 // Declaration of leafs types for reconstructed_ak10UFO jets (fat-jets) branches for boosted tree variables
 vector<float> *recojet_antikt10UFO_NOSYS_pt;
@@ -209,6 +213,12 @@ TBranch *b_truth_HH_pt;
 TBranch *b_truth_HH_eta;
 TBranch *b_truth_HH_phi;
 TBranch *b_truth_HH_m;
+
+TBranch *b_truthjet_antikt4_pt;
+TBranch *b_truthjet_antikt4_eta;
+TBranch *b_truthjet_antikt4_phi;
+TBranch *b_truthjet_antikt4_m;
+TBranch *b_truthjet_antikt4_HadronConeExclTruthLabelID;
 
 // Matching of truth b and tau jets from truth children
 TBranch *b_truth_b1_pt;
