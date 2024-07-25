@@ -1,4 +1,3 @@
-//#include "Plotting.h"
 #include "declaration_of_variables.h"
 
 // *************************************
@@ -257,37 +256,40 @@ void define_classes(){
 
   if( (idx_b1truth_recoak10_dRmin != -1) && (idx_b2truth_recoak10_dRmin != -1) && (idx_tau1truth_recoak10_dRmin != -1) && (idx_tau2truth_recoak10_dRmin != -1) ){
 
-    bool are_boosted_bb_matched = false;
-    bool are_boosted_tautau_matched = false;
+    if( (idx_b1truth_recoak10_dRmin!=idx_tau1truth_recoak10_dRmin) && (idx_b1truth_recoak10_dRmin!=idx_tau2truth_recoak10_dRmin) && (idx_b2truth_recoak10_dRmin!=idx_tau1truth_recoak10_dRmin) && (idx_b2truth_recoak10_dRmin!=idx_tau2truth_recoak10_dRmin)){  
+      
+      bool are_boosted_bb_matched = false;
+      bool are_boosted_tautau_matched = false;
+      
+      if( idx_b1truth_recoak10_dRmin == idx_b2truth_recoak10_dRmin ){
+	are_boosted_bb_matched = true;
+      }
+      if( idx_tau1truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin ){
+	are_boosted_tautau_matched = true;
+      }
+      
+      // ************************************
+      // For the boosted and resolved jets that are correctly identified matched to fat jets
+      
+      // For the R_bb R_tautau class
+      if( (are_boosted_bb_matched==false) && (are_boosted_tautau_matched==false) ){
+	class_event = 0;
+      }
+      
+      // For the R_bb B_tautau class
+      if( (are_boosted_bb_matched==false) && (are_boosted_tautau_matched==true) ){
+	class_event = 1;
+      }
+      
+      // For the B_bb R_tautau class
+      if( (are_boosted_bb_matched==true) && (are_boosted_tautau_matched==false) ){
+	class_event = 2;
+      }
 
-    if( idx_b1truth_recoak10_dRmin == idx_b2truth_recoak10_dRmin ){
-      are_boosted_bb_matched = true;
-    }
-    if( idx_tau1truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin ){
-      are_boosted_tautau_matched = true;
-    }
-
-    // ************************************
-    // For the boosted and resolved jets that are correctly identified matched to fat jets
- 
-    // For the R_bb R_tautau class
-    if( (are_boosted_bb_matched==false) && (are_boosted_tautau_matched==false) ){
-      class_event = 0;
-    }
-
-    // For the R_bb B_tautau class
-    if( (are_boosted_bb_matched==false) && (are_boosted_tautau_matched==true) ){
-      class_event = 1;
-    }
-
-    // For the B_bb R_tautau class
-    if( (are_boosted_bb_matched==true) && (are_boosted_tautau_matched==false) ){
-      class_event = 2;
-    }
-
-    // For the B_bb B_tautau class
-    if( (are_boosted_bb_matched==true) && (are_boosted_tautau_matched==true) ){
-      class_event = 3;
+      // For the B_bb B_tautau class
+      if( (are_boosted_bb_matched==true) && (are_boosted_tautau_matched==true) ){
+	class_event = 3;
+      }
     }
   }
 }
@@ -317,6 +319,7 @@ void deltaR(float &dR, float jet1_pt, float jet1_eta, float jet1_phi, float jet1
 void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m){
 
   dR_min = 1; // Min dR value for which a truth object can be matched to a recojet
+  idx = -1;
   
   if(recojet_antikt10UFO_NOSYS_pt->size() > 0){
     for(int ii = 0; ii < recojet_antikt10UFO_NOSYS_pt->size(); ii++){
@@ -346,7 +349,6 @@ void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, fl
   }
 }
 
-
 void define_truth_tau_and_b_jets(){
 
   truth_b1_pt = -99;
@@ -370,9 +372,6 @@ void define_truth_tau_and_b_jets(){
   truth_tau2_m = -99;
       
   if( truthjet_antikt4_HadronConeExclTruthLabelID->size()!=0 ){
-	
-    int sum_type_H1 = 0;
-    int sum_type_H2 = 0;
     
     // Here we assume that all the jets are listed from the highest pT to the lowest pT
     int index_b1 = 0;
@@ -451,7 +450,6 @@ void define_truth_tau_and_b_jets(){
     }  
   }
 }
-
 
 /*
 void define_truth_tau_and_b_jets(){
