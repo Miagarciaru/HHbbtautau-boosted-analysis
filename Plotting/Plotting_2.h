@@ -22,21 +22,23 @@ struct plot_Teff {
   std::string label_r2;
 };
 
-void getTEfficiency(const std::vector<std::string>& sampleFiles, const std::vector<std::string>& variables,
-                    std::unordered_map<TString, hist_ratios>& map_ratios_info,
-                    std::unordered_map<TString, std::unordered_map<TString, plot_Teff>>& map_Teff_ratios);
+//*******************************************************
+// Declaration of functions
+//*******************************************************
 
-void plotEfficiencies(const std::string& ratio, const std::vector<string>& nameTEff, const std::vector<TEfficiency*>& TEff_ratios);
+void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::vector<TEfficiency*>& TEff_ratios);
 
-//void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, 
-//                           std::unordered_map<std::string, std::unordered_map<string, hist_ratios>>& map_ratios_info);
+void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, std::vector<TEfficiency*>& TEff_ratios_r1, std::vector<TEfficiency*>& TEff_ratios_r2);
 
+//*******************************************************
+// Definition of functions declared above
+//*******************************************************
 
-void plotEfficiencies(const std::string& ratio, const std::vector<string>& nameTEff, const std::vector<TEfficiency*>& TEff_ratios){
+void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::vector<TEfficiency*>& TEff_ratios){
 
   SetAtlasStyle();
   
-  TCanvas* canvas = new TCanvas();
+  TCanvas* canvas = new TCanvas(("can_"+nameVar+"_"+ratio).c_str());
   TLegend* leg = new TLegend(0.18, 0.75, 0.93, 0.90);
 
   const int colors[8] = { kRed, kBlue, kGreen, kMagenta, kCyan, kYellow, kBlack, kOrange };
@@ -44,7 +46,7 @@ void plotEfficiencies(const std::string& ratio, const std::vector<string>& nameT
   for(int ii=0; ii<8; ii++){
     TEff_ratios.at(ii)->SetMarkerStyle(20);
     TEff_ratios.at(ii)->SetMarkerColor(colors[ii]);
-    leg->AddEntry(TEff_ratios.at(ii), (nameTEff.at(ii)+"_"+ratio).c_str(), "lep");
+    leg->AddEntry(TEff_ratios.at(ii), (sampleFiles[ii]+"_"+ratio).c_str(), "lep");
     if(ii==0){
       TEff_ratios.at(ii)->Draw("AP");
     }
@@ -65,19 +67,19 @@ void plotEfficiencies(const std::string& ratio, const std::vector<string>& nameT
   
   leg->Draw();
 
-  string name_image = "output_plots/mHH_ratios_"+ratio+"_comparison.png";
+  string name_image = "output_plots/"+nameVar+"_ratios_"+ratio+"_comparison.png";
   canvas->SaveAs(name_image.c_str());
 }
 
-// Initialize the map_ratios_info
-void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::vector<string>& nameVar, std::vector<string>& nameTEff, std::vector<TEfficiency*>& TEff_ratios_r1, std::vector<TEfficiency*>& TEff_ratios_r2){
+// Initialize the ap_ratios_info
+void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, std::vector<TEfficiency*>& TEff_ratios_r1, std::vector<TEfficiency*>& TEff_ratios_r2){
+  
   string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/analysis/Analysis/study_substructure_jets/output_analysis/";
   
   for (const auto& sample : sampleFiles){
     string path_root_file = path_folder+sample+".root";
       
     TFile* file = TFile::Open(path_root_file.c_str());
-    //TCanvas* canvas = new TCanvas();
     
     if (!file || file->IsZombie()) {
       std::cerr << "Error opening file: " << sample << std::endl;
@@ -88,23 +90,15 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
       cout << "The file has been read " << sample << endl;
     }
 
-    for(const auto& variable : nameVar){
-      //std::unordered_map<std::string, hist_ratios*> sample_ratios;
+    TH1F* hist_num = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_numerator_class3").c_str()));
+    TH1F* hist_den_for_r1 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_denominator").c_str()));
+    TH1F* hist_den_for_r2 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_denominator_class3").c_str()));
 
-      //string name_Teff = sample+"_TEff_"+variable;
-      string name_Teff = sample;
-      
-      TH1F* hist_num = dynamic_cast<TH1F*>(file->Get("hist_acceptance_mHH_numerator_class3"));
-      TH1F* hist_den_for_r1 = dynamic_cast<TH1F*>(file->Get("hist_acceptance_mHH_denominator"));
-      TH1F* hist_den_for_r2 = dynamic_cast<TH1F*>(file->Get("hist_acceptance_mHH_denominator_class3"));
+    TEfficiency *pEff_r1 = new TEfficiency(*hist_num, *hist_den_for_r1);
+    TEfficiency *pEff_r2 = new TEfficiency(*hist_num, *hist_den_for_r2);
 
-      TEfficiency *pEff_r1 = new TEfficiency(*hist_num, *hist_den_for_r1);
-      TEfficiency *pEff_r2 = new TEfficiency(*hist_num, *hist_den_for_r2);
-
-      TEff_ratios_r1.push_back(pEff_r1);
-      TEff_ratios_r2.push_back(pEff_r2);
-      nameTEff.push_back(name_Teff);
-    }
+    TEff_ratios_r1.push_back(pEff_r1);
+    TEff_ratios_r2.push_back(pEff_r2);
     
     file->Close();
   }

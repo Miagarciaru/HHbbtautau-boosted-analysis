@@ -1,7 +1,7 @@
 #include "AtlasStyle/AtlasStyle.C"
 #include "AtlasStyle/AtlasUtils.C"
 #include "AtlasStyle/AtlasLabels.C"
-#include "declaration_of_variables.h"
+//#include "../Analysis/study_substructure_jets/declaration_of_variables.h"
 
 struct hist_ratios {
     TH1F* hist_num_for_r1;
@@ -35,7 +35,8 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
     
     SetAtlasStyle();
     PlotInfo plotInfo = it->second; // Access the PlotInfo struct
-    TString name_image = output_folder+"/plots_ratios/"+name_plot+".png";
+    //TString name_image = output_folder+"/plots_ratios/"+name_plot+".png";
+    TString name_image = "plots_ratios/"+name_plot+".png";
     TH1F *hist_num = plotInfo.hist_num;
     TH1F *hist_den = plotInfo.hist_den;
     TString label_leg = plotInfo.label;
@@ -77,7 +78,8 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
 
     //    TCanvas *can = new TCanvas("can","can", 800, 600);
     hist_num->Draw("H");
-    name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_num.png";
+    //name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_num.png";
+    name_image = "plots_ratios/"+name_plot+"_hist_num.png";
     myText(0.2, 0.9, kBlack, process_name);
     myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);
     myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_num.png");
@@ -89,7 +91,8 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
 
     //    TCanvas *can = new TCanvas("can","can", 800, 600);
     hist_den->Draw("H");
-    name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_den.png";
+    //name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_den.png";
+    name_image = "plots_ratios/"+name_plot+"_hist_den.png";
     myText(0.2, 0.9, kBlack, process_name);
     myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);
     myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_den.png");
@@ -156,7 +159,8 @@ void plot_ratios_acceptance_group(TString name_plot, TString output_folder){
 // for the two configurations, boosted and resolved                                                                                           
 void plot_distributions(TString name_plot, TString output_folder){
   
-  TString name_image = output_folder+"/plots_substructure_jets/"+name_plot+".png";
+  //TString name_image = output_folder+"/plots_substructure_jets/"+name_plot+".png";
+  TString name_image = "plots_ratios/"+name_plot+".png";
   
   ///// Plotting
 
