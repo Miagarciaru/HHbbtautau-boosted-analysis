@@ -8,10 +8,14 @@ void Plotting_aceptance_ratios(string nameVar){
 
   std::vector<TEfficiency*> TEff_ratios_r1;
   std::vector<TEfficiency*> TEff_ratios_r2;
+  std::vector<TEfficiency*> TEff_ratios_r3;
+  std::vector<TEfficiency*> TEff_ratios_r4;
 
-  initializeMapRatiosInfo(sample_files, nameVar, TEff_ratios_r1, TEff_ratios_r2);
+  initializeMapRatiosInfo(sample_files, nameVar, TEff_ratios_r1, TEff_ratios_r2, TEff_ratios_r3, TEff_ratios_r4);
 
   plotEfficiencies(sample_files, "r1", nameVar, TEff_ratios_r1);
   plotEfficiencies(sample_files, "r2", nameVar, TEff_ratios_r2);
+  plotEfficiencies(sample_files, "r3", nameVar, TEff_ratios_r3);
+  plotEfficiencies(sample_files, "r4", nameVar, TEff_ratios_r4);
 
 }

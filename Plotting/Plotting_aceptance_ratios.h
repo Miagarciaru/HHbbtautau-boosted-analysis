@@ -2,7 +2,6 @@
 #include "AtlasStyle/AtlasUtils.C"
 #include "AtlasStyle/AtlasLabels.C"
 #include <unordered_map>
-//#include "declaration_of_variables.h"
 
 struct hist_ratios {
   TH1F* hist_num_for_r1;
@@ -28,7 +27,7 @@ struct plot_Teff {
 
 void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::vector<TEfficiency*>& TEff_ratios);
 
-void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, std::vector<TEfficiency*>& TEff_ratios_r1, std::vector<TEfficiency*>& TEff_ratios_r2);
+void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, std::vector<TEfficiency*>& TEff_ratios_r1, std::vector<TEfficiency*>& TEff_ratios_r2, std::vector<TEfficiency*>& TEff_ratios_r3, std::vector<TEfficiency*>& TEff_ratios_r4);
 
 //*******************************************************
 // Definition of functions declared above
@@ -36,6 +35,7 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
 
 void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::vector<TEfficiency*>& TEff_ratios){
 
+  gROOT->SetBatch(kTRUE);
   SetAtlasStyle();
   
   TCanvas* canvas = new TCanvas(("can_"+nameVar+"_"+ratio).c_str());
@@ -72,9 +72,9 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
 }
 
 // Initialize the ap_ratios_info
-void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, std::vector<TEfficiency*>& TEff_ratios_r1, std::vector<TEfficiency*>& TEff_ratios_r2){
+void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, std::vector<TEfficiency*>& TEff_ratios_r1, std::vector<TEfficiency*>& TEff_ratios_r2, std::vector<TEfficiency*>& TEff_ratios_r3, std::vector<TEfficiency*>& TEff_ratios_r4){
   
-  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/analysis/Analysis/study_substructure_jets/output_analysis/";
+  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
   
   for (const auto& sample : sampleFiles){
     string path_root_file = path_folder+sample+".root";
@@ -90,15 +90,23 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
       cout << "The file has been read " << sample << endl;
     }
 
-    TH1F* hist_num = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_numerator_class3").c_str()));
-    TH1F* hist_den_for_r1 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_denominator").c_str()));
-    TH1F* hist_den_for_r2 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_denominator_class3").c_str()));
+    TH1F* hist_num_r1_r2 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_numerator_class3_r1_r2").c_str()));
+    TH1F* hist_den_for_r1 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_denominator_r1").c_str()));
+    TH1F* hist_den_for_r2 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_denominator_class3_r2").c_str()));
 
-    TEfficiency *pEff_r1 = new TEfficiency(*hist_num, *hist_den_for_r1);
-    TEfficiency *pEff_r2 = new TEfficiency(*hist_num, *hist_den_for_r2);
+    TH1F* hist_num_for_r3 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_numerator_r3").c_str()));
+    TH1F* hist_num_for_r4 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_numerator_class3_r4").c_str()));
+    TH1F* hist_den_for_r3_r4 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_denominator_r3_r4").c_str()));
+    
+    TEfficiency *pEff_r1 = new TEfficiency(*hist_num_r1_r2, *hist_den_for_r1);
+    TEfficiency *pEff_r2 = new TEfficiency(*hist_num_r1_r2, *hist_den_for_r2);
+    TEfficiency *pEff_r3 = new TEfficiency(*hist_num_for_r3, *hist_den_for_r3_r4);
+    TEfficiency *pEff_r4 = new TEfficiency(*hist_num_for_r4, *hist_den_for_r3_r4);
 
     TEff_ratios_r1.push_back(pEff_r1);
     TEff_ratios_r2.push_back(pEff_r2);
+    TEff_ratios_r3.push_back(pEff_r3);
+    TEff_ratios_r4.push_back(pEff_r4);
     
     file->Close();
   }

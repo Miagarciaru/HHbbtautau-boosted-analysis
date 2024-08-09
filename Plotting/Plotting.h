@@ -30,6 +30,7 @@ void plot_distributions(TString name_plot, TString output_folder);
 
 void plot_ratios_acceptance(TString name_plot, TString output_folder){
 
+  gROOT->SetBatch(kTRUE);
   auto it = plotMap.find(name_plot.Data()); // Data() is used to convert TString to string
   if (it != plotMap.end()) { // If the plot name was found
     
@@ -107,29 +108,30 @@ void plot_ratios_acceptance(TString name_plot, TString output_folder){
 
 void plot_ratios_acceptance_group(TString name_plot, TString output_folder){
 
+  gROOT->SetBatch(kTRUE);
   TLegend *leg = new TLegend(0.15, 0.60, 0.30, 0.80);
 
   TString name_image = output_folder+"/plots_ratios/"+name_plot+".png";
 
-  TH1F *hist_ratio_class0_r1 = (TH1F*)hist_acceptance_mHH_numerator_class0->Clone("hist_ratio_class0_r1");
-  TH1F *hist_ratio_class1_r1 = (TH1F*)hist_acceptance_mHH_numerator_class1->Clone("hist_ratio_class1_r1");
-  TH1F *hist_ratio_class2_r1 = (TH1F*)hist_acceptance_mHH_numerator_class2->Clone("hist_ratio_class2_r1");
-  TH1F *hist_ratio_class3_r1 = (TH1F*)hist_acceptance_mHH_numerator_class3->Clone("hist_ratio_class3_r1");
+  TH1F *hist_ratio_class0_r1 = (TH1F*)hist_acceptance_mHH_numerator_class0_r1_r2->Clone("hist_ratio_class0_r1");
+  TH1F *hist_ratio_class1_r1 = (TH1F*)hist_acceptance_mHH_numerator_class1_r1_r2->Clone("hist_ratio_class1_r1");
+  TH1F *hist_ratio_class2_r1 = (TH1F*)hist_acceptance_mHH_numerator_class2_r1_r2->Clone("hist_ratio_class2_r1");
+  TH1F *hist_ratio_class3_r1 = (TH1F*)hist_acceptance_mHH_numerator_class3_r1_r2->Clone("hist_ratio_class3_r1");
 
   hist_ratio_class0_r1->SetStats(0);
-  hist_ratio_class0_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class0_r1->Divide(hist_acceptance_mHH_denominator_r1);
   hist_ratio_class0_r1->SetLineColor(2);
 
   hist_ratio_class1_r1->SetStats(0);
-  hist_ratio_class1_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class1_r1->Divide(hist_acceptance_mHH_denominator_r1);
   hist_ratio_class1_r1->SetLineColor(3);
 
   hist_ratio_class2_r1->SetStats(0);
-  hist_ratio_class2_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class2_r1->Divide(hist_acceptance_mHH_denominator_r1);
   hist_ratio_class2_r1->SetLineColor(6);
 
   hist_ratio_class3_r1->SetStats(0);
-  hist_ratio_class3_r1->Divide(hist_acceptance_mHH_denominator);
+  hist_ratio_class3_r1->Divide(hist_acceptance_mHH_denominator_r1);
   hist_ratio_class3_r1->SetLineColor(4);
 
   ///// Plotting
@@ -158,7 +160,8 @@ void plot_ratios_acceptance_group(TString name_plot, TString output_folder){
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions                                            
 // for the two configurations, boosted and resolved                                                                                           
 void plot_distributions(TString name_plot, TString output_folder){
-  
+
+  gROOT->SetBatch(kTRUE);
   //TString name_image = output_folder+"/plots_substructure_jets/"+name_plot+".png";
   TString name_image = "plots_ratios/"+name_plot+".png";
   
@@ -205,7 +208,8 @@ void plot_distributions(TString name_plot, TString output_folder){
 
 // Plot 2d histograms                                                                                                                         
 void plot_2D_distributions(TString name_plot, TString output_folder){
-  
+
+  gROOT->SetBatch(kTRUE);
   TString name_image = output_folder+"/plots_substructure_jets/"+name_plot+".png";
   
   ///// Plotting
@@ -246,6 +250,7 @@ void plot_2D_distributions(TString name_plot, TString output_folder){
 
 void plot_distributions_comparison(TString name_plot, TString output_folder){
 
+  gROOT->SetBatch(kTRUE);
   SetAtlasStyle();
   
   TLegend *leg = new TLegend(0.7, 0.75, 0.85, 0.85);
