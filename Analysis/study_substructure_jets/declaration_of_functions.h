@@ -17,6 +17,7 @@ void fill_histograms();
 void set_branch_address_inTree(TTree *inTree);
 void define_output_branches(TTree *outTree);
 void print_list_of_branches(TTree* tree);
+void default_values_for_truth_variables();
 
 
 // *************************************
@@ -64,197 +65,197 @@ void process_label(TString name_sample){
 
 void fill_acceptance_ratios(){
 
-  hist_acceptance_mHH_denominator_r3_r4->Fill(reco_bbtt_HH_m_BA);
-  hist_acceptance_ptHbb_denominator_r3_r4->Fill(reco_bbtt_bb_pt_BA);
-  hist_acceptance_ptHtautau_denominator_r3_r4->Fill(reco_bbtt_tautau_pt_BA);
+  hist_acceptance_mHH_denominator_r3_r4->Fill(reco_bbtt_HH_m_BA/1000.);
+  hist_acceptance_ptHbb_denominator_r3_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
+  hist_acceptance_ptHtautau_denominator_r3_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
   
   hist_acceptance_truth_mHH_denominator_r3_r4->Fill(truth_HH_m/1000.);
-  hist_acceptance_truth_ptHbb_denominator_r3_r4->Fill(truth_bb_pt);
-  hist_acceptance_truth_ptHtautau_denominator_r3_r4->Fill(truth_tautau_pt);
+  hist_acceptance_truth_ptHbb_denominator_r3_r4->Fill(truth_bb_pt/1000.);
+  hist_acceptance_truth_ptHtautau_denominator_r3_r4->Fill(truth_tautau_pt/1000.);
   
   if(bbtt_HH_vis_m > 0){
 
-    hist_acceptance_mHH_denominator_r1->Fill(reco_bbtt_HH_m_BA);
-    hist_acceptance_mHbb_denominator_r1->Fill(reco_bbtt_bb_m_BA);
-    hist_acceptance_mHtautau_denominator_r1->Fill(reco_bbtt_tautau_m_BA);
-    hist_acceptance_ptHH_denominator_r1->Fill(reco_bbtt_HH_pt_BA);
-    hist_acceptance_ptHbb_denominator_r1->Fill(reco_bbtt_bb_pt_BA);
-    hist_acceptance_ptHtautau_denominator_r1->Fill(reco_bbtt_tautau_pt_BA);
+    hist_acceptance_mHH_denominator_r1->Fill(reco_bbtt_HH_m_BA/1000.);
+    hist_acceptance_mHbb_denominator_r1->Fill(reco_bbtt_bb_m_BA/1000.);
+    hist_acceptance_mHtautau_denominator_r1->Fill(reco_bbtt_tautau_m_BA/1000.);
+    hist_acceptance_ptHH_denominator_r1->Fill(reco_bbtt_HH_pt_BA/1000.);
+    hist_acceptance_ptHbb_denominator_r1->Fill(reco_bbtt_bb_pt_BA/1000.);
+    hist_acceptance_ptHtautau_denominator_r1->Fill(reco_bbtt_tautau_pt_BA/1000.);
 
     hist_acceptance_truth_mHH_denominator_r1->Fill(truth_HH_m/1000.);
-    hist_acceptance_truth_mHbb_denominator_r1->Fill(truth_bb_m);
-    hist_acceptance_truth_mHtautau_denominator_r1->Fill(truth_tautau_m);
-    hist_acceptance_truth_ptHH_denominator_r1->Fill(truth_HH_pt);
-    hist_acceptance_truth_ptHbb_denominator_r1->Fill(truth_bb_pt);
-    hist_acceptance_truth_ptHtautau_denominator_r1->Fill(truth_tautau_pt); 
+    hist_acceptance_truth_mHbb_denominator_r1->Fill(truth_bb_m/1000.);
+    hist_acceptance_truth_mHtautau_denominator_r1->Fill(truth_tautau_m/1000.);
+    hist_acceptance_truth_ptHH_denominator_r1->Fill(truth_HH_pt/1000.);
+    hist_acceptance_truth_ptHbb_denominator_r1->Fill(truth_bb_pt/1000.);
+    hist_acceptance_truth_ptHtautau_denominator_r1->Fill(truth_tautau_pt/1000.); 
 
-    hist_acceptance_mHH_numerator_r3->Fill(reco_bbtt_HH_m_BA);
-    hist_acceptance_ptHbb_numerator_r3->Fill(reco_bbtt_bb_pt_BA);
-    hist_acceptance_ptHtautau_numerator_r3->Fill(reco_bbtt_tautau_pt_BA);
+    hist_acceptance_mHH_numerator_r3->Fill(reco_bbtt_HH_m_BA/1000.);
+    hist_acceptance_ptHbb_numerator_r3->Fill(reco_bbtt_bb_pt_BA/1000.);
+    hist_acceptance_ptHtautau_numerator_r3->Fill(reco_bbtt_tautau_pt_BA/1000.);
     
     hist_acceptance_truth_mHH_numerator_r3->Fill(truth_HH_m/1000.);
-    hist_acceptance_truth_ptHbb_numerator_r3->Fill(truth_bb_pt);
-    hist_acceptance_truth_ptHtautau_numerator_r3->Fill(truth_tautau_pt);
+    hist_acceptance_truth_ptHbb_numerator_r3->Fill(truth_bb_pt/1000.);
+    hist_acceptance_truth_ptHtautau_numerator_r3->Fill(truth_tautau_pt/1000.);
   }
 
   if(class_event != -1){
     if(class_event == 0){
-      hist_acceptance_mHH_denominator_class0_r2->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_mHbb_denominator_class0_r2->Fill(reco_bbtt_bb_m_BA);
-      hist_acceptance_mHtautau_denominator_class0_r2->Fill(reco_bbtt_tautau_m_BA);
-      hist_acceptance_ptHH_denominator_class0_r2->Fill(reco_bbtt_HH_pt_BA);
-      hist_acceptance_ptHbb_denominator_class0_r2->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_denominator_class0_r2->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_denominator_class0_r2->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_mHbb_denominator_class0_r2->Fill(reco_bbtt_bb_m_BA/1000.);
+      hist_acceptance_mHtautau_denominator_class0_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
+      hist_acceptance_ptHH_denominator_class0_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
+      hist_acceptance_ptHbb_denominator_class0_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_denominator_class0_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
       
       hist_acceptance_truth_mHH_denominator_class0_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_denominator_class0_r2->Fill(truth_bb_m);
-      hist_acceptance_truth_mHtautau_denominator_class0_r2->Fill(truth_tautau_m);
-      hist_acceptance_truth_ptHH_denominator_class0_r2->Fill(truth_HH_pt);
-      hist_acceptance_truth_ptHbb_denominator_class0_r2->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_denominator_class0_r2->Fill(truth_tautau_pt);
+      hist_acceptance_truth_mHbb_denominator_class0_r2->Fill(truth_bb_m/1000.);
+      hist_acceptance_truth_mHtautau_denominator_class0_r2->Fill(truth_tautau_m/1000.);
+      hist_acceptance_truth_ptHH_denominator_class0_r2->Fill(truth_HH_pt/1000.);
+      hist_acceptance_truth_ptHbb_denominator_class0_r2->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_denominator_class0_r2->Fill(truth_tautau_pt/1000.);
 
-      hist_acceptance_mHH_numerator_class0_r4->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_ptHbb_numerator_class0_r4->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_numerator_class0_r4->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_numerator_class0_r4->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_ptHbb_numerator_class0_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_numerator_class0_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
       
       hist_acceptance_truth_mHH_numerator_class0_r4->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class0_r4->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_numerator_class0_r4->Fill(truth_tautau_pt);
+      hist_acceptance_truth_ptHbb_numerator_class0_r4->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_numerator_class0_r4->Fill(truth_tautau_pt/1000.);
     }
     if(class_event == 1){
-      hist_acceptance_mHH_denominator_class1_r2->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_mHbb_denominator_class1_r2->Fill(reco_bbtt_bb_m_BA);
-      hist_acceptance_mHtautau_denominator_class1_r2->Fill(reco_bbtt_tautau_m_BA);
-      hist_acceptance_ptHH_denominator_class1_r2->Fill(reco_bbtt_HH_pt_BA);
-      hist_acceptance_ptHbb_denominator_class1_r2->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_denominator_class1_r2->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_denominator_class1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_mHbb_denominator_class1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
+      hist_acceptance_mHtautau_denominator_class1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
+      hist_acceptance_ptHH_denominator_class1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
+      hist_acceptance_ptHbb_denominator_class1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_denominator_class1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
       
       hist_acceptance_truth_mHH_denominator_class1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_denominator_class1_r2->Fill(truth_bb_m);
-      hist_acceptance_truth_mHtautau_denominator_class1_r2->Fill(truth_tautau_m);
-      hist_acceptance_truth_ptHH_denominator_class1_r2->Fill(truth_HH_pt);
-      hist_acceptance_truth_ptHbb_denominator_class1_r2->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_denominator_class1_r2->Fill(truth_tautau_pt);
+      hist_acceptance_truth_mHbb_denominator_class1_r2->Fill(truth_bb_m/1000.);
+      hist_acceptance_truth_mHtautau_denominator_class1_r2->Fill(truth_tautau_m/1000.);
+      hist_acceptance_truth_ptHH_denominator_class1_r2->Fill(truth_HH_pt/1000.);
+      hist_acceptance_truth_ptHbb_denominator_class1_r2->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_denominator_class1_r2->Fill(truth_tautau_pt/1000.);
 
-      hist_acceptance_mHH_numerator_class1_r4->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_ptHbb_numerator_class1_r4->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_numerator_class1_r4->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_numerator_class1_r4->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_ptHbb_numerator_class1_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_numerator_class1_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
       
       hist_acceptance_truth_mHH_numerator_class1_r4->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class1_r4->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_numerator_class1_r4->Fill(truth_tautau_pt);
+      hist_acceptance_truth_ptHbb_numerator_class1_r4->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_numerator_class1_r4->Fill(truth_tautau_pt/1000.);
     }
     if(class_event == 2){
-      hist_acceptance_mHH_denominator_class2_r2->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_mHbb_denominator_class2_r2->Fill(reco_bbtt_bb_m_BA);
-      hist_acceptance_mHtautau_denominator_class2_r2->Fill(reco_bbtt_tautau_m_BA);
-      hist_acceptance_ptHH_denominator_class2_r2->Fill(reco_bbtt_HH_pt_BA);
-      hist_acceptance_ptHbb_denominator_class2_r2->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_denominator_class2_r2->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_denominator_class2_r2->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_mHbb_denominator_class2_r2->Fill(reco_bbtt_bb_m_BA/1000.);
+      hist_acceptance_mHtautau_denominator_class2_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
+      hist_acceptance_ptHH_denominator_class2_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
+      hist_acceptance_ptHbb_denominator_class2_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_denominator_class2_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
 
       hist_acceptance_truth_mHH_denominator_class2_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_denominator_class2_r2->Fill(truth_bb_m);
-      hist_acceptance_truth_mHtautau_denominator_class2_r2->Fill(truth_tautau_m);
-      hist_acceptance_truth_ptHH_denominator_class2_r2->Fill(truth_HH_pt);
-      hist_acceptance_truth_ptHbb_denominator_class2_r2->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_denominator_class2_r2->Fill(truth_tautau_pt);
+      hist_acceptance_truth_mHbb_denominator_class2_r2->Fill(truth_bb_m/1000.);
+      hist_acceptance_truth_mHtautau_denominator_class2_r2->Fill(truth_tautau_m/1000.);
+      hist_acceptance_truth_ptHH_denominator_class2_r2->Fill(truth_HH_pt/1000.);
+      hist_acceptance_truth_ptHbb_denominator_class2_r2->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_denominator_class2_r2->Fill(truth_tautau_pt/1000.);
 
-      hist_acceptance_mHH_numerator_class2_r4->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_ptHbb_numerator_class2_r4->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_numerator_class2_r4->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_numerator_class2_r4->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_ptHbb_numerator_class2_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_numerator_class2_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
       
       hist_acceptance_truth_mHH_numerator_class2_r4->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class2_r4->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_numerator_class2_r4->Fill(truth_tautau_pt);
+      hist_acceptance_truth_ptHbb_numerator_class2_r4->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_numerator_class2_r4->Fill(truth_tautau_pt/1000.);
     }
     if(class_event == 3){
-      hist_acceptance_mHH_denominator_class3_r2->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_mHbb_denominator_class3_r2->Fill(reco_bbtt_bb_m_BA);
-      hist_acceptance_mHtautau_denominator_class3_r2->Fill(reco_bbtt_tautau_m_BA);
-      hist_acceptance_ptHH_denominator_class3_r2->Fill(reco_bbtt_HH_pt_BA);
-      hist_acceptance_ptHbb_denominator_class3_r2->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_denominator_class3_r2->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_denominator_class3_r2->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_mHbb_denominator_class3_r2->Fill(reco_bbtt_bb_m_BA/1000.);
+      hist_acceptance_mHtautau_denominator_class3_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
+      hist_acceptance_ptHH_denominator_class3_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
+      hist_acceptance_ptHbb_denominator_class3_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_denominator_class3_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
 
       hist_acceptance_truth_mHH_denominator_class3_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_denominator_class3_r2->Fill(truth_bb_m);
-      hist_acceptance_truth_mHtautau_denominator_class3_r2->Fill(truth_tautau_m);
-      hist_acceptance_truth_ptHH_denominator_class3_r2->Fill(truth_HH_pt);
-      hist_acceptance_truth_ptHbb_denominator_class3_r2->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_denominator_class3_r2->Fill(truth_tautau_pt);
+      hist_acceptance_truth_mHbb_denominator_class3_r2->Fill(truth_bb_m/1000.);
+      hist_acceptance_truth_mHtautau_denominator_class3_r2->Fill(truth_tautau_m/1000.);
+      hist_acceptance_truth_ptHH_denominator_class3_r2->Fill(truth_HH_pt/1000.);
+      hist_acceptance_truth_ptHbb_denominator_class3_r2->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_denominator_class3_r2->Fill(truth_tautau_pt/1000.);
 
-      hist_acceptance_mHH_numerator_class3_r4->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_ptHbb_numerator_class3_r4->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_numerator_class3_r4->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_numerator_class3_r4->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_ptHbb_numerator_class3_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_numerator_class3_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
       
       hist_acceptance_truth_mHH_numerator_class3_r4->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class3_r4->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_numerator_class3_r4->Fill(truth_tautau_pt);
+      hist_acceptance_truth_ptHbb_numerator_class3_r4->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_numerator_class3_r4->Fill(truth_tautau_pt/1000.);
     }
   }
   // Rbb-Rtautau
   if((bbtt_HH_vis_m > 0) && (class_event != -1)){
     if(class_event == 0){
-      hist_acceptance_mHH_numerator_class0_r1_r2->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_mHbb_numerator_class0_r1_r2->Fill(reco_bbtt_bb_m_BA);
-      hist_acceptance_mHtautau_numerator_class0_r1_r2->Fill(reco_bbtt_tautau_m_BA);
-      hist_acceptance_ptHH_numerator_class0_r1_r2->Fill(reco_bbtt_HH_pt_BA);
-      hist_acceptance_ptHbb_numerator_class0_r1_r2->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_numerator_class0_r1_r2->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_numerator_class0_r1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_mHbb_numerator_class0_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
+      hist_acceptance_mHtautau_numerator_class0_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
+      hist_acceptance_ptHH_numerator_class0_r1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
+      hist_acceptance_ptHbb_numerator_class0_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_numerator_class0_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
       
       hist_acceptance_truth_mHH_numerator_class0_r1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_numerator_class0_r1_r2->Fill(truth_bb_m);
-      hist_acceptance_truth_mHtautau_numerator_class0_r1_r2->Fill(truth_tautau_m);
-      hist_acceptance_truth_ptHH_numerator_class0_r1_r2->Fill(truth_HH_pt);
-      hist_acceptance_truth_ptHbb_numerator_class0_r1_r2->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_numerator_class0_r1_r2->Fill(truth_tautau_pt);
+      hist_acceptance_truth_mHbb_numerator_class0_r1_r2->Fill(truth_bb_m/1000.);
+      hist_acceptance_truth_mHtautau_numerator_class0_r1_r2->Fill(truth_tautau_m/1000.);
+      hist_acceptance_truth_ptHH_numerator_class0_r1_r2->Fill(truth_HH_pt/1000.);
+      hist_acceptance_truth_ptHbb_numerator_class0_r1_r2->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_numerator_class0_r1_r2->Fill(truth_tautau_pt/1000.);
     }
     // Rbb-Btautau
     if(class_event == 1){
-      hist_acceptance_mHH_numerator_class1_r1_r2->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_mHbb_numerator_class1_r1_r2->Fill(reco_bbtt_bb_m_BA);
-      hist_acceptance_mHtautau_numerator_class1_r1_r2->Fill(reco_bbtt_tautau_m_BA);
-      hist_acceptance_ptHH_numerator_class1_r1_r2->Fill(reco_bbtt_HH_pt_BA);
-      hist_acceptance_ptHbb_numerator_class1_r1_r2->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_numerator_class1_r1_r2->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_numerator_class1_r1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_mHbb_numerator_class1_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
+      hist_acceptance_mHtautau_numerator_class1_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
+      hist_acceptance_ptHH_numerator_class1_r1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
+      hist_acceptance_ptHbb_numerator_class1_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_numerator_class1_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
 
       hist_acceptance_truth_mHH_numerator_class1_r1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_numerator_class1_r1_r2->Fill(truth_bb_m);
-      hist_acceptance_truth_mHtautau_numerator_class1_r1_r2->Fill(truth_tautau_m);
-      hist_acceptance_truth_ptHH_numerator_class1_r1_r2->Fill(truth_HH_pt);
-      hist_acceptance_truth_ptHbb_numerator_class1_r1_r2->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_numerator_class1_r1_r2->Fill(truth_tautau_pt);
+      hist_acceptance_truth_mHbb_numerator_class1_r1_r2->Fill(truth_bb_m/1000.);
+      hist_acceptance_truth_mHtautau_numerator_class1_r1_r2->Fill(truth_tautau_m/1000.);
+      hist_acceptance_truth_ptHH_numerator_class1_r1_r2->Fill(truth_HH_pt/1000.);
+      hist_acceptance_truth_ptHbb_numerator_class1_r1_r2->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_numerator_class1_r1_r2->Fill(truth_tautau_pt/1000.);
     }
     // Bbb-Rtautau
     if(class_event == 2){
-      hist_acceptance_mHH_numerator_class2_r1_r2->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_mHbb_numerator_class2_r1_r2->Fill(reco_bbtt_bb_m_BA);
-      hist_acceptance_mHtautau_numerator_class2_r1_r2->Fill(reco_bbtt_tautau_m_BA);
-      hist_acceptance_ptHH_numerator_class2_r1_r2->Fill(reco_bbtt_HH_pt_BA);
-      hist_acceptance_ptHbb_numerator_class2_r1_r2->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_numerator_class2_r1_r2->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_numerator_class2_r1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_mHbb_numerator_class2_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
+      hist_acceptance_mHtautau_numerator_class2_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
+      hist_acceptance_ptHH_numerator_class2_r1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
+      hist_acceptance_ptHbb_numerator_class2_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_numerator_class2_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
 
       hist_acceptance_truth_mHH_numerator_class2_r1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_numerator_class2_r1_r2->Fill(truth_bb_m);
-      hist_acceptance_truth_mHtautau_numerator_class2_r1_r2->Fill(truth_tautau_m);
-      hist_acceptance_truth_ptHH_numerator_class2_r1_r2->Fill(truth_HH_pt);
-      hist_acceptance_truth_ptHbb_numerator_class2_r1_r2->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_numerator_class2_r1_r2->Fill(truth_tautau_pt);
+      hist_acceptance_truth_mHbb_numerator_class2_r1_r2->Fill(truth_bb_m/1000.);
+      hist_acceptance_truth_mHtautau_numerator_class2_r1_r2->Fill(truth_tautau_m/1000.);
+      hist_acceptance_truth_ptHH_numerator_class2_r1_r2->Fill(truth_HH_pt/1000.);
+      hist_acceptance_truth_ptHbb_numerator_class2_r1_r2->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_numerator_class2_r1_r2->Fill(truth_tautau_pt/1000.);
     }
     // Bbb-Btautau
     if(class_event == 3){
-      hist_acceptance_mHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_m_BA);
-      hist_acceptance_mHbb_numerator_class3_r1_r2->Fill(reco_bbtt_bb_m_BA);
-      hist_acceptance_mHtautau_numerator_class3_r1_r2->Fill(reco_bbtt_tautau_m_BA);
-      hist_acceptance_ptHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_pt_BA);
-      hist_acceptance_ptHbb_numerator_class3_r1_r2->Fill(reco_bbtt_bb_pt_BA);
-      hist_acceptance_ptHtautau_numerator_class3_r1_r2->Fill(reco_bbtt_tautau_pt_BA);
+      hist_acceptance_mHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
+      hist_acceptance_mHbb_numerator_class3_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
+      hist_acceptance_mHtautau_numerator_class3_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
+      hist_acceptance_ptHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
+      hist_acceptance_ptHbb_numerator_class3_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_ptHtautau_numerator_class3_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
 
       hist_acceptance_truth_mHH_numerator_class3_r1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_numerator_class3_r1_r2->Fill(truth_bb_m);
-      hist_acceptance_truth_mHtautau_numerator_class3_r1_r2->Fill(truth_tautau_m);
-      hist_acceptance_truth_ptHH_numerator_class3_r1_r2->Fill(truth_HH_pt);
-      hist_acceptance_truth_ptHbb_numerator_class3_r1_r2->Fill(truth_bb_pt);
-      hist_acceptance_truth_ptHtautau_numerator_class3_r1_r2->Fill(truth_tautau_pt);
+      hist_acceptance_truth_mHbb_numerator_class3_r1_r2->Fill(truth_bb_m/1000.);
+      hist_acceptance_truth_mHtautau_numerator_class3_r1_r2->Fill(truth_tautau_m/1000.);
+      hist_acceptance_truth_ptHH_numerator_class3_r1_r2->Fill(truth_HH_pt/1000.);
+      hist_acceptance_truth_ptHbb_numerator_class3_r1_r2->Fill(truth_bb_pt/1000.);
+      hist_acceptance_truth_ptHtautau_numerator_class3_r1_r2->Fill(truth_tautau_pt/1000.);
     } 
   }
 }
@@ -273,34 +274,34 @@ void define_reconstructed_objects(){
 
   if( class_event != -1 ){
     if( class_event == 0){ // R_bb - R_tautau
-      b1.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
-      b2.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b2truth_recoak10_dRmin)/1000.);
-      tau1.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
-      tau2.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau2truth_recoak10_dRmin)/1000.);
+      b1.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin));
+      b2.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b2truth_recoak10_dRmin));
+      tau1.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin));
+      tau2.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau2truth_recoak10_dRmin));
       bb = b1+b2;
       tautau = tau1+tau2;
       HH = b1+b2+tau1+tau2;
     }
 
     if( class_event == 1){ // R_bb - B_tautau
-      b1.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
-      b2.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b2truth_recoak10_dRmin)/1000.);
-      tautau.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
+      b1.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin));
+      b2.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b2truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b2truth_recoak10_dRmin));
+      tautau.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin));
       bb = b1+b2;
       HH = b1+b2+tautau;
     }
 
     if( class_event == 2){ // B_bb - R_tautau
-      bb.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
-      tau1.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
-      tau2.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau2truth_recoak10_dRmin)/1000.);
+      bb.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin));
+      tau1.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin));
+      tau2.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau2truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau2truth_recoak10_dRmin));
       tautau = tau1+tau2;
       HH = bb+tau1+tau2;
     }
 
     if( class_event == 3){ // B_bb - B_tautau
-      bb.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
-      tautau.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000., recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
+      bb.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin));
+      tautau.SetPtEtaPhiM(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin), recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin));
       HH = bb+tautau;
     }
     
@@ -421,8 +422,8 @@ void deltaR(float &dR, float jet1_pt, float jet1_eta, float jet1_phi, float jet1
   TLorentzVector jet1  = TLorentzVector();
   TLorentzVector jet2  = TLorentzVector();
       
-  jet1.SetPtEtaPhiM(jet1_pt/1000., jet1_eta, jet1_phi, jet1_m/1000.);
-  jet2.SetPtEtaPhiM(jet2_pt/1000., jet2_eta, jet2_phi, jet2_m/1000.);
+  jet1.SetPtEtaPhiM(jet1_pt, jet1_eta, jet1_phi, jet1_m);
+  jet2.SetPtEtaPhiM(jet2_pt, jet2_eta, jet2_phi, jet2_m);
 
   dR = jet1.DeltaR(jet2);
 }
@@ -444,8 +445,8 @@ void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, fl
       float reco_phi = recojet_antikt10UFO_phi->at(ii);
       float reco_m = recojet_antikt10UFO_m->at(ii);
       
-      truth_jet.SetPtEtaPhiM(truth_pt/1000., truth_eta, truth_phi, truth_m/1000.);
-      reco_jet.SetPtEtaPhiM(reco_pt/1000., reco_eta, reco_phi, reco_m/1000.);
+      truth_jet.SetPtEtaPhiM(truth_pt, truth_eta, truth_phi, truth_m);
+      reco_jet.SetPtEtaPhiM(reco_pt, reco_eta, reco_phi, reco_m);
       
       float deltaR_truth_recojet = truth_jet.DeltaR(reco_jet);
       
@@ -461,43 +462,11 @@ void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, fl
   }
 }
 
+
 void define_truth_tau_and_b_jets(){
+  // set -99 to the truth variables
+  default_values_for_truth_variables();
 
-  truth_b1_pt = -99;
-  truth_b1_eta = -99;
-  truth_b1_phi = -99;
-  truth_b1_m = -99;
-  
-  truth_b2_pt = -99;
-  truth_b2_eta = -99;
-  truth_b2_phi = -99;
-  truth_b2_m = -99;
-  
-  truth_tau1_pt = -99;
-  truth_tau1_eta = -99;
-  truth_tau1_phi = -99;
-  truth_tau1_m = -99;
-  
-  truth_tau2_pt = -99;
-  truth_tau2_eta = -99;
-  truth_tau2_phi = -99;
-  truth_tau2_m = -99;
-
-  truth_bb_m = -99;
-  truth_bb_eta = -99;
-  truth_bb_phi = -99;
-  truth_bb_m = -99;
-
-  truth_tautau_pt = -99;
-  truth_tautau_eta = -99;
-  truth_tautau_phi = -99;
-  truth_tautau_m = -99;
-  /*
-  truth_HH_pt = -99;
-  truth_HH_eta = -99;
-  truth_HH_phi = -99;
-  truth_HH_m = -99;
-  */
   if( truthjet_antikt4_HadronConeExclTruthLabelID->size()!=0 ){
     
     // Here we assume that all the jets are listed from the highest pT to the lowest pT
@@ -555,25 +524,25 @@ void define_truth_tau_and_b_jets(){
     
     // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1bb_H2tautau scenario
     if( (n_b>=2) && (n_tau>=2) ){
-      truth_b1_pt = truthjet_antikt4_pt->at(index_b1)/1000.;
+      truth_b1_pt = truthjet_antikt4_pt->at(index_b1);
       truth_b1_eta = truthjet_antikt4_eta->at(index_b1);
       truth_b1_phi = truthjet_antikt4_phi->at(index_b1);
-      truth_b1_m = truthjet_antikt4_m->at(index_b1)/1000.;
+      truth_b1_m = truthjet_antikt4_m->at(index_b1);
 
-      truth_b2_pt = truthjet_antikt4_pt->at(index_b2)/1000.;
+      truth_b2_pt = truthjet_antikt4_pt->at(index_b2);
       truth_b2_eta = truthjet_antikt4_eta->at(index_b2);
       truth_b2_phi = truthjet_antikt4_phi->at(index_b2);
-      truth_b2_m = truthjet_antikt4_m->at(index_b2)/1000.;
+      truth_b2_m = truthjet_antikt4_m->at(index_b2);
 
-      truth_tau1_pt = truthjet_antikt4_pt->at(index_tau1)/1000.;
+      truth_tau1_pt = truthjet_antikt4_pt->at(index_tau1);
       truth_tau1_eta = truthjet_antikt4_eta->at(index_tau1);
       truth_tau1_phi = truthjet_antikt4_phi->at(index_tau1);
-      truth_tau1_m = truthjet_antikt4_m->at(index_tau1)/1000.;
+      truth_tau1_m = truthjet_antikt4_m->at(index_tau1);
 
-      truth_tau2_pt = truthjet_antikt4_pt->at(index_tau2)/1000.;
+      truth_tau2_pt = truthjet_antikt4_pt->at(index_tau2);
       truth_tau2_eta = truthjet_antikt4_eta->at(index_tau2);
       truth_tau2_phi = truthjet_antikt4_phi->at(index_tau2);
-      truth_tau2_m = truthjet_antikt4_m->at(index_tau2)/1000.;
+      truth_tau2_m = truthjet_antikt4_m->at(index_tau2);
 
       TLorentzVector b1_jet  = TLorentzVector();
       TLorentzVector b2_jet  = TLorentzVector();
@@ -600,7 +569,7 @@ void define_truth_tau_and_b_jets(){
       truth_tautau_eta = tautau_jet.Eta();
       truth_tautau_phi = tautau_jet.Phi();
       truth_tautau_m = tautau_jet.M();
-      /*
+      
       TLorentzVector HH_jet  = TLorentzVector();
       HH_jet = bb_jet + tautau_jet;
 
@@ -608,7 +577,7 @@ void define_truth_tau_and_b_jets(){
       truth_HH_eta = HH_jet.Eta();
       truth_HH_phi = HH_jet.Phi();
       truth_HH_m = HH_jet.M();
-      */
+      
     }
   }
 }
@@ -620,98 +589,123 @@ void define_truth_tau_and_b_jets(){
 
     int sum_type_H1 = TMath::Abs(truth_children_fromH1_pdgId->at(0)) + TMath::Abs(truth_children_fromH1_pdgId->at(1));
     int sum_type_H2 = TMath::Abs(truth_children_fromH2_pdgId->at(0)) + TMath::Abs(truth_children_fromH2_pdgId->at(1));
-
+    int sum_type_HH = sum_type_H1+sum_type_H2;
+    
     // Here we assume that all the jets are listed from the highest pT to the lowest pT
     int index_b1 = 0;
     int index_b2 = 1;
     int index_tau1 = 0;
     int index_tau2 = 1;
 
-    // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1bb_H2tautau scenario
-    if( (sum_type_H1 == 10) && (sum_type_H2 == 30) ){
-      if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
-	index_b1 = 1;
-	index_b2 = 0;
-      } 
-      if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
-	index_tau1 = 1;
-	index_tau2 = 0;
-      }
+    TLorentzVector b1_jet  = TLorentzVector();
+    TLorentzVector b2_jet  = TLorentzVector();
+    TLorentzVector bb_jet  = TLorentzVector();
+
+    TLorentzVector tau1_jet  = TLorentzVector();
+    TLorentzVector tau2_jet  = TLorentzVector();
+    TLorentzVector tautau_jet  = TLorentzVector();
+
+    TLorentzVector HH_jet  = TLorentzVector();
+
+    if( sum_type_HH == 40 ){
+      // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1bb_H2tautau scenario
+      if( (sum_type_H1 == 10) && (sum_type_H2 == 30) ){
+	if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
+	  index_b1 = 1;
+	  index_b2 = 0;
+	} 
+	if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
+	  index_tau1 = 1;
+	  index_tau2 = 0;
+	}
       
-      truth_b1_pt = truth_children_fromH1_pt->at(index_b1);
-      truth_b1_eta = truth_children_fromH1_eta->at(index_b1);
-      truth_b1_phi = truth_children_fromH1_phi->at(index_b1);
-      truth_b1_m = truth_children_fromH1_m->at(index_b1);
+	truth_b1_pt = truth_children_fromH1_pt->at(index_b1);
+	truth_b1_eta = truth_children_fromH1_eta->at(index_b1);
+	truth_b1_phi = truth_children_fromH1_phi->at(index_b1);
+	truth_b1_m = truth_children_fromH1_m->at(index_b1);
 
-      truth_b2_pt = truth_children_fromH1_pt->at(index_b2);
-      truth_b2_eta = truth_children_fromH1_eta->at(index_b2);
-      truth_b2_phi = truth_children_fromH1_phi->at(index_b2);
-      truth_b2_m = truth_children_fromH1_m->at(index_b2);
-
-      truth_tau1_pt = truth_children_fromH2_pt->at(index_tau1);
-      truth_tau1_eta = truth_children_fromH2_eta->at(index_tau1);
-      truth_tau1_phi = truth_children_fromH2_phi->at(index_tau1);
-      truth_tau1_m = truth_children_fromH2_m->at(index_tau1);	
-      
-      truth_tau2_pt = truth_children_fromH2_pt->at(index_tau2);
-      truth_tau2_eta = truth_children_fromH2_eta->at(index_tau2);
-      truth_tau2_phi = truth_children_fromH2_phi->at(index_tau2);
-      truth_tau2_m = truth_children_fromH2_m->at(index_tau2);
-    } 
-
-    else if( (sum_type_H1 == 30) && (sum_type_H2 == 10) ){
-    
-      // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1tautau_H2bb scenario
-      if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
-	index_b1 = 1;
-	index_b2 = 0;
-      } 
-      if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
-	index_tau1 = 1;
-	index_tau2 = 0;
-      }
+	truth_b2_pt = truth_children_fromH1_pt->at(index_b2);
+	truth_b2_eta = truth_children_fromH1_eta->at(index_b2);
+	truth_b2_phi = truth_children_fromH1_phi->at(index_b2);
+	truth_b2_m = truth_children_fromH1_m->at(index_b2);
 	
-      truth_b1_pt = truth_children_fromH2_pt->at(index_b1);
-      truth_b1_eta = truth_children_fromH2_eta->at(index_b1);
-      truth_b1_phi = truth_children_fromH2_phi->at(index_b1);
-      truth_b1_m = truth_children_fromH2_m->at(index_b1);
+	truth_tau1_pt = truth_children_fromH2_pt->at(index_tau1);
+	truth_tau1_eta = truth_children_fromH2_eta->at(index_tau1);
+	truth_tau1_phi = truth_children_fromH2_phi->at(index_tau1);
+	truth_tau1_m = truth_children_fromH2_m->at(index_tau1);	
+	
+	truth_tau2_pt = truth_children_fromH2_pt->at(index_tau2);
+	truth_tau2_eta = truth_children_fromH2_eta->at(index_tau2);
+	truth_tau2_phi = truth_children_fromH2_phi->at(index_tau2);
+	truth_tau2_m = truth_children_fromH2_m->at(index_tau2);
+      } 
+
+      else if( (sum_type_H1 == 30) && (sum_type_H2 == 10) ){
+	
+	// Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1tautau_H2bb scenario
+	if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
+	  index_b1 = 1;
+	  index_b2 = 0;
+	} 
+	if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
+	  index_tau1 = 1;
+	  index_tau2 = 0;
+	}
+	
+	truth_b1_pt = truth_children_fromH2_pt->at(index_b1);
+	truth_b1_eta = truth_children_fromH2_eta->at(index_b1);
+	truth_b1_phi = truth_children_fromH2_phi->at(index_b1);
+	truth_b1_m = truth_children_fromH2_m->at(index_b1);
+	
+	truth_b2_pt = truth_children_fromH2_pt->at(index_b2);
+	truth_b2_eta = truth_children_fromH2_eta->at(index_b2);
+	truth_b2_phi = truth_children_fromH2_phi->at(index_b2);
+	truth_b2_m = truth_children_fromH2_m->at(index_b2);
+	
+	truth_tau1_pt = truth_children_fromH1_pt->at(index_tau1);
+	truth_tau1_eta = truth_children_fromH1_eta->at(index_tau1);
+	truth_tau1_phi = truth_children_fromH1_phi->at(index_tau1);
+	truth_tau1_m = truth_children_fromH1_m->at(index_tau1);	
       
-      truth_b2_pt = truth_children_fromH2_pt->at(index_b2);
-      truth_b2_eta = truth_children_fromH2_eta->at(index_b2);
-      truth_b2_phi = truth_children_fromH2_phi->at(index_b2);
-      truth_b2_m = truth_children_fromH2_m->at(index_b2);
+	truth_tau2_pt = truth_children_fromH1_pt->at(index_tau2);
+	truth_tau2_eta = truth_children_fromH1_eta->at(index_tau2);
+	truth_tau2_phi = truth_children_fromH1_phi->at(index_tau2);
+	truth_tau2_m = truth_children_fromH1_m->at(index_tau2);	
+      }
+
+      b1_jet.SetPtEtaPhiM(truth_b1_pt, truth_b1_eta, truth_b1_phi, truth_b1_m);
+      b2_jet.SetPtEtaPhiM(truth_b2_pt, truth_b2_eta, truth_b2_phi, truth_b2_m);
+      bb_jet = b1_jet + b2_jet;
       
-      truth_tau1_pt = truth_children_fromH1_pt->at(index_tau1);
-      truth_tau1_eta = truth_children_fromH1_eta->at(index_tau1);
-      truth_tau1_phi = truth_children_fromH1_phi->at(index_tau1);
-      truth_tau1_m = truth_children_fromH1_m->at(index_tau1);	
+      truth_bb_pt = bb_jet.Pt();
+      truth_bb_eta = bb_jet.Eta();
+      truth_bb_phi = bb_jet.Phi();
+      truth_bb_m = bb_jet.M();
+	
+      tau1_jet.SetPtEtaPhiM(truth_tau1_pt, truth_tau1_eta, truth_tau1_phi, truth_tau1_m);
+      tau2_jet.SetPtEtaPhiM(truth_tau2_pt, truth_tau2_eta, truth_tau2_phi, truth_tau2_m);
+      tautau_jet = tau1_jet + tau2_jet;
       
-      truth_tau2_pt = truth_children_fromH1_pt->at(index_tau2);
-      truth_tau2_eta = truth_children_fromH1_eta->at(index_tau2);
-      truth_tau2_phi = truth_children_fromH1_phi->at(index_tau2);
-      truth_tau2_m = truth_children_fromH1_m->at(index_tau2);	
-    }	
+      truth_tautau_pt = tautau_jet.Pt();
+      truth_tautau_eta = tautau_jet.Eta();
+      truth_tautau_phi = tautau_jet.Phi();
+      truth_tautau_m = tautau_jet.M();
+      
+      HH_jet = bb_jet + tautau_jet;
+	
+      truth_HH_pt = HH_jet.Pt();
+      truth_HH_eta = HH_jet.Eta();
+      truth_HH_phi = HH_jet.Phi();
+      truth_HH_m = HH_jet.M();	
+    }
+    else{
+      // set -99 to truth variables
+      default_values_for_truth_variables();
+    }
   }
   else{
-    truth_b1_pt = -99;
-    truth_b1_eta = -99;
-    truth_b1_phi = -99;
-    truth_b1_m = -99;
-    
-    truth_b2_pt = -99;
-    truth_b2_eta = -99;
-    truth_b2_phi = -99;
-    truth_b2_m = -99;
-
-    truth_tau1_pt = -99;
-    truth_tau1_eta = -99;
-    truth_tau1_phi = -99;
-    truth_tau1_m = -99;
-    
-    truth_tau2_pt = -99;
-    truth_tau2_eta = -99;
-    truth_tau2_phi = -99;
-    truth_tau2_m = -99;
+    // set -99 to truth variables
+    default_values_for_truth_variables();
   }
 }
 */
@@ -805,10 +799,10 @@ void fill_histograms(){
 
   if( class_event != -1 ){
     hist_truth_HH_pt->Fill(truth_HH_pt/1000.);
-    hist_computed_HH_pt->Fill(reco_bbtt_HH_pt_BA); // This value is already given in GeV
+    hist_computed_HH_pt->Fill(reco_bbtt_HH_pt_BA/1000.);
 
     hist_truth_HH_m->Fill(truth_HH_m/1000.);
-    hist_computed_HH_m->Fill(reco_bbtt_HH_m_BA); // This value is already given in GeV
+    hist_computed_HH_m->Fill(reco_bbtt_HH_m_BA/1000.);
   }
 }
 
@@ -832,11 +826,13 @@ void set_branch_address_inTree(TTree *inTree){
   inTree->SetBranchAddress("truthjet_antikt4_phi", &truthjet_antikt4_phi, &b_truthjet_antikt4_phi);
   inTree->SetBranchAddress("truthjet_antikt4_m", &truthjet_antikt4_m, &b_truthjet_antikt4_m);
   inTree->SetBranchAddress("truthjet_antikt4_HadronConeExclTruthLabelID", &truthjet_antikt4_HadronConeExclTruthLabelID, &b_truthjet_antikt4_HadronConeExclTruthLabelID);
-  
+
+  /*
   inTree->SetBranchAddress("truth_HH_pt", &truth_HH_pt, &b_truth_HH_pt);
   inTree->SetBranchAddress("truth_HH_eta", &truth_HH_eta, &b_truth_HH_eta);
   inTree->SetBranchAddress("truth_HH_phi", &truth_HH_phi, &b_truth_HH_phi);
   inTree->SetBranchAddress("truth_HH_m", &truth_HH_m, &b_truth_HH_m);
+  */
   
   inTree->SetBranchAddress("recojet_antikt10UFO_NOSYS_pt", &recojet_antikt10UFO_NOSYS_pt, &b_recojet_antikt10UFO_NOSYS_pt);
   inTree->SetBranchAddress("recojet_antikt10UFO_eta", &recojet_antikt10UFO_eta, &b_recojet_antikt10UFO_eta);
@@ -895,6 +891,16 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("truth_HH_phi", &truth_HH_phi);
   outTree->Branch("truth_HH_m", &truth_HH_m);
 
+  outTree->Branch("truth_bb_pt", &truth_bb_pt);
+  outTree->Branch("truth_bb_eta", &truth_bb_eta);
+  outTree->Branch("truth_bb_phi", &truth_bb_phi);
+  outTree->Branch("truth_bb_m", &truth_bb_m);
+
+  outTree->Branch("truth_tautau_pt", &truth_tautau_pt);
+  outTree->Branch("truth_tautau_eta", &truth_tautau_eta);
+  outTree->Branch("truth_tautau_phi", &truth_tautau_phi);
+  outTree->Branch("truth_tautau_m", &truth_tautau_m);
+
   outTree->Branch("truth_b1_pt", &truth_b1_pt);
   outTree->Branch("truth_b1_eta", &truth_b1_eta);
   outTree->Branch("truth_b1_phi", &truth_b1_phi);
@@ -929,6 +935,21 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("dR_min_b2truth_recoak10_fatjet", &dR_min_b2truth_recoak10_fatjet);
   outTree->Branch("dR_min_tau1truth_recoak10_fatjet", &dR_min_tau1truth_recoak10_fatjet);
   outTree->Branch("dR_min_tau2truth_recoak10_fatjet", &dR_min_tau2truth_recoak10_fatjet);
+
+  outTree->Branch("reco_bbtt_HH_pt_BA", &reco_bbtt_HH_pt_BA);
+  outTree->Branch("reco_bbtt_HH_eta_BA", &reco_bbtt_HH_eta_BA);
+  outTree->Branch("reco_bbtt_HH_phi_BA", &reco_bbtt_HH_phi_BA);
+  outTree->Branch("reco_bbtt_HH_m_BA", &reco_bbtt_HH_m_BA);
+
+  outTree->Branch("reco_bbtt_bb_pt_BA", &reco_bbtt_bb_pt_BA);
+  outTree->Branch("reco_bbtt_bb_eta_BA", &reco_bbtt_bb_eta_BA);
+  outTree->Branch("reco_bbtt_bb_phi_BA", &reco_bbtt_bb_phi_BA);
+  outTree->Branch("reco_bbtt_bb_m_BA", &reco_bbtt_bb_m_BA);
+
+  outTree->Branch("reco_bbtt_tautau_pt_BA", &reco_bbtt_tautau_pt_BA);
+  outTree->Branch("reco_bbtt_tautau_eta_BA", &reco_bbtt_tautau_eta_BA);
+  outTree->Branch("reco_bbtt_tautau_phi_BA", &reco_bbtt_tautau_phi_BA);
+  outTree->Branch("reco_bbtt_tautau_m_BA", &reco_bbtt_tautau_m_BA);
 
   outTree->Branch("class_event", &class_event);
 
@@ -1194,6 +1215,46 @@ void print_list_of_branches(TTree* tree){
     std::cout << "Branch: " << branchName << "\t Type: " << (typeName ? typeName : "Unknown") << std::endl;
   }
 }
+
+// This function set the values -99 for truth variables when HH->bbtautau is not identified
+void default_values_for_truth_variables(){
+
+  truth_b1_pt = -99;
+  truth_b1_eta = -99;
+  truth_b1_phi = -99;
+  truth_b1_m = -99;
+  
+  truth_b2_pt = -99;
+  truth_b2_eta = -99;
+  truth_b2_phi = -99;
+  truth_b2_m = -99;
+  
+  truth_tau1_pt = -99;
+  truth_tau1_eta = -99;
+  truth_tau1_phi = -99;
+  truth_tau1_m = -99;
+  
+  truth_tau2_pt = -99;
+  truth_tau2_eta = -99;
+  truth_tau2_phi = -99;
+  truth_tau2_m = -99;
+  
+  truth_HH_pt = -99;
+  truth_HH_eta = -99;
+  truth_HH_phi = -99;
+  truth_HH_m = -99;
+
+  truth_bb_pt = -99;
+  truth_bb_eta = -99;
+  truth_bb_phi = -99;
+  truth_bb_m = -99;
+
+  truth_tautau_pt = -99;
+  truth_tautau_eta = -99;
+  truth_tautau_phi = -99;
+  truth_tautau_m = -99;
+}
+
 
 void counter_for_stat(){
 

@@ -187,10 +187,6 @@ Float_t reco_bbtt_HH_eta_BA;
 Float_t reco_bbtt_HH_phi_BA;
 Float_t reco_bbtt_HH_m_BA;
 
-int truth_boosted_bb;
-int truth_boosted_tautau;
-int truth_resolved_bb;
-int truth_resolved_tautau;
 int class_event;
 
 
