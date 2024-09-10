@@ -3,6 +3,7 @@ import subprocess
 import time
 
 # List of root files to analyze
+
 sample_paths = [
     "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_502982_vbf_hadhad_l1cvv1cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH SM had-had channel
     "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_502993_vbf_lephad_l1cvv1cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH SM lep-had channel
@@ -28,8 +29,6 @@ output_root_folder = "output_analysis"
 
 # Ensure the root folder exists
 os.makedirs(output_root_folder, exist_ok=True)
-
-#os.makedirs("output_analysis/temp_folder", exist_ok=True)
 
 # Loop over each sample
 for sample in sample_paths:

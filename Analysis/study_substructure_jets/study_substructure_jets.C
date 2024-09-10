@@ -1,7 +1,6 @@
 #include <TMath.h>
 #include <TLorentzVector.h>
 #include "declaration_of_functions.h"
-#include "../../Plotting/Plotting.h"
 
 void study_substructure_jets(TString sample, TString output_folder){
 
@@ -90,39 +89,6 @@ void study_substructure_jets(TString sample, TString output_folder){
 
   print_stat(nentries);
   
-  //std::vector<TString> list_of_histograms = {"matched_recojet_bb_m", "matched_recojet_tautau_m", "matched_recojets_bb_pt", "matched_recojets_tautau_pt", "matched_recojets_bb_eta", "matched_recojets_tautau_eta", "non_matched_recojets_pt", "non_matched_recojets_eta", "non_matched_recojets_pt_no_class", "non_matched_recojets_eta_no_class", "events_per_class", "matched_bb_dR", "matched_tautau_dR"};
-  
-  std::vector<TString> list_of_histograms = {"matched_recojet_bb_m", "matched_recojet_tautau_m"};
-  
-  for(int ii=0; ii < list_of_histograms.size(); ii++){
-    plot_distributions(list_of_histograms[ii], output_folder);
-  }
-  
-  //std::vector<TString> list_of_2D_histograms = {"dR_per_class_bb", "dR_per_class_tautau"};
-  
-  /*
-  for(int ii=0; ii < list_of_2D_histograms.size(); ii++){
-    plot_2D_distributions(list_of_2D_histograms[ii], output_folder);
-  }
-  */
-
-  //plot_distributions_comparison("HH_pt_comparison", output_folder);
-  //plot_distributions_comparison("HH_m_comparison", output_folder);
-  
-  //std::vector<TString> list_of_ratios_acceptance = {"class0_r1_mHH", "class1_r1_mHH", "class2_r1_mHH", "class3_r1_mHH", "class0_r2_mHH", "class1_r2_mHH", "class2_r2_mHH", "class3_r2_mHH", "class0_r1_ptHH", "class1_r1_ptHH", "class2_r1_ptHH", "class3_r1_ptHH", "class0_r2_ptHH", "class1_r2_ptHH", "class2_r2_ptHH", "class3_r2_ptHH"};
-
-  //  std::vector<TString> list_of_ratios_acceptance = {"class3_r1_mHH", "class3_r2_mHH", "class3_r1_ptHH", "class3_r2_ptHH", "class3_r1_mHbb", "class3_r2_mHbb", "class3_r1_mHtautau", "class3_r2_mHtautau", "class3_r1_ptHbb", "class3_r2_ptHbb", "class3_r1_ptHtautau", "class3_r2_ptHtautau"};
-
-  //std::vector<TString> list_of_ratios_acceptance = {"class0_r1_mHH"};
-
-  //std::vector<TString> list_of_ratios_acceptance = {"class3_r1_mHH", "class3_r2_mHH", "class3_r1_mHbb", "class3_r2_mHbb", "class3_r1_mHtautau", "class3_r2_mHtautau", "class3_r1_ptHH", "class3_r2_ptHH", "class3_r1_ptHbb", "class3_r2_ptHbb", "class3_r1_ptHtautau", "class3_r2_ptHtautau"};
-  /*
-  std::vector<TString> list_of_ratios_acceptance = {"class3_r1_mHbb", "class3_r2_mHbb", "class3_r1_mHtautau", "class3_r2_mHtautau"};
-  
-  for(int ii=0; ii < list_of_ratios_acceptance.size(); ii++){
-    plot_ratios_acceptance(list_of_ratios_acceptance[ii], output_folder);
-  }
-  */
   inFile->Close();
   outFile->Close();
 
