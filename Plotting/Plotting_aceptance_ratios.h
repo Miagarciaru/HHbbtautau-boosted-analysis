@@ -67,7 +67,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   
   leg->Draw();
 
-  string name_image = "output_plots/"+nameVar+"_ratios_"+ratio+"_comparison.png";
+  string name_image = "output_combined_ratios_plots/"+nameVar+"_ratios_"+ratio+"_comparison.png";
   canvas->SaveAs(name_image.c_str());
 }
 
