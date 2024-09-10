@@ -24,6 +24,7 @@ void default_values_for_truth_variables();
 // Definition of the functions declared above
 // *************************************
 
+
 void process_label(TString name_sample){
 
   // ggF processes had-had channel
@@ -62,6 +63,7 @@ void process_label(TString name_sample){
   //ggf cHHH = 10 processes both channels channel
   if(name_sample.Contains("ggf_cHHH10d0_both_channels")==true){ process_name = "ggF HH #lambda = 10"; }
 }
+
 
 void fill_acceptance_ratios(){
 
@@ -1332,3 +1334,80 @@ es)" << endl;
   cout << "The number of positive values for truth_HH_m is: " << count_truth_HH_m_pos_values << endl;
 
 }
+
+/*
+void plot_ratios_acceptance(TString name_plot, TString output_folder){                                                                        
+  gROOT->SetBatch(kTRUE);                                                                                                                     
+  auto it = plotMap.find(name_plot.Data()); // Data() is used to convert TString to string                                                   
+  if (it != plotMap.end()) { // If the plot name was found                                                                                   
+    SetAtlasStyle();                                                                                                                         
+    PlotInfo plotInfo = it->second; // Access the PlotInfo struct                                                                            
+    //TString name_image = output_folder+"/plots_ratios/"+name_plot+".png";                                                                  
+    TString name_image = "plots_ratios/"+name_plot+".png";                                                                                 
+    TH1F *hist_num = plotInfo.hist_num;                                                                                                    
+    TH1F *hist_den = plotInfo.hist_den;                                                                                                    
+    TString label_leg = plotInfo.label;                                                                                                      
+    TString title_plot = plotInfo.title;                                                                                                     
+    TEfficiency *pEff = new TEfficiency(*hist_num, *hist_den);                                                                               
+    pEff->SetTitle(title_plot);
+    pEff->SetName(name_plot);                                                                                                              
+    //pEff->SetMaximum(1.25);                                                                                                                
+    ///// Plotting                                                                                                                           
+    TCanvas *can = new TCanvas("can","can", 800, 600);                                                                                       
+    //TLegend *leg = new TLegend(0.25, 0.70, 0.40, 0.80);                                                                                   
+    pEff->Draw("AP");                                                                                                                       
+    gPad->Update();                                                                                                                          
+    auto graph = pEff->GetPaintedGraph();                                                                                      
+    graph->SetMinimum(0);
+    graph->SetMaximum(1.25);                                                                                                                 
+    gPad->Update();                                                                                                                          
+    double dely = 0.05;                                                                                                                      
+    myText(0.2, 0.9, kBlack, process_name);                                                                                                  
+    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);                                                                                  
+    myText(0.2, 0.9-2*dely, kBlack, name_plot);                                                                                              
+    //can->Draw();            
+    can->SaveAs(name_image);
+    //TString process_label = process_name;
+    //process_label = process_label.ReplaceAll(" ", "_");
+    //process_label = process_label.replace(" ", "_");
+    //can->SaveAs("output_analysis/temp_folder/"+name_plot+"_"+process_label+".png");                                                        
+    //    TCanvas *can = new TCanvas("can","can", 800, 600);                                                                                 
+    hist_num->Draw("H");                                                                                                                    
+    //name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_num.png";                                                                 
+    name_image = "plots_ratios/"+name_plot+"_hist_num.png";                                                                                  
+    myText(0.2, 0.9, kBlack, process_name);                                                                                                  
+    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);                                                                                  
+    myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_num.png");                                                                              
+    can->SaveAs(name_image);       
+
+    // ***********************************************                                                                                           // hist numerator                                                                                                                            // ***********************************************
+
+    //    TCanvas *can = new TCanvas("can","can", 800, 600);                                                                                 
+    hist_num->Draw("H");                                                                                                                     
+    //name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_num.png";                                                                  
+    name_image = "plots_ratios/"+name_plot+"_hist_num.png";                                                                                  
+    myText(0.2, 0.9, kBlack, process_name);                                                                                                  
+    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);                                                                                  
+    myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_num.png");                                                                              
+    can->SaveAs(name_image);      
+
+     
+    // ***********************************************                                                                                      
+    // hist denominator                                                                                                                      
+    // ***********************************************                                                                                       
+    
+    //    TCanvas *can = new TCanvas("can","can", 800, 600);                                                                                
+    hist_den->Draw("H");                                                                                                                     
+    //name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_den.png";                                                                 
+    name_image = "plots_ratios/"+name_plot+"_hist_den.png";                                                                                  
+    myText(0.2, 0.9, kBlack, process_name);                                                                                                  
+    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);                                                                                  
+    myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_den.png");                                                                              
+    can->SaveAs(name_image);                                                                                                                 
+  }                                                                                                                                          
+  else {                                                                                                                                     
+    // Handle the case where the plot name is not found
+    std::cout << "Plot name " << name_plot << " not found!" << endl;                                                                      
+  }                                                                                                                                          
+}   
+*/

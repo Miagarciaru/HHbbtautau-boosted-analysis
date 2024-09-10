@@ -13,8 +13,8 @@ struct PlotInfo {
 // Declaration of global variables
 // *************************************
 
-TString process_name = "";
-TString name_output_root_file = "";
+string process_name = "";
+string name_output_root_file = "";
 float fraction = 1.0;
 
 // values to be printed in the screen for statistical checks
