@@ -25,20 +25,20 @@ struct plot_Teff {
 // Declaration of functions
 //*******************************************************
 
-void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::vector<TEfficiency*>& TEff_ratios);
+void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::string& min_pT, const std::vector<TEfficiency*>& TEff_ratios);
 
-void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, std::vector<TEfficiency*>& TEff_ratios_r1, std::vector<TEfficiency*>& TEff_ratios_r2, std::vector<TEfficiency*>& TEff_ratios_r3, std::vector<TEfficiency*>& TEff_ratios_r4);
+void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, const std::string& min_pT, std::vector<TEfficiency*>& TEff_ratios_r1, std::vector<TEfficiency*>& TEff_ratios_r2, std::vector<TEfficiency*>& TEff_ratios_r3, std::vector<TEfficiency*>& TEff_ratios_r4);
 
 //*******************************************************
 // Definition of functions declared above
 //*******************************************************
 
-void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::vector<TEfficiency*>& TEff_ratios){
+void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::string& min_pT, const std::vector<TEfficiency*>& TEff_ratios){
 
   gROOT->SetBatch(kTRUE);
   SetAtlasStyle();
   
-  TCanvas* canvas = new TCanvas(("can_"+nameVar+"_"+ratio).c_str());
+  TCanvas* canvas = new TCanvas(("can_"+nameVar+"_minpT"+min_pT+ratio).c_str());
   TLegend* leg = new TLegend(0.18, 0.75, 0.93, 0.90);
 
   const int colors[8] = { kRed, kBlue, kGreen, kMagenta, kCyan, kYellow, kBlack, kOrange };
@@ -67,18 +67,19 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   
   leg->Draw();
 
-  string name_image = "output_combined_ratios_plots/"+nameVar+"_ratios_"+ratio+"_comparison.png";
+  string name_image = "output_combined_ratios_plots/"+min_pT+"/"+nameVar+"_min_pT"+min_pT+"_ratios_"+ratio+"_comparison.png";
   canvas->SaveAs(name_image.c_str());
 }
 
 // Initialize the ap_ratios_info
-void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, std::vector<TEfficiency*>& TEff_ratios_r1, std::vector<TEfficiency*>& TEff_ratios_r2, std::vector<TEfficiency*>& TEff_ratios_r3, std::vector<TEfficiency*>& TEff_ratios_r4){
+void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, const std::string& min_pT, std::vector<TEfficiency*>& TEff_ratios_r1, std::vector<TEfficiency*>& TEff_ratios_r2, std::vector<TEfficiency*>& TEff_ratios_r3, std::vector<TEfficiency*>& TEff_ratios_r4){
   
   string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
-  
+   
   for (const auto& sample : sampleFiles){
-    string path_root_file = path_folder+sample+".root";
-      
+    string path_root_file = path_folder+sample+"_pT"+min_pT+".root";
+    TCanvas* can = new TCanvas(("can_"+sample+"_"+nameVar+"_pT"+min_pT).c_str());
+    
     TFile* file = TFile::Open(path_root_file.c_str());
     
     if (!file || file->IsZombie()) {
@@ -97,6 +98,31 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
     TH1F* hist_num_for_r3 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_numerator_r3").c_str()));
     TH1F* hist_num_for_r4 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_numerator_class3_r4").c_str()));
     TH1F* hist_den_for_r3_r4 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_denominator_r3_r4").c_str()));
+
+    //********************************************************************
+    //Plotting numerator histograms r1_r2
+    //********************************************************************
+
+    gROOT->SetBatch(kTRUE);
+    hist_num_r1_r2->Draw("H");
+    string name_image = "output_combined_ratios_plots/"+min_pT+"/"+nameVar+"_min_pT"+min_pT+"_num_ratios_r1_r2_"+sample+".png";
+    can->SaveAs(name_image.c_str());
+
+    //********************************************************************
+    //Plotting numerator histograms r3
+    //********************************************************************
+    
+    hist_num_for_r3->Draw("H");
+    name_image = "output_combined_ratios_plots/"+min_pT+"/"+nameVar+"_min_pT"+min_pT+"_num_ratios_r3_"+sample+".png";
+    can->SaveAs(name_image.c_str());
+
+    //********************************************************************
+    //Plotting numerator histograms r4
+    //********************************************************************
+    
+    hist_num_for_r4->Draw("H");
+    name_image = "output_combined_ratios_plots/"+min_pT+"/"+nameVar+"_min_pT"+min_pT+"_num_ratios_r4_"+sample+".png";
+    can->SaveAs(name_image.c_str());
     
     TEfficiency *pEff_r1 = new TEfficiency(*hist_num_r1_r2, *hist_den_for_r1);
     TEfficiency *pEff_r2 = new TEfficiency(*hist_num_r1_r2, *hist_den_for_r2);
