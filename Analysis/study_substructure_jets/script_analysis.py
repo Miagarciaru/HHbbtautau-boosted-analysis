@@ -16,11 +16,16 @@ sample_paths = [
     # Add as many samples as you need
 ]
 
+
 """
 sample_paths = [
     "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_502982_vbf_hadhad_l1cvv1cv1_PHYS_merged_boosted_bypass_config.root" # vbf HH SM had-had channel
 ]
 """
+
+min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
+
+#min_pT_recojets = ["100"] # in GeV
 
 start = time.time() # time at start of whole processing
 
@@ -31,16 +36,17 @@ output_root_folder = "output_analysis"
 os.makedirs(output_root_folder, exist_ok=True)
 
 # Loop over each sample
-for sample in sample_paths:
+for min_pT in min_pT_recojets:
     
     # Construct the ROOT script command
     # The command includes a reference to your ROOT script, passing the path of the sample and output folder
 
-    root_command = f'root -l -q \'study_substructure_jets.C("{sample}", "{output_root_folder}")\''
+    for sample in sample_paths:
+    
+        root_command = f'root -l -q \'study_substructure_jets.C("{sample}", "{output_root_folder}", "{min_pT}")\''
  
-    # Run the ROOT script
-    subprocess.run(root_command, shell=True)
-
+        # Run the ROOT script
+        subprocess.run(root_command, shell=True)
 
 elapsed = (time.time() - start)/60. # time after whole processing
 print("Total time taken: "+str(round(elapsed,2))+"min") # print total time taken to process every file

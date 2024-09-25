@@ -4,7 +4,7 @@
 // Declaration of functions
 // *************************************
 
-void process_label(TString name_sample);
+void process_label(TString name_sample, const std::string& min_pT_recojets_str);
 void fill_acceptance_ratios();
 void define_reconstructed_objects();
 void define_output_branches();
@@ -25,31 +25,33 @@ void default_values_for_truth_variables();
 // *************************************
 
 
-void process_label(TString name_sample){
+void process_label(TString name_sample, const std::string& min_pT_recojets_str){
 
+  // string min_pT_recojets_str = std::to_string(min_pT_recojets);
+  
   // ggF processes had-had channel
-  if(name_sample.Contains("600459")==true){ process_name = "ggF HH SM had-had channel"; name_output_root_file = "ggF_SM_hh_600459.root";}
-  if(name_sample.Contains("600460")==true){ process_name = "ggF HH #lambda = 10 had-had channel"; name_output_root_file = "ggF_lambda10_hh_600460.root";}
+  if(name_sample.Contains("600459")==true){ process_name = "ggF HH SM had-had channel"; name_output_root_file = "ggF_SM_hh_600459_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("600460")==true){ process_name = "ggF HH #lambda = 10 had-had channel"; name_output_root_file = "ggF_lambda10_hh_600460_pT"+TString(min_pT_recojets_str)+"GeV.root";}
 
   // ggF processes lep-had channel
-  if(name_sample.Contains("600461")==true){ process_name = "ggF HH SM lep-had channel"; name_output_root_file = "ggF_SM_lh_600461.root";}
-  if(name_sample.Contains("600462")==true){ process_name = "ggF HH #lambda = 10 lep-had channel"; name_output_root_file = "ggF_lambda10_lh_600462.root";}
+  if(name_sample.Contains("600461")==true){ process_name = "ggF HH SM lep-had channel"; name_output_root_file = "ggF_SM_lh_600461_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("600462")==true){ process_name = "ggF HH #lambda = 10 lep-had channel"; name_output_root_file = "ggF_lambda10_lh_600462_pT"+TString(min_pT_recojets_str)+"GeV.root";}
 
   //vbf processes had-had channel
-  if(name_sample.Contains("502982")==true){ process_name = "VBF HH SM had-had channel"; name_output_root_file = "VBF_SM_hh_502982.root";}
-  if(name_sample.Contains("502985")==true){ process_name = "VBF HH C_{VV} = 1.5 had-had channel"; name_output_root_file = "VBF_cvv1p5_hh_502985.root";}
-  if(name_sample.Contains("502989")==true){ process_name = "VBF HH #lambda = 2.0 had-had channel"; name_output_root_file = "VBF_l2_hh_502989.root";}
-  if(name_sample.Contains("502990")==true){ process_name = "VBF HH #lambda = 10.0 had-had channel"; name_output_root_file = "VBF_l10_hh_502990.root";}
-  if(name_sample.Contains("502991")==true){ process_name = "VBF HH C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_cv0p5_hh_502991.root";}
-  if(name_sample.Contains("508690")==true){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_l5cv0p5_hh_508690.root";}
+  if(name_sample.Contains("502982")==true){ process_name = "VBF HH SM had-had channel"; name_output_root_file = "VBF_SM_hh_502982_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("502985")==true){ process_name = "VBF HH C_{VV} = 1.5 had-had channel"; name_output_root_file = "VBF_cvv1p5_hh_502985_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("502989")==true){ process_name = "VBF HH #lambda = 2.0 had-had channel"; name_output_root_file = "VBF_l2_hh_502989_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("502990")==true){ process_name = "VBF HH #lambda = 10.0 had-had channel"; name_output_root_file = "VBF_l10_hh_502990_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("502991")==true){ process_name = "VBF HH C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_cv0p5_hh_502991_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("508690")==true){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_l5cv0p5_hh_508690_pT"+TString(min_pT_recojets_str)+"GeV.root";}
 
   //vbf processes lep-had channel
-  if(name_sample.Contains("502993")==true){ process_name = "VBF HH SM lep-had channel"; name_output_root_file = "VBF_SM_lh_502993.root";}
-  if(name_sample.Contains("502996")==true){ process_name = "VBF HH C_{VV} = 1.5 lep-had channel"; name_output_root_file = "VBF_cvv1p5_lh_502996.root";}
-  if(name_sample.Contains("503000")==true){ process_name = "VBF HH #lambda = 2.0 lep-had channel"; name_output_root_file = "VBF_l2_lh_503000.root";}
-  if(name_sample.Contains("503001")==true){ process_name = "VBF HH #lambda = 10.0 lep-had channel"; name_output_root_file = "VBF_l10_lh_503001.root";}
-  if(name_sample.Contains("503002")==true){ process_name = "VBF HH C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_cv0p5_lh_503002.root";}
-  if(name_sample.Contains("508691")==true){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_l5cv0p5_lh_508691.root";}
+  if(name_sample.Contains("502993")==true){ process_name = "VBF HH SM lep-had channel"; name_output_root_file = "VBF_SM_lh_502993_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("502996")==true){ process_name = "VBF HH C_{VV} = 1.5 lep-had channel"; name_output_root_file = "VBF_cvv1p5_lh_502996_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("503000")==true){ process_name = "VBF HH #lambda = 2.0 lep-had channel"; name_output_root_file = "VBF_l2_lh_503000_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("503001")==true){ process_name = "VBF HH #lambda = 10.0 lep-had channel"; name_output_root_file = "VBF_l10_lh_503001_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("503002")==true){ process_name = "VBF HH C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_cv0p5_lh_503002_pT"+TString(min_pT_recojets_str)+"GeV.root";}
+  if(name_sample.Contains("508691")==true){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_l5cv0p5_lh_508691_pT"+TString(min_pT_recojets_str)+"GeV.root";}
 
   //vbf SM processes both channels channel
   if(name_sample.Contains("vbf_SM_both_channels")==true){ process_name = "VBF HH SM"; }
@@ -464,7 +466,7 @@ void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, fl
   }
 }
 
-
+/*
 void define_truth_tau_and_b_jets(){
   // set -99 to the truth variables
   default_values_for_truth_variables();
@@ -583,8 +585,8 @@ void define_truth_tau_and_b_jets(){
     }
   }
 }
+*/
 
-/*
 void define_truth_tau_and_b_jets(){
 
   if((truth_children_fromH1_pdgId->size() == 2) && (truth_children_fromH2_pdgId->size() == 2)){
@@ -710,7 +712,6 @@ void define_truth_tau_and_b_jets(){
     default_values_for_truth_variables();
   }
 }
-*/
 
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions
 // for the two configurations, boosted and resolved
@@ -721,6 +722,7 @@ void fill_histograms(){
   //**********************************************
   
   if(truth_children_fromH1_pdgId->size() == 2){
+   
     if((TMath::Abs(truth_children_fromH1_pdgId->at(0)) == 5) && (TMath::Abs(truth_children_fromH1_pdgId->at(1)) == 5)){
       float sum = truth_children_fromH1_m->at(0) + truth_children_fromH1_m->at(1); // Wrong assumption, we need to do it by using a TLorentzV
       hist_truth_b1_plus_b2_m->Fill(sum);
@@ -728,57 +730,137 @@ void fill_histograms(){
       hist_truth_b2_m->Fill(truth_children_fromH1_m->at(1));
     }
   }
-
+  
   //**********************************************
   // Filling the mass, pT and eta distributions of the boosted bb and tautau objects
   //**********************************************
  
   if(class_event != -1){
 
-    // truth Boosted bb                                                                                                                     
+    // Fill m, pt, eta... distribution of those recojets that were matched to be boosted bb (classes Bbb-Rtautau or Bbb-Btautua)
+    
     if( (class_event == 2) || (class_event == 3) ){
-
+      
       float dR_bb = 0;
+      float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin);
+	  
       deltaR(dR_bb, truth_b1_pt, truth_b1_eta, truth_b1_phi, truth_b1_m, truth_b2_pt, truth_b2_eta, truth_b2_phi, truth_b2_m);
       
       hist_matched_recojet_bb_m->Fill(recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
       hist_matched_recojet_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000.);
       hist_matched_recojet_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin));
+      hist_matched_recojet_bb_phi->Fill(recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin));
+      hist_matched_recojet_bb_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin));
+      hist_matched_recojet_bb_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin));
+      hist_matched_recojet_bb_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+      
       hist_matched_recojet_bb_dR->Fill(dR_bb);
       hist2d_dR_per_class_bb->Fill(class_event, dR_bb);
+
+      if(tau_nProng->size()!=0){
+	for(int ii=0; ii<tau_nProng->size(); ii++){
+	  hist_matched_recojet_bb_tau_n_prong->Fill(tau_nProng->at(ii));
+	}
+      }
+
     }
 
-    // truth boosted tautau jets                                                                                                            
+    // Fill m, pt, eta... distribution of those recojets that were matched to be boosted tautau (classes Rbb-Btautau or Bbb-Btautua)
+    
     if( (class_event == 1) || (class_event == 3) ){
-
+      
       float dR_tautau = 0;
+      float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin);
       deltaR(dR_tautau, truth_tau1_pt, truth_tau1_eta, truth_tau1_phi, truth_tau1_m, truth_tau2_pt, truth_tau2_eta, truth_tau2_phi, truth_tau2_m);
-
+      
       hist_matched_recojet_tautau_m->Fill(recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
       hist_matched_recojet_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000.);
       hist_matched_recojet_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin));
+      hist_matched_recojet_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin));
       hist_matched_recojet_tautau_dR->Fill(dR_tautau);
+      hist_matched_recojet_tautau_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin));
+      hist_matched_recojet_tautau_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin));
+      hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+      
       hist2d_dR_per_class_tautau->Fill(class_event, dR_tautau);
-    }
 
-    // Fill the pt and eta distribution of those recojets that were not matched to a truth object but are in RR, RB, BR or BB classes
-    if( recojet_antikt10UFO_NOSYS_pt->size() > 0 ){
-      for(int jj=0; jj < recojet_antikt10UFO_NOSYS_pt->size(); jj++){
-	if( (jj != idx_b1truth_recoak10_dRmin) && (jj != idx_b2truth_recoak10_dRmin) && (jj != idx_tau1truth_recoak10_dRmin) && (jj != idx_tau2truth_recoak10_dRmin) ){
-	  hist_non_matched_recojet_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(jj)/1000.);
+      if(tau_nProng->size()!=0){
+	for(int ii=0; ii<tau_nProng->size(); ii++){
+	  hist_matched_recojet_tautau_tau_n_prong->Fill(tau_nProng->at(ii));
 	}
       }
     }
 
-    if( recojet_antikt10UFO_eta->size() > 0){
-      for(int jj=0; jj < recojet_antikt10UFO_eta->size(); jj++){
-	if( (jj != idx_b1truth_recoak10_dRmin) && (jj != idx_b2truth_recoak10_dRmin) && (jj != idx_tau1truth_recoak10_dRmin) && (jj != idx_tau2truth_recoak10_dRmin) ){
-	  hist_non_matched_recojet_eta->Fill(recojet_antikt10UFO_eta->at(jj));
-	}
-      } 
-    }
-  }
+    // Fill m, pt, eta... distribution of those recojets that were not matched to be boosted bb (classes Rbb-Rtautau or Rbb-Btautua)
 
+    if( (class_event == 0) || (class_event == 1) ){
+
+      float tau_n2_over_n1_subjettiness = 0;
+      
+      hist_non_matched_recojet_bb_m->Fill(recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
+      hist_non_matched_recojet_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000.);
+      hist_non_matched_recojet_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin));
+      hist_non_matched_recojet_bb_phi->Fill(recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin));
+      hist_non_matched_recojet_bb_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin));
+      hist_non_matched_recojet_bb_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin));
+
+      tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin);
+      hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);  
+      
+      hist_non_matched_recojet_bb_m->Fill(recojet_antikt10UFO_m->at(idx_b2truth_recoak10_dRmin)/1000.);
+      hist_non_matched_recojet_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin)/1000.);
+      hist_non_matched_recojet_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b2truth_recoak10_dRmin));
+      hist_non_matched_recojet_bb_phi->Fill(recojet_antikt10UFO_phi->at(idx_b2truth_recoak10_dRmin));
+      hist_non_matched_recojet_bb_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_b2truth_recoak10_dRmin));
+      hist_non_matched_recojet_bb_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_b2truth_recoak10_dRmin));
+
+      tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b2truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_b2truth_recoak10_dRmin);
+      hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);  
+      
+      if(tau_nProng->size()!=0){
+	for(int ii=0; ii<tau_nProng->size(); ii++){
+	  hist_non_matched_recojet_bb_tau_n_prong->Fill(tau_nProng->at(ii));
+	}
+      }
+      
+    }
+
+    // Fill m, pt, eta... distribution of those recojets that were not matched to be boosted tautau (classes Rbb-Rtautau or Bbb-Rtautua)
+    if( (class_event == 0) || (class_event == 2) ){
+
+      float tau_n2_over_n1_subjettiness = 0;
+      
+      hist_non_matched_recojet_tautau_m->Fill(recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
+      hist_non_matched_recojet_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000.);
+      hist_non_matched_recojet_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin));
+      hist_non_matched_recojet_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin));
+      hist_non_matched_recojet_tautau_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin));
+      hist_non_matched_recojet_tautau_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin));
+      
+      tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin);
+      hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+    
+      hist_non_matched_recojet_tautau_m->Fill(recojet_antikt10UFO_m->at(idx_tau2truth_recoak10_dRmin)/1000.);
+      hist_non_matched_recojet_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin)/1000.);
+      hist_non_matched_recojet_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau2truth_recoak10_dRmin));
+      hist_non_matched_recojet_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau2truth_recoak10_dRmin));
+      hist_non_matched_recojet_tautau_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_tau2truth_recoak10_dRmin));
+      hist_non_matched_recojet_tautau_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_tau2truth_recoak10_dRmin));
+      
+      tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_tau2truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_tau2truth_recoak10_dRmin);
+      
+      hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+      
+      if(tau_nProng->size()!=0){
+	for(int ii=0; ii<tau_nProng->size(); ii++){
+	  hist_non_matched_recojet_tautau_tau_n_prong->Fill(tau_nProng->at(ii));
+	}
+      }
+      
+    }
+
+  }
+  
   // Fill the pt and eta distribution of those recojets that were not matched to a truth object and are not in RR, RB, BR or BB classes
   if( class_event == -1){
     if( recojet_antikt10UFO_NOSYS_pt->size() > 0 ){
@@ -786,27 +868,28 @@ void fill_histograms(){
 	hist_non_matched_recojet_pt_no_class->Fill(recojet_antikt10UFO_NOSYS_pt->at(jj)/1000.);
       }
     }
-
+    
     if( recojet_antikt10UFO_eta->size() > 0){
       for(int jj=0; jj < recojet_antikt10UFO_eta->size(); jj++){
 	hist_non_matched_recojet_eta_no_class->Fill(recojet_antikt10UFO_eta->at(jj));
       }
     }
   }
-
+    
   // Fill the number of events per class
   hist_nevents_per_class->Fill(class_event);
-
+  
   // Fill the pT and mass distribution for truth and computed HH
 
   if( class_event != -1 ){
     hist_truth_HH_pt->Fill(truth_HH_pt/1000.);
     hist_computed_HH_pt->Fill(reco_bbtt_HH_pt_BA/1000.);
-
+    
     hist_truth_HH_m->Fill(truth_HH_m/1000.);
     hist_computed_HH_m->Fill(reco_bbtt_HH_m_BA/1000.);
   }
 }
+
 
 // This function saves the branches info for a given tree in the variables defined above
 void set_branch_address_inTree(TTree *inTree){
@@ -835,12 +918,16 @@ void set_branch_address_inTree(TTree *inTree){
   inTree->SetBranchAddress("truth_HH_phi", &truth_HH_phi, &b_truth_HH_phi);
   inTree->SetBranchAddress("truth_HH_m", &truth_HH_m, &b_truth_HH_m);
   */
+
+  inTree->SetBranchAddress("tau_nProng", &tau_nProng, &b_tau_nProng);
   
   inTree->SetBranchAddress("recojet_antikt10UFO_NOSYS_pt", &recojet_antikt10UFO_NOSYS_pt, &b_recojet_antikt10UFO_NOSYS_pt);
   inTree->SetBranchAddress("recojet_antikt10UFO_eta", &recojet_antikt10UFO_eta, &b_recojet_antikt10UFO_eta);
   inTree->SetBranchAddress("recojet_antikt10UFO_phi", &recojet_antikt10UFO_phi, &b_recojet_antikt10UFO_phi);
   inTree->SetBranchAddress("recojet_antikt10UFO_m", &recojet_antikt10UFO_m, &b_recojet_antikt10UFO_m);
-    
+  inTree->SetBranchAddress("recojet_antikt10UFO_Tau1_wta", &recojet_antikt10UFO_Tau1_wta, &b_recojet_antikt10UFO_Tau1_wta);
+  inTree->SetBranchAddress("recojet_antikt10UFO_Tau2_wta", &recojet_antikt10UFO_Tau2_wta, &b_recojet_antikt10UFO_Tau2_wta);
+
   inTree->SetBranchAddress("bbtt_Jet_b1_pt_NOSYS", &bbtt_Jet_b1_pt_NOSYS, &b_bbtt_Jet_b1_pt_NOSYS);
   inTree->SetBranchAddress("bbtt_Jet_b1_eta", &bbtt_Jet_b1_eta, &b_bbtt_Jet_b1_eta);
   inTree->SetBranchAddress("bbtt_Jet_b1_phi", &bbtt_Jet_b1_phi, &b_bbtt_Jet_b1_phi);
@@ -923,10 +1010,13 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("truth_tau2_phi", &truth_tau2_phi);
   outTree->Branch("truth_tau2_m", &truth_tau2_m);
 
+  outTree->Branch("tau_nProng", &tau_nProng);
   outTree->Branch("recojet_antikt10UFO_NOSYS_pt", &recojet_antikt10UFO_NOSYS_pt);
   outTree->Branch("recojet_antikt10UFO_eta", &recojet_antikt10UFO_eta);
   outTree->Branch("recojet_antikt10UFO_phi", &recojet_antikt10UFO_phi);
   outTree->Branch("recojet_antikt10UFO_m", &recojet_antikt10UFO_m);
+  outTree->Branch("recojet_antikt10UFO_Tau1_wta", &recojet_antikt10UFO_Tau1_wta);
+  outTree->Branch("recojet_antikt10UFO_Tau2_wta", &recojet_antikt10UFO_Tau2_wta);
   
   outTree->Branch("idx_b1truth_recoak10_dRmin", &idx_b1truth_recoak10_dRmin);
   outTree->Branch("idx_b2truth_recoak10_dRmin", &idx_b2truth_recoak10_dRmin);
@@ -999,15 +1089,38 @@ void write_histograms(){
   hist_matched_recojet_tautau_pt->Write();
   hist_matched_recojet_bb_eta->Write();
   hist_matched_recojet_tautau_eta->Write();
+  hist_matched_recojet_bb_phi->Write();
+  hist_matched_recojet_tautau_phi->Write();
+  hist_matched_recojet_bb_tau_n_prong->Write();
+  hist_matched_recojet_tautau_tau_n_prong->Write();
+  hist_matched_recojet_bb_tau_n1_subjettiness->Write();
+  hist_matched_recojet_tautau_tau_n1_subjettiness->Write();
+  hist_matched_recojet_bb_tau_n2_subjettiness->Write();
+  hist_matched_recojet_tautau_tau_n2_subjettiness->Write();
+  hist_matched_recojet_bb_tau_n2_over_n1_subjettiness->Write();
+  hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness->Write();
   hist_matched_recojet_bb_dR->Write();
   hist_matched_recojet_tautau_dR->Write();
 
+  
   //non_matched_recojets_histograms
-  hist_non_matched_recojet_pt->Write();
-  hist_non_matched_recojet_eta->Write();
-  hist_non_matched_recojet_pt_no_class->Write();
-  hist_non_matched_recojet_eta_no_class->Write();
-
+  
+  hist_non_matched_recojet_bb_m->Write();
+  hist_non_matched_recojet_tautau_m->Write();
+  hist_non_matched_recojet_bb_pt->Write();
+  hist_non_matched_recojet_tautau_pt->Write();
+  hist_non_matched_recojet_bb_eta->Write();
+  hist_non_matched_recojet_tautau_eta->Write();
+  hist_non_matched_recojet_bb_phi->Write();
+  hist_non_matched_recojet_tautau_phi->Write();
+  hist_non_matched_recojet_bb_tau_n_prong->Write();
+  hist_non_matched_recojet_tautau_tau_n_prong->Write();
+  hist_non_matched_recojet_bb_tau_n1_subjettiness->Write();
+  hist_non_matched_recojet_tautau_tau_n1_subjettiness->Write();
+  hist_non_matched_recojet_bb_tau_n2_subjettiness->Write();
+  hist_non_matched_recojet_tautau_tau_n2_subjettiness->Write();
+  hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness->Write();
+  hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness->Write();
   
   hist_nevents_per_class->Write();
   hist2d_dR_per_class_bb->Write();

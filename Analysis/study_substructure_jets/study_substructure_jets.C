@@ -1,8 +1,11 @@
 #include <TMath.h>
 #include <TLorentzVector.h>
 #include "declaration_of_functions.h"
+#include <iostream>
+#include <string>
+#include <cstdlib>
 
-void study_substructure_jets(TString sample, TString output_folder){
+void study_substructure_jets(TString sample, TString output_folder, string min_pT){
 
   auto start = chrono::steady_clock::now(); //Start the clock
   
@@ -10,7 +13,7 @@ void study_substructure_jets(TString sample, TString output_folder){
   // Open the input files and access to the trees                                                                                              // *************************************
 
   // Define the sample label to identify which samples is being used during the analysis and the name of the output root file
-  process_label(sample);
+  process_label(sample, min_pT);
   
   // Open the output files and get access to the output tree
   
@@ -40,6 +43,10 @@ void study_substructure_jets(TString sample, TString output_folder){
   int bad_taujets_pt_selection = 0;
   int b_tau_matched_jets = 0;
   int matched_events = 0;
+  int diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt = 0;
+  
+  // Convert char* to float using std::atof()
+  float min_pT_recojet = 100*std::stoi(min_pT); // min pT in MeV
   
   for(int ii=0; ii < nentries*fraction; ii++){
     
@@ -48,9 +55,28 @@ void study_substructure_jets(TString sample, TString output_folder){
     compute_dR_min_index_fat_jets();
     define_classes();
     define_reconstructed_objects();
-    fill_histograms();
-    fill_acceptance_ratios();
+    int size_Tau1_wta = recojet_antikt10UFO_Tau2_wta->size();
+    //int size_Tau1_wta = tau_nProng->size();
+    int size_NOSYS_pt = recojet_antikt10UFO_NOSYS_pt->size();
     
+    if(size_Tau1_wta != size_NOSYS_pt){
+      diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt++;
+    }
+    
+    if(recojet_antikt10UFO_NOSYS_pt->size()!=0){
+      // Find the minimum pT in the jets_pT vector
+      float min_pT = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
+      if(min_pT>min_pT_recojet){
+	fill_histograms();
+	fill_acceptance_ratios();
+      }
+    }
+    /*
+    if(recojet_antikt10UFO_NOSYS_pt->size()==0){
+      fill_histograms();
+      fill_acceptance_ratios();
+    }
+    */
     if(truth_b1_pt > 0){
       matched_truth_events++;
     }
@@ -78,6 +104,7 @@ void study_substructure_jets(TString sample, TString output_folder){
   cout << "Number of events where the order of the two tau is wrong: " << bad_taujets_pt_selection << endl;
   cout << "Number of events with a b and tau jets matched: " << b_tau_matched_jets << endl;
   cout << "Number of matched events: " << matched_events << endl;
+  cout << "Number of events with different sizes on pt and tau1 n subjettiness: " << diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt << endl;
   
   //****************************************************
   //Save Histograms in the output root file
