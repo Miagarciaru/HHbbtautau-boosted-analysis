@@ -5,17 +5,25 @@ import subprocess
 
 base_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/"
 
+minpT = "pT200GeV"
+
 sample_paths = [
-    base_analysis_folder + "VBF_SM_hh_502982.root", # vbf HH SM had-had channel
-    base_analysis_folder + "VBF_SM_lh_502993.root", # vbf HH SM lep-had channel
-    base_analysis_folder + "VBF_cvv1p5_hh_502985.root", # vbf HH Cvv=1.5 had-had channel
-    base_analysis_folder + "VBF_cvv1p5_lh_502996.root", # vbf HH Cvv=1.5 lep-had channel
-    base_analysis_folder + "ggF_SM_hh_600459.root", # ggF SM had-had channel
-    base_analysis_folder + "ggF_SM_lh_600461.root", # ggF SM lep-had channel
-    base_analysis_folder + "ggF_lambda10_hh_600460.root", # ggF cHHH=10 had-had channel
-    base_analysis_folder + "ggF_lambda10_lh_600462.root" # ggF cHHH=10 lep-had channel
+    base_analysis_folder + "VBF_SM_hh_502982_"+minpT+".root", # vbf HH SM had-had channel
+    base_analysis_folder + "VBF_SM_lh_502993_"+minpT+".root", # vbf HH SM lep-had channel
+    base_analysis_folder + "VBF_cvv1p5_hh_502985_"+minpT+".root", # vbf HH Cvv=1.5 had-had channel
+    base_analysis_folder + "VBF_cvv1p5_lh_502996_"+minpT+".root", # vbf HH Cvv=1.5 lep-had channel
+    base_analysis_folder + "ggF_SM_hh_600459_"+minpT+".root", # ggF SM had-had channel
+    base_analysis_folder + "ggF_SM_lh_600461_"+minpT+".root", # ggF SM lep-had channel
+    base_analysis_folder + "ggF_lambda10_hh_600460_"+minpT+".root", # ggF cHHH=10 had-had channel
+    base_analysis_folder + "ggF_lambda10_lh_600462_"+minpT+".root" # ggF cHHH=10 lep-had channel
     # Add as many samples as you need
 ]
+
+"""
+sample_paths = [
+    base_analysis_folder + "VBF_SM_hh_502982_"+minpT+".root", # vbf HH SM had-had channel
+]
+"""
 
 # Root folder for storing output
 output_root_folder = "output_plots"
@@ -41,13 +49,17 @@ for sample in sample_paths:
     plots_substructure_jets = os.path.join(output_folder, "plots_substructure_jets")
     os.makedirs(plots_substructure_jets, exist_ok=True)
 
+    # Define plots_substructure_jets folder
+    plots_substructure_jets_comparison = os.path.join(plots_substructure_jets, "comparison_plots")
+    os.makedirs(plots_substructure_jets_comparison, exist_ok=True)
+
     # Define plots_comparison folder
     plots_comparison = os.path.join(output_folder, "plots_comparison")
-    os.makedirs(plots_comparison, exist_ok=True)
+    #os.makedirs(plots_comparison, exist_ok=True)
 
     # Define plots_ratios folder
     plots_ratios = os.path.join(output_folder, "plots_ratios")
-    os.makedirs(plots_ratios, exist_ok=True)
+    #os.makedirs(plots_ratios, exist_ok=True)
     
     # Construct the ROOT script command
     # The command includes a reference to your ROOT script, passing the path of the sample and output folder

@@ -23,6 +23,30 @@ TH1F* hist_non_matched_recojet_pt_no_class;
 TH1F* hist_non_matched_recojet_eta_no_class;
 TH1F* hist_nevents_per_class;
 
+//tau_nProng histograms
+TH1F* hist_matched_recojet_bb_tau_n_prong;
+TH1F* hist_matched_recojet_tautau_tau_n_prong;
+TH1F* hist_non_matched_recojet_bb_tau_n_prong;
+TH1F* hist_non_matched_recojet_tautau_tau_n_prong;
+
+//n1 subjettiness
+TH1F* hist_matched_recojet_bb_tau_n1_subjettiness;
+TH1F* hist_matched_recojet_tautau_tau_n1_subjettiness;
+TH1F* hist_non_matched_recojet_bb_tau_n1_subjettiness;
+TH1F* hist_non_matched_recojet_tautau_tau_n1_subjettiness;
+
+//n2 subjettiness
+TH1F* hist_matched_recojet_bb_tau_n2_subjettiness;
+TH1F* hist_matched_recojet_tautau_tau_n2_subjettiness;
+TH1F* hist_non_matched_recojet_bb_tau_n2_subjettiness;
+TH1F* hist_non_matched_recojet_tautau_tau_n2_subjettiness;
+
+//n2 over n1 subjettiness
+TH1F* hist_matched_recojet_bb_tau_n2_over_n1_subjettiness;
+TH1F* hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
+TH1F* hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness;
+TH1F* hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
+
 struct hist_ratios {
     TH1F* hist_num_for_r1;
     TH1F* hist_den_for_r1;
@@ -41,11 +65,12 @@ struct plot_Teff {
     TString label_r2;
 };
 
-void reading_distributions_histograms(const std::string& sample, const std::vector<std::string>& list_of_histograms, const std::string& output_folder);
+void reading_distributions_histograms(const std::string& sample, const std::vector<std::string>& list_of_histograms, const std::vector<std::string>& comparison_list, const std::string& output_folder);
 //void plot_ratios_acceptance(TString name_plot, TString output_folder);
 //void plot_ratios_acceptance_group(TString name_plot, TString output_folder);
 //void plot_distributions_comparison(TString name_plot, TString output_folder);
 //void plot_2D_distributions(TString name_plot, TString output_folder);
+void plot_distributions_comparisons(const std::string& name_plot, const std::string& output_folder);
 void plot_distributions(const std::string& name_plot, const std::string& output_folder);
 void process_label(string name_sample);
 
@@ -55,7 +80,7 @@ string output_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framewo
 // Definition of the functions above
 //**********************************************************************************
 
-void reading_distributions_histograms(const std::string& sample, const std::vector<std::string>& list_of_histograms, const std::string& output_folder){
+void reading_distributions_histograms(const std::string& sample, const std::vector<std::string>& list_of_histograms, const std::vector<std::string>& comparison_list, const std::string& output_folder){
 
   //string path_root_file = output_analysis_folder+"/"+sample+".root";
 
@@ -86,12 +111,125 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
   hist_non_matched_recojet_pt_no_class = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_pt_no_class")));
   hist_non_matched_recojet_eta_no_class = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_eta_no_class")));
   hist_nevents_per_class = dynamic_cast<TH1F*>(file->Get(("hist_nevents_per_class")));
+
+  //tau_nProng histograms
+  hist_matched_recojet_bb_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_tau_n_prong")));
+  hist_matched_recojet_tautau_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_tau_n_prong")));
+  hist_non_matched_recojet_bb_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n_prong")));
+  hist_non_matched_recojet_tautau_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n_prong")));
+  
+  //n1 subjettiness
+  hist_matched_recojet_bb_tau_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_tau_n1_subjettiness")));
+  hist_matched_recojet_tautau_tau_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_tau_n1_subjettiness")));
+  hist_non_matched_recojet_bb_tau_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n1_subjettiness")));
+  hist_non_matched_recojet_tautau_tau_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n1_subjettiness")));
+  
+  //n2 subjettiness
+  hist_matched_recojet_bb_tau_n2_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_tau_n2_subjettiness")));
+  hist_matched_recojet_tautau_tau_n2_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_tau_n2_subjettiness")));
+  hist_non_matched_recojet_bb_tau_n2_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n2_subjettiness")));
+  hist_non_matched_recojet_tautau_tau_n2_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n2_subjettiness")));
+  
+  //n2 over n1 subjettiness
+  hist_matched_recojet_bb_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_tau_n2_over_n1_subjettiness")));
+  hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness")));
+  hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness")));
+  hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness")));
   
   for(int ii=0; ii < list_of_histograms.size(); ii++){
     plot_distributions(list_of_histograms[ii], output_folder);
   }
 
+  for(int ii=0; ii < comparison_list.size(); ii++){
+    plot_distributions_comparisons(comparison_list[ii], output_folder);
+  }
+
   file->Close();
+}
+
+// This functions plots some distributions for the H_bb and H_tautau and compare the distributions                                          
+// for the two configurations, boosted and resolved                                                                                         
+
+void plot_distributions_comparisons(const std::string& name_plot, const std::string& output_folder){
+
+  gROOT->SetBatch(kTRUE);
+  SetAtlasStyle();
+  
+  string name_image = output_folder+"/plots_substructure_jets/comparison_plots/"+name_plot+".png";
+  //string name_image = "plots_ratios/"+name_plot+".png";
+  
+  ///// Plotting
+  TCanvas *can = new TCanvas("can","", 800, 600);
+  TLegend *leg = new TLegend(0.7, 0.75, 0.85, 0.85);
+  TH1F *hist_boosted = new TH1F();
+  TH1F *hist_resolved = new TH1F();
+
+  if(name_plot=="bb_tau_nProng"){
+    hist_boosted = hist_matched_recojet_bb_tau_n_prong;
+    hist_resolved = hist_non_matched_recojet_bb_tau_n_prong;
+  }
+
+  if(name_plot=="tautau_tau_nProng"){
+    hist_boosted = hist_matched_recojet_tautau_tau_n_prong;
+    hist_resolved = hist_non_matched_recojet_tautau_tau_n_prong;
+  }
+
+  if(name_plot=="bb_n1_subjettiness"){
+    hist_boosted = hist_matched_recojet_bb_tau_n1_subjettiness;
+    hist_resolved = hist_non_matched_recojet_bb_tau_n1_subjettiness;
+  }
+
+  if(name_plot=="tautau_n1_subjettiness"){
+    hist_boosted = hist_matched_recojet_tautau_tau_n1_subjettiness;
+    hist_resolved = hist_non_matched_recojet_tautau_tau_n1_subjettiness;
+  }
+    
+  if(name_plot=="bb_n2_subjettiness"){
+    hist_boosted = hist_matched_recojet_bb_tau_n2_subjettiness;
+    hist_resolved = hist_non_matched_recojet_bb_tau_n2_subjettiness;
+  }
+
+  if(name_plot=="tautau_n2_subjettiness"){
+    hist_boosted = hist_matched_recojet_tautau_tau_n2_subjettiness;
+    hist_resolved = hist_non_matched_recojet_tautau_tau_n2_subjettiness;
+  }
+
+  if(name_plot=="bb_n2_over_n1_subjettiness"){
+    hist_boosted = hist_matched_recojet_bb_tau_n2_over_n1_subjettiness;
+    hist_resolved = hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness;
+  }
+
+  if(name_plot=="tautau_n2_over_n1_subjettiness"){
+    hist_boosted = hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
+    hist_resolved = hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
+  }
+  
+  hist_boosted->SetStats(0);
+  hist_boosted->SetFillStyle(3001);
+  hist_boosted->SetFillColorAlpha(kBlue, 0.45);
+  hist_boosted->SetLineColor(4);
+  
+  hist_resolved->SetStats(0);
+  hist_resolved->SetFillStyle(3003);
+  hist_resolved->SetFillColorAlpha(kRed, 0.45);
+  hist_resolved->SetLineColor(2);
+
+  hist_boosted->DrawNormalized("H");
+  hist_resolved->DrawNormalized("sameH");
+  
+  leg->AddEntry(hist_boosted, "boosted jets", "l");
+  leg->AddEntry(hist_resolved,"resolved jets","l");
+  leg->SetBorderSize();
+  leg->Draw();
+  
+  double dely = 0.04;
+  myText(0.2, 0.8, kBlack, process_name.c_str());
+  //  myText(0.2, 0.8-dely, kBlack, "for class: "+label_leg);
+  myText(0.2, 0.8-dely, kBlack, name_plot.c_str());
+
+  can->Draw();
+  can->SaveAs(name_image.c_str());
+
 }
 
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions                                          
