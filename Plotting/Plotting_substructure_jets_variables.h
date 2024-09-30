@@ -1,7 +1,6 @@
 #include "AtlasStyle/AtlasStyle.C"
 #include "AtlasStyle/AtlasUtils.C"
 #include "AtlasStyle/AtlasLabels.C"
-//#include "../Analysis/study_substructure_jets/declaration_of_variables.h"
 
 string process_name;
 string name_output_root_file;
@@ -66,10 +65,6 @@ struct plot_Teff {
 };
 
 void reading_distributions_histograms(const std::string& sample, const std::vector<std::string>& list_of_histograms, const std::vector<std::string>& comparison_list, const std::string& output_folder);
-//void plot_ratios_acceptance(TString name_plot, TString output_folder);
-//void plot_ratios_acceptance_group(TString name_plot, TString output_folder);
-//void plot_distributions_comparison(TString name_plot, TString output_folder);
-//void plot_2D_distributions(TString name_plot, TString output_folder);
 void plot_distributions_comparisons(const std::string& name_plot, const std::string& output_folder);
 void plot_distributions(const std::string& name_plot, const std::string& output_folder);
 void process_label(string name_sample);
@@ -84,9 +79,12 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
 
   //string path_root_file = output_analysis_folder+"/"+sample+".root";
 
-  //TFile* file = TFile::Open(path_root_file.c_str());
   TFile* file = TFile::Open(sample.c_str());
 
+  cout << "------------------------------------------------------" << endl;
+  cout << sample << endl;
+  cout << "------------------------------------------------------" << endl;
+  
   if(!file || file->IsZombie()){
     std::cerr << "Error opening file: " << sample << std::endl;
     if (file) file->Close();
@@ -95,9 +93,9 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
     cout << "The file has been read " << sample << endl;
   }
 
-  hist_truth_b1_m = dynamic_cast<TH1F*>(file->Get(("hist_truth_b1_m")));
-  hist_truth_b2_m = dynamic_cast<TH1F*>(file->Get(("hist_truth_b2_m")));
-  hist_truth_b1_plus_b2_m = dynamic_cast<TH1F*>(file->Get(("hist_truth_b1_plus_b2_m")));
+  //hist_truth_b1_m = dynamic_cast<TH1F*>(file->Get(("hist_truth_b1_m")));
+  //hist_truth_b2_m = dynamic_cast<TH1F*>(file->Get(("hist_truth_b2_m")));
+  //hist_truth_b1_plus_b2_m = dynamic_cast<TH1F*>(file->Get(("hist_truth_b1_plus_b2_m")));
   hist_matched_recojet_bb_m = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_m")));
   hist_matched_recojet_tautau_m = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_m")));
   hist_matched_recojet_bb_pt = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_pt")));
@@ -214,8 +212,27 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
   hist_resolved->SetFillColorAlpha(kRed, 0.45);
   hist_resolved->SetLineColor(2);
 
-  hist_boosted->DrawNormalized("H");
-  hist_resolved->DrawNormalized("sameH");
+  // Step 1: Normalize the histograms manually (or use DrawNormalized to visualize them directly).
+  hist_boosted->Scale(1.0 / hist_boosted->Integral());
+  hist_resolved->Scale(1.0 / hist_resolved->Integral());
+
+  // Step 2: Get the maximum value of each histogram after normalization.
+  double max_boosted = hist_boosted->GetMaximum();
+  double max_resolved = hist_resolved->GetMaximum();
+
+  // Step 3: Set the y-axis maximum to the maximum of the two histograms.
+  double y_max = std::max(max_boosted, max_resolved);
+
+  // Optionally, you can set the y-axis maximum slightly higher than the actual maximum value for better visualization.
+  y_max = y_max*1.3;  // Increase by 10% for padding
+  
+  // Step 4: Draw the histograms and set the maximum.
+  hist_boosted->SetMaximum(y_max);
+  hist_resolved->SetMaximum(y_max);
+  
+  // Step 5: Draw the histograms on the same canvas for comparison.
+  hist_boosted->Draw("H");   // Draw the first histogram
+  hist_resolved->Draw("sameH");  // Draw the second histogram on the same canvas
   
   leg->AddEntry(hist_boosted, "boosted jets", "l");
   leg->AddEntry(hist_resolved,"resolved jets","l");
@@ -223,9 +240,8 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
   leg->Draw();
   
   double dely = 0.04;
-  myText(0.2, 0.8, kBlack, process_name.c_str());
-  //  myText(0.2, 0.8-dely, kBlack, "for class: "+label_leg);
-  myText(0.2, 0.8-dely, kBlack, name_plot.c_str());
+  myText(0.2, 0.9, kBlack, process_name.c_str());
+  myText(0.2, 0.9-dely, kBlack, name_plot.c_str());
 
   can->Draw();
   can->SaveAs(name_image.c_str());
@@ -241,7 +257,6 @@ void plot_distributions(const std::string& name_plot, const std::string& output_
   SetAtlasStyle();
   
   string name_image = output_folder+"/plots_substructure_jets/"+name_plot+".png";
-  //string name_image = "plots_ratios/"+name_plot+".png";
   
   ///// Plotting
   TCanvas *can = new TCanvas("can","", 800, 600);
@@ -275,7 +290,6 @@ void plot_distributions(const std::string& name_plot, const std::string& output_
 
   double dely = 0.04;
   myText(0.2, 0.8, kBlack, process_name.c_str());
-  //  myText(0.2, 0.8-dely, kBlack, "for class: "+label_leg);
   myText(0.2, 0.8-dely, kBlack, name_plot.c_str());
 
   can->Draw();
@@ -283,143 +297,43 @@ void plot_distributions(const std::string& name_plot, const std::string& output_
 
 }
 
-// Plot 2d histograms
-
-/*
-void plot_2D_distributions(TString name_plot, TString output_folder){
-
-  gROOT->SetBatch(kTRUE);
-  TString name_image = output_folder+"/plots_substructure_jets/"+name_plot+".png";
-  
-  ///// Plotting
-  
-  SetAtlasStyle();
-
-  TCanvas *can = new TCanvas("can","", 800, 600);
-  TH2F *hist = new TH2F();
-  
-  if(name_plot == "dR_per_class_bb"){ hist = hist2d_dR_per_class_bb;}
-  if(name_plot == "dR_per_class_tautau"){ hist = hist2d_dR_per_class_tautau;}
-  
-  //gStyle->SetPalette(52);                                                                                                                   
-  //TColor::InvertPalette();                                                                                                                  
-  
-  //hist->SetStats(0);
-  //hist->Draw("SURF");
-  hist->GetXaxis()->SetBinLabel(1, "R_{bb}-R_{#tau#tau}");
-  hist->GetXaxis()->SetBinLabel(2, "R_{bb}-B_{#tau#tau}");
-  hist->GetXaxis()->SetBinLabel(3, "B_{bb}-R_{#tau#tau}");
-  hist->GetXaxis()->SetBinLabel(4, "B_{bb}-B_{#tau#tau}");
-  
-  //  hist->Draw("SCAT");                                                                                                                     
-  //  hist->Draw("colz");                                                                                                                     
-  hist->Draw();
-
-  double dely = 0.04;
-  myText(0.2, 0.8, kBlack, process_name);
-  //myText(0.2, 0.8-dely, kBlack, "for class: "+label_leg);
-  myText(0.2, 0.8-2*dely, kBlack, name_plot);
-  
-  can->Draw();
-  can->Print(name_image);
-}
-
-
-// Plot distribution comparisons                                                                                                              
-
-void plot_distributions_comparison(TString name_plot, TString output_folder){
-
-  gROOT->SetBatch(kTRUE);
-  SetAtlasStyle();
-  
-  TLegend *leg = new TLegend(0.7, 0.75, 0.85, 0.85);
-  TH1F *hist1 = new TH1F();
-  TH1F *hist2 = new TH1F();
-  TString name_image = output_folder+"/plots_comparison/"+name_plot+".png";
-  
-  if(name_plot=="HH_pt_comparison"){
-    hist1 = hist_truth_HH_pt;
-    hist2 = hist_computed_HH_pt;
-  }
-  
-  if(name_plot=="HH_m_comparison"){
-    hist1 = hist_truth_HH_m;
-    hist2 = hist_computed_HH_m;
-  }
-  
-  hist1->SetStats(0);
-  hist1->SetFillStyle(3001);
-  hist1->SetFillColorAlpha(kBlue, 0.45);
-  hist1->SetLineColor(4);
-  
-  hist2->SetStats(0);
-  hist2->SetFillStyle(3003);
-  hist2->SetFillColorAlpha(kRed, 0.45);
-  hist2->SetLineColor(2);
-  
-  ///// Plotting
-  
-  TCanvas *can = new TCanvas("can","", 800, 600);
-  
-  hist1->Draw("H");
-  hist2->Draw("sameH");
-
-  leg->AddEntry(hist1, "truth", "l");
-  leg->AddEntry(hist2, "computed","l");
-  leg->SetBorderSize();
-  leg->Draw();
-
-  double dely = 0.04;
-  myText(0.2, 0.8, kBlack, process_name);
-  //myText(0.2, 0.8-dely, kBlack, "for class: "+label_leg);
-  myText(0.2, 0.8-dely, kBlack, name_plot);
-  
-  can->Draw();
-  can->SaveAs(name_image);
-  
-  //TString process_label = process_name.ReplaceAll(" ", "_");
-  //process_label = process_label.replace(" ", "_");
-  //can->SaveAs("output_analysis/temp_folder/"+name_plot+"_"+process_label+".png");
-}
-*/
-
 void process_label(string name_sample){
 
   // ggF processes had-had channel
-  if(name_sample.find("600459")==true){ process_name = "ggF HH SM had-had channel"; name_output_root_file = "ggF_SM_hh_600459.root";}
-  if(name_sample.find("600460")==true){ process_name = "ggF HH #lambda = 10 had-had channel"; name_output_root_file = "ggF_lambda10_hh_600460.root";}
+  if(name_sample.find("600459") != string::npos){ process_name = "ggF HH SM had-had channel"; name_output_root_file = "ggF_SM_hh_600459.root";}
+  if(name_sample.find("600460") != string::npos){ process_name = "ggF HH #lambda = 10 had-had channel"; name_output_root_file = "ggF_lambda10_hh_600460.root";}
 
   // ggF processes lep-had channel
-  if(name_sample.find("600461")==true){ process_name = "ggF HH SM lep-had channel"; name_output_root_file = "ggF_SM_lh_600461.root";}
-  if(name_sample.find("600462")==true){ process_name = "ggF HH #lambda = 10 lep-had channel"; name_output_root_file = "ggF_lambda10_lh_600462.root";}
+  if(name_sample.find("600461") != string::npos){ process_name = "ggF HH SM lep-had channel"; name_output_root_file = "ggF_SM_lh_600461.root";}
+  if(name_sample.find("600462") != string::npos){ process_name = "ggF HH #lambda = 10 lep-had channel"; name_output_root_file = "ggF_lambda10_lh_600462.root";}
 
   //vbf processes had-had channel
-  if(name_sample.find("502982")==true){ process_name = "VBF HH SM had-had channel"; name_output_root_file = "VBF_SM_hh_502982.root";}
-  if(name_sample.find("502985")==true){ process_name = "VBF HH C_{VV} = 1.5 had-had channel"; name_output_root_file = "VBF_cvv1p5_hh_502985.root";}
-  if(name_sample.find("502989")==true){ process_name = "VBF HH #lambda = 2.0 had-had channel"; name_output_root_file = "VBF_l2_hh_502989.root";}
-  if(name_sample.find("502990")==true){ process_name = "VBF HH #lambda = 10.0 had-had channel"; name_output_root_file = "VBF_l10_hh_502990.root";}
-  if(name_sample.find("502991")==true){ process_name = "VBF HH C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_cv0p5_hh_502991.root";}
-  if(name_sample.find("508690")==true){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_l5cv0p5_hh_508690.root";}
+  if(name_sample.find("502982") != string::npos){ process_name = "VBF HH SM had-had channel"; name_output_root_file = "VBF_SM_hh_502982.root";}
+  if(name_sample.find("502985") != string::npos){ process_name = "VBF HH C_{VV} = 1.5 had-had channel"; name_output_root_file = "VBF_cvv1p5_hh_502985.root";}
+  if(name_sample.find("502989") != string::npos){ process_name = "VBF HH #lambda = 2.0 had-had channel"; name_output_root_file = "VBF_l2_hh_502989.root";}
+  if(name_sample.find("502990") != string::npos){ process_name = "VBF HH #lambda = 10.0 had-had channel"; name_output_root_file = "VBF_l10_hh_502990.root";}
+  if(name_sample.find("502991") != string::npos){ process_name = "VBF HH C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_cv0p5_hh_502991.root";}
+  if(name_sample.find("508690") != string::npos){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_l5cv0p5_hh_508690.root";}
 
   //vbf processes lep-had channel
-  if(name_sample.find("502993")==true){ process_name = "VBF HH SM lep-had channel"; name_output_root_file = "VBF_SM_lh_502993.root";}
-  if(name_sample.find("502996")==true){ process_name = "VBF HH C_{VV} = 1.5 lep-had channel"; name_output_root_file = "VBF_cvv1p5_lh_502996.root";}
-  if(name_sample.find("503000")==true){ process_name = "VBF HH #lambda = 2.0 lep-had channel"; name_output_root_file = "VBF_l2_lh_503000.root";}
-  if(name_sample.find("503001")==true){ process_name = "VBF HH #lambda = 10.0 lep-had channel"; name_output_root_file = "VBF_l10_lh_503001.root";}
-  if(name_sample.find("503002")==true){ process_name = "VBF HH C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_cv0p5_lh_503002.root";}
-  if(name_sample.find("508691")==true){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_l5cv0p5_lh_508691.root";}
+  if(name_sample.find("502993") != string::npos){ process_name = "VBF HH SM lep-had channel"; name_output_root_file = "VBF_SM_lh_502993.root";}
+  if(name_sample.find("502996") != string::npos){ process_name = "VBF HH C_{VV} = 1.5 lep-had channel"; name_output_root_file = "VBF_cvv1p5_lh_502996.root";}
+  if(name_sample.find("503000") != string::npos){ process_name = "VBF HH #lambda = 2.0 lep-had channel"; name_output_root_file = "VBF_l2_lh_503000.root";}
+  if(name_sample.find("503001") != string::npos){ process_name = "VBF HH #lambda = 10.0 lep-had channel"; name_output_root_file = "VBF_l10_lh_503001.root";}
+  if(name_sample.find("503002") != string::npos){ process_name = "VBF HH C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_cv0p5_lh_503002.root";}
+  if(name_sample.find("508691") != string::npos){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_l5cv0p5_lh_508691.root";}
 
   //vbf SM processes both channels channel
-  if(name_sample.find("vbf_SM_both_channels")==true){ process_name = "VBF HH SM"; }
+  if(name_sample.find("vbf_SM_both_channels") != string::npos){ process_name = "VBF HH SM"; }
 
   //vbf SM processes both channels channel
-  if(name_sample.find("ggf_SM_both_channels")==true){ process_name = "ggF HH SM"; }
+  if(name_sample.find("ggf_SM_both_channels") != string::npos){ process_name = "ggF HH SM"; }
 
   //vbf Cvv=1.5 processes both channels channel
-  if(name_sample.find("vbf_l1cvv1p5cv1_both_channels")==true){ process_name = "VBF HH C_{VV} = 1.5"; }
+  if(name_sample.find("vbf_l1cvv1p5cv1_both_channels") != string::npos){ process_name = "VBF HH C_{VV} = 1.5"; }
 
   //ggf cHHH = 10 processes both channels channel
-  if(name_sample.find("ggf_cHHH10d0_both_channels")==true){ process_name = "ggF HH #lambda = 10"; }
+  if(name_sample.find("ggf_cHHH10d0_both_channels") != string::npos){ process_name = "ggF HH #lambda = 10"; }
 }
 
 
