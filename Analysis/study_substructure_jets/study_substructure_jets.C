@@ -46,7 +46,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   int diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt = 0;
   
   // Convert char* to float using std::atof()
-  float min_pT_recojet = 100*std::stoi(min_pT); // min pT in MeV
+  float min_pT_recojet = 1000*std::stoi(min_pT); // min pT in MeV
   
   for(int ii=0; ii < nentries*fraction; ii++){
     
