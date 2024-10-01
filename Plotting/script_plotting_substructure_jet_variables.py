@@ -6,7 +6,7 @@ import subprocess
 base_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/"
 
 min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
-#min_pT_recojets = ["100"] # in GeV  
+#min_pT_recojets = ["100", "200", "300"] # in GeV  
 
 # Root folder for storing output
 output_root_folder = "output_plots"
@@ -66,7 +66,7 @@ for minpT in min_pT_recojets:
         # Construct the ROOT script command
         # The command includes a reference to your ROOT script, passing the path of the sample and output folder
 
-        root_command = f'root -l -q \'Plotting_substructure_jets_variables.C("{sample}", "{output_folder}")\''
+        root_command = f'root -l -q \'Plotting_substructure_jets_variables.C("{sample}", "{output_folder}", "{minpT}")\''
 
         #print(sample)
         #print(output_folder)

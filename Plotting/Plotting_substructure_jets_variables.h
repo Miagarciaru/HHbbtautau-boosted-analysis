@@ -64,8 +64,8 @@ struct plot_Teff {
     TString label_r2;
 };
 
-void reading_distributions_histograms(const std::string& sample, const std::vector<std::string>& list_of_histograms, const std::vector<std::string>& comparison_list, const std::string& output_folder);
-void plot_distributions_comparisons(const std::string& name_plot, const std::string& output_folder);
+void reading_distributions_histograms(const std::string& sample, const std::vector<std::string>& list_of_histograms, const std::vector<std::string>& comparison_list, const std::string& output_folder, const std::string& minpT);
+void plot_distributions_comparisons(const std::string& name_plot, const std::string& output_folder, const std::string& minpT);
 void plot_distributions(const std::string& name_plot, const std::string& output_folder);
 void process_label(string name_sample);
 
@@ -75,7 +75,7 @@ string output_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framewo
 // Definition of the functions above
 //**********************************************************************************
 
-void reading_distributions_histograms(const std::string& sample, const std::vector<std::string>& list_of_histograms, const std::vector<std::string>& comparison_list, const std::string& output_folder){
+void reading_distributions_histograms(const std::string& sample, const std::vector<std::string>& list_of_histograms, const std::vector<std::string>& comparison_list, const std::string& output_folder, const std::string& minpT){
 
   //string path_root_file = output_analysis_folder+"/"+sample+".root";
 
@@ -139,7 +139,7 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
   }
 
   for(int ii=0; ii < comparison_list.size(); ii++){
-    plot_distributions_comparisons(comparison_list[ii], output_folder);
+    plot_distributions_comparisons(comparison_list[ii], output_folder, minpT);
   }
 
   file->Close();
@@ -148,7 +148,7 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions                                          
 // for the two configurations, boosted and resolved                                                                                         
 
-void plot_distributions_comparisons(const std::string& name_plot, const std::string& output_folder){
+void plot_distributions_comparisons(const std::string& name_plot, const std::string& output_folder, const std::string& minpT){
 
   gROOT->SetBatch(kTRUE);
   SetAtlasStyle();
@@ -224,7 +224,7 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
   double y_max = std::max(max_boosted, max_resolved);
 
   // Optionally, you can set the y-axis maximum slightly higher than the actual maximum value for better visualization.
-  y_max = y_max*1.3;  // Increase by 10% for padding
+  y_max = y_max*1.5;  // Increase by 10% for padding
   
   // Step 4: Draw the histograms and set the maximum.
   hist_boosted->SetMaximum(y_max);
@@ -239,10 +239,11 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
   leg->SetBorderSize();
   leg->Draw();
   
-  double dely = 0.04;
+  double dely = 0.05;
   myText(0.2, 0.9, kBlack, process_name.c_str());
   myText(0.2, 0.9-dely, kBlack, name_plot.c_str());
-
+  myText(0.2, 0.9-2*dely, kBlack, ("for a min p_{T}: "+minpT+" GeV").c_str());
+  
   can->Draw();
   can->SaveAs(name_image.c_str());
 
