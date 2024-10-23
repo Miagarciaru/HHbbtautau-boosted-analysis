@@ -25,7 +25,7 @@ sample_paths = [
 
 min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
 
-#min_pT_recojets = ["100"] # in GeV
+#min_pT_recojets = ["150"] # in GeV
 
 start = time.time() # time at start of whole processing
 
