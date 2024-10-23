@@ -67,7 +67,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   
   leg->Draw();
 
-  string name_image = "output_combined_ratios_plots/"+min_pT+"/"+nameVar+"_min_pT"+min_pT+"_ratios_"+ratio+"_comparison.png";
+  string name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"_ratios_"+ratio+"_comparison.png";
   canvas->SaveAs(name_image.c_str());
 }
 
@@ -77,8 +77,8 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
   string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
    
   for (const auto& sample : sampleFiles){
-    string path_root_file = path_folder+sample+"_pT"+min_pT+".root";
-    TCanvas* can = new TCanvas(("can_"+sample+"_"+nameVar+"_pT"+min_pT).c_str());
+    string path_root_file = path_folder+sample+"_pT"+min_pT+"GeV.root";
+    TCanvas* can = new TCanvas(("can_"+sample+"_"+nameVar+"_pT"+min_pT+"GeV").c_str());
     
     TFile* file = TFile::Open(path_root_file.c_str());
     
@@ -90,7 +90,7 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
     else{
       cout << "The file has been read " << sample << endl;
     }
-
+    /*
     TH1F* hist_num_r1_r2 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_numerator_class3_r1_r2").c_str()));
     TH1F* hist_den_for_r1 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_denominator_r1").c_str()));
     TH1F* hist_den_for_r2 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_denominator_class3_r2").c_str()));
@@ -98,14 +98,54 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
     TH1F* hist_num_for_r3 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_numerator_r3").c_str()));
     TH1F* hist_num_for_r4 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_numerator_class3_r4").c_str()));
     TH1F* hist_den_for_r3_r4 = dynamic_cast<TH1F*>(file->Get(("hist_acceptance_"+nameVar+"_denominator_r3_r4").c_str()));
+    */
 
+    string name_hist_num_r1_r2 = ""; string name_hist_den_for_r1 = ""; string name_hist_den_for_r2 = "";
+    string name_hist_num_for_r3 = ""; string name_hist_num_for_r4 = ""; string name_hist_den_for_r3_r4 = ""; 
+
+    if(nameVar.find("mHH")!=std::string::npos){
+      name_hist_num_r1_r2 = "hist_acceptance_"+nameVar+"_numerator_class3_r1_r2";
+      name_hist_den_for_r1 = "hist_acceptance_"+nameVar+"_denominator_r1";
+      name_hist_den_for_r2 = "hist_acceptance_"+nameVar+"_denominator_class3_r2";
+      name_hist_num_for_r3 = "hist_acceptance_"+nameVar+"_numerator_r3";
+      name_hist_num_for_r4 = "hist_acceptance_"+nameVar+"_numerator_class3_r4";
+      name_hist_den_for_r3_r4 = "hist_acceptance_"+nameVar+"_denominator_r3_r4";
+    }
+    
+    if(nameVar.find("tautau")!=std::string::npos){
+      name_hist_num_r1_r2 = "hist_acceptance_all_Btautau_"+nameVar+"_numerator_r1_r2";
+      name_hist_den_for_r1 = "hist_acceptance_"+nameVar+"_denominator_r1";
+      name_hist_den_for_r2 = "hist_acceptance_all_Btautau_"+nameVar+"_denominator_r2_numerator_r4";
+      name_hist_num_for_r3 = "hist_acceptance_"+nameVar+"_numerator_r3";
+      name_hist_num_for_r4 = "hist_acceptance_all_Btautau_"+nameVar+"_denominator_r2_numerator_r4";
+      name_hist_den_for_r3_r4 = "hist_acceptance_"+nameVar+"_denominator_r3_r4";
+    }
+    if(nameVar.find("bb")!=std::string::npos){
+      name_hist_num_r1_r2 = "hist_acceptance_all_Bbb_"+nameVar+"_numerator_r1_r2";
+      name_hist_den_for_r1 = "hist_acceptance_"+nameVar+"_denominator_r1";
+      name_hist_den_for_r2 = "hist_acceptance_all_Bbb_"+nameVar+"_denominator_r2_numerator_r4";
+      name_hist_num_for_r3 = "hist_acceptance_"+nameVar+"_numerator_r3";
+      name_hist_num_for_r4 = "hist_acceptance_all_Bbb_"+nameVar+"_denominator_r2_numerator_r4";
+      name_hist_den_for_r3_r4 = "hist_acceptance_"+nameVar+"_denominator_r3_r4";
+    }
+   
+    
+    TH1F* hist_num_r1_r2 = dynamic_cast<TH1F*>(file->Get(name_hist_num_r1_r2.c_str()));
+    TH1F* hist_den_for_r1 = dynamic_cast<TH1F*>(file->Get(name_hist_den_for_r1.c_str()));
+    TH1F* hist_den_for_r2 = dynamic_cast<TH1F*>(file->Get(name_hist_den_for_r2.c_str()));
+
+    TH1F* hist_num_for_r3 = dynamic_cast<TH1F*>(file->Get(name_hist_num_for_r3.c_str()));
+    TH1F* hist_num_for_r4 = dynamic_cast<TH1F*>(file->Get(name_hist_num_for_r4.c_str()));
+    TH1F* hist_den_for_r3_r4 = dynamic_cast<TH1F*>(file->Get(name_hist_den_for_r3_r4.c_str()));
+
+    
     //********************************************************************
     //Plotting numerator histograms r1_r2
     //********************************************************************
 
     gROOT->SetBatch(kTRUE);
     hist_num_r1_r2->Draw("H");
-    string name_image = "output_combined_ratios_plots/"+min_pT+"/"+nameVar+"_min_pT"+min_pT+"_num_ratios_r1_r2_"+sample+".png";
+    string name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"_num_ratios_r1_r2_"+sample+".png";
     can->SaveAs(name_image.c_str());
 
     //********************************************************************
@@ -113,7 +153,7 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
     //********************************************************************
     
     hist_num_for_r3->Draw("H");
-    name_image = "output_combined_ratios_plots/"+min_pT+"/"+nameVar+"_min_pT"+min_pT+"_num_ratios_r3_"+sample+".png";
+    name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"_num_ratios_r3_"+sample+".png";
     can->SaveAs(name_image.c_str());
 
     //********************************************************************
@@ -121,9 +161,9 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
     //********************************************************************
     
     hist_num_for_r4->Draw("H");
-    name_image = "output_combined_ratios_plots/"+min_pT+"/"+nameVar+"_min_pT"+min_pT+"_num_ratios_r4_"+sample+".png";
+    name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"_num_ratios_r4_"+sample+".png";
     can->SaveAs(name_image.c_str());
-    
+   
     TEfficiency *pEff_r1 = new TEfficiency(*hist_num_r1_r2, *hist_den_for_r1);
     TEfficiency *pEff_r2 = new TEfficiency(*hist_num_r1_r2, *hist_den_for_r2);
     TEfficiency *pEff_r3 = new TEfficiency(*hist_num_for_r3, *hist_den_for_r3_r4);
