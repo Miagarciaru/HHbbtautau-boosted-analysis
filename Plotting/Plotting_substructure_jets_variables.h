@@ -286,12 +286,18 @@ void plot_distributions(const std::string& name_plot, const std::string& output_
   if(name_plot == "non_matched_recojets_eta_no_class"){ hist = hist_non_matched_recojet_eta_no_class;}
 
   if(name_plot == "events_per_class"){ hist = hist_nevents_per_class;}
+
+  double y_max = 1.25*hist->GetMaximum();
+  
+  // Step 4: Draw the histograms and set the maximum.
+
+  hist->SetMaximum(y_max);
   
   hist->Draw();
 
   double dely = 0.04;
-  myText(0.2, 0.8, kBlack, process_name.c_str());
-  myText(0.2, 0.8-dely, kBlack, name_plot.c_str());
+  myText(0.2, 0.90, kBlack, process_name.c_str());
+  myText(0.2, 0.90-dely, kBlack, name_plot.c_str());
 
   can->Draw();
   can->SaveAs(name_image.c_str());
