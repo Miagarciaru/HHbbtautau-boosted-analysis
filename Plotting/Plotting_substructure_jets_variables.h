@@ -201,6 +201,18 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
     hist_boosted = hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
     hist_resolved = hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
   }
+
+  string label_boosted = "";
+  string label_resolved = "";
+  
+  if(name_plot.find("bb")!=std::string::npos){
+    label_boosted = "boosted bb jet";
+    label_resolved = "single b jet";
+  }
+  if(name_plot.find("tautau")!=std::string::npos){
+    label_boosted = "boosted #tau#tau jet";
+    label_resolved = "single #tau jet";
+  }
   
   hist_boosted->SetStats(0);
   hist_boosted->SetFillStyle(3001);
@@ -234,8 +246,8 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
   hist_boosted->Draw("H");   // Draw the first histogram
   hist_resolved->Draw("sameH");  // Draw the second histogram on the same canvas
   
-  leg->AddEntry(hist_boosted, "boosted jets", "l");
-  leg->AddEntry(hist_resolved,"resolved jets","l");
+  leg->AddEntry(hist_boosted, label_boosted.c_str(), "l");
+  leg->AddEntry(hist_resolved, label_resolved.c_str(),"l");
   leg->SetBorderSize();
   leg->Draw();
   
