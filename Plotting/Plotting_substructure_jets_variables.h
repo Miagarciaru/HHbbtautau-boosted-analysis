@@ -28,6 +28,18 @@ TH1F* hist_matched_recojet_tautau_tau_n_prong;
 TH1F* hist_non_matched_recojet_bb_tau_n_prong;
 TH1F* hist_non_matched_recojet_tautau_tau_n_prong;
 
+//GN2X phbb
+TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_phbb;
+TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_phbb;
+TH1F *hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb;
+TH1F *hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb;
+
+//GN2X pqcd
+TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_pqcd;
+TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd;
+TH1F *hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd;
+TH1F *hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd;
+
 //n1 subjettiness
 TH1F* hist_matched_recojet_bb_tau_n1_subjettiness;
 TH1F* hist_matched_recojet_tautau_tau_n1_subjettiness;
@@ -69,7 +81,7 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
 void plot_distributions(const std::string& name_plot, const std::string& output_folder);
 void process_label(string name_sample);
 
-string output_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
+string output_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis_oct24/";
 
 //**********************************************************************************
 // Definition of the functions above
@@ -115,6 +127,18 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
   hist_matched_recojet_tautau_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_tau_n_prong")));
   hist_non_matched_recojet_bb_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n_prong")));
   hist_non_matched_recojet_tautau_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n_prong")));
+
+  //GN2X phbb
+  hist_matched_recojet_bb_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_GN2Xv01_phbb")));
+  hist_matched_recojet_tautau_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_GN2Xv01_phbb")));
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb")));
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb")));
+
+  //GN2X pqcd
+  hist_matched_recojet_bb_ak10_GN2Xv01_pqcd = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_GN2Xv01_pqcd")));
+  hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd")));
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd")));
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd")));
   
   //n1 subjettiness
   hist_matched_recojet_bb_tau_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_tau_n1_subjettiness")));
@@ -158,7 +182,7 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
   
   ///// Plotting
   TCanvas *can = new TCanvas("can","", 800, 600);
-  TLegend *leg = new TLegend(0.7, 0.75, 0.85, 0.85);
+  TLegend *leg = new TLegend(0.7, 0.75, 0.9, 0.9);
   TH1F *hist_boosted = new TH1F();
   TH1F *hist_resolved = new TH1F();
 
@@ -172,6 +196,26 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
     hist_resolved = hist_non_matched_recojet_tautau_tau_n_prong;
   }
 
+  if(name_plot=="bb_GN2X_phbb"){
+    hist_boosted = hist_matched_recojet_bb_ak10_GN2Xv01_phbb;
+    hist_resolved = hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb;
+  }
+
+  if(name_plot=="tautau_GN2X_phbb"){
+    hist_boosted = hist_matched_recojet_tautau_ak10_GN2Xv01_phbb;
+    hist_resolved = hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb;
+  }
+
+  if(name_plot=="bb_GN2X_pqcd"){
+    hist_boosted = hist_matched_recojet_bb_ak10_GN2Xv01_pqcd;
+    hist_resolved = hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd;
+  }
+
+  if(name_plot=="tautau_GN2X_pqcd"){
+    hist_boosted = hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd;
+    hist_resolved = hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd;
+  }
+  
   if(name_plot=="bb_n1_subjettiness"){
     hist_boosted = hist_matched_recojet_bb_tau_n1_subjettiness;
     hist_resolved = hist_non_matched_recojet_bb_tau_n1_subjettiness;
@@ -354,83 +398,3 @@ void process_label(string name_sample){
   //ggf cHHH = 10 processes both channels channel
   if(name_sample.find("ggf_cHHH10d0_both_channels") != string::npos){ process_name = "ggF HH #lambda = 10"; }
 }
-
-
-/*
-void plot_ratios_acceptance(TString name_plot, TString output_folder){
-
-  gROOT->SetBatch(kTRUE);
-  auto it = plotMap.find(name_plot.Data()); // Data() is used to convert TString to string
-  if (it != plotMap.end()) { // If the plot name was found
-    
-    SetAtlasStyle();
-    PlotInfo plotInfo = it->second; // Access the PlotInfo struct
-    //TString name_image = output_folder+"/plots_ratios/"+name_plot+".png";
-    TString name_image = "plots_ratios/"+name_plot+".png";
-    TH1F *hist_num = plotInfo.hist_num;
-    TH1F *hist_den = plotInfo.hist_den;
-    TString label_leg = plotInfo.label;
-    TString title_plot = plotInfo.title;
-
-    TEfficiency *pEff = new TEfficiency(*hist_num, *hist_den);
-    pEff->SetTitle(title_plot);
-    pEff->SetName(name_plot);
-
-    //pEff->SetMaximum(1.25);
-    
-    ///// Plotting                                                                                                                           
-
-    TCanvas *can = new TCanvas("can","can", 800, 600);
-    //TLegend *leg = new TLegend(0.25, 0.70, 0.40, 0.80);
-    
-    pEff->Draw("AP");
-    gPad->Update(); 
-    auto graph = pEff->GetPaintedGraph(); 
-    graph->SetMinimum(0);
-    graph->SetMaximum(1.25); 
-    gPad->Update(); 
-
-    double dely = 0.05;
-    myText(0.2, 0.9, kBlack, process_name);
-    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);
-    myText(0.2, 0.9-2*dely, kBlack, name_plot);
-
-    //can->Draw();
-    can->SaveAs(name_image);
-    //TString process_label = process_name;
-    //process_label = process_label.ReplaceAll(" ", "_");
-    //process_label = process_label.replace(" ", "_");
-    //can->SaveAs("output_analysis/temp_folder/"+name_plot+"_"+process_label+".png");
-
-    // ***********************************************
-    // hist numerator
-    // ***********************************************
-
-    //    TCanvas *can = new TCanvas("can","can", 800, 600);
-    hist_num->Draw("H");
-    //name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_num.png";
-    name_image = "plots_ratios/"+name_plot+"_hist_num.png";
-    myText(0.2, 0.9, kBlack, process_name);
-    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);
-    myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_num.png");
-    can->SaveAs(name_image);
-
-    // ***********************************************
-    // hist denominator
-    // ***********************************************
-
-    //    TCanvas *can = new TCanvas("can","can", 800, 600);
-    hist_den->Draw("H");
-    //name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_den.png";
-    name_image = "plots_ratios/"+name_plot+"_hist_den.png";
-    myText(0.2, 0.9, kBlack, process_name);
-    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);
-    myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_den.png");
-    can->SaveAs(name_image);
-  }
-  else {
-    // Handle the case where the plot name is not found
-    std::cout << "Plot name " << name_plot << " not found!" << endl;
-  }    
-}
-*/
