@@ -5,7 +5,10 @@
 // *************************************
 
 void process_label(TString name_sample, const std::string& min_pT_recojets_str);
-void fill_acceptance_ratios();
+void fill_acceptance_ratios(float min_pT_cut_in_MeV);
+void fill_all_events_histograms_acceptance_ratios();
+void fill_resolved_selection_histograms_acceptance_ratios();
+void fill_boosted_events_histograms_acceptance_ratios(float min_pT_cut_in_MeV);
 void define_reconstructed_objects();
 void define_output_branches();
 void define_classes();
@@ -66,9 +69,26 @@ void process_label(TString name_sample, const std::string& min_pT_recojets_str){
   if(name_sample.Contains("ggf_cHHH10d0_both_channels")==true){ process_name = "ggF HH #lambda = 10"; }
 }
 
-/*
-void fill_acceptance_ratios(){
+void fill_acceptance_ratios(float min_pT_cut_in_MeV){
 
+  // all events histograms
+
+  fill_all_events_histograms_acceptance_ratios();
+  
+  // resolved selection event histograms
+  if(bbtt_HH_vis_m > 0){
+    fill_resolved_selection_histograms_acceptance_ratios();
+  }
+  
+  // Boosted analysis events histograms
+  if(class_event != -1){
+    fill_boosted_events_histograms_acceptance_ratios(min_pT_cut_in_MeV);
+  }
+}
+
+void fill_all_events_histograms_acceptance_ratios(){
+
+  // all events histograms
   hist_acceptance_mHH_denominator_r3_r4->Fill(reco_bbtt_HH_m_BA/1000.);
   hist_acceptance_ptHbb_denominator_r3_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
   hist_acceptance_ptHtautau_denominator_r3_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
@@ -76,114 +96,54 @@ void fill_acceptance_ratios(){
   hist_acceptance_truth_mHH_denominator_r3_r4->Fill(truth_HH_m/1000.);
   hist_acceptance_truth_ptHbb_denominator_r3_r4->Fill(truth_bb_pt/1000.);
   hist_acceptance_truth_ptHtautau_denominator_r3_r4->Fill(truth_tautau_pt/1000.);
+
+}
+
+void fill_resolved_selection_histograms_acceptance_ratios(){
+
+  // resolved selection event histograms
   
-  if(bbtt_HH_vis_m > 0){
+  hist_acceptance_mHH_denominator_r1->Fill(reco_bbtt_HH_m_BA/1000.);
+  hist_acceptance_ptHbb_denominator_r1->Fill(reco_bbtt_bb_pt_BA/1000.);
+  hist_acceptance_ptHtautau_denominator_r1->Fill(reco_bbtt_tautau_pt_BA/1000.);
+  
+  hist_acceptance_truth_mHH_denominator_r1->Fill(truth_HH_m/1000.);
+  hist_acceptance_truth_ptHbb_denominator_r1->Fill(truth_bb_pt/1000.);
+  hist_acceptance_truth_ptHtautau_denominator_r1->Fill(truth_tautau_pt/1000.); 
+  
+  hist_acceptance_mHH_numerator_r3->Fill(reco_bbtt_HH_m_BA/1000.);
+  hist_acceptance_ptHbb_numerator_r3->Fill(reco_bbtt_bb_pt_BA/1000.);
+  hist_acceptance_ptHtautau_numerator_r3->Fill(reco_bbtt_tautau_pt_BA/1000.);
+  
+  hist_acceptance_truth_mHH_numerator_r3->Fill(truth_HH_m/1000.);
+  hist_acceptance_truth_ptHbb_numerator_r3->Fill(truth_bb_pt/1000.);
+  hist_acceptance_truth_ptHtautau_numerator_r3->Fill(truth_tautau_pt/1000.);
 
-    hist_acceptance_mHH_denominator_r1->Fill(reco_bbtt_HH_m_BA/1000.);
-    hist_acceptance_mHbb_denominator_r1->Fill(reco_bbtt_bb_m_BA/1000.);
-    hist_acceptance_mHtautau_denominator_r1->Fill(reco_bbtt_tautau_m_BA/1000.);
-    hist_acceptance_ptHH_denominator_r1->Fill(reco_bbtt_HH_pt_BA/1000.);
-    hist_acceptance_ptHbb_denominator_r1->Fill(reco_bbtt_bb_pt_BA/1000.);
-    hist_acceptance_ptHtautau_denominator_r1->Fill(reco_bbtt_tautau_pt_BA/1000.);
+}
 
-    hist_acceptance_truth_mHH_denominator_r1->Fill(truth_HH_m/1000.);
-    hist_acceptance_truth_mHbb_denominator_r1->Fill(truth_bb_m/1000.);
-    hist_acceptance_truth_mHtautau_denominator_r1->Fill(truth_tautau_m/1000.);
-    hist_acceptance_truth_ptHH_denominator_r1->Fill(truth_HH_pt/1000.);
-    hist_acceptance_truth_ptHbb_denominator_r1->Fill(truth_bb_pt/1000.);
-    hist_acceptance_truth_ptHtautau_denominator_r1->Fill(truth_tautau_pt/1000.); 
+void fill_boosted_events_histograms_acceptance_ratios(float min_pT_cut_in_MeV){
 
-    hist_acceptance_mHH_numerator_r3->Fill(reco_bbtt_HH_m_BA/1000.);
-    hist_acceptance_ptHbb_numerator_r3->Fill(reco_bbtt_bb_pt_BA/1000.);
-    hist_acceptance_ptHtautau_numerator_r3->Fill(reco_bbtt_tautau_pt_BA/1000.);
+  // Boosted analysis events histograms
+
+  // min_pT_cut_in_MeV
+
+  float b1_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin);
+  float b2_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin);
+  float tau1_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin);
+  float tau2_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin);
+  
+  std::vector<float> *min_pT_objects_list = new std::vector<float> {b1_pT, b2_pT, tau1_pT, tau2_pT};
+  
+  float min_pT_matched_objects_recojets_MeV = *std::min_element(min_pT_objects_list->begin(), min_pT_objects_list->end());
+  
+  if( min_pT_matched_objects_recojets_MeV >= min_pT_cut_in_MeV ){
     
-    hist_acceptance_truth_mHH_numerator_r3->Fill(truth_HH_m/1000.);
-    hist_acceptance_truth_ptHbb_numerator_r3->Fill(truth_bb_pt/1000.);
-    hist_acceptance_truth_ptHtautau_numerator_r3->Fill(truth_tautau_pt/1000.);
-  }
-
-  if(class_event != -1){
-    if(class_event == 0){
-      hist_acceptance_mHH_denominator_class0_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_mHbb_denominator_class0_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-      hist_acceptance_mHtautau_denominator_class0_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-      hist_acceptance_ptHH_denominator_class0_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
-      hist_acceptance_ptHbb_denominator_class0_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
-      hist_acceptance_ptHtautau_denominator_class0_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
-      
-      hist_acceptance_truth_mHH_denominator_class0_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_denominator_class0_r2->Fill(truth_bb_m/1000.);
-      hist_acceptance_truth_mHtautau_denominator_class0_r2->Fill(truth_tautau_m/1000.);
-      hist_acceptance_truth_ptHH_denominator_class0_r2->Fill(truth_HH_pt/1000.);
-      hist_acceptance_truth_ptHbb_denominator_class0_r2->Fill(truth_bb_pt/1000.);
-      hist_acceptance_truth_ptHtautau_denominator_class0_r2->Fill(truth_tautau_pt/1000.);
-
-      hist_acceptance_mHH_numerator_class0_r4->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_ptHbb_numerator_class0_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
-      hist_acceptance_ptHtautau_numerator_class0_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
-      
-      hist_acceptance_truth_mHH_numerator_class0_r4->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class0_r4->Fill(truth_bb_pt/1000.);
-      hist_acceptance_truth_ptHtautau_numerator_class0_r4->Fill(truth_tautau_pt/1000.);
-    }
-    if(class_event == 1){
-      hist_acceptance_mHH_denominator_class1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_mHbb_denominator_class1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-      hist_acceptance_mHtautau_denominator_class1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-      hist_acceptance_ptHH_denominator_class1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
-      hist_acceptance_ptHbb_denominator_class1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
-      hist_acceptance_ptHtautau_denominator_class1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
-      
-      hist_acceptance_truth_mHH_denominator_class1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_denominator_class1_r2->Fill(truth_bb_m/1000.);
-      hist_acceptance_truth_mHtautau_denominator_class1_r2->Fill(truth_tautau_m/1000.);
-      hist_acceptance_truth_ptHH_denominator_class1_r2->Fill(truth_HH_pt/1000.);
-      hist_acceptance_truth_ptHbb_denominator_class1_r2->Fill(truth_bb_pt/1000.);
-      hist_acceptance_truth_ptHtautau_denominator_class1_r2->Fill(truth_tautau_pt/1000.);
-
-      hist_acceptance_mHH_numerator_class1_r4->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_ptHbb_numerator_class1_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
-      hist_acceptance_ptHtautau_numerator_class1_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
-      
-      hist_acceptance_truth_mHH_numerator_class1_r4->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class1_r4->Fill(truth_bb_pt/1000.);
-      hist_acceptance_truth_ptHtautau_numerator_class1_r4->Fill(truth_tautau_pt/1000.);
-    }
-    if(class_event == 2){
-      hist_acceptance_mHH_denominator_class2_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_mHbb_denominator_class2_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-      hist_acceptance_mHtautau_denominator_class2_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-      hist_acceptance_ptHH_denominator_class2_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
-      hist_acceptance_ptHbb_denominator_class2_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
-      hist_acceptance_ptHtautau_denominator_class2_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
-
-      hist_acceptance_truth_mHH_denominator_class2_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_denominator_class2_r2->Fill(truth_bb_m/1000.);
-      hist_acceptance_truth_mHtautau_denominator_class2_r2->Fill(truth_tautau_m/1000.);
-      hist_acceptance_truth_ptHH_denominator_class2_r2->Fill(truth_HH_pt/1000.);
-      hist_acceptance_truth_ptHbb_denominator_class2_r2->Fill(truth_bb_pt/1000.);
-      hist_acceptance_truth_ptHtautau_denominator_class2_r2->Fill(truth_tautau_pt/1000.);
-
-      hist_acceptance_mHH_numerator_class2_r4->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_ptHbb_numerator_class2_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
-      hist_acceptance_ptHtautau_numerator_class2_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
-      
-      hist_acceptance_truth_mHH_numerator_class2_r4->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class2_r4->Fill(truth_bb_pt/1000.);
-      hist_acceptance_truth_ptHtautau_numerator_class2_r4->Fill(truth_tautau_pt/1000.);
-    }
     if(class_event == 3){
       hist_acceptance_mHH_denominator_class3_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_mHbb_denominator_class3_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-      hist_acceptance_mHtautau_denominator_class3_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-      hist_acceptance_ptHH_denominator_class3_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
       hist_acceptance_ptHbb_denominator_class3_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
       hist_acceptance_ptHtautau_denominator_class3_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
 
       hist_acceptance_truth_mHH_denominator_class3_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_denominator_class3_r2->Fill(truth_bb_m/1000.);
-      hist_acceptance_truth_mHtautau_denominator_class3_r2->Fill(truth_tautau_m/1000.);
-      hist_acceptance_truth_ptHH_denominator_class3_r2->Fill(truth_HH_pt/1000.);
       hist_acceptance_truth_ptHbb_denominator_class3_r2->Fill(truth_bb_pt/1000.);
       hist_acceptance_truth_ptHtautau_denominator_class3_r2->Fill(truth_tautau_pt/1000.);
 
@@ -195,170 +155,65 @@ void fill_acceptance_ratios(){
       hist_acceptance_truth_ptHbb_numerator_class3_r4->Fill(truth_bb_pt/1000.);
       hist_acceptance_truth_ptHtautau_numerator_class3_r4->Fill(truth_tautau_pt/1000.);
     }
-  }
-  // Rbb-Rtautau
-  if((bbtt_HH_vis_m > 0) && (class_event != -1)){
-    if(class_event == 0){
-      hist_acceptance_mHH_numerator_class0_r1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_mHbb_numerator_class0_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-      hist_acceptance_mHtautau_numerator_class0_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-      hist_acceptance_ptHH_numerator_class0_r1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
-      hist_acceptance_ptHbb_numerator_class0_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
-      hist_acceptance_ptHtautau_numerator_class0_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
-      
-      hist_acceptance_truth_mHH_numerator_class0_r1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_numerator_class0_r1_r2->Fill(truth_bb_m/1000.);
-      hist_acceptance_truth_mHtautau_numerator_class0_r1_r2->Fill(truth_tautau_m/1000.);
-      hist_acceptance_truth_ptHH_numerator_class0_r1_r2->Fill(truth_HH_pt/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class0_r1_r2->Fill(truth_bb_pt/1000.);
-      hist_acceptance_truth_ptHtautau_numerator_class0_r1_r2->Fill(truth_tautau_pt/1000.);
-    }
-    // Rbb-Btautau
-    if(class_event == 1){
-      hist_acceptance_mHH_numerator_class1_r1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_mHbb_numerator_class1_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-      hist_acceptance_mHtautau_numerator_class1_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-      hist_acceptance_ptHH_numerator_class1_r1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
-      hist_acceptance_ptHbb_numerator_class1_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
-      hist_acceptance_ptHtautau_numerator_class1_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
-
-      hist_acceptance_truth_mHH_numerator_class1_r1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_numerator_class1_r1_r2->Fill(truth_bb_m/1000.);
-      hist_acceptance_truth_mHtautau_numerator_class1_r1_r2->Fill(truth_tautau_m/1000.);
-      hist_acceptance_truth_ptHH_numerator_class1_r1_r2->Fill(truth_HH_pt/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class1_r1_r2->Fill(truth_bb_pt/1000.);
-      hist_acceptance_truth_ptHtautau_numerator_class1_r1_r2->Fill(truth_tautau_pt/1000.);
-    }
-    // Bbb-Rtautau
-    if(class_event == 2){
-      hist_acceptance_mHH_numerator_class2_r1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_mHbb_numerator_class2_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-      hist_acceptance_mHtautau_numerator_class2_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-      hist_acceptance_ptHH_numerator_class2_r1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
-      hist_acceptance_ptHbb_numerator_class2_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
-      hist_acceptance_ptHtautau_numerator_class2_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
-
-      hist_acceptance_truth_mHH_numerator_class2_r1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_numerator_class2_r1_r2->Fill(truth_bb_m/1000.);
-      hist_acceptance_truth_mHtautau_numerator_class2_r1_r2->Fill(truth_tautau_m/1000.);
-      hist_acceptance_truth_ptHH_numerator_class2_r1_r2->Fill(truth_HH_pt/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class2_r1_r2->Fill(truth_bb_pt/1000.);
-      hist_acceptance_truth_ptHtautau_numerator_class2_r1_r2->Fill(truth_tautau_pt/1000.);
-    }
-    // Bbb-Btautau
-    if(class_event == 3){
-      hist_acceptance_mHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_mHbb_numerator_class3_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-      hist_acceptance_mHtautau_numerator_class3_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-      hist_acceptance_ptHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
-      hist_acceptance_ptHbb_numerator_class3_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
-      hist_acceptance_ptHtautau_numerator_class3_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
-
-      hist_acceptance_truth_mHH_numerator_class3_r1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_mHbb_numerator_class3_r1_r2->Fill(truth_bb_m/1000.);
-      hist_acceptance_truth_mHtautau_numerator_class3_r1_r2->Fill(truth_tautau_m/1000.);
-      hist_acceptance_truth_ptHH_numerator_class3_r1_r2->Fill(truth_HH_pt/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class3_r1_r2->Fill(truth_bb_pt/1000.);
-      hist_acceptance_truth_ptHtautau_numerator_class3_r1_r2->Fill(truth_tautau_pt/1000.);
-    } 
-  }
-}
-*/
-
-void fill_acceptance_ratios(){
-
-  hist_acceptance_mHH_denominator_r3_r4->Fill(reco_bbtt_HH_m_BA/1000.);
-  hist_acceptance_ptHbb_denominator_r3_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
-  hist_acceptance_ptHtautau_denominator_r3_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
-  
-  hist_acceptance_truth_mHH_denominator_r3_r4->Fill(truth_HH_m/1000.);
-  hist_acceptance_truth_ptHbb_denominator_r3_r4->Fill(truth_bb_pt/1000.);
-  hist_acceptance_truth_ptHtautau_denominator_r3_r4->Fill(truth_tautau_pt/1000.);
-  
-  if(bbtt_HH_vis_m > 0){
-
-    hist_acceptance_mHH_denominator_r1->Fill(reco_bbtt_HH_m_BA/1000.);
-    hist_acceptance_mHbb_denominator_r1->Fill(reco_bbtt_bb_m_BA/1000.);
-    hist_acceptance_mHtautau_denominator_r1->Fill(reco_bbtt_tautau_m_BA/1000.);
-    hist_acceptance_ptHH_denominator_r1->Fill(reco_bbtt_HH_pt_BA/1000.);
-    hist_acceptance_ptHbb_denominator_r1->Fill(reco_bbtt_bb_pt_BA/1000.);
-    hist_acceptance_ptHtautau_denominator_r1->Fill(reco_bbtt_tautau_pt_BA/1000.);
-
-    hist_acceptance_truth_mHH_denominator_r1->Fill(truth_HH_m/1000.);
-    hist_acceptance_truth_mHbb_denominator_r1->Fill(truth_bb_m/1000.);
-    hist_acceptance_truth_mHtautau_denominator_r1->Fill(truth_tautau_m/1000.);
-    hist_acceptance_truth_ptHH_denominator_r1->Fill(truth_HH_pt/1000.);
-    hist_acceptance_truth_ptHbb_denominator_r1->Fill(truth_bb_pt/1000.);
-    hist_acceptance_truth_ptHtautau_denominator_r1->Fill(truth_tautau_pt/1000.); 
-
-    hist_acceptance_mHH_numerator_r3->Fill(reco_bbtt_HH_m_BA/1000.);
-    hist_acceptance_ptHbb_numerator_r3->Fill(reco_bbtt_bb_pt_BA/1000.);
-    hist_acceptance_ptHtautau_numerator_r3->Fill(reco_bbtt_tautau_pt_BA/1000.);
     
-    hist_acceptance_truth_mHH_numerator_r3->Fill(truth_HH_m/1000.);
-    hist_acceptance_truth_ptHbb_numerator_r3->Fill(truth_bb_pt/1000.);
-    hist_acceptance_truth_ptHtautau_numerator_r3->Fill(truth_tautau_pt/1000.);
-  }
-
-  if(class_event != -1){
-
-    if(class_event == 3){
-      hist_acceptance_mHH_denominator_class3_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_ptHH_denominator_class3_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
-      
-      hist_acceptance_truth_mHH_denominator_class3_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_ptHH_denominator_class3_r2->Fill(truth_HH_pt/1000.);
-      
-      hist_acceptance_mHH_numerator_class3_r4->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_truth_mHH_numerator_class3_r4->Fill(truth_HH_m/1000.);
-    }
-  
     if( (class_event==2) || (class_event==3) ){
       hist_acceptance_all_Bbb_mHbb_denominator_r2_numerator_r4->Fill(reco_bbtt_bb_m_BA/1000.);
       hist_acceptance_all_Bbb_ptHbb_denominator_r2_numerator_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
-
+      
       hist_acceptance_all_Bbb_truth_mHbb_denominator_r2_numerator_r4->Fill(truth_bb_m/1000.);
       hist_acceptance_all_Bbb_truth_ptHbb_denominator_r2_numerator_r4->Fill(truth_bb_pt/1000.);
     }
+
     if( (class_event==1) || (class_event==3) ){
       hist_acceptance_all_Btautau_mHtautau_denominator_r2_numerator_r4->Fill(reco_bbtt_tautau_m_BA/1000.);
       hist_acceptance_all_Btautau_ptHtautau_denominator_r2_numerator_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
-
+      
       hist_acceptance_all_Btautau_truth_mHtautau_denominator_r2_numerator_r4->Fill(truth_tautau_m/1000.);
       hist_acceptance_all_Btautau_truth_ptHtautau_denominator_r2_numerator_r4->Fill(truth_tautau_pt/1000.);
     }
     
-  }
-  // Rbb-Rtautau
-  if((bbtt_HH_vis_m > 0) && (class_event != -1)){
-    
-    // Bbb-Btautau
-    if(class_event == 3){
-      hist_acceptance_mHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-      hist_acceptance_ptHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
+    // Overlap region
+    // Rbb-Rtautau
+    if( (bbtt_HH_vis_m > 0) ){ // Events being selected bythe resolved selection and the boosted analysis
       
-      hist_acceptance_truth_mHH_numerator_class3_r1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_ptHH_numerator_class3_r1_r2->Fill(truth_HH_pt/1000.);
+      // Bbb-Btautau
+      if(class_event == 3){
+
+	hist_acceptance_mHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
+	hist_acceptance_ptHbb_numerator_class3_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+	hist_acceptance_ptHtautau_numerator_class3_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
+	
+	hist_acceptance_truth_mHH_numerator_class3_r1_r2->Fill(truth_HH_m/1000.);
+	hist_acceptance_truth_ptHbb_numerator_class3_r1_r2->Fill(truth_bb_pt/1000.);
+	hist_acceptance_truth_ptHtautau_numerator_class3_r1_r2->Fill(truth_tautau_pt/1000.);
+
+      }
       
-    }
+      if( (class_event==2) || (class_event==3) ){
 
-    if( (class_event==2) || (class_event==3) ){
-      hist_acceptance_all_Bbb_mHbb_numerator_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-      hist_acceptance_all_Bbb_ptHbb_numerator_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+	hist_acceptance_all_Bbb_mHbb_numerator_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
+	hist_acceptance_all_Bbb_ptHbb_numerator_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+	
+	hist_acceptance_all_Bbb_truth_mHbb_numerator_r1_r2->Fill(truth_bb_m/1000.);
+	hist_acceptance_all_Bbb_truth_ptHbb_numerator_r1_r2->Fill(truth_bb_pt/1000.);
 
-      hist_acceptance_all_Bbb_truth_mHbb_numerator_r1_r2->Fill(truth_bb_m/1000.);
-      hist_acceptance_all_Bbb_truth_ptHbb_numerator_r1_r2->Fill(truth_bb_pt/1000.);
-    }
-    if( (class_event==1) || (class_event==3) ){
-      hist_acceptance_all_Btautau_mHtautau_numerator_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-      hist_acceptance_all_Btautau_ptHtautau_numerator_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
+      }
 
-      hist_acceptance_all_Btautau_truth_mHtautau_numerator_r1_r2->Fill(truth_tautau_m/1000.);
-      hist_acceptance_all_Btautau_truth_ptHtautau_numerator_r1_r2->Fill(truth_tautau_pt/1000.);
+      if( (class_event==1) || (class_event==3) ){
+
+	hist_acceptance_all_Btautau_mHtautau_numerator_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
+	hist_acceptance_all_Btautau_ptHtautau_numerator_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
+	
+	hist_acceptance_all_Btautau_truth_mHtautau_numerator_r1_r2->Fill(truth_tautau_m/1000.);
+	hist_acceptance_all_Btautau_truth_ptHtautau_numerator_r1_r2->Fill(truth_tautau_pt/1000.);
+
+      }
     }
-    
   }
+
+  delete min_pT_objects_list;
 }
+
 
 void define_reconstructed_objects(){
   
@@ -839,16 +694,20 @@ void fill_histograms(){
       
       float dR_bb = 0;
       float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin);
-	  
+
       deltaR(dR_bb, truth_b1_pt, truth_b1_eta, truth_b1_phi, truth_b1_m, truth_b2_pt, truth_b2_eta, truth_b2_phi, truth_b2_m);
       
       hist_matched_recojet_bb_m->Fill(recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
       hist_matched_recojet_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000.);
       hist_matched_recojet_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin));
       hist_matched_recojet_bb_phi->Fill(recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin));
+
       hist_matched_recojet_bb_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin));
       hist_matched_recojet_bb_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin));
       hist_matched_recojet_bb_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+
+      hist_matched_recojet_bb_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1truth_recoak10_dRmin));
+      hist_matched_recojet_bb_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_b1truth_recoak10_dRmin));
       
       hist_matched_recojet_bb_dR->Fill(dR_bb);
       hist2d_dR_per_class_bb->Fill(class_event, dR_bb);
@@ -874,9 +733,13 @@ void fill_histograms(){
       hist_matched_recojet_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin));
       hist_matched_recojet_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin));
       hist_matched_recojet_tautau_dR->Fill(dR_tautau);
+      
       hist_matched_recojet_tautau_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin));
       hist_matched_recojet_tautau_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin));
       hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+
+      hist_matched_recojet_tautau_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau1truth_recoak10_dRmin));
+      hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_tau1truth_recoak10_dRmin));
       
       hist2d_dR_per_class_tautau->Fill(class_event, dR_tautau);
 
@@ -897,9 +760,13 @@ void fill_histograms(){
       hist_non_matched_recojet_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000.);
       hist_non_matched_recojet_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin));
       hist_non_matched_recojet_bb_phi->Fill(recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin));
+
       hist_non_matched_recojet_bb_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin));
       hist_non_matched_recojet_bb_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin));
 
+      hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1truth_recoak10_dRmin));
+      hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_b1truth_recoak10_dRmin));
+        
       tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin);
       hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);  
       
@@ -907,8 +774,12 @@ void fill_histograms(){
       hist_non_matched_recojet_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin)/1000.);
       hist_non_matched_recojet_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b2truth_recoak10_dRmin));
       hist_non_matched_recojet_bb_phi->Fill(recojet_antikt10UFO_phi->at(idx_b2truth_recoak10_dRmin));
+
       hist_non_matched_recojet_bb_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_b2truth_recoak10_dRmin));
       hist_non_matched_recojet_bb_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_b2truth_recoak10_dRmin));
+
+      hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b2truth_recoak10_dRmin));
+      hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_b2truth_recoak10_dRmin));
 
       tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b2truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_b2truth_recoak10_dRmin);
       hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);  
@@ -930,8 +801,12 @@ void fill_histograms(){
       hist_non_matched_recojet_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000.);
       hist_non_matched_recojet_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin));
       hist_non_matched_recojet_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin));
+      
       hist_non_matched_recojet_tautau_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin));
       hist_non_matched_recojet_tautau_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin));
+
+      hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau1truth_recoak10_dRmin));
+      hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_tau1truth_recoak10_dRmin));
       
       tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin);
       hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
@@ -940,8 +815,12 @@ void fill_histograms(){
       hist_non_matched_recojet_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin)/1000.);
       hist_non_matched_recojet_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau2truth_recoak10_dRmin));
       hist_non_matched_recojet_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau2truth_recoak10_dRmin));
+      
       hist_non_matched_recojet_tautau_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_tau2truth_recoak10_dRmin));
       hist_non_matched_recojet_tautau_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_tau2truth_recoak10_dRmin));
+
+      hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau2truth_recoak10_dRmin));
+      hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_tau2truth_recoak10_dRmin));
       
       tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_tau2truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_tau2truth_recoak10_dRmin);
       
@@ -1016,6 +895,9 @@ void set_branch_address_inTree(TTree *inTree){
   */
 
   inTree->SetBranchAddress("tau_nProng", &tau_nProng, &b_tau_nProng);
+
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_phbb", &recojet_antikt10UFO_GN2Xv01_phbb, &b_recojet_antikt10UFO_GN2Xv01_phbb);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_pqcd", &recojet_antikt10UFO_GN2Xv01_pqcd, &b_recojet_antikt10UFO_GN2Xv01_pqcd);
   
   inTree->SetBranchAddress("recojet_antikt10UFO_NOSYS_pt", &recojet_antikt10UFO_NOSYS_pt, &b_recojet_antikt10UFO_NOSYS_pt);
   inTree->SetBranchAddress("recojet_antikt10UFO_eta", &recojet_antikt10UFO_eta, &b_recojet_antikt10UFO_eta);
@@ -1107,6 +989,10 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("truth_tau2_m", &truth_tau2_m);
 
   outTree->Branch("tau_nProng", &tau_nProng);
+
+  outTree->Branch("recojet_antikt10UFO_GN2Xv01_phbb", &recojet_antikt10UFO_GN2Xv01_phbb);
+  outTree->Branch("recojet_antikt10UFO_GN2Xv01_pqcd", &recojet_antikt10UFO_GN2Xv01_pqcd);
+
   outTree->Branch("recojet_antikt10UFO_NOSYS_pt", &recojet_antikt10UFO_NOSYS_pt);
   outTree->Branch("recojet_antikt10UFO_eta", &recojet_antikt10UFO_eta);
   outTree->Branch("recojet_antikt10UFO_phi", &recojet_antikt10UFO_phi);
@@ -1187,14 +1073,22 @@ void write_histograms(){
   hist_matched_recojet_tautau_eta->Write();
   hist_matched_recojet_bb_phi->Write();
   hist_matched_recojet_tautau_phi->Write();
+  
   hist_matched_recojet_bb_tau_n_prong->Write();
   hist_matched_recojet_tautau_tau_n_prong->Write();
+
   hist_matched_recojet_bb_tau_n1_subjettiness->Write();
   hist_matched_recojet_tautau_tau_n1_subjettiness->Write();
   hist_matched_recojet_bb_tau_n2_subjettiness->Write();
   hist_matched_recojet_tautau_tau_n2_subjettiness->Write();
   hist_matched_recojet_bb_tau_n2_over_n1_subjettiness->Write();
   hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness->Write();
+
+  hist_matched_recojet_bb_ak10_GN2Xv01_phbb->Write();
+  hist_matched_recojet_tautau_ak10_GN2Xv01_phbb->Write();
+  hist_matched_recojet_bb_ak10_GN2Xv01_pqcd->Write();
+  hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd->Write();
+
   hist_matched_recojet_bb_dR->Write();
   hist_matched_recojet_tautau_dR->Write();
 
@@ -1209,14 +1103,21 @@ void write_histograms(){
   hist_non_matched_recojet_tautau_eta->Write();
   hist_non_matched_recojet_bb_phi->Write();
   hist_non_matched_recojet_tautau_phi->Write();
+  
   hist_non_matched_recojet_bb_tau_n_prong->Write();
   hist_non_matched_recojet_tautau_tau_n_prong->Write();
+
   hist_non_matched_recojet_bb_tau_n1_subjettiness->Write();
   hist_non_matched_recojet_tautau_tau_n1_subjettiness->Write();
   hist_non_matched_recojet_bb_tau_n2_subjettiness->Write();
   hist_non_matched_recojet_tautau_tau_n2_subjettiness->Write();
   hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness->Write();
   hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness->Write();
+
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb->Write();
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb->Write();
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd->Write();
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd->Write();
   
   hist_nevents_per_class->Write();
   hist2d_dR_per_class_bb->Write();
@@ -1293,7 +1194,6 @@ void write_histograms(){
   hist_acceptance_truth_mHbb_denominator_class1_r2->Write();
   hist_acceptance_truth_mHbb_denominator_class2_r2->Write();
   hist_acceptance_truth_mHbb_denominator_class3_r2->Write();
-
   
   hist_acceptance_all_Bbb_truth_mHbb_numerator_r1_r2->Write();
   hist_acceptance_all_Bbb_truth_mHbb_denominator_r2_numerator_r4->Write();
@@ -1308,7 +1208,6 @@ void write_histograms(){
   hist_acceptance_mHtautau_denominator_class1_r2->Write();
   hist_acceptance_mHtautau_denominator_class2_r2->Write();
   hist_acceptance_mHtautau_denominator_class3_r2->Write();
-
 
   hist_acceptance_all_Btautau_mHtautau_numerator_r1_r2->Write();
   hist_acceptance_all_Btautau_mHtautau_denominator_r2_numerator_r4->Write();
@@ -1570,80 +1469,3 @@ es)" << endl;
   cout << "The number of positive values for truth_HH_m is: " << count_truth_HH_m_pos_values << endl;
 
 }
-
-/*
-void plot_ratios_acceptance(TString name_plot, TString output_folder){                                                                        
-  gROOT->SetBatch(kTRUE);                                                                                                                     
-  auto it = plotMap.find(name_plot.Data()); // Data() is used to convert TString to string                                                   
-  if (it != plotMap.end()) { // If the plot name was found                                                                                   
-    SetAtlasStyle();                                                                                                                         
-    PlotInfo plotInfo = it->second; // Access the PlotInfo struct                                                                            
-    //TString name_image = output_folder+"/plots_ratios/"+name_plot+".png";                                                                  
-    TString name_image = "plots_ratios/"+name_plot+".png";                                                                                 
-    TH1F *hist_num = plotInfo.hist_num;                                                                                                    
-    TH1F *hist_den = plotInfo.hist_den;                                                                                                    
-    TString label_leg = plotInfo.label;                                                                                                      
-    TString title_plot = plotInfo.title;                                                                                                     
-    TEfficiency *pEff = new TEfficiency(*hist_num, *hist_den);                                                                               
-    pEff->SetTitle(title_plot);
-    pEff->SetName(name_plot);                                                                                                              
-    //pEff->SetMaximum(1.25);                                                                                                                
-    ///// Plotting                                                                                                                           
-    TCanvas *can = new TCanvas("can","can", 800, 600);                                                                                       
-    //TLegend *leg = new TLegend(0.25, 0.70, 0.40, 0.80);                                                                                   
-    pEff->Draw("AP");                                                                                                                       
-    gPad->Update();                                                                                                                          
-    auto graph = pEff->GetPaintedGraph();                                                                                      
-    graph->SetMinimum(0);
-    graph->SetMaximum(1.25);                                                                                                                 
-    gPad->Update();                                                                                                                          
-    double dely = 0.05;                                                                                                                      
-    myText(0.2, 0.9, kBlack, process_name);                                                                                                  
-    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);                                                                                  
-    myText(0.2, 0.9-2*dely, kBlack, name_plot);                                                                                              
-    //can->Draw();            
-    can->SaveAs(name_image);
-    //TString process_label = process_name;
-    //process_label = process_label.ReplaceAll(" ", "_");
-    //process_label = process_label.replace(" ", "_");
-    //can->SaveAs("output_analysis/temp_folder/"+name_plot+"_"+process_label+".png");                                                        
-    //    TCanvas *can = new TCanvas("can","can", 800, 600);                                                                                 
-    hist_num->Draw("H");                                                                                                                    
-    //name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_num.png";                                                                 
-    name_image = "plots_ratios/"+name_plot+"_hist_num.png";                                                                                  
-    myText(0.2, 0.9, kBlack, process_name);                                                                                                  
-    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);                                                                                  
-    myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_num.png");                                                                              
-    can->SaveAs(name_image);       
-
-    // ***********************************************                                                                                           // hist numerator                                                                                                                            // ***********************************************
-
-    //    TCanvas *can = new TCanvas("can","can", 800, 600);                                                                                 
-    hist_num->Draw("H");                                                                                                                     
-    //name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_num.png";                                                                  
-    name_image = "plots_ratios/"+name_plot+"_hist_num.png";                                                                                  
-    myText(0.2, 0.9, kBlack, process_name);                                                                                                  
-    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);                                                                                  
-    myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_num.png");                                                                              
-    can->SaveAs(name_image);      
-
-     
-    // ***********************************************                                                                                      
-    // hist denominator                                                                                                                      
-    // ***********************************************                                                                                       
-    
-    //    TCanvas *can = new TCanvas("can","can", 800, 600);                                                                                
-    hist_den->Draw("H");                                                                                                                     
-    //name_image = output_folder+"/plots_ratios/"+name_plot+"_hist_den.png";                                                                 
-    name_image = "plots_ratios/"+name_plot+"_hist_den.png";                                                                                  
-    myText(0.2, 0.9, kBlack, process_name);                                                                                                  
-    myText(0.2, 0.9-dely, kBlack, "for class: "+label_leg);                                                                                  
-    myText(0.2, 0.9-2*dely, kBlack, name_plot+"_hist_den.png");                                                                              
-    can->SaveAs(name_image);                                                                                                                 
-  }                                                                                                                                          
-  else {                                                                                                                                     
-    // Handle the case where the plot name is not found
-    std::cout << "Plot name " << name_plot << " not found!" << endl;                                                                      
-  }                                                                                                                                          
-}   
-*/

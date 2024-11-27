@@ -44,7 +44,6 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   int b_tau_matched_jets = 0;
   int matched_events = 0;
   int diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt = 0;
-  int removed_important_events_from_min_pT = 0;
   
   // Convert char* to float using std::atof()
   float min_pT_recojet_cut_MeV = 1000*std::stoi(min_pT); // min pT in MeV
@@ -56,43 +55,33 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     compute_dR_min_index_fat_jets();
     define_classes();
     define_reconstructed_objects();
+
+    fill_acceptance_ratios(min_pT_recojet_cut_MeV);
+
+    // min_pT_cut_in_MeV
+
+    if(class_event!=-1){
+      float b1_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin);
+      float b2_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin);
+      float tau1_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin);
+      float tau2_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin);
+      
+      std::vector<float> *min_pT_objects_list = new std::vector<float> {b1_pT, b2_pT, tau1_pT, tau2_pT};
+      
+      float min_pT_matched_objects_recojets_MeV = *std::min_element(min_pT_objects_list->begin(), min_pT_objects_list->end());
+    
+      if( min_pT_matched_objects_recojets_MeV >= min_pT_recojet_cut_MeV){
+	fill_histograms();
+      }
+    }
+
+    
     int size_Tau1_wta = recojet_antikt10UFO_Tau2_wta->size();
     //int size_Tau1_wta = tau_nProng->size();
     int size_NOSYS_pt = recojet_antikt10UFO_NOSYS_pt->size();
     
     if(size_Tau1_wta != size_NOSYS_pt){
       diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt++;
-    }
-    
-    if(recojet_antikt10UFO_NOSYS_pt->size()!=0){
-      // Find the minimum pT in the jets_pT vector
-      
-      float minimum_pT_fatjets_MeV = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
-      
-      if( minimum_pT_fatjets_MeV > min_pT_recojet_cut_MeV ){
-	fill_histograms();
-	fill_acceptance_ratios();
-      }
-      else{
-	if( class_event!=-1 ){
-	  float b1_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin);
-	  float b2_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin);
-	  float tau1_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin);
-	  float tau2_pT = recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin);
-
-	  std::vector<float> *min_pT_objects_list = new std::vector<float> {b1_pT, b2_pT, tau1_pT, tau2_pT};
-
-	  float min_pT_objects_reco_MeV = *std::min_element(min_pT_objects_list->begin(), min_pT_objects_list->end());
-	  
-	  if( min_pT_objects_reco_MeV > min_pT_recojet_cut_MeV ){ 
-	    removed_important_events_from_min_pT++;
-	    fill_histograms();
-	    fill_acceptance_ratios();
-	  }
-
-	  delete min_pT_objects_list;
-	}
-      }
     }
     
     if(truth_b1_pt > 0){
@@ -123,8 +112,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   cout << "Number of events with a b and tau jets matched: " << b_tau_matched_jets << endl;
   cout << "Number of matched events: " << matched_events << endl;
   cout << "Number of events with different sizes on pt and tau1 n subjettiness: " << diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt << endl;
-  cout << "Number of events with a min_pT for all the matched objects removed when applying the min_pT on all the recojets: " << removed_important_events_from_min_pT << endl;
-
+  
     
   //****************************************************
   //Save Histograms in the output root file
