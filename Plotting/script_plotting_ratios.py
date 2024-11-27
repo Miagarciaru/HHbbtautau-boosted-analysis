@@ -5,11 +5,11 @@ import subprocess
 
 #variables = ["mHH", "mHbb", "mHtautau", "ptHH", "ptHbb", "ptHtautau", "truth_mHH", "truth_mHbb", "truth_mHtautau", "truth_ptHH", "truth_ptHbb", "truth_ptHtautau"]
 
-variables = ["mHH", "ptHbb", "ptHtautau", "truth_mHH", "truth_ptHbb", "truth_ptHtautau"]
+#variables = ["mHH", "ptHbb", "ptHtautau", "truth_mHH", "truth_ptHbb", "truth_ptHtautau"]
 
-#variables = ["truth_mHH", "truth_ptHbb", "truth_ptHtautau"]
+variables = ["truth_mHH", "truth_ptHbb", "truth_ptHtautau"]
 
-min_pT_recojets = ["100", "200", "250", "300", "350"] # in GeV
+min_pT_recojets = ["100", "200", "300"] # in GeV
 #min_pT_recojets = ["100"] # in MeV  
 
 # Root folder for storing output

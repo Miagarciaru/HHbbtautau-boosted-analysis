@@ -7,27 +7,28 @@ void Plotting_aceptance_ratios(string nameVar, string min_pT){
     "VBF_cvv1p5_hh_502985", "VBF_cvv1p5_lh_502996", "VBF_SM_hh_502982", "VBF_SM_lh_502993"};
 
   // Define the unordered map
-  std::unordered_map<std::string, std::vector<TEfficiency>> efficiency_map;
+  std::unordered_map<std::string, std::vector<TEfficiency>> efficiency_map_proper_ratios;
+  std::unordered_map<std::string, std::vector<TEfficiency>> efficiency_map_only_boosted_ratios;
 
-  initializeMapRatiosInfo(sample_files, nameVar, min_pT, efficiency_map);
+  bool proper = true;
 
-  plotEfficiencies(sample_files, "r1" , nameVar, min_pT, efficiency_map);
-  plotEfficiencies(sample_files, "r2" , nameVar, min_pT, efficiency_map);
-  plotEfficiencies(sample_files, "r3" , nameVar, min_pT, efficiency_map);
-  plotEfficiencies(sample_files, "r4" , nameVar, min_pT, efficiency_map);
-    
-  /*
-  std::vector<TEfficiency*> TEff_ratios_r1;
-  std::vector<TEfficiency*> TEff_ratios_r2;
-  std::vector<TEfficiency*> TEff_ratios_r3;
-  std::vector<TEfficiency*> TEff_ratios_r4;
+  // Proper ratios
+  initializeMapRatiosInfo(sample_files, nameVar, min_pT, efficiency_map_proper_ratios, proper);
 
-  initializeMapRatiosInfo(sample_files, nameVar, min_pT, TEff_ratios_r1, TEff_ratios_r2, TEff_ratios_r3, TEff_ratios_r4);
+  plotEfficiencies(sample_files, "r1" , nameVar, min_pT, efficiency_map_proper_ratios, proper);
+  plotEfficiencies(sample_files, "r2" , nameVar, min_pT, efficiency_map_proper_ratios, proper);
+  plotEfficiencies(sample_files, "r3" , nameVar, min_pT, efficiency_map_proper_ratios, proper);
+  plotEfficiencies(sample_files, "r4" , nameVar, min_pT, efficiency_map_proper_ratios, proper);
 
-  plotEfficiencies(sample_files, "r1", nameVar, min_pT, TEff_ratios_r1);
-  plotEfficiencies(sample_files, "r2", nameVar, min_pT, TEff_ratios_r2);
-  plotEfficiencies(sample_files, "r3", nameVar, min_pT, TEff_ratios_r3);
-  plotEfficiencies(sample_files, "r4", nameVar, min_pT, TEff_ratios_r4);
-  */
+  // Only boosted ratios
+
+  proper = false;
   
+  initializeMapRatiosInfo(sample_files, nameVar, min_pT, efficiency_map_only_boosted_ratios, proper);
+
+  plotEfficiencies(sample_files, "r1" , nameVar, min_pT, efficiency_map_only_boosted_ratios, proper);
+  plotEfficiencies(sample_files, "r2" , nameVar, min_pT, efficiency_map_only_boosted_ratios, proper);
+  plotEfficiencies(sample_files, "r3" , nameVar, min_pT, efficiency_map_only_boosted_ratios, proper);
+  plotEfficiencies(sample_files, "r4" , nameVar, min_pT, efficiency_map_only_boosted_ratios, proper);
+    
 }

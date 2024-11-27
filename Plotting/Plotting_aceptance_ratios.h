@@ -26,24 +26,25 @@ struct plot_Teff {
 // Declaration of functions
 //*******************************************************
 
-void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::string& min_pT, const std::unordered_map<std::string, std::vector<TEfficiency>>& TEff_ratios);
+void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::string& min_pT, const std::unordered_map<std::string, std::vector<TEfficiency>>& TEff_ratios, bool proper);
   
 void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, const std::string& min_pT,
-			     std::unordered_map<std::string, std::vector<TEfficiency>>& efficiency_map);
+			     std::unordered_map<std::string, std::vector<TEfficiency>>& efficiency_map, bool proper);
   
 //*******************************************************
 // Definition of functions declared above
 //*******************************************************
 
-void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::string& min_pT, const std::unordered_map<std::string, std::vector<TEfficiency>>& TEff_ratios){
+void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::string& min_pT, const std::unordered_map<std::string, std::vector<TEfficiency>>& TEff_ratios, bool proper){
 
   gROOT->SetBatch(kTRUE);
   SetAtlasStyle();
-  
-  TCanvas* canvas = new TCanvas(("can_"+nameVar+"_minpT"+min_pT+ratio).c_str());
-  TLegend* leg = new TLegend(0.18, 0.75, 0.93, 0.90);
 
-  //TColor colors[8] = { kRed, kBlue, kGreen, kMagenta, kCyan, kYellow, kBlack, kOrange };
+  string name_canvas = "can_"+nameVar+"_minpT"+min_pT+ratio;
+  if(proper==true) name_canvas+="_proper";
+  
+  TCanvas* canvas = new TCanvas(name_canvas.c_str());
+  TLegend* leg = new TLegend(0.18, 0.75, 0.93, 0.90);
 
   int r_plot = 0;
   int color_number = 0;
@@ -108,7 +109,6 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   leg->AddEntry(&hist_VBF_SM_hh_502982, ("VBF_SM_hh_502982_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_VBF_SM_lh_502993, ("VBF_SM_lh_502993_"+ratio).c_str(), "lep");
 
-  
   hist_ggF_lambda10_hh_600460.Draw("AP");
   hist_ggF_lambda10_lh_600462.Draw("PSAME");
   hist_ggF_SM_hh_600459.Draw("PSAME");
@@ -122,7 +122,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   gPad->Update();
   auto graph = hist_ggF_lambda10_hh_600460.GetPaintedGraph();
   graph->SetMinimum(0);
-  graph->SetMaximum(1.40);
+  graph->SetMaximum(1.7);
   
   gPad->Update();
   
@@ -131,15 +131,39 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   leg->SetLineColor(0);
   
   leg->Draw();
+
+  string description1 = "";
+  string description2 = "For min p_{T} "+min_pT+"GeV";;
+  string name_image = "";
   
-  string name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"_ratios_"+ratio+"_comparison.png";
+  if(proper==true){
+    description1 = "Proper B_{bb}-B_{#tau#tau} class";
+    name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"GeV_proper_ratios_"+ratio+"_comparison.png";
+  }
+  if(proper==false){
+    if(nameVar.find("mHH")!=std::string::npos){
+      description1 = "Proper B_{bb}-B_{#tau#tau} class";
+    }
+    if(nameVar.find("bb")!=std::string::npos){
+      description1 = "bb-only";
+    }
+    if(nameVar.find("tautau")!=std::string::npos){
+      description1 = "#tau#tau-only";
+    }
+    name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"GeV_ratios_"+ratio+"_comparison.png";
+  }
+  
+  double dely = 0.05;
+  myText(0.2, 0.7, kBlack, description1.c_str());
+  myText(0.2, 0.7-dely, kBlack, description2.c_str());
+  
   canvas->SaveAs(name_image.c_str());
   
 }
 
 // Initialize the ap_ratios_info
 void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, const std::string& min_pT,
-			     std::unordered_map<std::string, std::vector<TEfficiency>>& efficiency_map){
+			     std::unordered_map<std::string, std::vector<TEfficiency>>& efficiency_map, bool proper){
   
   string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
 
@@ -147,7 +171,7 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
   
   for (const auto& sample : sampleFiles){
     string path_root_file = path_folder+sample+"_pT"+min_pT+"GeV.root";
-    TCanvas* can = new TCanvas(("can_"+sample+"_"+nameVar+"_pT"+min_pT+"GeV").c_str());
+    //TCanvas* can = new TCanvas(("can_"+sample+"_"+nameVar+"_pT"+min_pT+"GeV").c_str());
     
     TFile* file = TFile::Open(path_root_file.c_str());
     
@@ -163,29 +187,40 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
     string name_hist_num_r1_r2 = ""; string name_hist_den_for_r1 = ""; string name_hist_den_for_r2 = "";
     string name_hist_num_for_r3 = ""; string name_hist_num_for_r4 = ""; string name_hist_den_for_r3_r4 = ""; 
 
-    if(nameVar.find("mHH")!=std::string::npos){
+    if(proper==false){
+      if(nameVar.find("mHH")!=std::string::npos){
+	name_hist_num_r1_r2 = "hist_acceptance_"+nameVar+"_numerator_class3_r1_r2";
+	name_hist_den_for_r1 = "hist_acceptance_"+nameVar+"_denominator_r1";
+	name_hist_den_for_r2 = "hist_acceptance_"+nameVar+"_denominator_class3_r2";
+	name_hist_num_for_r3 = "hist_acceptance_"+nameVar+"_numerator_r3";
+	name_hist_num_for_r4 = "hist_acceptance_"+nameVar+"_numerator_class3_r4";
+	name_hist_den_for_r3_r4 = "hist_acceptance_"+nameVar+"_denominator_r3_r4";
+      }
+    
+      if(nameVar.find("tautau")!=std::string::npos){
+	name_hist_num_r1_r2 = "hist_acceptance_all_Btautau_"+nameVar+"_numerator_r1_r2";
+	name_hist_den_for_r1 = "hist_acceptance_"+nameVar+"_denominator_r1";
+	name_hist_den_for_r2 = "hist_acceptance_all_Btautau_"+nameVar+"_denominator_r2_numerator_r4";
+	name_hist_num_for_r3 = "hist_acceptance_"+nameVar+"_numerator_r3";
+	name_hist_num_for_r4 = "hist_acceptance_all_Btautau_"+nameVar+"_denominator_r2_numerator_r4";
+	name_hist_den_for_r3_r4 = "hist_acceptance_"+nameVar+"_denominator_r3_r4";
+      }
+      if(nameVar.find("bb")!=std::string::npos){
+	name_hist_num_r1_r2 = "hist_acceptance_all_Bbb_"+nameVar+"_numerator_r1_r2";
+	name_hist_den_for_r1 = "hist_acceptance_"+nameVar+"_denominator_r1";
+	name_hist_den_for_r2 = "hist_acceptance_all_Bbb_"+nameVar+"_denominator_r2_numerator_r4";
+	name_hist_num_for_r3 = "hist_acceptance_"+nameVar+"_numerator_r3";
+	name_hist_num_for_r4 = "hist_acceptance_all_Bbb_"+nameVar+"_denominator_r2_numerator_r4";
+	name_hist_den_for_r3_r4 = "hist_acceptance_"+nameVar+"_denominator_r3_r4";
+      }
+    }
+
+    if(proper==true){
       name_hist_num_r1_r2 = "hist_acceptance_"+nameVar+"_numerator_class3_r1_r2";
       name_hist_den_for_r1 = "hist_acceptance_"+nameVar+"_denominator_r1";
       name_hist_den_for_r2 = "hist_acceptance_"+nameVar+"_denominator_class3_r2";
       name_hist_num_for_r3 = "hist_acceptance_"+nameVar+"_numerator_r3";
       name_hist_num_for_r4 = "hist_acceptance_"+nameVar+"_numerator_class3_r4";
-      name_hist_den_for_r3_r4 = "hist_acceptance_"+nameVar+"_denominator_r3_r4";
-    }
-    
-    if(nameVar.find("tautau")!=std::string::npos){
-      name_hist_num_r1_r2 = "hist_acceptance_all_Btautau_"+nameVar+"_numerator_r1_r2";
-      name_hist_den_for_r1 = "hist_acceptance_"+nameVar+"_denominator_r1";
-      name_hist_den_for_r2 = "hist_acceptance_all_Btautau_"+nameVar+"_denominator_r2_numerator_r4";
-      name_hist_num_for_r3 = "hist_acceptance_"+nameVar+"_numerator_r3";
-      name_hist_num_for_r4 = "hist_acceptance_all_Btautau_"+nameVar+"_denominator_r2_numerator_r4";
-      name_hist_den_for_r3_r4 = "hist_acceptance_"+nameVar+"_denominator_r3_r4";
-    }
-    if(nameVar.find("bb")!=std::string::npos){
-      name_hist_num_r1_r2 = "hist_acceptance_all_Bbb_"+nameVar+"_numerator_r1_r2";
-      name_hist_den_for_r1 = "hist_acceptance_"+nameVar+"_denominator_r1";
-      name_hist_den_for_r2 = "hist_acceptance_all_Bbb_"+nameVar+"_denominator_r2_numerator_r4";
-      name_hist_num_for_r3 = "hist_acceptance_"+nameVar+"_numerator_r3";
-      name_hist_num_for_r4 = "hist_acceptance_all_Bbb_"+nameVar+"_denominator_r2_numerator_r4";
       name_hist_den_for_r3_r4 = "hist_acceptance_"+nameVar+"_denominator_r3_r4";
     }
 
