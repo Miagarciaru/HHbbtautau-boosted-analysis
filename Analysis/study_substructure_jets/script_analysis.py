@@ -16,16 +16,8 @@ sample_paths = [
     # Add as many samples as you need
 ]
 
-
-"""
-sample_paths = [
-    "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_502982_vbf_hadhad_l1cvv1cv1_PHYS_merged_boosted_bypass_config.root" # vbf HH SM had-had channel
-]
-"""
-
-min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
-
-#min_pT_recojets = ["150"] # in GeV
+#min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
+min_pT_recojets = ["100", "200", "300"] # in GeV
 
 start = time.time() # time at start of whole processing
 
