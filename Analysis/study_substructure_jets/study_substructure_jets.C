@@ -10,7 +10,8 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   auto start = chrono::steady_clock::now(); //Start the clock
   
   // *************************************
-  // Open the input files and access to the trees                                                                                              // *************************************
+  // Open the input files and access to the trees
+  // *************************************
 
   // Define the sample label to identify which samples is being used during the analysis and the name of the output root file
   process_label(sample, min_pT);

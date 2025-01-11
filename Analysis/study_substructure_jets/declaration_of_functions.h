@@ -667,20 +667,6 @@ void define_truth_tau_and_b_jets(){
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions
 // for the two configurations, boosted and resolved
 void fill_histograms(){
-
-  //**********************************************
-  // Filling truth objects histograms
-  //**********************************************
-  
-  if(truth_children_fromH1_pdgId->size() == 2){
-   
-    if((TMath::Abs(truth_children_fromH1_pdgId->at(0)) == 5) && (TMath::Abs(truth_children_fromH1_pdgId->at(1)) == 5)){
-      float sum = truth_children_fromH1_m->at(0) + truth_children_fromH1_m->at(1); // Wrong assumption, we need to do it by using a TLorentzV
-      hist_truth_b1_plus_b2_m->Fill(sum);
-      hist_truth_b1_m->Fill(truth_children_fromH1_m->at(0));
-      hist_truth_b2_m->Fill(truth_children_fromH1_m->at(1));
-    }
-  }
   
   //**********************************************
   // Filling the mass, pT and eta distributions of the boosted bb and tautau objects
