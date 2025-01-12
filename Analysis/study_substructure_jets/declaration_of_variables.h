@@ -1,5 +1,5 @@
-#include "ratio_acceptances_reco_variables.h"
-#include "ratio_acceptances_truth_variables.h"
+#include "ratio_acceptances_reco_variables_histograms.h"
+#include "ratio_acceptances_truth_variables_histograms.h"
 
 // *************************************
 // Declaration of useful structures
