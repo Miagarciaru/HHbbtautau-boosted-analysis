@@ -7,7 +7,8 @@ import subprocess
 
 #variables = ["mHH", "ptHbb", "ptHtautau", "truth_mHH", "truth_ptHbb", "truth_ptHtautau"]
 
-variables = ["truth_mHH", "truth_ptHbb", "truth_ptHtautau"]
+variables = ["truth_mHH", "truth_ptHH", "truth_etaHH", "truth_phiHH", "truth_mHbb", "truth_ptHbb", "truth_etaHbb",
+             "truth_phiHbb", "truth_mHtautau", "truth_ptHtautau", "truth_etaHtautau", "truth_phiHtautau"]
 
 min_pT_recojets = ["100", "200", "300"] # in GeV
 #min_pT_recojets = ["100"] # in MeV  

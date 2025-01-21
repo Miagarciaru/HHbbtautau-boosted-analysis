@@ -141,7 +141,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
     name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"GeV_proper_ratios_"+ratio+"_comparison.png";
   }
   if(proper==false){
-    if(nameVar.find("mHH")!=std::string::npos){
+    if(nameVar.find("HH")!=std::string::npos){
       description1 = "Proper B_{bb}-B_{#tau#tau} class";
     }
     if(nameVar.find("bb")!=std::string::npos){
@@ -188,7 +188,7 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
     string name_hist_num_for_r3 = ""; string name_hist_num_for_r4 = ""; string name_hist_den_for_r3_r4 = ""; 
 
     if(proper==false){
-      if(nameVar.find("mHH")!=std::string::npos){
+      if(nameVar.find("HH")!=std::string::npos){
 	name_hist_num_r1_r2 = "hist_acceptance_"+nameVar+"_numerator_class3_r1_r2";
 	name_hist_den_for_r1 = "hist_acceptance_"+nameVar+"_denominator_r1";
 	name_hist_den_for_r2 = "hist_acceptance_"+nameVar+"_denominator_class3_r2";
