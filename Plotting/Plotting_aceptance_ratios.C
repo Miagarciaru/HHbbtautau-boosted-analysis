@@ -21,7 +21,7 @@ void Plotting_aceptance_ratios(string nameVar, string min_pT){
 
   // Only boosted ratios
 
-  proper = true;
+  proper = false;
   
   initializeMapRatiosInfo(sample_files, nameVar, min_pT, efficiency_map_only_boosted_ratios, proper);
 

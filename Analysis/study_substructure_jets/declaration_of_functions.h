@@ -162,8 +162,44 @@ void fill_boosted_events_histograms_acceptance_ratios(float min_pT_cut_in_MeV){
   std::vector<float> *min_pT_objects_list = new std::vector<float> {b1_pT, b2_pT, tau1_pT, tau2_pT};
   
   float min_pT_matched_objects_recojets_MeV = *std::min_element(min_pT_objects_list->begin(), min_pT_objects_list->end());
+
+  float min_tagger_Hbb_value = 0.85;
+  bool cut_tagger_Hbb = false;
+  float value_phbb = 0;
   
-  if( min_pT_matched_objects_recojets_MeV >= min_pT_cut_in_MeV ){
+  for(int ii=0; ii<recojet_antikt10UFO_GN2Xv01_phbb->size(); ii++){
+    //value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1truth_recoak10_dRmin);
+    value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
+    if(value_phbb >= min_tagger_Hbb_value){
+      cut_tagger_Hbb = true;
+      break;
+    }
+  }
+
+  float max_nsubjetiness_value = 0.45;
+  bool cut_nsubjetiness = false;
+  float tau_n2_over_n1_subjettiness = 0;
+
+  for(int ii=0; ii < recojet_antikt10UFO_Tau2_wta->size(); ii++){
+    tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
+    if(tau_n2_over_n1_subjettiness <= max_nsubjetiness_value){
+      cut_nsubjetiness = true;
+      break;
+    }
+  }
+  
+  /*
+  if( (class_event == 2) || (class_event == 3) ){
+    // For class 2 and 3 we have Bbb. Then the cut on phbb should be applied to the boosted recojet (idx 1 or 2, both are the same in this case)
+    float value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1truth_recoak10_dRmin);
+    if( value_phbb >= min_tagger_Hbb_value){
+      cut_tagger_Hbb = true;
+    }
+  }
+  */
+
+  
+  if( (min_pT_matched_objects_recojets_MeV >= min_pT_cut_in_MeV) && (cut_tagger_Hbb == true) && (cut_nsubjetiness = true) ){
     
     if(class_event == 3){
       hist_acceptance_mHH_denominator_class3_r2->Fill(reco_bbtt_HH_m_BA/1000.);
