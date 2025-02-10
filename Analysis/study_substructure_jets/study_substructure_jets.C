@@ -70,12 +70,36 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
       std::vector<float> *min_pT_objects_list = new std::vector<float> {b1_pT, b2_pT, tau1_pT, tau2_pT};
       
       float min_pT_matched_objects_recojets_MeV = *std::min_element(min_pT_objects_list->begin(), min_pT_objects_list->end());
-    
-      if( min_pT_matched_objects_recojets_MeV >= min_pT_recojet_cut_MeV){
+
+      float min_tagger_Hbb_value = 0.85;
+      bool cut_tagger_Hbb = false;
+      float value_phbb = 0;
+  
+      for(int ii=0; ii<recojet_antikt10UFO_GN2Xv01_phbb->size(); ii++){
+	value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
+	if(value_phbb >= min_tagger_Hbb_value){
+	  cut_tagger_Hbb = true;
+	  break;
+	}
+      }
+
+      float max_nsubjetiness_value = 0.60;
+      bool cut_nsubjetiness = true;
+      float tau_n2_over_n1_subjettiness = 0;
+      
+      for(int ii=0; ii < recojet_antikt10UFO_Tau2_wta->size(); ii++){
+	tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
+	if(tau_n2_over_n1_subjettiness <= max_nsubjetiness_value){
+	  cut_nsubjetiness = false;
+	  break;
+	}
+      }
+      
+      //if( (min_pT_matched_objects_recojets_MeV >= min_pT_recojet_cut_MeV) && (cut_tagger_Hbb == true) ){
+      if( (min_pT_matched_objects_recojets_MeV >= min_pT_recojet_cut_MeV) && (cut_tagger_Hbb == true) && (cut_nsubjetiness == true) ){
 	fill_histograms();
       }
     }
-
     
     int size_Tau1_wta = recojet_antikt10UFO_Tau2_wta->size();
     //int size_Tau1_wta = tau_nProng->size();

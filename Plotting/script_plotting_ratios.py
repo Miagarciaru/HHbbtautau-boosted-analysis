@@ -2,13 +2,15 @@ import os
 import subprocess
 
 # List of root files to analyze
-
-#variables = ["mHH", "mHbb", "mHtautau", "ptHH", "ptHbb", "ptHtautau", "truth_mHH", "truth_mHbb", "truth_mHtautau", "truth_ptHH", "truth_ptHbb", "truth_ptHtautau"]
-
-#variables = ["mHH", "ptHbb", "ptHtautau", "truth_mHH", "truth_ptHbb", "truth_ptHtautau"]
-
+"""
 variables = ["truth_mHH", "truth_ptHH", "truth_etaHH", "truth_phiHH", "truth_mHbb", "truth_ptHbb", "truth_etaHbb",
-             "truth_phiHbb", "truth_mHtautau", "truth_ptHtautau", "truth_etaHtautau", "truth_phiHtautau"]
+             "truth_phiHbb", "truth_mHtautau", "truth_ptHtautau", "truth_etaHtautau", "truth_phiHtautau", "mHH", "ptHbb",
+             "ptHtautau"]
+"""
+
+#variables = ["truth_mHH", "truth_ptHbb", "truth_ptHtautau"]
+
+variables = ["truth_mHH"]
 
 min_pT_recojets = ["100", "200", "300"] # in GeV
 #min_pT_recojets = ["100"] # in MeV  

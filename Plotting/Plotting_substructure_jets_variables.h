@@ -269,8 +269,8 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
   hist_resolved->SetLineColor(2);
 
   // Step 1: Normalize the histograms manually (or use DrawNormalized to visualize them directly).
-  hist_boosted->Scale(1.0 / hist_boosted->Integral());
-  hist_resolved->Scale(1.0 / hist_resolved->Integral());
+  //hist_boosted->Scale(1.0 / hist_boosted->Integral());
+  //hist_resolved->Scale(1.0 / hist_resolved->Integral());
 
   // Step 2: Get the maximum value of each histogram after normalization.
   double max_boosted = hist_boosted->GetMaximum();

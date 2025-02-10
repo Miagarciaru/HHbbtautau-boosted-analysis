@@ -170,8 +170,16 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
 void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, const std::string& min_pT,
 			     std::unordered_map<std::string, std::vector<TEfficiency>>& efficiency_map, bool proper){
   
-  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
+  //string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
 
+  //string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis_with_taggerHbb_and_nsubjetiness_cuts/";
+
+  //string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis_with_taggerHbb/";
+
+  //string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis_with_nsubjetiness/";
+
+  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis_only_minpT/";
+  
   gROOT->SetBatch(kTRUE);
   
   for (const auto& sample : sampleFiles){

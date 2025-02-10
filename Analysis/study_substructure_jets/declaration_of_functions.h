@@ -168,7 +168,6 @@ void fill_boosted_events_histograms_acceptance_ratios(float min_pT_cut_in_MeV){
   float value_phbb = 0;
   
   for(int ii=0; ii<recojet_antikt10UFO_GN2Xv01_phbb->size(); ii++){
-    //value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1truth_recoak10_dRmin);
     value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
     if(value_phbb >= min_tagger_Hbb_value){
       cut_tagger_Hbb = true;
@@ -176,31 +175,22 @@ void fill_boosted_events_histograms_acceptance_ratios(float min_pT_cut_in_MeV){
     }
   }
 
-  float max_nsubjetiness_value = 0.45;
-  bool cut_nsubjetiness = false;
+  float max_nsubjetiness_value = 0.60;
+  bool cut_nsubjetiness = true;
   float tau_n2_over_n1_subjettiness = 0;
-
+  
   for(int ii=0; ii < recojet_antikt10UFO_Tau2_wta->size(); ii++){
     tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
     if(tau_n2_over_n1_subjettiness <= max_nsubjetiness_value){
-      cut_nsubjetiness = true;
+      cut_nsubjetiness = false;
       break;
     }
   }
-  
-  /*
-  if( (class_event == 2) || (class_event == 3) ){
-    // For class 2 and 3 we have Bbb. Then the cut on phbb should be applied to the boosted recojet (idx 1 or 2, both are the same in this case)
-    float value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1truth_recoak10_dRmin);
-    if( value_phbb >= min_tagger_Hbb_value){
-      cut_tagger_Hbb = true;
-    }
-  }
-  */
 
-  
+  //if( min_pT_matched_objects_recojets_MeV >= min_pT_cut_in_MeV ){
   if( (min_pT_matched_objects_recojets_MeV >= min_pT_cut_in_MeV) && (cut_tagger_Hbb == true) && (cut_nsubjetiness = true) ){
-    
+    //if( (min_pT_matched_objects_recojets_MeV >= min_pT_cut_in_MeV) && (cut_tagger_Hbb == true) ){
+    //if( (min_pT_matched_objects_recojets_MeV >= min_pT_cut_in_MeV) && (cut_nsubjetiness = true) ){
     if(class_event == 3){
       hist_acceptance_mHH_denominator_class3_r2->Fill(reco_bbtt_HH_m_BA/1000.);
       hist_acceptance_ptHbb_denominator_class3_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
@@ -506,127 +496,6 @@ void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, fl
     dR_min = -1;
   }
 }
-
-/*
-void define_truth_tau_and_b_jets(){
-  // set -99 to the truth variables
-  default_values_for_truth_variables();
-
-  if( truthjet_antikt4_HadronConeExclTruthLabelID->size()!=0 ){
-    
-    // Here we assume that all the jets are listed from the highest pT to the lowest pT
-    int index_b1 = 0;
-    int index_b2 = 0;
-    int index_tau1 = 0;
-    int index_tau2 = 0;
-    
-    int n_b = 0;
-    int n_tau = 0;
-    float leading_bjet_pt = 0;
-    float subleading_bjet_pt = 0;
-    float leading_taujet_pt = 0;
-    float subleading_taujet_pt = 0;
-    
-    // Here we save the information for the two possible bb and tautau for the leading and subleading jet pT
-    for(int ii=0; ii<truthjet_antikt4_HadronConeExclTruthLabelID->size(); ii++){
-      
-      if( TMath::Abs(truthjet_antikt4_HadronConeExclTruthLabelID->at(ii)) == 5 ){
-	n_b++;
-	if( subleading_bjet_pt < truthjet_antikt4_pt->at(ii) ){
-	  if( leading_bjet_pt < truthjet_antikt4_pt->at(ii) ){
-	    subleading_bjet_pt = leading_bjet_pt;
-	    leading_bjet_pt = truthjet_antikt4_pt->at(ii);
-	    index_b2 = index_b1;
-	    index_b1 = ii;
-	  }
-	  else{
-	    subleading_bjet_pt = truthjet_antikt4_pt->at(ii);
-	    index_b2 = ii;
-	  }
-	}
-      }
-      
-      else if( TMath::Abs(truthjet_antikt4_HadronConeExclTruthLabelID->at(ii)) == 15 ){
-	n_tau++;
-	if( subleading_taujet_pt < truthjet_antikt4_pt->at(ii) ){
-	  if( leading_taujet_pt < truthjet_antikt4_pt->at(ii) ){
-	    subleading_taujet_pt = leading_taujet_pt;
-	    leading_taujet_pt = truthjet_antikt4_pt->at(ii);
-	    index_tau2 = index_tau1;
-	    index_tau1 = ii;
-	  }
-	  else{
-	    subleading_taujet_pt = truthjet_antikt4_pt->at(ii);
-	    index_tau2 = ii;
-	  }
-	}
-      }
-      
-      else{
-	continue;
-      }
-    }
-    
-    // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1bb_H2tautau scenario
-    if( (n_b>=2) && (n_tau>=2) ){
-      truth_b1_pt = truthjet_antikt4_pt->at(index_b1);
-      truth_b1_eta = truthjet_antikt4_eta->at(index_b1);
-      truth_b1_phi = truthjet_antikt4_phi->at(index_b1);
-      truth_b1_m = truthjet_antikt4_m->at(index_b1);
-
-      truth_b2_pt = truthjet_antikt4_pt->at(index_b2);
-      truth_b2_eta = truthjet_antikt4_eta->at(index_b2);
-      truth_b2_phi = truthjet_antikt4_phi->at(index_b2);
-      truth_b2_m = truthjet_antikt4_m->at(index_b2);
-
-      truth_tau1_pt = truthjet_antikt4_pt->at(index_tau1);
-      truth_tau1_eta = truthjet_antikt4_eta->at(index_tau1);
-      truth_tau1_phi = truthjet_antikt4_phi->at(index_tau1);
-      truth_tau1_m = truthjet_antikt4_m->at(index_tau1);
-
-      truth_tau2_pt = truthjet_antikt4_pt->at(index_tau2);
-      truth_tau2_eta = truthjet_antikt4_eta->at(index_tau2);
-      truth_tau2_phi = truthjet_antikt4_phi->at(index_tau2);
-      truth_tau2_m = truthjet_antikt4_m->at(index_tau2);
-
-      TLorentzVector b1_jet  = TLorentzVector();
-      TLorentzVector b2_jet  = TLorentzVector();
-      TLorentzVector bb_jet  = TLorentzVector();
-      
-      b1_jet.SetPtEtaPhiM(truth_b1_pt, truth_b1_eta, truth_b1_phi, truth_b1_m);
-      b2_jet.SetPtEtaPhiM(truth_b2_pt, truth_b2_eta, truth_b2_phi, truth_b2_m);
-      bb_jet = b1_jet + b2_jet;
-
-      truth_bb_pt = bb_jet.Pt();
-      truth_bb_eta = bb_jet.Eta();
-      truth_bb_phi = bb_jet.Phi();
-      truth_bb_m = bb_jet.M();
-
-      TLorentzVector tau1_jet  = TLorentzVector();
-      TLorentzVector tau2_jet  = TLorentzVector();
-      TLorentzVector tautau_jet  = TLorentzVector();
-      
-      tau1_jet.SetPtEtaPhiM(truth_tau1_pt, truth_tau1_eta, truth_tau1_phi, truth_tau1_m);
-      tau2_jet.SetPtEtaPhiM(truth_tau2_pt, truth_tau2_eta, truth_tau2_phi, truth_tau2_m);
-      tautau_jet = tau1_jet + tau2_jet;
-
-      truth_tautau_pt = tautau_jet.Pt();
-      truth_tautau_eta = tautau_jet.Eta();
-      truth_tautau_phi = tautau_jet.Phi();
-      truth_tautau_m = tautau_jet.M();
-      
-      TLorentzVector HH_jet  = TLorentzVector();
-      HH_jet = bb_jet + tautau_jet;
-
-      truth_HH_pt = HH_jet.Pt();
-      truth_HH_eta = HH_jet.Eta();
-      truth_HH_phi = HH_jet.Phi();
-      truth_HH_m = HH_jet.M();
-      
-    }
-  }
-}
-*/
 
 void define_truth_tau_and_b_jets(){
 
