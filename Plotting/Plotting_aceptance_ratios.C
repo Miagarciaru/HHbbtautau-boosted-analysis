@@ -18,9 +18,9 @@ void Plotting_aceptance_ratios(string nameVar, string min_pT){
   plotEfficiencies(sample_files, "r2" , nameVar, min_pT, efficiency_map_proper_ratios, proper);
   plotEfficiencies(sample_files, "r3" , nameVar, min_pT, efficiency_map_proper_ratios, proper);
   plotEfficiencies(sample_files, "r4" , nameVar, min_pT, efficiency_map_proper_ratios, proper);
-
+  
   // Only boosted ratios
-
+  /*
   proper = false;
   
   initializeMapRatiosInfo(sample_files, nameVar, min_pT, efficiency_map_only_boosted_ratios, proper);
@@ -29,5 +29,5 @@ void Plotting_aceptance_ratios(string nameVar, string min_pT){
   plotEfficiencies(sample_files, "r2" , nameVar, min_pT, efficiency_map_only_boosted_ratios, proper);
   plotEfficiencies(sample_files, "r3" , nameVar, min_pT, efficiency_map_only_boosted_ratios, proper);
   plotEfficiencies(sample_files, "r4" , nameVar, min_pT, efficiency_map_only_boosted_ratios, proper);
-    
+  */
 }

@@ -1,5 +1,6 @@
 #include "ratio_acceptances_reco_variables_histograms.h"
 #include "ratio_acceptances_truth_variables_histograms.h"
+#include "ratio_acceptances_preselected_events_variables_histograms.h"
 
 // *************************************
 // Declaration of useful structures
@@ -149,7 +150,7 @@ Float_t reco_bbtt_HH_phi_BA;
 Float_t reco_bbtt_HH_m_BA;
 
 int class_event;
-
+bool passed_preselection;
 
 // Declaration of the resolved variables results
 
@@ -266,6 +267,7 @@ TBranch *b_truth_boosted_tautau;
 TBranch *b_truth_resolved_bb;
 TBranch *b_truth_resolved_tautau;
 TBranch *b_class_event;
+TBranch *b_passed_preselection;
 
 // Declaration of the resolved variables results
 
