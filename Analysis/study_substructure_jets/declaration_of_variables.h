@@ -150,7 +150,31 @@ Float_t reco_bbtt_HH_phi_BA;
 Float_t reco_bbtt_HH_m_BA;
 
 int class_event;
+
+//Declaration of preselected events
+
+Int_t idx_b1_preselected;
+Int_t idx_b2_preselected;
+Int_t idx_tau1_preselected;
+Int_t idx_tau2_preselected;
+
+Float_t preselected_bb_pt;
+Float_t preselected_bb_eta;
+Float_t preselected_bb_phi;
+Float_t preselected_bb_m;
+
+Float_t preselected_tautau_pt;
+Float_t preselected_tautau_eta;
+Float_t preselected_tautau_phi;
+Float_t preselected_tautau_m;
+
+Float_t preselected_HH_pt;
+Float_t preselected_HH_eta;
+Float_t preselected_HH_phi;
+Float_t preselected_HH_m;
+
 bool passed_preselection;
+bool matched_preselection; // Tell us if the bb and tautau objects were defined with the preselection cuts on recovariables
 
 // Declaration of the resolved variables results
 

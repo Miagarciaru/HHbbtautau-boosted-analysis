@@ -133,7 +133,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   leg->Draw();
 
   string description1 = "";
-  string description2 = "For min p_{T} "+min_pT+"GeV";
+  string description2 = "For min p_{T} > "+min_pT+"GeV";
   string description3 = "For cut phbb > 0.85";
   string description4 = "For cut n2/n1 subjetiness < 0.45";
   
@@ -169,7 +169,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
 // Initialize the ap_ratios_info
 void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, const std::string& min_pT, std::unordered_map<std::string, std::vector<TEfficiency>>& efficiency_map, bool proper){
   
-  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/analysis_feb17/only_pT_cut/";
+  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/analysis_feb17/pT_and_Hbb_tagger_cuts/";
 
   gROOT->SetBatch(kTRUE);
   
