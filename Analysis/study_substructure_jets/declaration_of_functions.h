@@ -19,7 +19,8 @@ void compute_dR_min_index_fat_jets();
 void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m);
 void deltaR(float &dR, float jet1_pt, float jet1_eta, float jet1_phi, float jet1_m, float jet2_pt, float jet2_eta, float jet2_phi, float jet2_m);
 void define_truth_tau_and_b_jets();
-void fill_histograms();
+void fill_histograms_matched_truth_recojets();
+void fill_histograms_preselected_jets();
 void set_branch_address_inTree(TTree *inTree);
 void define_output_branches(TTree *outTree);
 void print_list_of_branches(TTree* tree);
@@ -75,13 +76,17 @@ void process_label(TString name_sample, const std::string& min_pT_recojets_str){
 
 void define_preselected_events(){
 
-  float min_tagger_Hbb_value = 0.85;
-  float max_nsubjetiness_value_for_tautau = 0.30;
+  matched_preselection = false;
   
-  if(passed_preselection == true){
+  if( recojet_antikt10UFO_NOSYS_pt->size() >= 2){
 
+    float min_tagger_Hbb_value = 0.85;
     float value_phbb_current = 0;
-    float value_phbb_previous = 0;
+    float value_phbb_previous = min_tagger_Hbb_value;
+    float max_nsubjetiness_value_for_bb = 0.45;
+    float tau_n2_over_n1_subjettiness_bb_current = 1.0;
+    float tau_n2_over_n1_subjettiness_bb_previous = 1.0;
+    float min_nsubjetiness_value_for_bb = 0.05;
 
     bool matched_preselected_bb = false;
     
@@ -90,24 +95,32 @@ void define_preselected_events(){
       value_phbb_current = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
       if(value_phbb_current >= min_tagger_Hbb_value){
 	if(value_phbb_current >= value_phbb_previous){
-	  value_phbb_previous = value_phbb_current;
-	  idx_b1_preselected = ii;
-	  matched_preselected_bb = true;
+	  tau_n2_over_n1_subjettiness_bb_current = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
+	  if( (tau_n2_over_n1_subjettiness_bb_current <= max_nsubjetiness_value_for_bb) && (tau_n2_over_n1_subjettiness_bb_current >= min_nsubjetiness_value_for_bb) ){
+	    if(tau_n2_over_n1_subjettiness_bb_current <= tau_n2_over_n1_subjettiness_bb_previous){
+	      tau_n2_over_n1_subjettiness_bb_previous = tau_n2_over_n1_subjettiness_bb_current;
+	      value_phbb_previous = value_phbb_current;
+	      idx_b1_preselected = ii;
+	      matched_preselected_bb = true;
+	    }
+	  }
 	}
       }
     }
 
-    float tau_n2_over_n1_subjettiness_current = 1.0;
-    float tau_n2_over_n1_subjettiness_previous = 1.0;
+    float max_nsubjetiness_value_for_tautau = 0.30;
+    float tau_n2_over_n1_subjettiness_tautau_current = 1.0;
+    float tau_n2_over_n1_subjettiness_tautau_previous = 1.0;
+    float min_nsubjetiness_value_for_tautau = 0.05;
     bool matched_preselected_tautau = false;
     
     if(matched_preselected_bb == true){
       for(Int_t ii=0; ii < recojet_antikt10UFO_Tau2_wta->size(); ii++){
 	if( ii != idx_b1_preselected ){
-	  tau_n2_over_n1_subjettiness_current = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
-	  if( (tau_n2_over_n1_subjettiness_current <= max_nsubjetiness_value_for_tautau) && (tau_n2_over_n1_subjettiness_current >= 0.05) ){
-	    if(tau_n2_over_n1_subjettiness_current <= tau_n2_over_n1_subjettiness_previous){
-	      tau_n2_over_n1_subjettiness_previous == tau_n2_over_n1_subjettiness_current;
+	  tau_n2_over_n1_subjettiness_tautau_current = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
+	  if( (tau_n2_over_n1_subjettiness_tautau_current <= max_nsubjetiness_value_for_tautau) && (tau_n2_over_n1_subjettiness_tautau_current >= min_nsubjetiness_value_for_tautau) ){
+	    if(tau_n2_over_n1_subjettiness_tautau_current <= tau_n2_over_n1_subjettiness_tautau_previous){
+	      tau_n2_over_n1_subjettiness_tautau_previous = tau_n2_over_n1_subjettiness_tautau_current;
 	      idx_tau1_preselected = ii;
 	      matched_preselected_tautau = true;
 	    }
@@ -115,50 +128,56 @@ void define_preselected_events(){
 	}
       }
     }
-
+    
     if( (matched_preselected_bb == true) && (matched_preselected_tautau == true) ){
       matched_preselection = true;
     }
+
+    // Save the values for bb, tautau and HH objects if it was posible to find the preselected bb and tautau boosted jets
+    if( matched_preselection == true ){
+
+      TLorentzVector bb = TLorentzVector();
+      TLorentzVector tautau = TLorentzVector();
+      TLorentzVector HH = TLorentzVector();
+      
+      preselected_bb_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_b1_preselected);
+      preselected_bb_eta = recojet_antikt10UFO_eta->at(idx_b1_preselected);
+      preselected_bb_phi = recojet_antikt10UFO_phi->at(idx_b1_preselected);
+      preselected_bb_m = recojet_antikt10UFO_m->at(idx_b1_preselected);
+      
+      preselected_tautau_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_tau1_preselected);
+      preselected_tautau_eta = recojet_antikt10UFO_eta->at(idx_tau1_preselected);
+      preselected_tautau_phi = recojet_antikt10UFO_phi->at(idx_tau1_preselected);
+      preselected_tautau_m = recojet_antikt10UFO_m->at(idx_tau1_preselected);
+      
+      bb.SetPtEtaPhiM(preselected_bb_pt, preselected_bb_eta, preselected_bb_phi, preselected_bb_m);
+      tautau.SetPtEtaPhiM(preselected_tautau_pt, preselected_tautau_eta, preselected_tautau_phi, preselected_tautau_m);
+      
+      HH = bb + tautau;
+      
+      preselected_HH_pt = HH.Pt();
+      preselected_HH_eta = HH.Eta();
+      preselected_HH_phi = HH.Phi();
+      preselected_HH_m = HH.M();	
+      
+    }
+    // Save the default values if it was not possible to find the bb and tautau objects
+    if( matched_preselection == false ){
+      default_values_for_preselected_variables();
+    }
   }
-
-  if( (passed_preselection == true) && (matched_preselection == true) ){
-
-    TLorentzVector bb = TLorentzVector();
-    TLorentzVector tautau = TLorentzVector();
-    TLorentzVector HH = TLorentzVector();
-    
-    preselected_bb_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_b1_preselected);
-    preselected_bb_eta = recojet_antikt10UFO_eta->at(idx_b1_preselected);
-    preselected_bb_phi = recojet_antikt10UFO_phi->at(idx_b1_preselected);
-    preselected_bb_m = recojet_antikt10UFO_m->at(idx_b1_preselected);
-
-    preselected_tautau_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_tau1_preselected);
-    preselected_tautau_eta = recojet_antikt10UFO_eta->at(idx_tau1_preselected);
-    preselected_tautau_phi = recojet_antikt10UFO_phi->at(idx_tau1_preselected);
-    preselected_tautau_m = recojet_antikt10UFO_m->at(idx_tau1_preselected);
-    
-    bb.SetPtEtaPhiM(preselected_bb_pt, preselected_bb_eta, preselected_bb_phi, preselected_bb_m);
-    tautau.SetPtEtaPhiM(preselected_tautau_pt, preselected_tautau_eta, preselected_tautau_phi, preselected_tautau_m);
-
-    HH = bb + tautau;
-    
-    preselected_HH_pt = HH.Pt();
-    preselected_HH_eta = HH.Eta();
-    preselected_HH_phi = HH.Phi();
-    preselected_HH_m = HH.M();	
-
-  }
-  else{
+  // Save the default values if it the fisrt preselection was not passed
+  if( matched_preselection == false ){
     default_values_for_preselected_variables();
   }
-  
 }
 
 
 void apply_preselection(float min_pT_cut_in_MeV){
 
-  // min_pT_cut_in_MeV
-
+  // default value for the preselection
+  passed_preselection = false;
+  
   bool min_pT_cut = false;
   
   float min_pT_recojets_MeV = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
@@ -166,42 +185,14 @@ void apply_preselection(float min_pT_cut_in_MeV){
   if( min_pT_recojets_MeV >= min_pT_cut_in_MeV ){
     min_pT_cut = true;
   }
-  
-  float min_tagger_Hbb_value = 0.85;
-  bool cut_tagger_Hbb = false;
-  float value_phbb = 0;
-  
-  for(int ii=0; ii<recojet_antikt10UFO_GN2Xv01_phbb->size(); ii++){
-    value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
-    if(value_phbb >= min_tagger_Hbb_value){
-      cut_tagger_Hbb = true;
-      break;
-    }
-  }
-  
-  float max_nsubjetiness_value = 0.60;
-  bool cut_nsubjetiness = true;
-  float tau_n2_over_n1_subjettiness = 0;
-  
-  for(int ii=0; ii < recojet_antikt10UFO_Tau2_wta->size(); ii++){
-    tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
-    if(tau_n2_over_n1_subjettiness <= max_nsubjetiness_value){
-      cut_nsubjetiness = false;
-      break;
-    }
-  }
 
   bool recojets_number_condition = true;
   if( recojet_antikt10UFO_NOSYS_pt->size() < 2){
     recojets_number_condition = false;
   }
   
-  if( (min_pT_recojets_MeV >= min_pT_cut_in_MeV) && (cut_tagger_Hbb == true) && (recojets_number_condition==true) ){
-    //if( (min_pT_recojets_MeV >= min_pT_cut_in_MeV) ){
+  if( (min_pT_recojets_MeV >= min_pT_cut_in_MeV) && (recojets_number_condition==true) ){
     passed_preselection = true;
-  }
-  else{
-    passed_preselection = false;
   }
   
 }
@@ -223,7 +214,7 @@ void fill_acceptance_ratios(){
   }
 
   // Preselected analysis events histograms
-  if(passed_preselection == true){
+  if(matched_preselection == true){
     fill_preselected_events_histograms_acceptance_ratios();
   }
 
@@ -251,6 +242,7 @@ void fill_all_events_histograms_acceptance_ratios(){
   hist_acceptance_truth_phiHtautau_denominator_r3_r4->Fill(truth_tautau_phi);
 
   // preselected events variables
+  
   hist_acceptance_preselected_mHH_denominator_r3_r4->Fill(preselected_HH_m/1000.);
   hist_acceptance_preselected_ptHH_denominator_r3_r4->Fill(preselected_HH_pt/1000.);
   hist_acceptance_preselected_etaHH_denominator_r3_r4->Fill(preselected_HH_eta);
@@ -376,7 +368,7 @@ void fill_preselected_events_histograms_acceptance_ratios(){
   
   // Overlap region
   // Rbb-Rtautau
-  if( (bbtt_HH_vis_m > 0) && (passed_preselection == true) && (matched_preselection == true) ){ // Events being selected bythe resolved selection and the boosted analysis
+  if( (bbtt_HH_vis_m > 0) && (passed_preselection == true) ){ // Events being selected bythe resolved selection and the boosted analysis
     
     hist_acceptance_preselected_mHH_numerator_class3_r1_r2->Fill(preselected_HH_m/1000.);
     hist_acceptance_preselected_ptHH_numerator_class3_r1_r2->Fill(preselected_HH_pt/1000.);
@@ -835,7 +827,7 @@ void define_truth_tau_and_b_jets(){
 
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions
 // for the two configurations, boosted and resolved
-void fill_histograms(){
+void fill_histograms_matched_truth_recojets(){
   
   //**********************************************
   // Filling the mass, pT and eta distributions of the boosted bb and tautau objects
@@ -1018,6 +1010,43 @@ void fill_histograms(){
     hist_truth_HH_m->Fill(truth_HH_m/1000.);
     hist_computed_HH_m->Fill(reco_bbtt_HH_m_BA/1000.);
   }
+}
+
+
+void fill_histograms_preselected_jets(){
+  
+  //**********************************************
+  // Filling the mass, pT and eta distributions of the boosted bb and tautau objects
+  //**********************************************
+ 
+  if(matched_preselection == true){
+
+    // Fill m, pt, eta... distributions of those recojets that were preselected matched to be boosted bb
+    
+    float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b1_preselected)/recojet_antikt10UFO_Tau1_wta->at(idx_b1_preselected);
+    
+    hist_matched_preselected_bb_m->Fill(recojet_antikt10UFO_m->at(idx_b1_preselected)/1000.);
+    hist_matched_preselected_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1_preselected)/1000.);
+    hist_matched_preselected_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b1_preselected));
+    hist_matched_preselected_bb_phi->Fill(recojet_antikt10UFO_phi->at(idx_b1_preselected));
+    
+    hist_matched_preselected_bb_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+    hist_matched_preselected_bb_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1_preselected));
+
+
+    // Fill m, pt, eta... distributions of those recojets that were preselected matched to be boosted tautau
+    
+    tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_tau1_preselected)/recojet_antikt10UFO_Tau1_wta->at(idx_tau1_preselected);
+    
+    hist_matched_preselected_tautau_m->Fill(recojet_antikt10UFO_m->at(idx_tau1_preselected)/1000.);
+    hist_matched_preselected_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1_preselected)/1000.);
+    hist_matched_preselected_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau1_preselected));
+    hist_matched_preselected_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau1_preselected));
+    
+    hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+    hist_matched_preselected_tautau_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau1_preselected));
+    
+  } 
 }
 
 
@@ -1248,7 +1277,6 @@ void write_histograms(){
   hist_matched_recojet_bb_dR->Write();
   hist_matched_recojet_tautau_dR->Write();
 
-  
   //non_matched_recojets_histograms
   
   hist_non_matched_recojet_bb_m->Write();
@@ -1279,6 +1307,23 @@ void write_histograms(){
   hist2d_dR_per_class_bb->Write();
   hist2d_dR_per_class_tautau->Write();
 
+  //matched_preselected_histograms
+  
+  hist_matched_preselected_bb_m->Write();
+  hist_matched_preselected_tautau_m->Write();
+  hist_matched_preselected_bb_pt->Write();
+  hist_matched_preselected_tautau_pt->Write();
+  hist_matched_preselected_bb_eta->Write();
+  hist_matched_preselected_tautau_eta->Write();
+  hist_matched_preselected_bb_phi->Write();
+  hist_matched_preselected_tautau_phi->Write();
+  
+  hist_matched_preselected_bb_tau_n2_over_n1_subjettiness->Write();
+  hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness->Write();
+
+  hist_matched_preselected_bb_ak10_GN2Xv01_phbb->Write();
+  hist_matched_preselected_tautau_ak10_GN2Xv01_phbb->Write();
+  
   //comparison_histograms
   hist_truth_HH_pt->Write();
   hist_computed_HH_pt->Write();
@@ -1765,8 +1810,6 @@ void write_histograms(){
   hist_acceptance_truth_phiHtautau_numerator_class3_r4->Write();
 
 
-
-
   // ratios r3 and r4 for preselected truth mHH
   hist_acceptance_preselected_mHH_numerator_r3->Write();
   hist_acceptance_preselected_mHH_denominator_r3_r4->Write();
@@ -2005,7 +2048,7 @@ es)" << endl;
   cout << "The sum of all the events which were correctly classified with resolved and boosted bb and tautau jets: " << sum_truth_matching_events << " (" << 100.0*sum_truth_matching_events/nentries << "% of the total entries)" << endl;
 
   cout << "Total entries: " << nentries << endl;
-
+  /*
   cout << "Number of events that passed the resolved selection (counting b1_pt positive values): " << count_pos_resolved_b1_config << endl;
   cout << "Number of events that passed the resolved selection (counting b2_pt positive values): " << count_pos_resolved_b2_config << endl;
   cout << "Number of events that passed the resolved selection (counting tau1_pt positive values): " << count_pos_resolved_tau1_config << endl;
@@ -2016,13 +2059,15 @@ es)" << endl;
   cout << "Number of events that passed the resolved selection (counting bbtt_HH_m positive values): " << count_pos_resolved_HH_m_config << endl;
 
   cout << "Number of events that passed the resolved selection (counting bbtt_HH_vis_pt positive values): " << count_pos_resolved_HH_vis_pt_config << endl;
-
+  */
+  
   cout << "Number of events that passed the resolved selection (counting bbtt_HH_vis_m positive values): " << count_pos_resolved_HH_vis_m_config << endl;
 
+  /*
   cout << "Number of events that passed the resolved selection (counting all possible objects values): " << count_all_objects_resolved_config << endl;
 
   cout << "The number of positive values for truth_HH_pt is: " << count_truth_HH_pt_pos_values << endl;
 
   cout << "The number of positive values for truth_HH_m is: " << count_truth_HH_m_pos_values << endl;
-
+  */
 }

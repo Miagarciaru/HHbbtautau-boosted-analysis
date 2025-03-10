@@ -45,6 +45,9 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   int b_tau_matched_jets = 0;
   int matched_events = 0;
   int diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt = 0;
+  int matched_preselected_events = 0;
+  int overlap_resolved_and_preselected = 0;
+
   
   // Convert char* to float using std::atof()
   float min_pT_recojet_cut_MeV = 1000*std::stoi(min_pT); // min pT in MeV
@@ -56,14 +59,24 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     compute_dR_min_index_fat_jets();
     define_classes();
     define_reconstructed_objects();
-
+    define_preselected_events();
     apply_preselection(min_pT_recojet_cut_MeV);
+    
     fill_acceptance_ratios();
 
     if(passed_preselection == true){
-      fill_histograms();
+      fill_histograms_matched_truth_recojets();
+      fill_histograms_preselected_jets();
     }
-    
+
+    if(matched_preselection == true){
+      matched_preselected_events++;
+    }
+
+    if( (matched_preselection == true) && (bbtt_HH_vis_m > 0) && (passed_preselection == true) ){
+      overlap_resolved_and_preselected++;
+    }
+      
     int size_Tau1_wta = recojet_antikt10UFO_Tau2_wta->size();
     //int size_Tau1_wta = tau_nProng->size();
     int size_NOSYS_pt = recojet_antikt10UFO_NOSYS_pt->size();
@@ -94,14 +107,17 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
  
   }
 
+  cout << "Entries: " << nentries << endl;
   cout << "Matched truth events number is: " << matched_truth_events << endl;
   cout << "Number of events where the order of the two b is wrong: " << bad_bjets_pt_selection << endl;
   cout << "Number of events where the order of the two tau is wrong: " << bad_taujets_pt_selection << endl;
   cout << "Number of events with a b and tau jets matched: " << b_tau_matched_jets << endl;
   cout << "Number of matched events: " << matched_events << endl;
   cout << "Number of events with different sizes on pt and tau1 n subjettiness: " << diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt << endl;
+  cout << "Number of matched preselected events: " << matched_preselected_events << endl;
+  cout << "Relative difference between preselected and all events: " << TMath::Abs(matched_preselected_events-nentries)/nentries << endl;
+  cout << "Overlap between resolved selection and the preselection events: " << overlap_resolved_and_preselected << endl;
   
-    
   //****************************************************
   //Save Histograms in the output root file
   //****************************************************
