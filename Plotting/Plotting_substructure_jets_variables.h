@@ -22,6 +22,14 @@ TH1F* hist_non_matched_recojet_pt_no_class;
 TH1F* hist_non_matched_recojet_eta_no_class;
 TH1F* hist_nevents_per_class;
 
+// preselected events for m, pT and eta
+TH1F* hist_matched_preselected_bb_m;
+TH1F* hist_matched_preselected_tautau_m;
+TH1F* hist_matched_preselected_bb_pt;
+TH1F* hist_matched_preselected_tautau_pt;
+TH1F* hist_matched_preselected_bb_eta;
+TH1F* hist_matched_preselected_tautau_eta;
+
 //tau_nProng histograms
 TH1F* hist_matched_recojet_bb_tau_n_prong;
 TH1F* hist_matched_recojet_tautau_tau_n_prong;
@@ -33,6 +41,9 @@ TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_phbb;
 TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_phbb;
 TH1F *hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb;
 TH1F *hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb;
+
+TH1F *hist_matched_preselected_bb_ak10_GN2Xv01_phbb;
+TH1F *hist_matched_preselected_tautau_ak10_GN2Xv01_phbb;
 
 //GN2X pqcd
 TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_pqcd;
@@ -57,6 +68,9 @@ TH1F* hist_matched_recojet_bb_tau_n2_over_n1_subjettiness;
 TH1F* hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
 TH1F* hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness;
 TH1F* hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
+
+TH1F* hist_matched_preselected_bb_tau_n2_over_n1_subjettiness;
+TH1F* hist_matched_preselected_recojet_tautau_tau_n2_over_n1_subjettiness;
 
 struct hist_ratios {
     TH1F* hist_num_for_r1;
@@ -105,9 +119,6 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
     cout << "The file has been read " << sample << endl;
   }
 
-  //hist_truth_b1_m = dynamic_cast<TH1F*>(file->Get(("hist_truth_b1_m")));
-  //hist_truth_b2_m = dynamic_cast<TH1F*>(file->Get(("hist_truth_b2_m")));
-  //hist_truth_b1_plus_b2_m = dynamic_cast<TH1F*>(file->Get(("hist_truth_b1_plus_b2_m")));
   hist_matched_recojet_bb_m = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_m")));
   hist_matched_recojet_tautau_m = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_m")));
   hist_matched_recojet_bb_pt = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_pt")));
@@ -116,6 +127,14 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
   hist_matched_recojet_tautau_eta = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_eta")));
   hist_matched_recojet_bb_dR = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_dR")));
   hist_matched_recojet_tautau_dR = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_dR")));
+
+  hist_matched_preselected_bb_m = dynamic_cast<TH1F*>(file->Get(("hist_matched_preselected_bb_m")));
+  hist_matched_preselected_tautau_m = dynamic_cast<TH1F*>(file->Get(("hist_matched_preselected_tautau_m")));
+  hist_matched_preselected_bb_pt = dynamic_cast<TH1F*>(file->Get(("hist_matched_preselected_bb_pt")));
+  hist_matched_preselected_tautau_pt = dynamic_cast<TH1F*>(file->Get(("hist_matched_preselected_tautau_pt")));
+  hist_matched_preselected_bb_eta = dynamic_cast<TH1F*>(file->Get(("hist_matched_preselected_bb_eta")));
+  hist_matched_preselected_tautau_eta = dynamic_cast<TH1F*>(file->Get(("hist_matched_preselected_tautau_eta")));
+  
   hist_non_matched_recojet_pt = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_pt")));
   hist_non_matched_recojet_eta = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_eta")));
   hist_non_matched_recojet_pt_no_class = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_pt_no_class")));
@@ -134,6 +153,9 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
   hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb")));
   hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb")));
 
+  hist_matched_preselected_bb_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_matched_preselected_bb_ak10_GN2Xv01_phbb")));
+  hist_matched_preselected_tautau_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_matched_preselected_tautau_ak10_GN2Xv01_phbb")));
+  
   //GN2X pqcd
   hist_matched_recojet_bb_ak10_GN2Xv01_pqcd = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_GN2Xv01_pqcd")));
   hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd")));
@@ -157,6 +179,9 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
   hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness")));
   hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness")));
   hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness")));
+
+  //hist_matched_preselected_bb_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_preselected_bb_tau_n2_over_n1_subjettiness")));
+  //hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness")));
   
   for(int ii=0; ii < list_of_histograms.size(); ii++){
     plot_distributions(list_of_histograms[ii], output_folder);
@@ -342,6 +367,15 @@ void plot_distributions(const std::string& name_plot, const std::string& output_
   if(name_plot == "non_matched_recojets_eta_no_class"){ hist = hist_non_matched_recojet_eta_no_class;}
 
   if(name_plot == "events_per_class"){ hist = hist_nevents_per_class;}
+
+  if(name_plot == "matched_preselected_bb_m"){ hist = hist_matched_preselected_bb_m;}
+  if(name_plot == "matched_preselected_tautau_m"){ hist = hist_matched_preselected_tautau_m;}
+  
+  if(name_plot == "matched_preselected_bb_pt"){ hist = hist_matched_preselected_bb_pt;}
+  if(name_plot == "matched_preselected_tautau_pt"){ hist = hist_matched_preselected_tautau_pt;}
+  
+  if(name_plot == "matched_preselected_bb_eta"){ hist = hist_matched_preselected_bb_eta;}
+  if(name_plot == "matched_preselected_tautau_eta"){ hist = hist_matched_preselected_tautau_eta;}
 
   double y_max = 1.25*hist->GetMaximum();
   
