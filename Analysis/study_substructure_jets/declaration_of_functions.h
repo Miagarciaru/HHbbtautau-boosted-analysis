@@ -76,6 +76,8 @@ void process_label(TString name_sample, const std::string& min_pT_recojets_str){
 
 void define_preselected_events(){
 
+  matched_preselected_bb = false;
+  matched_preselected_tautau = false;
   matched_preselection = false;
   
   if( recojet_antikt10UFO_NOSYS_pt->size() >= 2){
@@ -91,8 +93,6 @@ void define_preselected_events(){
     float max_pT_bb_current = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
     float max_pT_bb_previous = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
 
-    bool matched_preselected_bb = false;
-    
     //Selecting preselected boosted bb jet 
     for(Int_t ii=0; ii<recojet_antikt10UFO_GN2Xv01_phbb->size(); ii++){
       value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
@@ -103,6 +103,7 @@ void define_preselected_events(){
 	  if( max_pT_bb_current >= max_pT_bb_previous ){
 	    max_pT_bb_previous = max_pT_bb_current;
 	    idx_b1_preselected = ii;
+	    idx_b2_preselected = ii;
 	    matched_preselected_bb = true;
 	  }
 	}
@@ -117,8 +118,6 @@ void define_preselected_events(){
     float max_pT_tautau_current = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
     float max_pT_tautau_previous = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
     
-    bool matched_preselected_tautau = false;
-    
     if(matched_preselected_bb == true){
       for(Int_t ii=0; ii < recojet_antikt10UFO_Tau2_wta->size(); ii++){
 	if( ii != idx_b1_preselected ){
@@ -128,6 +127,7 @@ void define_preselected_events(){
 	    if( max_pT_bb_current >= max_pT_bb_previous ){
 	      max_pT_bb_previous = max_pT_bb_current; 
 	      idx_tau1_preselected = ii;
+	      idx_tau2_preselected = ii;
 	      matched_preselected_tautau = true;
 	    }
 	  }
@@ -1052,7 +1052,29 @@ void fill_histograms_preselected_jets(){
     hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
     hist_matched_preselected_tautau_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau1_preselected));
     
-  } 
+  }
+
+  // Fill number of jets with taggerHbb score >= 0.85 per event
+
+  float min_taggerHbb_score = 0.85;
+  int n_tagged_bb_jets = 0;
+  
+  for(Int_t ii=0; ii<recojet_antikt10UFO_GN2Xv01_phbb->size(); ii++){
+    if(recojet_antikt10UFO_GN2Xv01_phbb->at(ii) >= min_taggerHbb_score){
+      n_tagged_bb_jets++;
+    }
+  }
+  hist_taggedHbb_recojet_bb_per_event->Fill(n_tagged_bb_jets); 
+
+  // Fill n2/n1 subjettiness for non preselected boosted bb jets. This is done to known the distribution of possible candidates for boosted tautau when there is a matched preselection for Hbb
+
+  for(Int_t ii=0; ii<recojet_antikt10UFO_Tau2_wta->size(); ii++){
+    float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b1_preselected)/recojet_antikt10UFO_Tau1_wta->at(idx_b1_preselected);
+    if( ii != idx_b1_preselected ){
+      hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+    }
+  }
+  
 }
 
 
@@ -1216,7 +1238,31 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("reco_bbtt_tautau_m_BA", &reco_bbtt_tautau_m_BA);
 
   outTree->Branch("class_event", &class_event);
+
+  outTree->Branch("idx_b1_preselected", &idx_b1_preselected);
+  outTree->Branch("idx_b2_preselected", &idx_b2_preselected);
+  outTree->Branch("idx_tau1_preselected", &idx_tau1_preselected);
+  outTree->Branch("idx_tau2_preselected", &idx_tau2_preselected);
+
+  outTree->Branch("preselected_bb_pt", &preselected_bb_pt);
+  outTree->Branch("preselected_bb_eta", &preselected_bb_eta);
+  outTree->Branch("preselected_bb_phi", &preselected_bb_phi);
+  outTree->Branch("preselected_bb_m", &preselected_bb_m);
+
+  outTree->Branch("preselected_tautau_pt", &preselected_tautau_pt);
+  outTree->Branch("preselected_tautau_eta", &preselected_tautau_eta);
+  outTree->Branch("preselected_tautau_phi", &preselected_tautau_phi);
+  outTree->Branch("preselected_tautau_m", &preselected_tautau_m);
+  
+  outTree->Branch("preselected_HH_pt", &preselected_HH_pt);
+  outTree->Branch("preselected_HH_eta", &preselected_HH_eta);
+  outTree->Branch("preselected_HH_phi", &preselected_HH_phi);
+  outTree->Branch("preselected_HH_m", &preselected_HH_m);
+
   outTree->Branch("passed_preselection", &passed_preselection);
+  outTree->Branch("matched_preselection", &matched_preselection);
+  outTree->Branch("matched_preselected_bb", &matched_preselected_bb);
+  outTree->Branch("matched_preselected_tautau", &matched_preselected_tautau);
 
   outTree->Branch("bbtt_Jet_b1_pt_NOSYS_Resolved_Selection", &bbtt_Jet_b1_pt_NOSYS);
   outTree->Branch("bbtt_Jet_b1_eta_Resolved_Selection", &bbtt_Jet_b1_eta);
@@ -1313,6 +1359,9 @@ void write_histograms(){
   hist2d_dR_per_class_bb->Write();
   hist2d_dR_per_class_tautau->Write();
 
+  hist_taggedHbb_recojet_bb_per_event->Write();
+  hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness->Write();
+  
   //matched_preselected_histograms
   
   hist_matched_preselected_bb_m->Write();

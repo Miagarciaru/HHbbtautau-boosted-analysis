@@ -175,6 +175,8 @@ Float_t preselected_HH_m;
 
 bool passed_preselection;
 bool matched_preselection; // Tell us if the bb and tautau objects were defined with the preselection cuts on recovariables
+bool matched_preselected_bb;
+bool matched_preselected_tautau;
 
 // Declaration of the resolved variables results
 
@@ -291,7 +293,31 @@ TBranch *b_truth_boosted_tautau;
 TBranch *b_truth_resolved_bb;
 TBranch *b_truth_resolved_tautau;
 TBranch *b_class_event;
+
+TBranch *b_idx_b1_preselected;
+TBranch *b_idx_b2_preselected;
+TBranch *b_idx_tau1_preselected;
+TBranch *b_idx_tau2_preselected;
+
+TBranch *b_preselected_bb_pt;
+TBranch *b_preselected_bb_eta;
+TBranch *b_preselected_bb_phi;
+TBranch *b_preselected_bb_m;
+
+TBranch *b_preselected_tautau_pt;
+TBranch *b_preselected_tautau_eta;
+TBranch *b_preselected_tautau_phi;
+TBranch *b_preselected_tautau_m;
+
+TBranch *b_preselected_HH_pt;
+TBranch *b_preselected_HH_eta;
+TBranch *b_preselected_HH_phi;
+TBranch *b_preselected_HH_m;
+
 TBranch *b_passed_preselection;
+TBranch *b_matched_preselection;
+TBranch *b_matched_preselected_bb;
+TBranch *b_matched_preselected_tautau;
 
 // Declaration of the resolved variables results
 
@@ -340,6 +366,9 @@ TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_phbb = new TH1F("hist_matched_rec
 TH1F *hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb = new TH1F("hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb", "GN2X phbb for jets with one b; GN2X phbb Score;Events", 25, 0, 1);
 TH1F *hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb = new TH1F("hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb", "GN2X phbb for jets with only one #tau; GN2X phbb Score;Events", 25, 0, 1);
 
+TH1F *hist_taggedHbb_recojet_bb_per_event = new TH1F("hist_taggedHbb_recojet_bb_per_event", "Number of tagged boosted bb jets per event; Number of boosted bb; Events", 10, 0, 10);
+
+
 // pqcd GN2X
 TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_pqcd = new TH1F("hist_matched_recojet_bb_ak10_GN2Xv01_pqcd", "GN2X pqcd for boosted bb jets; GN2X pqcd Score;Events", 25, 0, 1);
 TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd = new TH1F("hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd", "GN2X pqcd for boosted tautau jets; GN2X pqcd Score;Events", 25, 0, 1);
@@ -378,6 +407,7 @@ TH1F *hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness = new TH1F("hist_m
 TH1F *hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness = new TH1F("hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness", "Tau n2/n1 subjettiness for jets with one b; #tau n2/n1_subjettiness;Events", 50, 0, 1);
 TH1F *hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness = new TH1F("hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness", "Tau n2/n1 subjettiness for jets with one #tau; #tau n2/n1_subjettiness;Events", 50, 0, 1);
 
+TH1F *hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness = new TH1F("hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness", "Tau n2/n1 subjettiness for possible candidates for preselected boosted #tau#tau jets; #tau n2/n1_subjettiness; Events", 50, 0, 1);
 
 // Declaration of histograms for truth b-jets variables
 
