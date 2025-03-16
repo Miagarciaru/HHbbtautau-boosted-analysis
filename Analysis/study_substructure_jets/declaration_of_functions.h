@@ -81,46 +81,52 @@ void define_preselected_events(){
   if( recojet_antikt10UFO_NOSYS_pt->size() >= 2){
 
     float min_tagger_Hbb_value = 0.85;
-    float value_phbb_current = 0;
-    float value_phbb_previous = min_tagger_Hbb_value;
+    float value_phbb = 0;
+   
     float max_nsubjetiness_value_for_bb = 0.45;
-    float tau_n2_over_n1_subjettiness_bb_current = 1.0;
-    float tau_n2_over_n1_subjettiness_bb_previous = 1.0;
     float min_nsubjetiness_value_for_bb = 0.05;
+
+    float tau_n2_over_n1_subjettiness_bb = 0;
+    
+    float max_pT_bb_current = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
+    float max_pT_bb_previous = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
 
     bool matched_preselected_bb = false;
     
     //Selecting preselected boosted bb jet 
     for(Int_t ii=0; ii<recojet_antikt10UFO_GN2Xv01_phbb->size(); ii++){
-      value_phbb_current = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
-      if(value_phbb_current >= min_tagger_Hbb_value){
-	if(value_phbb_current >= value_phbb_previous){
-	  tau_n2_over_n1_subjettiness_bb_current = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
-	  if( (tau_n2_over_n1_subjettiness_bb_current <= max_nsubjetiness_value_for_bb) && (tau_n2_over_n1_subjettiness_bb_current >= min_nsubjetiness_value_for_bb) ){
-	    if(tau_n2_over_n1_subjettiness_bb_current <= tau_n2_over_n1_subjettiness_bb_previous){
-	      tau_n2_over_n1_subjettiness_bb_previous = tau_n2_over_n1_subjettiness_bb_current;
-	      value_phbb_previous = value_phbb_current;
-	      idx_b1_preselected = ii;
-	      matched_preselected_bb = true;
-	    }
+      value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
+      if(value_phbb >= min_tagger_Hbb_value){
+	tau_n2_over_n1_subjettiness_bb = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
+	if( (tau_n2_over_n1_subjettiness_bb <= max_nsubjetiness_value_for_bb) && (tau_n2_over_n1_subjettiness_bb >= min_nsubjetiness_value_for_bb) ){
+	  max_pT_bb_current = recojet_antikt10UFO_NOSYS_pt->at(ii);
+	  if( max_pT_bb_current >= max_pT_bb_previous ){
+	    max_pT_bb_previous = max_pT_bb_current;
+	    idx_b1_preselected = ii;
+	    matched_preselected_bb = true;
 	  }
 	}
       }
     }
 
     float max_nsubjetiness_value_for_tautau = 0.30;
-    float tau_n2_over_n1_subjettiness_tautau_current = 1.0;
-    float tau_n2_over_n1_subjettiness_tautau_previous = 1.0;
     float min_nsubjetiness_value_for_tautau = 0.05;
+
+    float tau_n2_over_n1_subjettiness_tautau = 0;
+
+    float max_pT_tautau_current = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
+    float max_pT_tautau_previous = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
+    
     bool matched_preselected_tautau = false;
     
     if(matched_preselected_bb == true){
       for(Int_t ii=0; ii < recojet_antikt10UFO_Tau2_wta->size(); ii++){
 	if( ii != idx_b1_preselected ){
-	  tau_n2_over_n1_subjettiness_tautau_current = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
-	  if( (tau_n2_over_n1_subjettiness_tautau_current <= max_nsubjetiness_value_for_tautau) && (tau_n2_over_n1_subjettiness_tautau_current >= min_nsubjetiness_value_for_tautau) ){
-	    if(tau_n2_over_n1_subjettiness_tautau_current <= tau_n2_over_n1_subjettiness_tautau_previous){
-	      tau_n2_over_n1_subjettiness_tautau_previous = tau_n2_over_n1_subjettiness_tautau_current;
+	  tau_n2_over_n1_subjettiness_tautau = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
+	  if( (tau_n2_over_n1_subjettiness_tautau <= max_nsubjetiness_value_for_tautau) && (tau_n2_over_n1_subjettiness_tautau >= min_nsubjetiness_value_for_tautau) ){
+	    max_pT_bb_current = recojet_antikt10UFO_NOSYS_pt->at(ii);
+	    if( max_pT_bb_current >= max_pT_bb_previous ){
+	      max_pT_bb_previous = max_pT_bb_current; 
 	      idx_tau1_preselected = ii;
 	      matched_preselected_tautau = true;
 	    }
