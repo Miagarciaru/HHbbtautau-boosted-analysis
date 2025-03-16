@@ -409,6 +409,8 @@ TH1F *hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness = new TH1F("hi
 
 TH1F *hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness = new TH1F("hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness", "Tau n2/n1 subjettiness for possible candidates for preselected boosted #tau#tau jets; #tau n2/n1_subjettiness; Events", 50, 0, 1);
 
+TH1F *hist_preselected_tautau_tau_n2_over_n1_subjettiness = new TH1F("hist_preselected_tautau_tau_n2_over_n1_subjettiness", "Tau n2/n1 subjettiness for preselected boosted #tau#tau jets; #tau n2/n1_subjettiness; Events", 50, 0, 1);
+
 // Declaration of histograms for truth b-jets variables
 
 TH1F *hist_truth_b1_m = new TH1F("hist_truth_b1_m", "Mass of the truth b1; m(b_1) [GeV];Events / 5 bins", 100, 0, 5000);

@@ -1054,6 +1054,7 @@ void fill_histograms_preselected_jets(){
     
   }
 
+  
   // Fill number of jets with taggerHbb score >= 0.85 per event
 
   float min_taggerHbb_score = 0.85;
@@ -1068,10 +1069,15 @@ void fill_histograms_preselected_jets(){
 
   // Fill n2/n1 subjettiness for non preselected boosted bb jets. This is done to known the distribution of possible candidates for boosted tautau when there is a matched preselection for Hbb
 
-  for(Int_t ii=0; ii<recojet_antikt10UFO_Tau2_wta->size(); ii++){
-    float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b1_preselected)/recojet_antikt10UFO_Tau1_wta->at(idx_b1_preselected);
-    if( ii != idx_b1_preselected ){
-      hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+  if( matched_preselected_bb==true ){
+    for(Int_t ii=0; ii<recojet_antikt10UFO_Tau2_wta->size(); ii++){
+      if( ii != idx_b1_preselected ){
+	float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
+	hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+	if( matched_preselected_tautau==true ){
+	  hist_preselected_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+	}
+      }
     }
   }
   
@@ -1361,7 +1367,8 @@ void write_histograms(){
 
   hist_taggedHbb_recojet_bb_per_event->Write();
   hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness->Write();
-  
+  hist_preselected_tautau_tau_n2_over_n1_subjettiness->Write();
+
   //matched_preselected_histograms
   
   hist_matched_preselected_bb_m->Write();
