@@ -391,14 +391,12 @@ TH1F *hist_matched_recojet_tautau_tau_n1_subjettiness = new TH1F("hist_matched_r
 TH1F *hist_non_matched_recojet_bb_tau_n1_subjettiness = new TH1F("hist_non_matched_recojet_bb_tau_n1_subjettiness", "Tau n1 subjettiness for jets with one b; #tau n1_subjettiness;Events", 50, 0, 1);
 TH1F *hist_non_matched_recojet_tautau_tau_n1_subjettiness = new TH1F("hist_non_matched_recojet_tautau_tau_n1_subjettiness", "Tau n1 subjettiness for jets with one #tau; #tau n1_subjettiness;Events", 50, 0, 1);
 
-
 //n2 subjettiness
 TH1F *hist_matched_recojet_bb_tau_n2_subjettiness = new TH1F("hist_matched_recojet_bb_tau_n2_subjettiness", "Tau n2 subjettiness for boosted bb jets; #tau n2_subjettiness;Events", 50, 0, 1);
 TH1F *hist_matched_recojet_tautau_tau_n2_subjettiness = new TH1F("hist_matched_recojet_tautau_tau_n2_subjettiness", "Tau n2 subjettiness for boosted #tau#tau jets; #tau n2_subjettiness;Events", 50, 0, 1);
 
 TH1F *hist_non_matched_recojet_bb_tau_n2_subjettiness = new TH1F("hist_non_matched_recojet_bb_tau_n2_subjettiness", "Tau n2 subjettiness for jets with one b; #tau n2_subjettiness;Events", 50, 0, 1);
 TH1F *hist_non_matched_recojet_tautau_tau_n2_subjettiness = new TH1F("hist_non_matched_recojet_tautau_tau_n2_subjettiness", "Tau n2 subjettiness for jets with one #tau; #tau n2_subjettiness;Events", 50, 0, 1);
-
 
 //n2 over n1 subjettiness
 TH1F *hist_matched_recojet_bb_tau_n2_over_n1_subjettiness = new TH1F("hist_matched_recojet_bb_tau_n2_over_n1_subjettiness", "Tau n2/n1 subjettiness for boosted bb jets; #tau n2/n1_subjettiness;Events", 50, 0, 1);
@@ -408,8 +406,6 @@ TH1F *hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness = new TH1F("hist_n
 TH1F *hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness = new TH1F("hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness", "Tau n2/n1 subjettiness for jets with one #tau; #tau n2/n1_subjettiness;Events", 50, 0, 1);
 
 TH1F *hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness = new TH1F("hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness", "Tau n2/n1 subjettiness for possible candidates for preselected boosted #tau#tau jets; #tau n2/n1_subjettiness; Events", 50, 0, 1);
-
-TH1F *hist_preselected_tautau_tau_n2_over_n1_subjettiness = new TH1F("hist_preselected_tautau_tau_n2_over_n1_subjettiness", "Tau n2/n1 subjettiness for preselected boosted #tau#tau jets; #tau n2/n1_subjettiness; Events", 50, 0, 1);
 
 // Declaration of histograms for truth b-jets variables
 
@@ -458,7 +454,6 @@ TH1F *hist_non_matched_recojet_tautau_eta = new TH1F("hist_non_matched_recojet_t
 // Histograms for the eta of the fatjets with only one b or one tau jets
 TH1F *hist_non_matched_recojet_bb_phi = new TH1F("hist_non_matched_recojet_bb_phi", "#phi distribution of the recojets that are not bb boosted jets; #phi_{j(b)} [GeV];Events", 100, -5, 5);
 TH1F *hist_non_matched_recojet_tautau_phi = new TH1F("hist_non_matched_recojet_tautau_phi", "#phi distribution of the recojets that are not #tau#tau boosted jets; #phi_{j(#tau)} [GeV];Events", 100, -5, 5);
-
 
 
 // Histograms for the pT distributions of the non matched recojets with class != -1
