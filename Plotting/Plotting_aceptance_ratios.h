@@ -26,16 +26,21 @@ struct plot_Teff {
 // Declaration of functions
 //*******************************************************
 
-void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::string& min_pT, const std::unordered_map<std::string, std::vector<TEfficiency>>& TEff_ratios, bool proper);
+void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar,
+		      const std::string& min_pT, const std::unordered_map<std::string,
+		      std::vector<TEfficiency>>& TEff_ratios, bool proper);
   
-void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, const std::string& min_pT,
-			     std::unordered_map<std::string, std::vector<TEfficiency>>& efficiency_map, bool proper);
+void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar,
+			     const std::string& min_pT, std::unordered_map<std::string,
+			     std::vector<TEfficiency>>& efficiency_map, bool proper);
   
 //*******************************************************
 // Definition of functions declared above
 //*******************************************************
 
-void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar, const std::string& min_pT, const std::unordered_map<std::string, std::vector<TEfficiency>>& TEff_ratios, bool proper){
+void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::string& ratio, const std::string& nameVar,
+		      const std::string& min_pT, const std::unordered_map<std::string,
+		      std::vector<TEfficiency>>& TEff_ratios, bool proper){
 
   gROOT->SetBatch(kTRUE);
   SetAtlasStyle();
@@ -58,11 +63,12 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   TEfficiency hist_ggF_lambda10_lh_600462;
   TEfficiency hist_ggF_SM_hh_600459;
   TEfficiency hist_ggF_SM_lh_600461;
+  /*
   TEfficiency hist_VBF_cvv1p5_hh_502985;
   TEfficiency hist_VBF_cvv1p5_lh_502996;
   TEfficiency hist_VBF_SM_hh_502982;
   TEfficiency hist_VBF_SM_lh_502993;
-    
+  */
   for(const auto& process_sample : TEff_ratios) {
 
     const std::string& sample_name = process_sample.first;
@@ -84,41 +90,45 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
     if(sample_name.find("ggF_lambda10_lh_600462")!=std::string::npos){ hist_ggF_lambda10_lh_600462 = ratio_hist; }
     if(sample_name.find("ggF_SM_hh_600459")!=std::string::npos){ hist_ggF_SM_hh_600459 = ratio_hist; }
     if(sample_name.find("ggF_SM_lh_600461")!=std::string::npos){ hist_ggF_SM_lh_600461 = ratio_hist; }
+    /*
     if(sample_name.find("VBF_cvv1p5_hh_502985")!=std::string::npos){ hist_VBF_cvv1p5_hh_502985 = ratio_hist; }
     if(sample_name.find("VBF_cvv1p5_lh_502996")!=std::string::npos){ hist_VBF_cvv1p5_lh_502996 = ratio_hist; }
     if(sample_name.find("VBF_SM_hh_502982")!=std::string::npos){ hist_VBF_SM_hh_502982 = ratio_hist; }
     if(sample_name.find("VBF_SM_lh_502993")!=std::string::npos){ hist_VBF_SM_lh_502993 = ratio_hist; }
-
+    */
   }
 
   hist_ggF_lambda10_hh_600460.SetMarkerColor(kRed);
   hist_ggF_lambda10_lh_600462.SetMarkerColor(kBlue);
   hist_ggF_SM_hh_600459.SetMarkerColor(kGreen);
   hist_ggF_SM_lh_600461.SetMarkerColor(kMagenta);
+  /*
   hist_VBF_cvv1p5_hh_502985.SetMarkerColor(kCyan);
   hist_VBF_cvv1p5_lh_502996.SetMarkerColor(kYellow);
   hist_VBF_SM_hh_502982.SetMarkerColor(kBlack);
   hist_VBF_SM_lh_502993.SetMarkerColor(kOrange);
-
+  */
+  
   leg->AddEntry(&hist_ggF_lambda10_hh_600460, ("ggF_lambda10_hh_600460_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_ggF_lambda10_lh_600462, ("ggF_lambda10_lh_600462_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_ggF_SM_hh_600459, ("ggF_SM_hh_600459_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_ggF_SM_lh_600461, ("ggF_SM_lh_600461_"+ratio).c_str(), "lep");
+  /*
   leg->AddEntry(&hist_VBF_cvv1p5_hh_502985, ("VBF_cvv1p5_hh_502985_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_VBF_cvv1p5_lh_502996, ("VBF_cvv1p5_lh_502996_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_VBF_SM_hh_502982, ("VBF_SM_hh_502982_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_VBF_SM_lh_502993, ("VBF_SM_lh_502993_"+ratio).c_str(), "lep");
-
+  */
   hist_ggF_lambda10_hh_600460.Draw("AP");
   hist_ggF_lambda10_lh_600462.Draw("PSAME");
   hist_ggF_SM_hh_600459.Draw("PSAME");
   hist_ggF_SM_lh_600461.Draw("PSAME");
+  /*
   hist_VBF_cvv1p5_hh_502985.Draw("PSAME");
   hist_VBF_cvv1p5_lh_502996.Draw("PSAME");
   hist_VBF_SM_hh_502982.Draw("PSAME");
   hist_VBF_SM_lh_502993.Draw("PSAME");
-
-
+  */
   gPad->Update();
   auto graph = hist_ggF_lambda10_hh_600460.GetPaintedGraph();
   graph->SetMinimum(0);
@@ -126,7 +136,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   
   gPad->Update();
   
-  leg->SetNColumns(3);
+  leg->SetNColumns(2);
   leg->SetFillStyle(0);
   leg->SetLineColor(0);
   
@@ -135,7 +145,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   string description1 = "";
   string description2 = "For min p_{T} > "+min_pT+"GeV";
   string description3 = "For cut phbb > 0.85";
-  string description4 = "For cut n2/n1 subjetiness < 0.45";
+  //string description4 = "For cut n2/n1 subjetiness < 0.30";
   
   string name_image = "";
   
@@ -169,7 +179,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
 // Initialize the ap_ratios_info
 void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, const std::string& min_pT, std::unordered_map<std::string, std::vector<TEfficiency>>& efficiency_map, bool proper){
   
-  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/analysis_feb17/pT_and_Hbb_tagger_cuts/";
+  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
 
   gROOT->SetBatch(kTRUE);
   
