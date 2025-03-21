@@ -79,6 +79,8 @@ void define_preselected_events(){
   matched_preselected_bb = false;
   matched_preselected_tautau = false;
   matched_preselection = false;
+
+  int number_of_tagged_bb_jets = 0;
   
   if( recojet_antikt10UFO_NOSYS_pt->size() >= 2 ){
 
@@ -104,12 +106,16 @@ void define_preselected_events(){
 	    max_pT_bb_previous = max_pT_bb_current;
 	    idx_b1_preselected = ii;
 	    idx_b2_preselected = ii;
-	    matched_preselected_bb = true;
+	    number_of_tagged_bb_jets++;
 	  }
 	}
       }
     }
 
+    if( number_of_tagged_bb_jets == 1 ){
+      matched_preselected_bb = true;
+    }
+    
     float max_nsubjetiness_value_for_tautau = 0.30;
     float min_nsubjetiness_value_for_tautau = 0.05;
 
