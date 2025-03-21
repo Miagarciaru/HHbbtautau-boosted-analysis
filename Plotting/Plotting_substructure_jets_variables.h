@@ -393,8 +393,8 @@ void plot_distributions(const std::string& name_plot, const std::string& output_
   if(name_plot == "matched_preselected_bb_eta"){ hist = hist_matched_preselected_bb_eta;}
   if(name_plot == "matched_preselected_tautau_eta"){ hist = hist_matched_preselected_tautau_eta;}
 
-  if(name_plot == "matched_preselected_bb_nsubjettiness"){ hist = hist_preselected_bb_tau_n2_over_n1_subjettiness;}
-  if(name_plot == "matched_preselected_tautau_nsubjettiness"){ hist = hist_preselected_tautau_tau_n2_over_n1_subjettiness;}
+  if(name_plot == "matched_preselected_bb_nsubjettiness"){ hist = hist_matched_preselected_bb_tau_n2_over_n1_subjettiness;}
+  if(name_plot == "matched_preselected_tautau_nsubjettiness"){ hist = hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness;}
   
   if(name_plot == "taggedHbb_jets_per_event"){ hist = hist_taggedHbb_recojet_bb_per_event;}
   if(name_plot == "candidates_tautau_nsubjettiness"){ hist = hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness;}

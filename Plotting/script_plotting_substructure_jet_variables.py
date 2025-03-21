@@ -5,7 +5,6 @@ import subprocess
 
 base_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/"
 
-#min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
 min_pT_recojets = ["100", "200", "300"] # in GeV
 #min_pT_recojets = ["100"] # in GeV  
 
@@ -16,7 +15,7 @@ output_root_folder = "output_plots"
 os.makedirs(output_root_folder, exist_ok=True)
 
 #os.makedirs("output_analysis/temp_folder", exist_ok=True)
-
+    
 for minpT in min_pT_recojets:
 
     sample_paths = [
@@ -30,6 +29,7 @@ for minpT in min_pT_recojets:
         base_analysis_folder + "ggF_lambda10_lh_600462_pT"+minpT+"GeV.root" # ggF cHHH=10 lep-had channel
         # Add as many samples as you need
     ]
+
     
     output_pT_folder = minpT+"GeV_normalized"
     output_pT_folder = os.path.join(output_root_folder, output_pT_folder)
@@ -74,3 +74,18 @@ for minpT in min_pT_recojets:
         
         # Run the ROOT script
         subprocess.run(root_command, shell=True)
+        
+
+variables = ["preselected_bb_m", "preselected_bb_tau_n2_over_n1_subjettiness", "preselected_tautau_m",
+             "preselected_tautau_tau_n2_over_n1_subjettiness"]
+
+#variables = ["preselected_bb_m"]
+
+for var in variables:
+    
+    print(f'Processing "{var}" histograms comparisons: ')
+
+    root_command = f'root -l -q \'Plotting_comparison_substructure_jets_variables.C("{var}")\''
+
+    # Run the ROOT script                                                                                                                                   
+    subprocess.run(root_command, shell=True)
