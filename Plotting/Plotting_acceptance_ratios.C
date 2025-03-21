@@ -1,6 +1,6 @@
-#include "Plotting_aceptance_ratios.h"
+#include "Plotting_acceptance_ratios.h"
 
-void Plotting_aceptance_ratios(string nameVar, string min_pT){
+void Plotting_acceptance_ratios(string nameVar, string min_pT){
 
   // Sample files
   /*
