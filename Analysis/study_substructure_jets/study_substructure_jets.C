@@ -117,6 +117,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   cout << "Number of matched preselected events: " << matched_preselected_events << endl;
   cout << "Relative difference between preselected and all events: " << TMath::Abs(matched_preselected_events-nentries)/nentries << endl;
   cout << "Overlap between resolved selection and the preselection events: " << overlap_resolved_and_preselected << endl;
+  cout << "Number of preselected bb jets ordered by pT - nsubjettiness: " << count_preselected_bb_jets_ordered_by_pT << "\t" << count_preselected_bb_jets_ordered_by_nsubjettiness << endl;
   
   //****************************************************
   //Save Histograms in the output root file
@@ -126,7 +127,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   
   outFile->Write();
 
-  print_stat(nentries);
+  //print_stat(nentries);
   
   inFile->Close();
   outFile->Close();

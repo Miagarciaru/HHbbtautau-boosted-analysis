@@ -129,7 +129,7 @@ void initializeHistogramsDistributionsInfo(const std::vector<std::string>& sampl
 					   std::unordered_map<std::string, std::vector<TH1F>>& distributions_histograms,
 					   bool matched_objects){
   
-  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
+  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/r2-no-cut-pT/";
 
   gROOT->SetBatch(kTRUE);
   

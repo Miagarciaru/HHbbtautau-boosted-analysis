@@ -2,7 +2,7 @@
 #include "AtlasStyle/AtlasUtils.C"
 #include "AtlasStyle/AtlasLabels.C"
 #include <unordered_map>
-
+#include <fstream>
 
 struct hist_ratios {
   TH1F* hist_num_for_r1;
@@ -63,12 +63,12 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   TEfficiency hist_ggF_lambda10_lh_600462;
   TEfficiency hist_ggF_SM_hh_600459;
   TEfficiency hist_ggF_SM_lh_600461;
-  /*
+  
   TEfficiency hist_VBF_cvv1p5_hh_502985;
   TEfficiency hist_VBF_cvv1p5_lh_502996;
   TEfficiency hist_VBF_SM_hh_502982;
   TEfficiency hist_VBF_SM_lh_502993;
-  */
+  
   for(const auto& process_sample : TEff_ratios) {
 
     const std::string& sample_name = process_sample.first;
@@ -90,45 +90,44 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
     if(sample_name.find("ggF_lambda10_lh_600462")!=std::string::npos){ hist_ggF_lambda10_lh_600462 = ratio_hist; }
     if(sample_name.find("ggF_SM_hh_600459")!=std::string::npos){ hist_ggF_SM_hh_600459 = ratio_hist; }
     if(sample_name.find("ggF_SM_lh_600461")!=std::string::npos){ hist_ggF_SM_lh_600461 = ratio_hist; }
-    /*
+    
     if(sample_name.find("VBF_cvv1p5_hh_502985")!=std::string::npos){ hist_VBF_cvv1p5_hh_502985 = ratio_hist; }
     if(sample_name.find("VBF_cvv1p5_lh_502996")!=std::string::npos){ hist_VBF_cvv1p5_lh_502996 = ratio_hist; }
     if(sample_name.find("VBF_SM_hh_502982")!=std::string::npos){ hist_VBF_SM_hh_502982 = ratio_hist; }
     if(sample_name.find("VBF_SM_lh_502993")!=std::string::npos){ hist_VBF_SM_lh_502993 = ratio_hist; }
-    */
+    
   }
 
   hist_ggF_lambda10_hh_600460.SetMarkerColor(kRed);
   hist_ggF_lambda10_lh_600462.SetMarkerColor(kBlue);
   hist_ggF_SM_hh_600459.SetMarkerColor(kGreen);
   hist_ggF_SM_lh_600461.SetMarkerColor(kMagenta);
-  /*
+  
   hist_VBF_cvv1p5_hh_502985.SetMarkerColor(kCyan);
   hist_VBF_cvv1p5_lh_502996.SetMarkerColor(kYellow);
   hist_VBF_SM_hh_502982.SetMarkerColor(kBlack);
   hist_VBF_SM_lh_502993.SetMarkerColor(kOrange);
-  */
   
   leg->AddEntry(&hist_ggF_lambda10_hh_600460, ("ggF_lambda10_hh_600460_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_ggF_lambda10_lh_600462, ("ggF_lambda10_lh_600462_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_ggF_SM_hh_600459, ("ggF_SM_hh_600459_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_ggF_SM_lh_600461, ("ggF_SM_lh_600461_"+ratio).c_str(), "lep");
-  /*
+  
   leg->AddEntry(&hist_VBF_cvv1p5_hh_502985, ("VBF_cvv1p5_hh_502985_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_VBF_cvv1p5_lh_502996, ("VBF_cvv1p5_lh_502996_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_VBF_SM_hh_502982, ("VBF_SM_hh_502982_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_VBF_SM_lh_502993, ("VBF_SM_lh_502993_"+ratio).c_str(), "lep");
-  */
+  
   hist_ggF_lambda10_hh_600460.Draw("AP");
   hist_ggF_lambda10_lh_600462.Draw("PSAME");
   hist_ggF_SM_hh_600459.Draw("PSAME");
   hist_ggF_SM_lh_600461.Draw("PSAME");
-  /*
+  
   hist_VBF_cvv1p5_hh_502985.Draw("PSAME");
   hist_VBF_cvv1p5_lh_502996.Draw("PSAME");
   hist_VBF_SM_hh_502982.Draw("PSAME");
   hist_VBF_SM_lh_502993.Draw("PSAME");
-  */
+  
   gPad->Update();
   auto graph = hist_ggF_lambda10_hh_600460.GetPaintedGraph();
   graph->SetMinimum(0);
@@ -179,9 +178,16 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
 // Initialize the ap_ratios_info
 void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, const std::string& min_pT, std::unordered_map<std::string, std::vector<TEfficiency>>& efficiency_map, bool proper){
   
-  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
+  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/r2-no-cut-pT/";
 
   gROOT->SetBatch(kTRUE);
+  
+  std::ofstream outFile("percentages_ratios.txt", std::ios::app); // Open in append mode
+
+  if (!outFile) {
+    std::cerr << "Error al abrir el archivo de salida.\n";
+    return;
+  }
   
   for (const auto& sample : sampleFiles){
     string path_root_file = path_folder+sample+"_pT"+min_pT+"GeV.root";
@@ -190,14 +196,15 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
     TFile* file = TFile::Open(path_root_file.c_str());
     
     if (!file || file->IsZombie()) {
-      std::cerr << "Error opening file: " << sample << std::endl;
+      std::cout << "Error opening file: " << sample << std::endl;
       if (file) file->Close();
       continue;
     }
     else{
       cout << "The file has been read " << sample << endl;
     }
-
+    
+    
     string name_hist_num_r1_r2 = ""; string name_hist_den_for_r1 = ""; string name_hist_den_for_r2 = "";
     string name_hist_num_for_r3 = ""; string name_hist_num_for_r4 = ""; string name_hist_den_for_r3_r4 = ""; 
 
@@ -255,7 +262,16 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
     cout << "\t \t name process: "+sample << "\t r4_acceptance (%): " << (hist_num_for_r4->Integral()/hist_den_for_r3_r4->Integral())*100.0 << endl;
     cout << "/----------------------------------------------------------------------" << endl;
 
-    
+    // Save this information in a txt file
+    outFile << "/----------------------------------------------------------------------" << endl;
+    outFile << "For: "+nameVar << endl;
+    outFile << "\t For: "+min_pT << endl;
+    outFile << "\t \t name process: "+sample << "\t r1_acceptance (%): " << (hist_num_r1_r2->Integral()/hist_den_for_r1->Integral())*100.0 << endl;
+    outFile << "\t \t name process: "+sample << "\t r2_acceptance (%): " << (hist_num_r1_r2->Integral()/hist_den_for_r2->Integral())*100.0 << endl;
+    outFile << "\t \t name process: "+sample << "\t r3_acceptance (%): " << (hist_num_for_r3->Integral()/hist_den_for_r3_r4->Integral())*100.0 << endl;
+    outFile << "\t \t name process: "+sample << "\t r4_acceptance (%): " << (hist_num_for_r4->Integral()/hist_den_for_r3_r4->Integral())*100.0 << endl;
+    outFile << "/----------------------------------------------------------------------" << endl;
+
     TEfficiency *pEff_r1 = new TEfficiency(*hist_num_r1_r2, *hist_den_for_r1);
     TEfficiency *pEff_r2 = new TEfficiency(*hist_num_r1_r2, *hist_den_for_r2);
     TEfficiency *pEff_r3 = new TEfficiency(*hist_num_for_r3, *hist_den_for_r3_r4);
@@ -273,4 +289,7 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
    
     file->Close();
   }
+  
+  outFile.close();
+  
 }

@@ -81,6 +81,8 @@ void define_preselected_events(){
   matched_preselection = false;
 
   int number_of_tagged_bb_jets = 0;
+  float nsubjettiness_good_value_for_bb = 0.21;
+  float nsubjettiness_good_value_for_tautau = 0.9;
   
   if( recojet_antikt10UFO_NOSYS_pt->size() >= 2 ){
 
@@ -88,32 +90,53 @@ void define_preselected_events(){
     float value_phbb = 0;
    
     float max_nsubjetiness_value_for_bb = 0.45;
-    float min_nsubjetiness_value_for_bb = 0.05;
+    float min_nsubjetiness_value_for_bb = 0.03;
 
     float tau_n2_over_n1_subjettiness_bb = 0;
     
     float max_pT_bb_current = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
     float max_pT_bb_previous = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
 
+    float nsubjettiness_bb_current = 1.0;
+    float nsubjettiness_bb_previous = 1.0;
+    
     //Selecting preselected boosted bb jet 
     for(Int_t ii=0; ii<recojet_antikt10UFO_GN2Xv01_phbb->size(); ii++){
       value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
       if(value_phbb >= min_tagger_Hbb_value){
+	number_of_tagged_bb_jets++;
+	//if(number_of_tagged_bb_jets >= 2) break;
+	hist_matched_preselected_bb_m_only_Hbb_tagger->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
+	
 	tau_n2_over_n1_subjettiness_bb = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
 	if( (tau_n2_over_n1_subjettiness_bb <= max_nsubjetiness_value_for_bb) && (tau_n2_over_n1_subjettiness_bb >= min_nsubjetiness_value_for_bb) ){
+	  
+	  hist_matched_preselected_bb_m_until_nsubjettiness->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
 	  max_pT_bb_current = recojet_antikt10UFO_NOSYS_pt->at(ii);
-	  if( max_pT_bb_current >= max_pT_bb_previous ){
+
+	  count_preselected_bb_jets_ordered_by_pT++;
+
+	  if(max_pT_bb_current >= max_pT_bb_previous){
 	    max_pT_bb_previous = max_pT_bb_current;
+	    //count_preselected_bb_jets_ordered_by_pT++;
 	    idx_b1_preselected = ii;
 	    idx_b2_preselected = ii;
-	    number_of_tagged_bb_jets++;
+	    matched_preselected_bb = true;
 	  }
+
+	  /*
+	  nsubjettiness_bb_current = TMath::Abs(tau_n2_over_n1_subjettiness_bb-nsubjettiness_good_value_for_bb);
+	  
+	  if( nsubjettiness_bb_current <= nsubjettiness_bb_previous){
+	    nsubjettiness_bb_previous = nsubjettiness_bb_current;
+	    idx_b1_preselected = ii;
+	    idx_b2_preselected = ii;
+	    count_preselected_bb_jets_ordered_by_nsubjettiness++;
+	    matched_preselected_bb = true;
+	  }
+	  */
 	}
       }
-    }
-
-    if( number_of_tagged_bb_jets == 1 ){
-      matched_preselected_bb = true;
     }
     
     float max_nsubjetiness_value_for_tautau = 0.30;
@@ -121,20 +144,39 @@ void define_preselected_events(){
 
     float tau_n2_over_n1_subjettiness_tautau = 0;
 
+    float nsubjettiness_tautau_current = 1.0;
+    float nsubjettiness_tautau_previous = 1.0;
+
     float max_pT_tautau_current = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
     float max_pT_tautau_previous = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
     
     if(matched_preselected_bb == true){
       for(Int_t ii=0; ii < recojet_antikt10UFO_Tau2_wta->size(); ii++){
 	if( ii != idx_b1_preselected ){
-	  tau_n2_over_n1_subjettiness_tautau = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
-	  if( (tau_n2_over_n1_subjettiness_tautau <= max_nsubjetiness_value_for_tautau) && (tau_n2_over_n1_subjettiness_tautau >= min_nsubjetiness_value_for_tautau) ){
-	    max_pT_bb_current = recojet_antikt10UFO_NOSYS_pt->at(ii);
-	    if( max_pT_bb_current >= max_pT_bb_previous ){
-	      max_pT_bb_previous = max_pT_bb_current; 
-	      idx_tau1_preselected = ii;
-	      idx_tau2_preselected = ii;
-	      matched_preselected_tautau = true;
+	  value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
+	  if(value_phbb < min_tagger_Hbb_value){
+	    tau_n2_over_n1_subjettiness_tautau = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
+	    if( (tau_n2_over_n1_subjettiness_tautau <= max_nsubjetiness_value_for_tautau) && (tau_n2_over_n1_subjettiness_tautau >= min_nsubjetiness_value_for_tautau) ){
+
+	      max_pT_tautau_current = recojet_antikt10UFO_NOSYS_pt->at(ii);
+	  
+	      if(max_pT_tautau_current >= max_pT_tautau_previous){
+		max_pT_tautau_previous = max_pT_tautau_current;
+		//count_preselected_bb_jets_ordered_by_pT++;
+		idx_tau1_preselected = ii;
+		idx_tau2_preselected = ii;
+		matched_preselected_tautau = true;
+	      }
+	      
+	      /*
+	      nsubjettiness_tautau_current = TMath::Abs(tau_n2_over_n1_subjettiness_tautau-nsubjettiness_good_value_for_tautau);    
+	      if( nsubjettiness_tautau_current <= nsubjettiness_tautau_previous){
+		nsubjettiness_tautau_previous = nsubjettiness_tautau_current;
+		idx_tau1_preselected = ii;
+		idx_tau2_preselected = ii;
+		matched_preselected_tautau = true;
+	      }
+	      */
 	    }
 	  }
 	}
@@ -144,10 +186,10 @@ void define_preselected_events(){
     if( (matched_preselected_bb == true) && (matched_preselected_tautau == true) ){
       matched_preselection = true;
     }
-
+    
     // Save the values for bb, tautau and HH objects if it was posible to find the preselected bb and tautau boosted jets
     if( matched_preselection == true ){
-
+      
       TLorentzVector bb = TLorentzVector();
       TLorentzVector tautau = TLorentzVector();
       TLorentzVector HH = TLorentzVector();
@@ -186,7 +228,7 @@ void define_preselected_events(){
 
 
 void apply_preselection(float min_pT_cut_in_MeV){
-
+  
   // default value for the preselection
   passed_preselection = false;
   
@@ -221,12 +263,12 @@ void fill_acceptance_ratios(){
   }
   
   // Boosted analysis events histograms
-  if(class_event != -1){
+  if( (class_event != -1) && (passed_preselection == true) ){
     fill_boosted_events_histograms_acceptance_ratios();
   }
-
+  
   // Preselected analysis events histograms
-  if(matched_preselection == true){
+  if( (matched_preselection == true) && (passed_preselection == true) ){
     fill_preselected_events_histograms_acceptance_ratios();
   }
 
@@ -255,17 +297,17 @@ void fill_all_events_histograms_acceptance_ratios(){
   hist_acceptance_truth_ptHH_denominator_r3_r4->Fill(truth_HH_pt/1000.);
   hist_acceptance_truth_etaHH_denominator_r3_r4->Fill(truth_HH_eta);
   hist_acceptance_truth_phiHH_denominator_r3_r4->Fill(truth_HH_phi);
-
+  
   hist_acceptance_truth_mHbb_denominator_r3_r4->Fill(truth_bb_m/1000.);
   hist_acceptance_truth_ptHbb_denominator_r3_r4->Fill(truth_bb_pt/1000.);
   hist_acceptance_truth_etaHbb_denominator_r3_r4->Fill(truth_bb_eta);
   hist_acceptance_truth_phiHbb_denominator_r3_r4->Fill(truth_bb_phi);
-
+  
   hist_acceptance_truth_mHtautau_denominator_r3_r4->Fill(truth_tautau_m/1000.);
   hist_acceptance_truth_ptHtautau_denominator_r3_r4->Fill(truth_tautau_pt/1000.);
   hist_acceptance_truth_etaHtautau_denominator_r3_r4->Fill(truth_tautau_eta);
   hist_acceptance_truth_phiHtautau_denominator_r3_r4->Fill(truth_tautau_phi);
-
+  
   // preselected events variables
   
   hist_acceptance_preselected_mHH_denominator_r3_r4->Fill(preselected_HH_m/1000.);
@@ -1486,6 +1528,10 @@ void write_histograms(){
   hist_matched_preselected_bb_phi->Write();
   hist_matched_preselected_bb_tau_n2_over_n1_subjettiness->Write();
   hist_matched_preselected_bb_ak10_GN2Xv01_phbb->Write();
+
+  hist_matched_preselected_bb_m_only_Hbb_tagger->Write();
+  hist_matched_preselected_bb_m_until_nsubjettiness->Write();
+  hist_matched_preselected_bb_m_order_by_nsubjettiness->Write();
   
   hist_matched_preselected_tautau_m->Write();
   hist_matched_preselected_tautau_pt->Write();
