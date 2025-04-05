@@ -59,8 +59,8 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     compute_dR_min_index_fat_jets();
     define_classes();
     define_reconstructed_objects();
-    define_preselected_events();
     apply_preselection(min_pT_recojet_cut_MeV);
+    define_preselected_events();
     
     fill_acceptance_ratios();
 
