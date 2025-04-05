@@ -78,7 +78,11 @@ for minpT in min_pT_recojets:
 
 variables = ["preselected_bb_m", "preselected_bb_tau_n2_over_n1_subjettiness", "preselected_tautau_m",
              "preselected_tautau_tau_n2_over_n1_subjettiness", "preselected_bb_m_only_Hbb_tagger",
-             "preselected_bb_m_until_nsubjettiness", "preselected_bb_m_order_by_nsubjettiness"]
+             "preselected_bb_m_until_nsubjettiness", "preselected_tautau_m_only_Hbb_tagger",
+             "preselected_tautau_m_until_nsubjettiness", "recojet_tautau_m", "recojet_tautau_m_only_Hbb_tagger",
+             "recojet_tautau_m_only_nsubjettiness", "recojet_tautau_m_until_nsubjettiness",
+             "recojet_bb_m", "recojet_bb_m_only_Hbb_tagger",
+             "recojet_bb_m_only_nsubjettiness", "recojet_bb_m_until_nsubjettiness"]
 
 #variables = ["preselected_bb_m"]
 

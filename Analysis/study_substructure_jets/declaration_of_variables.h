@@ -418,8 +418,15 @@ TH1F *hist_truth_b1_plus_b2_m = new TH1F("hist_truth_b1_plus_b2_m", "Mass of the
 
 // Histograms for the mass of the chosen fatjets for bb and tautau jets
 TH1F *hist_matched_recojet_bb_m = new TH1F("hist_matched_recojet_bb_m", "Mass distribution of the recojets that are bb boosted jets; m(bb) [GeV];Events / 5 bins", 70, 0, 350);
-TH1F *hist_matched_recojet_tautau_m = new TH1F("hist_matched_recojet_tautau_m", "Mass distribution of the recojets that are #tau#tau boosted jets; m(#tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_matched_recojet_bb_m_only_Hbb_tagger = new TH1F("hist_matched_recojet_bb_m_only_Hbb_tagger", "Mass distribution of the recojets that are bb boosted jets (only tagger); m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_matched_recojet_bb_m_only_nsubjettiness = new TH1F("hist_matched_recojet_bb_m_only_nsubjettiness", "Mass distribution of the recojets that are bb boosted jets (only nsubjettiness); m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_matched_recojet_bb_m_until_nsubjettiness = new TH1F("hist_matched_recojet_bb_m_until_nsubjettiness", "Mass distribution of the recojets that are bb boosted jets (tagger and nsubjettiness); m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
 
+
+TH1F *hist_matched_recojet_tautau_m = new TH1F("hist_matched_recojet_tautau_m", "Mass distribution of the recojets that are #tau#tau boosted jets; m(#tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_matched_recojet_tautau_m_only_Hbb_tagger = new TH1F("hist_matched_recojet_tautau_m_only_Hbb_tagger", "Mass distribution of the recojets that are #tau#tau boosted jets (only tagger); m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_matched_recojet_tautau_m_only_nsubjettiness = new TH1F("hist_matched_recojet_tautau_m_only_nsubjettiness", "Mass distribution of the recojets that are #tau#tau boosted jets (only nsubjettiness); m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_matched_recojet_tautau_m_until_nsubjettiness = new TH1F("hist_matched_recojet_tautau_m_until_nsubjettiness", "Mass distribution of the recojets that are #tau#tau boosted jets (tagger and nsubjettiness); m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
 
 // Histograms for the pT of the chosen fatjets for bb and tautau jets
 TH1F *hist_matched_recojet_bb_pt = new TH1F("hist_matched_recojet_bb_pt", "pT distribution of the recojets that are bb boosted jets; pT(bb) [GeV];Events / 20 bins", 100, 0, 2000);
@@ -508,6 +515,8 @@ TH1F *hist_matched_preselected_bb_m_until_nsubjettiness = new TH1F("hist_matched
 TH1F *hist_matched_preselected_bb_m_order_by_nsubjettiness = new TH1F("hist_matched_preselected_bb_m_order_by_nsubjettiness", "Mass distribution of the recojets that are bb boosted jets (order nsubjettiness); m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_matched_preselected_bb_m = new TH1F("hist_matched_preselected_bb_m", "Mass distribution of the recojets that are bb boosted jets; m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
 
+TH1F *hist_matched_preselected_tautau_m_only_Hbb_tagger = new TH1F("hist_matched_preselected_tautau_m_only_Hbb_tagger", "Mass distribution of the recojets that are #tau#tau boosted jets (only tagger); m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_matched_preselected_tautau_m_until_nsubjettiness = new TH1F("hist_matched_preselected_tautau_m_until_nsubjettiness", "Mass distribution of the recojets that are #tau#tau boosted jets (tagger and nsubjettiness); m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_matched_preselected_tautau_m = new TH1F("hist_matched_preselected_tautau_m", "Mass distribution of the recojets that are #tau#tau boosted jets; m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
 
 

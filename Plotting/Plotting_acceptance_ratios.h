@@ -63,12 +63,14 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   TEfficiency hist_ggF_lambda10_lh_600462;
   TEfficiency hist_ggF_SM_hh_600459;
   TEfficiency hist_ggF_SM_lh_600461;
-  
+
+  /*
   TEfficiency hist_VBF_cvv1p5_hh_502985;
   TEfficiency hist_VBF_cvv1p5_lh_502996;
   TEfficiency hist_VBF_SM_hh_502982;
   TEfficiency hist_VBF_SM_lh_502993;
-  
+  */
+
   for(const auto& process_sample : TEff_ratios) {
 
     const std::string& sample_name = process_sample.first;
@@ -90,44 +92,51 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
     if(sample_name.find("ggF_lambda10_lh_600462")!=std::string::npos){ hist_ggF_lambda10_lh_600462 = ratio_hist; }
     if(sample_name.find("ggF_SM_hh_600459")!=std::string::npos){ hist_ggF_SM_hh_600459 = ratio_hist; }
     if(sample_name.find("ggF_SM_lh_600461")!=std::string::npos){ hist_ggF_SM_lh_600461 = ratio_hist; }
-    
+
+    /*
     if(sample_name.find("VBF_cvv1p5_hh_502985")!=std::string::npos){ hist_VBF_cvv1p5_hh_502985 = ratio_hist; }
     if(sample_name.find("VBF_cvv1p5_lh_502996")!=std::string::npos){ hist_VBF_cvv1p5_lh_502996 = ratio_hist; }
     if(sample_name.find("VBF_SM_hh_502982")!=std::string::npos){ hist_VBF_SM_hh_502982 = ratio_hist; }
     if(sample_name.find("VBF_SM_lh_502993")!=std::string::npos){ hist_VBF_SM_lh_502993 = ratio_hist; }
-    
+    */
   }
 
   hist_ggF_lambda10_hh_600460.SetMarkerColor(kRed);
   hist_ggF_lambda10_lh_600462.SetMarkerColor(kBlue);
   hist_ggF_SM_hh_600459.SetMarkerColor(kGreen);
   hist_ggF_SM_lh_600461.SetMarkerColor(kMagenta);
-  
-  hist_VBF_cvv1p5_hh_502985.SetMarkerColor(kCyan);
-  hist_VBF_cvv1p5_lh_502996.SetMarkerColor(kYellow);
-  hist_VBF_SM_hh_502982.SetMarkerColor(kBlack);
-  hist_VBF_SM_lh_502993.SetMarkerColor(kOrange);
-  
+
+  /*
+    hist_VBF_cvv1p5_hh_502985.SetMarkerColor(kCyan);
+    hist_VBF_cvv1p5_lh_502996.SetMarkerColor(kYellow);
+    hist_VBF_SM_hh_502982.SetMarkerColor(kBlack);
+    hist_VBF_SM_lh_502993.SetMarkerColor(kOrange);
+  */
+
   leg->AddEntry(&hist_ggF_lambda10_hh_600460, ("ggF_lambda10_hh_600460_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_ggF_lambda10_lh_600462, ("ggF_lambda10_lh_600462_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_ggF_SM_hh_600459, ("ggF_SM_hh_600459_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_ggF_SM_lh_600461, ("ggF_SM_lh_600461_"+ratio).c_str(), "lep");
-  
+
+  /*
   leg->AddEntry(&hist_VBF_cvv1p5_hh_502985, ("VBF_cvv1p5_hh_502985_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_VBF_cvv1p5_lh_502996, ("VBF_cvv1p5_lh_502996_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_VBF_SM_hh_502982, ("VBF_SM_hh_502982_"+ratio).c_str(), "lep");
   leg->AddEntry(&hist_VBF_SM_lh_502993, ("VBF_SM_lh_502993_"+ratio).c_str(), "lep");
-  
+  */
+
   hist_ggF_lambda10_hh_600460.Draw("AP");
   hist_ggF_lambda10_lh_600462.Draw("PSAME");
   hist_ggF_SM_hh_600459.Draw("PSAME");
   hist_ggF_SM_lh_600461.Draw("PSAME");
-  
+
+  /*
   hist_VBF_cvv1p5_hh_502985.Draw("PSAME");
   hist_VBF_cvv1p5_lh_502996.Draw("PSAME");
   hist_VBF_SM_hh_502982.Draw("PSAME");
   hist_VBF_SM_lh_502993.Draw("PSAME");
-  
+  */
+
   gPad->Update();
   auto graph = hist_ggF_lambda10_hh_600460.GetPaintedGraph();
   graph->SetMinimum(0);

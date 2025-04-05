@@ -129,14 +129,14 @@ void initializeHistogramsDistributionsInfo(const std::vector<std::string>& sampl
 					   std::unordered_map<std::string, std::vector<TH1F>>& distributions_histograms,
 					   bool matched_objects){
   
-  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/r2-no-cut-pT/";
-
+  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
+  
   gROOT->SetBatch(kTRUE);
   
   for(const auto& sample : sampleFiles){
 
     string name_hist = "";
-
+    
     std::vector<TH1F> list_histograms(3);
     
     if(matched_objects==true){
@@ -153,7 +153,7 @@ void initializeHistogramsDistributionsInfo(const std::vector<std::string>& sampl
       //TCanvas* can = new TCanvas(("can_"+sample+"_"+nameVar+"_pT"+min_pT+"GeV").c_str());
       
       TFile* file = TFile::Open(path_root_file.c_str());
-
+      
       int pT_location = 0;
       
       if (!file || file->IsZombie()) {
