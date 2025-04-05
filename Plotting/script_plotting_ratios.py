@@ -7,10 +7,11 @@ variables = ["truth_mHH", "truth_ptHH", "truth_etaHH", "truth_phiHH", "truth_mHb
              "truth_phiHbb", "truth_mHtautau", "truth_ptHtautau", "truth_etaHtautau", "truth_phiHtautau", "mHH", "ptHbb",
              "ptHtautau"]
 """
+"""
+variables = ["truth_mHH", "truth_ptHbb", "truth_ptHtautau", "preselected_mHH", "preselected_ptHbb", "preselected_ptHtautau", "mHH", "ptHbb", "ptHtautau"]
+"""
 
-variables = ["truth_mHH", "truth_ptHbb", "truth_ptHtautau", "preselected_mHH", "preselected_ptHbb", "preselected_ptHtautau"]
-
-#variables = ["truth_mHH"]
+variables = ["truth_mHH"]
 
 min_pT_recojets = ["100", "200", "300"] # in GeV
 #min_pT_recojets = ["100"] # in MeV  
@@ -34,7 +35,7 @@ for var in variables:
 
         print(f'Processing "{var}" ratios for min pT of recojets "{min_pT}" GeV')
         
-        root_command = f'root -l -q \'Plotting_aceptance_ratios.C("{var}", "{min_pT}")\''
+        root_command = f'root -l -q \'Plotting_acceptance_ratios.C("{var}", "{min_pT}")\''
  
         # Run the ROOT script
         subprocess.run(root_command, shell=True)
