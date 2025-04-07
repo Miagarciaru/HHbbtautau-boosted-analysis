@@ -47,7 +47,9 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   int diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt = 0;
   int matched_preselected_events = 0;
   int overlap_resolved_and_preselected = 0;
-
+  int overlap_matched_preselected_events = 0;
+  int matched_non_preselected = 0;
+  int preselected_non_matched = 0;
   
   // Convert char* to float using std::atof()
   float min_pT_recojet_cut_MeV = 1000*std::stoi(min_pT); // min pT in MeV
@@ -59,21 +61,37 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     compute_dR_min_index_fat_jets();
     define_classes();
     define_reconstructed_objects();
-    apply_preselection(min_pT_recojet_cut_MeV);
     define_preselected_events();
+    apply_preselection(min_pT_recojet_cut_MeV);
     
     fill_acceptance_ratios();
 
-    if(passed_preselection == true){
+    if(passed_reco_truth_match_pT_cut == true){
       fill_histograms_matched_truth_recojets();
+    }
+
+    if(passed_preselection_pT_cut == true){
       fill_histograms_preselected_jets();
     }
 
-    if(matched_preselection == true){
+    if( (matched_preselection == true) && (passed_preselection_pT_cut == true) ){
       matched_preselected_events++;
+      if( (class_event==3) && (passed_reco_truth_match_pT_cut == true) ){
+	overlap_matched_preselected_events++;
+      }
+      if( class_event!=3 ){
+	preselected_non_matched++;
+      }
     }
 
-    if( (matched_preselection == true) && (bbtt_HH_vis_m > 0) && (passed_preselection == true) ){
+    if( (class_event==3) && (passed_reco_truth_match_pT_cut == true) ){
+      matched_events++;
+      if( matched_preselection == false ){
+	matched_non_preselected++;
+      }
+    }
+    
+    if( (matched_preselection == true) && (bbtt_HH_vis_m > 0) && (passed_preselection_pT_cut == true) ){
       overlap_resolved_and_preselected++;
     }
       
@@ -97,24 +115,36 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     if( (class_event!=-1) && ( (idx_b1truth_recoak10_dRmin==idx_tau1truth_recoak10_dRmin) || (idx_b1truth_recoak10_dRmin==idx_tau2truth_recoak10_dRmin) || (idx_b2truth_recoak10_dRmin==idx_tau1truth_recoak10_dRmin) || (idx_b2truth_recoak10_dRmin==idx_tau2truth_recoak10_dRmin) ) ){
       b_tau_matched_jets++;
     }
-    if( class_event!=-1 ){
-      matched_events++;
-    }
         
     counter_for_stat();
     // Fill the output files with the info for events passing the Boosted analysis or the resolved selection only
-    if( (class_event!=-1) || (bbtt_HH_vis_m > 0) ) outTree->Fill();
- 
+    if( (class_event!=-1) || (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree->Fill();
+    
   }
 
+  percentages_matched_and_preselected_events->SetBinContent(1, 1, 100.0*matched_non_preselected/matched_events); // Matched events percentages not being preselected
+  percentages_matched_and_preselected_events->SetBinContent(1, 2, 100.0*overlap_matched_preselected_events/matched_events); // Matched events percentages being preselected
+  percentages_matched_and_preselected_events->SetBinContent(2, 1, 100.0*preselected_non_matched/matched_preselected_events); // Preselected events percentages not being matched
+  percentages_matched_and_preselected_events->SetBinContent(2, 2, 100.0*overlap_matched_preselected_events/matched_preselected_events); // Preselected events percentages being matched
+
+  percentages_matched_and_preselected_events->GetXaxis()->SetBinLabel(1, "Matched truth-recojet events");
+  percentages_matched_and_preselected_events->GetXaxis()->SetBinLabel(2, "Preselected events");
+
+  //percentages_matched_and_preselected_events->SetOptStat(0);
+  //percentages_matched_and_preselected_events->SetMarkerColor(kBlack);
+  //percentages_matched_and_preselected_events->Draw("COLZ TEXT");
+  
   cout << "Entries: " << nentries << endl;
   cout << "Matched truth events number is: " << matched_truth_events << endl;
   cout << "Number of events where the order of the two b is wrong: " << bad_bjets_pt_selection << endl;
   cout << "Number of events where the order of the two tau is wrong: " << bad_taujets_pt_selection << endl;
   cout << "Number of events with a b and tau jets matched: " << b_tau_matched_jets << endl;
-  cout << "Number of matched events: " << matched_events << endl;
   cout << "Number of events with different sizes on pt and tau1 n subjettiness: " << diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt << endl;
+  cout << "Number of matched events: " << matched_events << endl;
   cout << "Number of matched preselected events: " << matched_preselected_events << endl;
+  cout << "Overlap of matched and preselected events: " << overlap_matched_preselected_events << endl;
+  cout << "Number of matched non preselected events: " << matched_non_preselected << endl;
+  cout << "Number of preselected non matched events: " << preselected_non_matched << endl;
   cout << "Relative difference between preselected and all events: " << TMath::Abs(matched_preselected_events-nentries)/nentries << endl;
   cout << "Overlap between resolved selection and the preselection events: " << overlap_resolved_and_preselected << endl;
   cout << "Number of preselected bb jets ordered by pT - nsubjettiness: " << count_preselected_bb_jets_ordered_by_pT << "\t" << count_preselected_bb_jets_ordered_by_nsubjettiness << endl;

@@ -6,6 +6,7 @@ import subprocess
 base_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/"
 
 min_pT_recojets = ["100", "200", "300"] # in GeV
+#min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
 #min_pT_recojets = ["100"] # in GeV  
 
 # Root folder for storing output

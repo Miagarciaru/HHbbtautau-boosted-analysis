@@ -76,6 +76,9 @@ TH1F *hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness;
 
 TH1F *hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness;
 
+//Percentages matched truth-recojets and preselected recojets
+TH2F *percentages_matched_and_preselected_events;
+
 struct hist_ratios {
     TH1F *hist_num_for_r1;
     TH1F *hist_den_for_r1;
@@ -98,8 +101,8 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
 				      const std::vector<std::string>& comparison_list, const std::string& output_folder,
 				      const std::string& minpT);
 void plot_distributions_comparisons(const std::string& name_plot, const std::string& output_folder, const std::string& minpT);
-void plot_distributions(const std::string& name_plot, const std::string& output_folder);
-
+void plot_distributions(const std::string& name_plot, const std::string& output_folder, const std::string& minpT);
+void plot_2D_distributions(const std::string& name_plot, const std::string& output_folder, const std::string& minpT);
 
 void process_label(string name_sample);
 
@@ -169,6 +172,9 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
   hist_non_matched_recojet_bb_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n_prong")));
   hist_non_matched_recojet_tautau_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n_prong")));
   hist_nevents_per_class = dynamic_cast<TH1F*>(file->Get(("hist_nevents_per_class")));
+
+  // Percentages of truth-recojets and preselected jets
+  percentages_matched_and_preselected_events = dynamic_cast<TH2F*>(file->Get(("percentages_matched_and_preselected_events")));
   
   //**********************************************************************************************
   // Preselected variables distributions
@@ -196,14 +202,17 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
   //**********************************************************************************************
   
   for(int ii=0; ii < list_of_histograms.size(); ii++){
-    plot_distributions(list_of_histograms[ii], output_folder);
+    plot_distributions(list_of_histograms[ii], output_folder, minpT);
   }
 
   for(int ii=0; ii < comparison_list.size(); ii++){
     plot_distributions_comparisons(comparison_list[ii], output_folder, minpT);
   }
 
+  plot_2D_distributions("percentages_matched_and_preselected_events", output_folder, minpT);
+
   file->Close();
+  
 }
 
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions                                          
@@ -349,7 +358,7 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions                                          
 // for the two configurations, boosted and resolved                                                                                         
 
-void plot_distributions(const std::string& name_plot, const std::string& output_folder){
+void plot_distributions(const std::string& name_plot, const std::string& output_folder, const std::string& minpT){
 
   gROOT->SetBatch(kTRUE);
   SetAtlasStyle();
@@ -398,19 +407,59 @@ void plot_distributions(const std::string& name_plot, const std::string& output_
   
   if(name_plot == "taggedHbb_jets_per_event"){ hist = hist_taggedHbb_recojet_bb_per_event;}
   if(name_plot == "candidates_tautau_nsubjettiness"){ hist = hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness;}
+  //if(name_plot == "percentages_matched_and_preselected_events"){ hist = percentages_matched_and_preselected_events;}
   
   double y_max = 1.25*hist->GetMaximum();
   
   // Step 4: Draw the histograms and set the maximum.
 
   hist->SetMaximum(y_max);
-  
+
   hist->Draw();
 
   double dely = 0.04;
   myText(0.2, 0.90, kBlack, process_name.c_str());
   myText(0.2, 0.90-dely, kBlack, name_plot.c_str());
+  myText(0.2, 0.9-2*dely, kBlack, ("for a min p_{T}: "+minpT+" GeV").c_str());
+  
+  can->Draw();
+  can->SaveAs(name_image.c_str());
 
+}
+
+void plot_2D_distributions(const std::string& name_plot, const std::string& output_folder, const std::string& minpT){
+
+  gROOT->SetBatch(kTRUE);
+  SetAtlasStyle();
+  
+  string name_image = output_folder+"/plots_substructure_jets/"+name_plot+".png";
+  
+  ///// Plotting
+  TCanvas *can = new TCanvas("can","", 800, 600);
+  TH2F *hist = new TH2F();
+  
+  if(name_plot == "percentages_matched_and_preselected_events"){ hist = percentages_matched_and_preselected_events;}
+  
+  double y_max = 1.25*hist->GetMaximum();
+  
+  //hist->SetMaximum(y_max);
+
+  gStyle->SetTextFont(42);     // Set global font (42 = Helvetica, nice default)
+  gStyle->SetTextSize(0.035);  // Set global text size
+  
+  hist->SetStats(0);
+  hist->SetMarkerSize(2.0);
+  //hist->SetMarkerFont(42);
+
+  gPad->SetTopMargin(0.2);
+  
+  hist->Draw("TEXT");
+  
+  double dely = 0.04;
+  myText(0.2, 0.90, kBlack, process_name.c_str());
+  myText(0.2, 0.90-dely, kBlack, name_plot.c_str());
+  myText(0.2, 0.9-2*dely, kBlack, ("for a min p_{T}: "+minpT+" GeV").c_str());
+  
   can->Draw();
   can->SaveAs(name_image.c_str());
 

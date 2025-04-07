@@ -234,7 +234,8 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("preselected_HH_phi", &preselected_HH_phi);
   outTree->Branch("preselected_HH_m", &preselected_HH_m);
 
-  outTree->Branch("passed_preselection", &passed_preselection);
+  outTree->Branch("passed_reco_truth_match_pT_cut", &passed_reco_truth_match_pT_cut);
+  outTree->Branch("passed_preselection_pT_cut", &passed_preselection_pT_cut);
   outTree->Branch("matched_preselection", &matched_preselection);
   outTree->Branch("matched_preselected_bb", &matched_preselected_bb);
   outTree->Branch("matched_preselected_tautau", &matched_preselected_tautau);
@@ -296,7 +297,6 @@ void write_histograms(){
   hist_matched_recojet_bb_m_only_Hbb_tagger->Write();
   hist_matched_recojet_bb_m_only_nsubjettiness->Write();
   hist_matched_recojet_bb_m_until_nsubjettiness->Write();
-
   
   hist_matched_recojet_tautau_m->Write();
   hist_matched_recojet_tautau_pt->Write();
@@ -374,6 +374,9 @@ void write_histograms(){
   hist_truth_HH_m->Write();
   hist_computed_HH_m->Write();
 
+  // percentages matched and preselected events
+  percentages_matched_and_preselected_events->Write();
+  
   //********************************************************************************************
   // Ratio histograms for recovariables r1 and r2
   //********************************************************************************************

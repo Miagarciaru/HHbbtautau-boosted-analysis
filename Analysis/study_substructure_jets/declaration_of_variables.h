@@ -176,7 +176,8 @@ Float_t preselected_HH_eta;
 Float_t preselected_HH_phi;
 Float_t preselected_HH_m;
 
-bool passed_preselection;
+bool passed_preselection_pT_cut;
+bool passed_reco_truth_match_pT_cut;
 bool matched_preselection; // Tell us if the bb and tautau objects were defined with the preselection cuts on recovariables
 bool matched_preselected_bb;
 bool matched_preselected_tautau;
@@ -356,8 +357,65 @@ TBranch *b_generatorWeight_NOSYS;
 TBranch *b_recojet_antikt4PFlow_NOSYS_passesOR;
 
 // *************************************
+// Declaration of temporary variables to fill acceptance ratio histograms
+// *************************************
+
+// reco
+Float_t reco_HH_m_temp_hist;
+Float_t reco_HH_pt_temp_hist;
+Float_t reco_HH_eta_temp_hist;
+Float_t reco_HH_phi_temp_hist;
+
+Float_t reco_bb_m_temp_hist;
+Float_t reco_bb_pt_temp_hist;
+Float_t reco_bb_eta_temp_hist;
+Float_t reco_bb_phi_temp_hist;
+
+Float_t reco_tautau_m_temp_hist;
+Float_t reco_tautau_pt_temp_hist;
+Float_t reco_tautau_eta_temp_hist;
+Float_t reco_tautau_phi_temp_hist;
+
+// truth
+
+Float_t truth_HH_m_temp_hist;
+Float_t truth_HH_pt_temp_hist;
+Float_t truth_HH_eta_temp_hist;
+Float_t truth_HH_phi_temp_hist;
+
+Float_t truth_bb_m_temp_hist;
+Float_t truth_bb_pt_temp_hist;
+Float_t truth_bb_eta_temp_hist;
+Float_t truth_bb_phi_temp_hist;
+
+Float_t truth_tautau_m_temp_hist;
+Float_t truth_tautau_pt_temp_hist;
+Float_t truth_tautau_eta_temp_hist;
+Float_t truth_tautau_phi_temp_hist;
+
+//preselected
+
+Float_t preselected_HH_m_temp_hist;
+Float_t preselected_HH_pt_temp_hist;
+Float_t preselected_HH_eta_temp_hist;
+Float_t preselected_HH_phi_temp_hist;
+
+Float_t preselected_bb_m_temp_hist;
+Float_t preselected_bb_pt_temp_hist;
+Float_t preselected_bb_eta_temp_hist;
+Float_t preselected_bb_phi_temp_hist;
+
+Float_t preselected_tautau_m_temp_hist;
+Float_t preselected_tautau_pt_temp_hist;
+Float_t preselected_tautau_eta_temp_hist;
+Float_t preselected_tautau_phi_temp_hist;
+
+// *************************************
 // Declaration of histograms
 // *************************************
+
+// 2D histogram for matched and preselected percentages
+TH2F *percentages_matched_and_preselected_events = new TH2F("percentages_matched_and_preselected_events", "Percentages between matched and preselected events", 2, 0, 2, 2, 0, 2);
 
 // Declaration of distributions for recojets variables
 

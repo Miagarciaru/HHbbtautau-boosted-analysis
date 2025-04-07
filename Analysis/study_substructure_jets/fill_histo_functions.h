@@ -25,17 +25,100 @@ void deltaR(float &dR, float jet1_pt, float jet1_eta, float jet1_phi, float jet1
 
 void fill_acceptance_ratios(){
 
+  //Define variables to use in the ratio histograms
+  /*
+  // reco
+  reco_HH_m_temp_hist = reco_bbtt_HH_m_BA;
+  reco_HH_pt_temp_hist = reco_bbtt_HH_pt_BA;
+  reco_HH_eta_temp_hist = reco_bbtt_HH_eta_BA;
+  reco_HH_phi_temp_hist = reco_bbtt_HH_phi_BA;
+
+  reco_bb_m_temp_hist = reco_bbtt_bb_m_BA;
+  reco_bb_pt_temp_hist = reco_bbtt_bb_pt_BA;
+  reco_bb_eta_temp_hist = reco_bbtt_bb_eta_BA;
+  reco_bb_phi_temp_hist = reco_bbtt_bb_phi_BA;
+
+  reco_tautau_m_temp_hist = reco_bbtt_tautau_m_BA;
+  reco_tautau_pt_temp_hist = reco_bbtt_tautau_pt_BA;
+  reco_tautau_eta_temp_hist = reco_bbtt_tautau_eta_BA;
+  reco_tautau_phi_temp_hist = reco_bbtt_tautau_phi_BA;
+
+  //preselected
+  preselected_HH_m_temp_hist = preselected_HH_m;
+  preselected_HH_pt_temp_hist = preselected_HH_pt;
+  preselected_HH_eta_temp_hist = preselected_HH_eta;
+  preselected_HH_phi_temp_hist = preselected_HH_phi;
+
+  preselected_bb_m_temp_hist = preselected_bb_m;
+  preselected_bb_pt_temp_hist = preselected_bb_pt;
+  preselected_bb_eta_temp_hist = preselected_bb_eta;
+  preselected_bb_phi_temp_hist = preselected_bb_phi;
+
+  preselected_tautau_m_temp_hist = preselected_tautau_m;
+  preselected_tautau_pt_temp_hist = preselected_tautau_pt;
+  preselected_tautau_eta_temp_hist = preselected_tautau_eta;
+  preselected_tautau_phi_temp_hist = preselected_tautau_phi;
+  */
+    
+  // truth 
+  truth_HH_m_temp_hist = truth_HH_m;
+  truth_HH_pt_temp_hist = truth_HH_pt;
+  truth_HH_eta_temp_hist = truth_HH_eta;
+  truth_HH_phi_temp_hist = truth_HH_phi;
+
+  truth_bb_m_temp_hist = truth_bb_m;
+  truth_bb_pt_temp_hist = truth_bb_pt;
+  truth_bb_eta_temp_hist = truth_bb_eta;
+  truth_bb_phi_temp_hist = truth_bb_phi;
+
+  truth_tautau_m_temp_hist = truth_tautau_m;
+  truth_tautau_pt_temp_hist = truth_tautau_pt;
+  truth_tautau_eta_temp_hist = truth_tautau_eta;
+  truth_tautau_phi_temp_hist = truth_tautau_phi;
+
+  // reco
+  reco_HH_m_temp_hist = truth_HH_m;
+  reco_HH_pt_temp_hist = truth_HH_pt;
+  reco_HH_eta_temp_hist = truth_HH_eta;
+  reco_HH_phi_temp_hist = truth_HH_phi;
+
+  reco_bb_m_temp_hist = truth_bb_m;
+  reco_bb_pt_temp_hist = truth_bb_pt;
+  reco_bb_eta_temp_hist = truth_bb_eta;
+  reco_bb_phi_temp_hist = truth_bb_phi;
+
+  reco_tautau_m_temp_hist = truth_tautau_m;
+  reco_tautau_pt_temp_hist = truth_tautau_pt;
+  reco_tautau_eta_temp_hist = truth_tautau_eta;
+  reco_tautau_phi_temp_hist = truth_tautau_phi;
+
+  //preselected
+  preselected_HH_m_temp_hist = truth_HH_m;
+  preselected_HH_pt_temp_hist = truth_HH_pt;
+  preselected_HH_eta_temp_hist = truth_HH_eta;
+  preselected_HH_phi_temp_hist = truth_HH_phi;
+
+  preselected_bb_m_temp_hist = truth_bb_m;
+  preselected_bb_pt_temp_hist = truth_bb_pt;
+  preselected_bb_eta_temp_hist = truth_bb_eta;
+  preselected_bb_phi_temp_hist = truth_bb_phi;
+
+  preselected_tautau_m_temp_hist = truth_tautau_m;
+  preselected_tautau_pt_temp_hist = truth_tautau_pt;
+  preselected_tautau_eta_temp_hist = truth_tautau_eta;
+  preselected_tautau_phi_temp_hist = truth_tautau_phi;
+  
   // all events histograms
 
   fill_all_events_histograms_acceptance_ratios();
 
   // resolved selection event histograms
-  if(bbtt_HH_vis_m > 0){
+  if( bbtt_HH_vis_m > 0 ){
     fill_resolved_selection_histograms_acceptance_ratios();
   }
   
   // Boosted analysis events histograms
-  if( class_event != -1 ){
+  if( class_event == 3 ){
     fill_boosted_events_histograms_acceptance_ratios();
   }
   
@@ -49,154 +132,154 @@ void fill_acceptance_ratios(){
 void fill_all_events_histograms_acceptance_ratios(){
 
   // all events histograms
-  hist_acceptance_mHH_denominator_r3_r4->Fill(reco_bbtt_HH_m_BA/1000.);
-  //hist_acceptance_ptHH_denominator_r3_r4->Fill(reco_bbtt_HH_pt_BA/1000.);
-  //hist_acceptance_etaHH_denominator_r3_r4->Fill(reco_bbtt_HH_eta_BA);
-  //hist_acceptance_phiHH_denominator_r3_r4->Fill(reco_bbtt_HH_phi_BA);
+  hist_acceptance_mHH_denominator_r3_r4->Fill(reco_HH_m_temp_hist/1000.);
+  //hist_acceptance_ptHH_denominator_r3_r4->Fill(reco_HH_pt_temp_hist/1000.);
+  //hist_acceptance_etaHH_denominator_r3_r4->Fill(reco_HH_eta_temp_hist);
+  //hist_acceptance_phiHH_denominator_r3_r4->Fill(reco_HH_phi_temp_hist);
 
-  //hist_acceptance_mHbb_denominator_r3_r4->Fill(reco_bbtt_bb_m_BA/1000.);
-  hist_acceptance_ptHbb_denominator_r3_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
-  //hist_acceptance_etaHbb_denominator_r3_r4->Fill(reco_bbtt_bb_eta_BA);
-  //hist_acceptance_phiHbb_denominator_r3_r4->Fill(reco_bbtt_bb_phi_BA);
+  //hist_acceptance_mHbb_denominator_r3_r4->Fill(reco_bb_m_temp_hist/1000.);
+  hist_acceptance_ptHbb_denominator_r3_r4->Fill(reco_bb_pt_temp_hist/1000.);
+  //hist_acceptance_etaHbb_denominator_r3_r4->Fill(reco_bb_eta_temp_hist);
+  //hist_acceptance_phiHbb_denominator_r3_r4->Fill(reco_bb_phi_temp_hist);
 
-  //hist_acceptance_mHtautau_denominator_r3_r4->Fill(reco_bbtt_tautau_m_BA/1000.);
-  hist_acceptance_ptHtautau_denominator_r3_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
-  //hist_acceptance_etaHtautau_denominator_r3_r4->Fill(reco_bbtt_tautau_eta_BA);
-  //hist_acceptance_phiHtautau_denominator_r3_r4->Fill(reco_bbtt_tautau_phi_BA);
+  //hist_acceptance_mHtautau_denominator_r3_r4->Fill(reco_tautau_m_temp_hist/1000.);
+  hist_acceptance_ptHtautau_denominator_r3_r4->Fill(reco_tautau_pt_temp_hist/1000.);
+  //hist_acceptance_etaHtautau_denominator_r3_r4->Fill(reco_tautau_eta_temp_hist);
+  //hist_acceptance_phiHtautau_denominator_r3_r4->Fill(reco_tautau_phi_temp_hist);
 
   // truth variables
-  hist_acceptance_truth_mHH_denominator_r3_r4->Fill(truth_HH_m/1000.);
-  hist_acceptance_truth_ptHH_denominator_r3_r4->Fill(truth_HH_pt/1000.);
-  hist_acceptance_truth_etaHH_denominator_r3_r4->Fill(truth_HH_eta);
-  hist_acceptance_truth_phiHH_denominator_r3_r4->Fill(truth_HH_phi);
+  hist_acceptance_truth_mHH_denominator_r3_r4->Fill(truth_HH_m_temp_hist/1000.);
+  hist_acceptance_truth_ptHH_denominator_r3_r4->Fill(truth_HH_pt_temp_hist/1000.);
+  hist_acceptance_truth_etaHH_denominator_r3_r4->Fill(truth_HH_eta_temp_hist);
+  hist_acceptance_truth_phiHH_denominator_r3_r4->Fill(truth_HH_phi_temp_hist);
   
-  hist_acceptance_truth_mHbb_denominator_r3_r4->Fill(truth_bb_m/1000.);
-  hist_acceptance_truth_ptHbb_denominator_r3_r4->Fill(truth_bb_pt/1000.);
-  hist_acceptance_truth_etaHbb_denominator_r3_r4->Fill(truth_bb_eta);
-  hist_acceptance_truth_phiHbb_denominator_r3_r4->Fill(truth_bb_phi);
+  hist_acceptance_truth_mHbb_denominator_r3_r4->Fill(truth_bb_m_temp_hist/1000.);
+  hist_acceptance_truth_ptHbb_denominator_r3_r4->Fill(truth_bb_pt_temp_hist/1000.);
+  hist_acceptance_truth_etaHbb_denominator_r3_r4->Fill(truth_bb_eta_temp_hist);
+  hist_acceptance_truth_phiHbb_denominator_r3_r4->Fill(truth_bb_phi_temp_hist);
   
-  hist_acceptance_truth_mHtautau_denominator_r3_r4->Fill(truth_tautau_m/1000.);
-  hist_acceptance_truth_ptHtautau_denominator_r3_r4->Fill(truth_tautau_pt/1000.);
-  hist_acceptance_truth_etaHtautau_denominator_r3_r4->Fill(truth_tautau_eta);
-  hist_acceptance_truth_phiHtautau_denominator_r3_r4->Fill(truth_tautau_phi);
+  hist_acceptance_truth_mHtautau_denominator_r3_r4->Fill(truth_tautau_m_temp_hist/1000.);
+  hist_acceptance_truth_ptHtautau_denominator_r3_r4->Fill(truth_tautau_pt_temp_hist/1000.);
+  hist_acceptance_truth_etaHtautau_denominator_r3_r4->Fill(truth_tautau_eta_temp_hist);
+  hist_acceptance_truth_phiHtautau_denominator_r3_r4->Fill(truth_tautau_phi_temp_hist);
   
   // preselected events variables
   
-  hist_acceptance_preselected_mHH_denominator_r3_r4->Fill(preselected_HH_m/1000.);
-  hist_acceptance_preselected_ptHH_denominator_r3_r4->Fill(preselected_HH_pt/1000.);
-  hist_acceptance_preselected_etaHH_denominator_r3_r4->Fill(preselected_HH_eta);
-  hist_acceptance_preselected_phiHH_denominator_r3_r4->Fill(preselected_HH_phi);
+  hist_acceptance_preselected_mHH_denominator_r3_r4->Fill(preselected_HH_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHH_denominator_r3_r4->Fill(preselected_HH_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHH_denominator_r3_r4->Fill(preselected_HH_eta_temp_hist);
+  hist_acceptance_preselected_phiHH_denominator_r3_r4->Fill(preselected_HH_phi_temp_hist);
   
-  hist_acceptance_preselected_mHbb_denominator_r3_r4->Fill(preselected_bb_m/1000.);
-  hist_acceptance_preselected_ptHbb_denominator_r3_r4->Fill(preselected_bb_pt/1000.);
-  hist_acceptance_preselected_etaHbb_denominator_r3_r4->Fill(preselected_bb_eta);
-  hist_acceptance_preselected_phiHbb_denominator_r3_r4->Fill(preselected_bb_phi);
+  hist_acceptance_preselected_mHbb_denominator_r3_r4->Fill(preselected_bb_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHbb_denominator_r3_r4->Fill(preselected_bb_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHbb_denominator_r3_r4->Fill(preselected_bb_eta_temp_hist);
+  hist_acceptance_preselected_phiHbb_denominator_r3_r4->Fill(preselected_bb_phi_temp_hist);
 
-  hist_acceptance_preselected_mHtautau_denominator_r3_r4->Fill(preselected_tautau_m/1000.);
-  hist_acceptance_preselected_ptHtautau_denominator_r3_r4->Fill(preselected_tautau_pt/1000.);
-  hist_acceptance_preselected_etaHtautau_denominator_r3_r4->Fill(preselected_tautau_eta);
-  hist_acceptance_preselected_phiHtautau_denominator_r3_r4->Fill(preselected_tautau_phi);
+  hist_acceptance_preselected_mHtautau_denominator_r3_r4->Fill(preselected_tautau_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHtautau_denominator_r3_r4->Fill(preselected_tautau_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHtautau_denominator_r3_r4->Fill(preselected_tautau_eta_temp_hist);
+  hist_acceptance_preselected_phiHtautau_denominator_r3_r4->Fill(preselected_tautau_phi_temp_hist);
 
 }
 
 void fill_resolved_selection_histograms_acceptance_ratios(){
-
+  
   // resolved selection event histograms
   
-  hist_acceptance_mHH_denominator_r1->Fill(reco_bbtt_HH_m_BA/1000.);
-  //hist_acceptance_ptHH_denominator_r1->Fill(reco_bbtt_HH_pt_BA/1000.);
-  //hist_acceptance_etaHH_denominator_r1->Fill(reco_bbtt_HH_eta_BA);
-  //hist_acceptance_phiHH_denominator_r1->Fill(reco_bbtt_HH_phi_BA);
+  hist_acceptance_mHH_denominator_r1->Fill(reco_HH_m_temp_hist/1000.);
+  //hist_acceptance_ptHH_denominator_r1->Fill(reco_HH_pt_temp_hist/1000.);
+  //hist_acceptance_etaHH_denominator_r1->Fill(reco_HH_eta_temp_hist);
+  //hist_acceptance_phiHH_denominator_r1->Fill(reco_HH_phi_temp_hist);
 
-  //hist_acceptance_mHbb_denominator_r1->Fill(reco_bbtt_bb_m_BA/1000.);
-  hist_acceptance_ptHbb_denominator_r1->Fill(reco_bbtt_bb_pt_BA/1000.);
-  //hist_acceptance_etaHbb_denominator_r1->Fill(reco_bbtt_bb_eta_BA);
-  //hist_acceptance_phiHbb_denominator_r1->Fill(reco_bbtt_bb_phi_BA);
+  //hist_acceptance_mHbb_denominator_r1->Fill(reco_bb_m_temp_hist/1000.);
+  hist_acceptance_ptHbb_denominator_r1->Fill(reco_bb_pt_temp_hist/1000.);
+  //hist_acceptance_etaHbb_denominator_r1->Fill(reco_bb_eta_temp_hist);
+  //hist_acceptance_phiHbb_denominator_r1->Fill(reco_bb_phi_temp_hist);
 
-  //hist_acceptance_mHtautau_denominator_r1->Fill(reco_bbtt_tautau_m_BA/1000.);
-  hist_acceptance_ptHtautau_denominator_r1->Fill(reco_bbtt_tautau_pt_BA/1000.);
-  //hist_acceptance_etaHtautau_denominator_r1->Fill(reco_bbtt_tautau_eta_BA);
-  //hist_acceptance_phiHtautau_denominator_r1->Fill(reco_bbtt_tautau_phi_BA);
+  //hist_acceptance_mHtautau_denominator_r1->Fill(reco_tautau_m_temp_hist/1000.);
+  hist_acceptance_ptHtautau_denominator_r1->Fill(reco_tautau_pt_temp_hist/1000.);
+  //hist_acceptance_etaHtautau_denominator_r1->Fill(reco_tautau_eta_temp_hist);
+  //hist_acceptance_phiHtautau_denominator_r1->Fill(reco_tautau_phi_temp_hist);
 
   // truth variables
-  hist_acceptance_truth_mHH_denominator_r1->Fill(truth_HH_m/1000.);
-  hist_acceptance_truth_ptHH_denominator_r1->Fill(truth_HH_pt/1000.);
-  hist_acceptance_truth_etaHH_denominator_r1->Fill(truth_HH_eta);
-  hist_acceptance_truth_phiHH_denominator_r1->Fill(truth_HH_phi);
+  hist_acceptance_truth_mHH_denominator_r1->Fill(truth_HH_m_temp_hist/1000.);
+  hist_acceptance_truth_ptHH_denominator_r1->Fill(truth_HH_pt_temp_hist/1000.);
+  hist_acceptance_truth_etaHH_denominator_r1->Fill(truth_HH_eta_temp_hist);
+  hist_acceptance_truth_phiHH_denominator_r1->Fill(truth_HH_phi_temp_hist);
 
-  hist_acceptance_truth_mHbb_denominator_r1->Fill(truth_bb_m/1000.);
-  hist_acceptance_truth_ptHbb_denominator_r1->Fill(truth_bb_pt/1000.);
-  hist_acceptance_truth_etaHbb_denominator_r1->Fill(truth_bb_eta);
-  hist_acceptance_truth_phiHbb_denominator_r1->Fill(truth_bb_phi);
+  hist_acceptance_truth_mHbb_denominator_r1->Fill(truth_bb_m_temp_hist/1000.);
+  hist_acceptance_truth_ptHbb_denominator_r1->Fill(truth_bb_pt_temp_hist/1000.);
+  hist_acceptance_truth_etaHbb_denominator_r1->Fill(truth_bb_eta_temp_hist);
+  hist_acceptance_truth_phiHbb_denominator_r1->Fill(truth_bb_phi_temp_hist);
 
-  hist_acceptance_truth_mHtautau_denominator_r1->Fill(truth_tautau_m/1000.);
-  hist_acceptance_truth_ptHtautau_denominator_r1->Fill(truth_tautau_pt/1000.);
-  hist_acceptance_truth_etaHtautau_denominator_r1->Fill(truth_tautau_eta);
-  hist_acceptance_truth_phiHtautau_denominator_r1->Fill(truth_tautau_phi);
+  hist_acceptance_truth_mHtautau_denominator_r1->Fill(truth_tautau_m_temp_hist/1000.);
+  hist_acceptance_truth_ptHtautau_denominator_r1->Fill(truth_tautau_pt_temp_hist/1000.);
+  hist_acceptance_truth_etaHtautau_denominator_r1->Fill(truth_tautau_eta_temp_hist);
+  hist_acceptance_truth_phiHtautau_denominator_r1->Fill(truth_tautau_phi_temp_hist);
 
   // preselected events variables
-  hist_acceptance_preselected_mHH_denominator_r1->Fill(preselected_HH_m/1000.);
-  hist_acceptance_preselected_ptHH_denominator_r1->Fill(preselected_HH_pt/1000.);
-  hist_acceptance_preselected_etaHH_denominator_r1->Fill(preselected_HH_eta);
-  hist_acceptance_preselected_phiHH_denominator_r1->Fill(preselected_HH_phi);
+  hist_acceptance_preselected_mHH_denominator_r1->Fill(preselected_HH_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHH_denominator_r1->Fill(preselected_HH_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHH_denominator_r1->Fill(preselected_HH_eta_temp_hist);
+  hist_acceptance_preselected_phiHH_denominator_r1->Fill(preselected_HH_phi_temp_hist);
 
-  hist_acceptance_preselected_mHbb_denominator_r1->Fill(preselected_bb_m/1000.);
-  hist_acceptance_preselected_ptHbb_denominator_r1->Fill(preselected_bb_pt/1000.);
-  hist_acceptance_preselected_etaHbb_denominator_r1->Fill(preselected_bb_eta);
-  hist_acceptance_preselected_phiHbb_denominator_r1->Fill(preselected_bb_phi);
+  hist_acceptance_preselected_mHbb_denominator_r1->Fill(preselected_bb_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHbb_denominator_r1->Fill(preselected_bb_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHbb_denominator_r1->Fill(preselected_bb_eta_temp_hist);
+  hist_acceptance_preselected_phiHbb_denominator_r1->Fill(preselected_bb_phi_temp_hist);
 
-  hist_acceptance_preselected_mHtautau_denominator_r1->Fill(preselected_tautau_m/1000.);
-  hist_acceptance_preselected_ptHtautau_denominator_r1->Fill(preselected_tautau_pt/1000.);
-  hist_acceptance_preselected_etaHtautau_denominator_r1->Fill(preselected_tautau_eta);
-  hist_acceptance_preselected_phiHtautau_denominator_r1->Fill(preselected_tautau_phi);
+  hist_acceptance_preselected_mHtautau_denominator_r1->Fill(preselected_tautau_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHtautau_denominator_r1->Fill(preselected_tautau_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHtautau_denominator_r1->Fill(preselected_tautau_eta_temp_hist);
+  hist_acceptance_preselected_phiHtautau_denominator_r1->Fill(preselected_tautau_phi_temp_hist);
 
   // recovariables
-  hist_acceptance_mHH_numerator_r3->Fill(reco_bbtt_HH_m_BA/1000.);
-  //hist_acceptance_ptHH_numerator_r3->Fill(reco_bbtt_HH_pt_BA/1000.);
-  //hist_acceptance_etaHH_numerator_r3->Fill(reco_bbtt_HH_eta_BA);
-  //hist_acceptance_phiHH_numerator_r3->Fill(reco_bbtt_HH_phi_BA);
+  hist_acceptance_mHH_numerator_r3->Fill(reco_HH_m_temp_hist/1000.);
+  //hist_acceptance_ptHH_numerator_r3->Fill(reco_HH_pt_temp_hist/1000.);
+  //hist_acceptance_etaHH_numerator_r3->Fill(reco_HH_eta_temp_hist);
+  //hist_acceptance_phiHH_numerator_r3->Fill(reco_HH_phi_temp_hist);
 
-  //hist_acceptance_mHbb_numerator_r3->Fill(reco_bbtt_bb_m_BA/1000.);
-  hist_acceptance_ptHbb_numerator_r3->Fill(reco_bbtt_bb_pt_BA/1000.);
-  //hist_acceptance_etaHbb_numerator_r3->Fill(reco_bbtt_bb_eta_BA);
-  //hist_acceptance_phiHbb_numerator_r3->Fill(reco_bbtt_bb_phi_BA);
+  //hist_acceptance_mHbb_numerator_r3->Fill(reco_bb_m_temp_hist/1000.);
+  hist_acceptance_ptHbb_numerator_r3->Fill(reco_bb_pt_temp_hist/1000.);
+  //hist_acceptance_etaHbb_numerator_r3->Fill(reco_bb_eta_temp_hist);
+  //hist_acceptance_phiHbb_numerator_r3->Fill(reco_bb_phi_temp_hist);
 
-  //hist_acceptance_mHtautau_numerator_r3->Fill(reco_bbtt_tautau_m_BA/1000.);
-  hist_acceptance_ptHtautau_numerator_r3->Fill(reco_bbtt_tautau_pt_BA/1000.);
-  //hist_acceptance_etaHtautau_numerator_r3->Fill(reco_bbtt_tautau_eta_BA);
-  //hist_acceptance_phiHtautau_numerator_r3->Fill(reco_bbtt_tautau_phi_BA);
+  //hist_acceptance_mHtautau_numerator_r3->Fill(reco_tautau_m_temp_hist/1000.);
+  hist_acceptance_ptHtautau_numerator_r3->Fill(reco_tautau_pt_temp_hist/1000.);
+  //hist_acceptance_etaHtautau_numerator_r3->Fill(reco_tautau_eta_temp_hist);
+  //hist_acceptance_phiHtautau_numerator_r3->Fill(reco_tautau_phi_temp_hist);
 
   // truth variables
-  hist_acceptance_truth_mHH_numerator_r3->Fill(truth_HH_m/1000.);
-  hist_acceptance_truth_ptHH_numerator_r3->Fill(truth_HH_pt/1000.);
-  hist_acceptance_truth_etaHH_numerator_r3->Fill(truth_HH_eta);
-  hist_acceptance_truth_phiHH_numerator_r3->Fill(truth_HH_phi);
+  hist_acceptance_truth_mHH_numerator_r3->Fill(truth_HH_m_temp_hist/1000.);
+  hist_acceptance_truth_ptHH_numerator_r3->Fill(truth_HH_pt_temp_hist/1000.);
+  hist_acceptance_truth_etaHH_numerator_r3->Fill(truth_HH_eta_temp_hist);
+  hist_acceptance_truth_phiHH_numerator_r3->Fill(truth_HH_phi_temp_hist);
   
-  hist_acceptance_truth_mHbb_numerator_r3->Fill(truth_bb_m/1000.);
-  hist_acceptance_truth_ptHbb_numerator_r3->Fill(truth_bb_pt/1000.);
-  hist_acceptance_truth_etaHbb_numerator_r3->Fill(truth_bb_eta);
-  hist_acceptance_truth_phiHbb_numerator_r3->Fill(truth_bb_phi);
+  hist_acceptance_truth_mHbb_numerator_r3->Fill(truth_bb_m_temp_hist/1000.);
+  hist_acceptance_truth_ptHbb_numerator_r3->Fill(truth_bb_pt_temp_hist/1000.);
+  hist_acceptance_truth_etaHbb_numerator_r3->Fill(truth_bb_eta_temp_hist);
+  hist_acceptance_truth_phiHbb_numerator_r3->Fill(truth_bb_phi_temp_hist);
 
-  hist_acceptance_truth_mHtautau_numerator_r3->Fill(truth_tautau_m/1000.);
-  hist_acceptance_truth_ptHtautau_numerator_r3->Fill(truth_tautau_pt/1000.);
-  hist_acceptance_truth_etaHtautau_numerator_r3->Fill(truth_tautau_eta);
-  hist_acceptance_truth_phiHtautau_numerator_r3->Fill(truth_tautau_phi);
+  hist_acceptance_truth_mHtautau_numerator_r3->Fill(truth_tautau_m_temp_hist/1000.);
+  hist_acceptance_truth_ptHtautau_numerator_r3->Fill(truth_tautau_pt_temp_hist/1000.);
+  hist_acceptance_truth_etaHtautau_numerator_r3->Fill(truth_tautau_eta_temp_hist);
+  hist_acceptance_truth_phiHtautau_numerator_r3->Fill(truth_tautau_phi_temp_hist);
 
   // preselected events variables
-  hist_acceptance_preselected_mHH_numerator_r3->Fill(preselected_HH_m/1000.);
-  hist_acceptance_preselected_ptHH_numerator_r3->Fill(preselected_HH_pt/1000.);
-  hist_acceptance_preselected_etaHH_numerator_r3->Fill(preselected_HH_eta);
-  hist_acceptance_preselected_phiHH_numerator_r3->Fill(preselected_HH_phi);
+  hist_acceptance_preselected_mHH_numerator_r3->Fill(preselected_HH_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHH_numerator_r3->Fill(preselected_HH_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHH_numerator_r3->Fill(preselected_HH_eta_temp_hist);
+  hist_acceptance_preselected_phiHH_numerator_r3->Fill(preselected_HH_phi_temp_hist);
 
-  hist_acceptance_preselected_mHbb_numerator_r3->Fill(preselected_bb_m/1000.);
-  hist_acceptance_preselected_ptHbb_numerator_r3->Fill(preselected_bb_pt/1000.);
-  hist_acceptance_preselected_etaHbb_numerator_r3->Fill(preselected_bb_eta);
-  hist_acceptance_preselected_phiHbb_numerator_r3->Fill(preselected_bb_phi);
+  hist_acceptance_preselected_mHbb_numerator_r3->Fill(preselected_bb_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHbb_numerator_r3->Fill(preselected_bb_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHbb_numerator_r3->Fill(preselected_bb_eta_temp_hist);
+  hist_acceptance_preselected_phiHbb_numerator_r3->Fill(preselected_bb_phi_temp_hist);
 
-  hist_acceptance_preselected_mHtautau_numerator_r3->Fill(preselected_tautau_m/1000.);
-  hist_acceptance_preselected_ptHtautau_numerator_r3->Fill(preselected_tautau_pt/1000.);
-  hist_acceptance_preselected_etaHtautau_numerator_r3->Fill(preselected_tautau_eta);
-  hist_acceptance_preselected_phiHtautau_numerator_r3->Fill(preselected_tautau_phi);
+  hist_acceptance_preselected_mHtautau_numerator_r3->Fill(preselected_tautau_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHtautau_numerator_r3->Fill(preselected_tautau_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHtautau_numerator_r3->Fill(preselected_tautau_eta_temp_hist);
+  hist_acceptance_preselected_phiHtautau_numerator_r3->Fill(preselected_tautau_phi_temp_hist);
 
 }
 
@@ -204,66 +287,66 @@ void fill_preselected_events_histograms_acceptance_ratios(){
 
   // Preselected analysis events histograms
 
-  hist_acceptance_preselected_mHH_denominator_class3_r2->Fill(preselected_HH_m/1000.);
-  hist_acceptance_preselected_ptHH_denominator_class3_r2->Fill(preselected_HH_pt/1000.);
-  hist_acceptance_preselected_etaHH_denominator_class3_r2->Fill(preselected_HH_eta);
-  hist_acceptance_preselected_phiHH_denominator_class3_r2->Fill(preselected_HH_phi);
+  hist_acceptance_preselected_mHH_denominator_class3_r2->Fill(preselected_HH_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHH_denominator_class3_r2->Fill(preselected_HH_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHH_denominator_class3_r2->Fill(preselected_HH_eta_temp_hist);
+  hist_acceptance_preselected_phiHH_denominator_class3_r2->Fill(preselected_HH_phi_temp_hist);
 
-  hist_acceptance_preselected_mHbb_denominator_class3_r2->Fill(preselected_bb_m/1000.);
-  hist_acceptance_preselected_ptHbb_denominator_class3_r2->Fill(preselected_bb_pt/1000.);
-  hist_acceptance_preselected_etaHbb_denominator_class3_r2->Fill(preselected_bb_eta);
-  hist_acceptance_preselected_phiHbb_denominator_class3_r2->Fill(preselected_bb_phi);
+  hist_acceptance_preselected_mHbb_denominator_class3_r2->Fill(preselected_bb_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHbb_denominator_class3_r2->Fill(preselected_bb_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHbb_denominator_class3_r2->Fill(preselected_bb_eta_temp_hist);
+  hist_acceptance_preselected_phiHbb_denominator_class3_r2->Fill(preselected_bb_phi_temp_hist);
 
-  hist_acceptance_preselected_mHtautau_denominator_class3_r2->Fill(preselected_tautau_m/1000.);
-  hist_acceptance_preselected_ptHtautau_denominator_class3_r2->Fill(preselected_tautau_pt/1000.);
-  hist_acceptance_preselected_etaHtautau_denominator_class3_r2->Fill(preselected_tautau_eta);
-  hist_acceptance_preselected_phiHtautau_denominator_class3_r2->Fill(preselected_tautau_phi);
+  hist_acceptance_preselected_mHtautau_denominator_class3_r2->Fill(preselected_tautau_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHtautau_denominator_class3_r2->Fill(preselected_tautau_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHtautau_denominator_class3_r2->Fill(preselected_tautau_eta_temp_hist);
+  hist_acceptance_preselected_phiHtautau_denominator_class3_r2->Fill(preselected_tautau_phi_temp_hist);
       
-  hist_acceptance_preselected_mHH_numerator_class3_r4->Fill(preselected_HH_m/1000.);
-  hist_acceptance_preselected_ptHH_numerator_class3_r4->Fill(preselected_HH_pt/1000.);
-  hist_acceptance_preselected_etaHH_numerator_class3_r4->Fill(preselected_HH_eta);
-  hist_acceptance_preselected_phiHH_numerator_class3_r4->Fill(preselected_HH_phi);
+  hist_acceptance_preselected_mHH_numerator_class3_r4->Fill(preselected_HH_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHH_numerator_class3_r4->Fill(preselected_HH_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHH_numerator_class3_r4->Fill(preselected_HH_eta_temp_hist);
+  hist_acceptance_preselected_phiHH_numerator_class3_r4->Fill(preselected_HH_phi_temp_hist);
 
-  hist_acceptance_preselected_mHbb_numerator_class3_r4->Fill(preselected_bb_m/1000.);
-  hist_acceptance_preselected_ptHbb_numerator_class3_r4->Fill(preselected_bb_pt/1000.);
-  hist_acceptance_preselected_etaHbb_numerator_class3_r4->Fill(preselected_bb_eta);
-  hist_acceptance_preselected_phiHbb_numerator_class3_r4->Fill(preselected_bb_phi);
+  hist_acceptance_preselected_mHbb_numerator_class3_r4->Fill(preselected_bb_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHbb_numerator_class3_r4->Fill(preselected_bb_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHbb_numerator_class3_r4->Fill(preselected_bb_eta_temp_hist);
+  hist_acceptance_preselected_phiHbb_numerator_class3_r4->Fill(preselected_bb_phi_temp_hist);
 
-  hist_acceptance_preselected_mHtautau_numerator_class3_r4->Fill(preselected_tautau_m/1000.);
-  hist_acceptance_preselected_ptHtautau_numerator_class3_r4->Fill(preselected_tautau_pt/1000.);
-  hist_acceptance_preselected_etaHtautau_numerator_class3_r4->Fill(preselected_tautau_eta);
-  hist_acceptance_preselected_phiHtautau_numerator_class3_r4->Fill(preselected_tautau_phi);
+  hist_acceptance_preselected_mHtautau_numerator_class3_r4->Fill(preselected_tautau_m_temp_hist/1000.);
+  hist_acceptance_preselected_ptHtautau_numerator_class3_r4->Fill(preselected_tautau_pt_temp_hist/1000.);
+  hist_acceptance_preselected_etaHtautau_numerator_class3_r4->Fill(preselected_tautau_eta_temp_hist);
+  hist_acceptance_preselected_phiHtautau_numerator_class3_r4->Fill(preselected_tautau_phi_temp_hist);
     
-  hist_acceptance_all_Bbb_preselected_mHbb_denominator_r2_numerator_r4->Fill(preselected_bb_m/1000.);
-  hist_acceptance_all_Bbb_preselected_ptHbb_denominator_r2_numerator_r4->Fill(preselected_bb_pt/1000.);
+  hist_acceptance_all_Bbb_preselected_mHbb_denominator_r2_numerator_r4->Fill(preselected_bb_m_temp_hist/1000.);
+  hist_acceptance_all_Bbb_preselected_ptHbb_denominator_r2_numerator_r4->Fill(preselected_bb_pt_temp_hist/1000.);
     
-  hist_acceptance_all_Btautau_preselected_mHtautau_denominator_r2_numerator_r4->Fill(preselected_tautau_m/1000.);
-  hist_acceptance_all_Btautau_preselected_ptHtautau_denominator_r2_numerator_r4->Fill(preselected_tautau_pt/1000.);
+  hist_acceptance_all_Btautau_preselected_mHtautau_denominator_r2_numerator_r4->Fill(preselected_tautau_m_temp_hist/1000.);
+  hist_acceptance_all_Btautau_preselected_ptHtautau_denominator_r2_numerator_r4->Fill(preselected_tautau_pt_temp_hist/1000.);
   
   // Overlap region
   // Rbb-Rtautau
-  if( (bbtt_HH_vis_m > 0) && (passed_preselection == true) ){ // Events being selected bythe resolved selection and the boosted analysis
+  if( (bbtt_HH_vis_m > 0) && (passed_preselection_pT_cut == true) ){ // Events being selected by the resolved selection and the boosted analysis
     
-    hist_acceptance_preselected_mHH_numerator_class3_r1_r2->Fill(preselected_HH_m/1000.);
-    hist_acceptance_preselected_ptHH_numerator_class3_r1_r2->Fill(preselected_HH_pt/1000.);
-    hist_acceptance_preselected_etaHH_numerator_class3_r1_r2->Fill(preselected_HH_eta);
-    hist_acceptance_preselected_phiHH_numerator_class3_r1_r2->Fill(preselected_HH_phi);
+    hist_acceptance_preselected_mHH_numerator_class3_r1_r2->Fill(preselected_HH_m_temp_hist/1000.);
+    hist_acceptance_preselected_ptHH_numerator_class3_r1_r2->Fill(preselected_HH_pt_temp_hist/1000.);
+    hist_acceptance_preselected_etaHH_numerator_class3_r1_r2->Fill(preselected_HH_eta_temp_hist);
+    hist_acceptance_preselected_phiHH_numerator_class3_r1_r2->Fill(preselected_HH_phi_temp_hist);
 
-    hist_acceptance_preselected_mHbb_numerator_class3_r1_r2->Fill(preselected_bb_m/1000.);
-    hist_acceptance_preselected_ptHbb_numerator_class3_r1_r2->Fill(preselected_bb_pt/1000.);
-    hist_acceptance_preselected_etaHbb_numerator_class3_r1_r2->Fill(preselected_bb_eta);
-    hist_acceptance_preselected_phiHbb_numerator_class3_r1_r2->Fill(preselected_bb_phi);
+    hist_acceptance_preselected_mHbb_numerator_class3_r1_r2->Fill(preselected_bb_m_temp_hist/1000.);
+    hist_acceptance_preselected_ptHbb_numerator_class3_r1_r2->Fill(preselected_bb_pt_temp_hist/1000.);
+    hist_acceptance_preselected_etaHbb_numerator_class3_r1_r2->Fill(preselected_bb_eta_temp_hist);
+    hist_acceptance_preselected_phiHbb_numerator_class3_r1_r2->Fill(preselected_bb_phi_temp_hist);
 
-    hist_acceptance_preselected_mHtautau_numerator_class3_r1_r2->Fill(preselected_tautau_m/1000.);
-    hist_acceptance_preselected_ptHtautau_numerator_class3_r1_r2->Fill(preselected_tautau_pt/1000.);
-    hist_acceptance_preselected_etaHtautau_numerator_class3_r1_r2->Fill(preselected_tautau_eta);
-    hist_acceptance_preselected_phiHtautau_numerator_class3_r1_r2->Fill(preselected_tautau_phi);
+    hist_acceptance_preselected_mHtautau_numerator_class3_r1_r2->Fill(preselected_tautau_m_temp_hist/1000.);
+    hist_acceptance_preselected_ptHtautau_numerator_class3_r1_r2->Fill(preselected_tautau_pt_temp_hist/1000.);
+    hist_acceptance_preselected_etaHtautau_numerator_class3_r1_r2->Fill(preselected_tautau_eta_temp_hist);
+    hist_acceptance_preselected_phiHtautau_numerator_class3_r1_r2->Fill(preselected_tautau_phi_temp_hist);
     
-    hist_acceptance_all_Bbb_preselected_mHbb_numerator_r1_r2->Fill(preselected_bb_m/1000.);
-    hist_acceptance_all_Bbb_preselected_ptHbb_numerator_r1_r2->Fill(preselected_bb_pt/1000.);
+    hist_acceptance_all_Bbb_preselected_mHbb_numerator_r1_r2->Fill(preselected_bb_m_temp_hist/1000.);
+    hist_acceptance_all_Bbb_preselected_ptHbb_numerator_r1_r2->Fill(preselected_bb_pt_temp_hist/1000.);
     
-    hist_acceptance_all_Btautau_preselected_mHtautau_numerator_r1_r2->Fill(preselected_tautau_m/1000.);
-    hist_acceptance_all_Btautau_preselected_ptHtautau_numerator_r1_r2->Fill(preselected_tautau_pt/1000.);
+    hist_acceptance_all_Btautau_preselected_mHtautau_numerator_r1_r2->Fill(preselected_tautau_m_temp_hist/1000.);
+    hist_acceptance_all_Btautau_preselected_ptHtautau_numerator_r1_r2->Fill(preselected_tautau_pt_temp_hist/1000.);
     
   }
 }
@@ -276,148 +359,148 @@ void fill_boosted_events_histograms_acceptance_ratios(){
   if(class_event == 3){
 
     // Reco variables
-    hist_acceptance_mHH_denominator_class3_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-    //hist_acceptance_ptHH_denominator_class3_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
-    //hist_acceptance_etaHH_denominator_class3_r2->Fill(reco_bbtt_HH_eta_BA);
-    //hist_acceptance_phiHH_denominator_class3_r2->Fill(reco_bbtt_HH_phi_BA);
+    hist_acceptance_mHH_denominator_class3_r2->Fill(reco_HH_m_temp_hist/1000.);
+    //hist_acceptance_ptHH_denominator_class3_r2->Fill(reco_HH_pt_temp_hist/1000.);
+    //hist_acceptance_etaHH_denominator_class3_r2->Fill(reco_HH_eta_temp_hist);
+    //hist_acceptance_phiHH_denominator_class3_r2->Fill(reco_HH_phi_temp_hist);
 
-    //hist_acceptance_mHbb_denominator_class3_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-    hist_acceptance_ptHbb_denominator_class3_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
-    //hist_acceptance_etaHbb_denominator_class3_r2->Fill(reco_bbtt_bb_eta_BA);
-    //hist_acceptance_phiHbb_denominator_class3_r2->Fill(reco_bbtt_bb_phi_BA);
+    //hist_acceptance_mHbb_denominator_class3_r2->Fill(reco_bb_m_temp_hist/1000.);
+    hist_acceptance_ptHbb_denominator_class3_r2->Fill(reco_bb_pt_temp_hist/1000.);
+    //hist_acceptance_etaHbb_denominator_class3_r2->Fill(reco_bb_eta_temp_hist);
+    //hist_acceptance_phiHbb_denominator_class3_r2->Fill(reco_bb_phi_temp_hist);
 
-    //hist_acceptance_mHtautau_denominator_class3_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-    hist_acceptance_ptHtautau_denominator_class3_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
-    //hist_acceptance_etaHtautau_denominator_class3_r2->Fill(reco_bbtt_tautau_eta_BA);
-    //hist_acceptance_phiHtautau_denominator_class3_r2->Fill(reco_bbtt_tautau_phi_BA);
+    //hist_acceptance_mHtautau_denominator_class3_r2->Fill(reco_tautau_m_temp_hist/1000.);
+    hist_acceptance_ptHtautau_denominator_class3_r2->Fill(reco_tautau_pt_temp_hist/1000.);
+    //hist_acceptance_etaHtautau_denominator_class3_r2->Fill(reco_tautau_eta_temp_hist);
+    //hist_acceptance_phiHtautau_denominator_class3_r2->Fill(reco_tautau_phi_temp_hist);
 
     // truth objects
-    hist_acceptance_truth_mHH_denominator_class3_r2->Fill(truth_HH_m/1000.);
-    hist_acceptance_truth_ptHH_denominator_class3_r2->Fill(truth_HH_pt/1000.);
-    hist_acceptance_truth_etaHH_denominator_class3_r2->Fill(truth_HH_eta);
-    hist_acceptance_truth_phiHH_denominator_class3_r2->Fill(truth_HH_phi);
+    hist_acceptance_truth_mHH_denominator_class3_r2->Fill(truth_HH_m_temp_hist/1000.);
+    hist_acceptance_truth_ptHH_denominator_class3_r2->Fill(truth_HH_pt_temp_hist/1000.);
+    hist_acceptance_truth_etaHH_denominator_class3_r2->Fill(truth_HH_eta_temp_hist);
+    hist_acceptance_truth_phiHH_denominator_class3_r2->Fill(truth_HH_phi_temp_hist);
 
-    hist_acceptance_truth_mHbb_denominator_class3_r2->Fill(truth_bb_m/1000.);
-    hist_acceptance_truth_ptHbb_denominator_class3_r2->Fill(truth_bb_pt/1000.);
-    hist_acceptance_truth_etaHbb_denominator_class3_r2->Fill(truth_bb_eta);
-    hist_acceptance_truth_phiHbb_denominator_class3_r2->Fill(truth_bb_phi);
+    hist_acceptance_truth_mHbb_denominator_class3_r2->Fill(truth_bb_m_temp_hist/1000.);
+    hist_acceptance_truth_ptHbb_denominator_class3_r2->Fill(truth_bb_pt_temp_hist/1000.);
+    hist_acceptance_truth_etaHbb_denominator_class3_r2->Fill(truth_bb_eta_temp_hist);
+    hist_acceptance_truth_phiHbb_denominator_class3_r2->Fill(truth_bb_phi_temp_hist);
 
-    hist_acceptance_truth_mHtautau_denominator_class3_r2->Fill(truth_tautau_m/1000.);
-    hist_acceptance_truth_ptHtautau_denominator_class3_r2->Fill(truth_tautau_pt/1000.);
-    hist_acceptance_truth_etaHtautau_denominator_class3_r2->Fill(truth_tautau_eta);
-    hist_acceptance_truth_phiHtautau_denominator_class3_r2->Fill(truth_tautau_phi);
+    hist_acceptance_truth_mHtautau_denominator_class3_r2->Fill(truth_tautau_m_temp_hist/1000.);
+    hist_acceptance_truth_ptHtautau_denominator_class3_r2->Fill(truth_tautau_pt_temp_hist/1000.);
+    hist_acceptance_truth_etaHtautau_denominator_class3_r2->Fill(truth_tautau_eta_temp_hist);
+    hist_acceptance_truth_phiHtautau_denominator_class3_r2->Fill(truth_tautau_phi_temp_hist);
 
     // Reco variables
     
-    hist_acceptance_mHH_numerator_class3_r4->Fill(reco_bbtt_HH_m_BA/1000.);
-    //hist_acceptance_ptHH_numerator_class3_r4->Fill(reco_bbtt_HH_pt_BA/1000.);
-    //hist_acceptance_etaHH_numerator_class3_r4->Fill(reco_bbtt_HH_eta_BA);
-    //hist_acceptance_phiHH_numerator_class3_r4->Fill(reco_bbtt_HH_phi_BA);
+    hist_acceptance_mHH_numerator_class3_r4->Fill(reco_HH_m_temp_hist/1000.);
+    //hist_acceptance_ptHH_numerator_class3_r4->Fill(reco_HH_pt_temp_hist/1000.);
+    //hist_acceptance_etaHH_numerator_class3_r4->Fill(reco_HH_eta_temp_hist);
+    //hist_acceptance_phiHH_numerator_class3_r4->Fill(reco_HH_phi_temp_hist);
 
-    //hist_acceptance_mHbb_numerator_class3_r4->Fill(reco_bbtt_bb_m_BA/1000.);
-    hist_acceptance_ptHbb_numerator_class3_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
-    //hist_acceptance_etaHbb_numerator_class3_r4->Fill(reco_bbtt_bb_eta_BA);
-    //hist_acceptance_phiHbb_numerator_class3_r4->Fill(reco_bbtt_bb_phi_BA);
+    //hist_acceptance_mHbb_numerator_class3_r4->Fill(reco_bb_m_temp_hist/1000.);
+    hist_acceptance_ptHbb_numerator_class3_r4->Fill(reco_bb_pt_temp_hist/1000.);
+    //hist_acceptance_etaHbb_numerator_class3_r4->Fill(reco_bb_eta_temp_hist);
+    //hist_acceptance_phiHbb_numerator_class3_r4->Fill(reco_bb_phi_temp_hist);
 
-    //hist_acceptance_mHtautau_numerator_class3_r4->Fill(reco_bbtt_tautau_m_BA/1000.);
-    hist_acceptance_ptHtautau_numerator_class3_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
-    //hist_acceptance_etaHtautau_numerator_class3_r4->Fill(reco_bbtt_tautau_eta_BA);
-    //hist_acceptance_phiHtautau_numerator_class3_r4->Fill(reco_bbtt_tautau_phi_BA);
+    //hist_acceptance_mHtautau_numerator_class3_r4->Fill(reco_tautau_m_temp_hist/1000.);
+    hist_acceptance_ptHtautau_numerator_class3_r4->Fill(reco_tautau_pt_temp_hist/1000.);
+    //hist_acceptance_etaHtautau_numerator_class3_r4->Fill(reco_tautau_eta_temp_hist);
+    //hist_acceptance_phiHtautau_numerator_class3_r4->Fill(reco_tautau_phi_temp_hist);
 
     // truth variables
     
-    hist_acceptance_truth_mHH_numerator_class3_r4->Fill(truth_HH_m/1000.);
-    hist_acceptance_truth_ptHH_numerator_class3_r4->Fill(truth_HH_pt/1000.);
-    hist_acceptance_truth_etaHH_numerator_class3_r4->Fill(truth_HH_eta);
-    hist_acceptance_truth_phiHH_numerator_class3_r4->Fill(truth_HH_phi);
+    hist_acceptance_truth_mHH_numerator_class3_r4->Fill(truth_HH_m_temp_hist/1000.);
+    hist_acceptance_truth_ptHH_numerator_class3_r4->Fill(truth_HH_pt_temp_hist/1000.);
+    hist_acceptance_truth_etaHH_numerator_class3_r4->Fill(truth_HH_eta_temp_hist);
+    hist_acceptance_truth_phiHH_numerator_class3_r4->Fill(truth_HH_phi_temp_hist);
 
-    hist_acceptance_truth_mHbb_numerator_class3_r4->Fill(truth_bb_m/1000.);
-    hist_acceptance_truth_ptHbb_numerator_class3_r4->Fill(truth_bb_pt/1000.);
-    hist_acceptance_truth_etaHbb_numerator_class3_r4->Fill(truth_bb_eta);
-    hist_acceptance_truth_phiHbb_numerator_class3_r4->Fill(truth_bb_phi);
+    hist_acceptance_truth_mHbb_numerator_class3_r4->Fill(truth_bb_m_temp_hist/1000.);
+    hist_acceptance_truth_ptHbb_numerator_class3_r4->Fill(truth_bb_pt_temp_hist/1000.);
+    hist_acceptance_truth_etaHbb_numerator_class3_r4->Fill(truth_bb_eta_temp_hist);
+    hist_acceptance_truth_phiHbb_numerator_class3_r4->Fill(truth_bb_phi_temp_hist);
 
-    hist_acceptance_truth_mHtautau_numerator_class3_r4->Fill(truth_tautau_m/1000.);
-    hist_acceptance_truth_ptHtautau_numerator_class3_r4->Fill(truth_tautau_pt/1000.);
-    hist_acceptance_truth_etaHtautau_numerator_class3_r4->Fill(truth_tautau_eta);
-    hist_acceptance_truth_phiHtautau_numerator_class3_r4->Fill(truth_tautau_phi);
+    hist_acceptance_truth_mHtautau_numerator_class3_r4->Fill(truth_tautau_m_temp_hist/1000.);
+    hist_acceptance_truth_ptHtautau_numerator_class3_r4->Fill(truth_tautau_pt_temp_hist/1000.);
+    hist_acceptance_truth_etaHtautau_numerator_class3_r4->Fill(truth_tautau_eta_temp_hist);
+    hist_acceptance_truth_phiHtautau_numerator_class3_r4->Fill(truth_tautau_phi_temp_hist);
   }
   
   if( (class_event==2) || (class_event==3) ){
-    hist_acceptance_all_Bbb_mHbb_denominator_r2_numerator_r4->Fill(reco_bbtt_bb_m_BA/1000.);
-    hist_acceptance_all_Bbb_ptHbb_denominator_r2_numerator_r4->Fill(reco_bbtt_bb_pt_BA/1000.);
+    hist_acceptance_all_Bbb_mHbb_denominator_r2_numerator_r4->Fill(reco_bb_m_temp_hist/1000.);
+    hist_acceptance_all_Bbb_ptHbb_denominator_r2_numerator_r4->Fill(reco_bb_pt_temp_hist/1000.);
     
-    hist_acceptance_all_Bbb_truth_mHbb_denominator_r2_numerator_r4->Fill(truth_bb_m/1000.);
-    hist_acceptance_all_Bbb_truth_ptHbb_denominator_r2_numerator_r4->Fill(truth_bb_pt/1000.);
+    hist_acceptance_all_Bbb_truth_mHbb_denominator_r2_numerator_r4->Fill(truth_bb_m_temp_hist/1000.);
+    hist_acceptance_all_Bbb_truth_ptHbb_denominator_r2_numerator_r4->Fill(truth_bb_pt_temp_hist/1000.);
   }
   
   if( (class_event==1) || (class_event==3) ){
-    hist_acceptance_all_Btautau_mHtautau_denominator_r2_numerator_r4->Fill(reco_bbtt_tautau_m_BA/1000.);
-    hist_acceptance_all_Btautau_ptHtautau_denominator_r2_numerator_r4->Fill(reco_bbtt_tautau_pt_BA/1000.);
+    hist_acceptance_all_Btautau_mHtautau_denominator_r2_numerator_r4->Fill(reco_tautau_m_temp_hist/1000.);
+    hist_acceptance_all_Btautau_ptHtautau_denominator_r2_numerator_r4->Fill(reco_tautau_pt_temp_hist/1000.);
     
-    hist_acceptance_all_Btautau_truth_mHtautau_denominator_r2_numerator_r4->Fill(truth_tautau_m/1000.);
-    hist_acceptance_all_Btautau_truth_ptHtautau_denominator_r2_numerator_r4->Fill(truth_tautau_pt/1000.);
+    hist_acceptance_all_Btautau_truth_mHtautau_denominator_r2_numerator_r4->Fill(truth_tautau_m_temp_hist/1000.);
+    hist_acceptance_all_Btautau_truth_ptHtautau_denominator_r2_numerator_r4->Fill(truth_tautau_pt_temp_hist/1000.);
   }
   
   // Overlap region
   // Rbb-Rtautau
-  if( (bbtt_HH_vis_m > 0) && (passed_preselection == true) ){ // Events being selected bythe resolved selection and the boosted analysis
+  if( (bbtt_HH_vis_m > 0) && (passed_reco_truth_match_pT_cut == true) ){ // Events being selected bythe resolved selection and the boosted analysis
     
     // Bbb-Btautau
     if(class_event == 3){
 
       // Reco variables
 
-      hist_acceptance_mHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_m_BA/1000.);
-      //hist_acceptance_ptHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_pt_BA/1000.);
-      //hist_acceptance_etaHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_eta_BA);
-      //hist_acceptance_phiHH_numerator_class3_r1_r2->Fill(reco_bbtt_HH_phi_BA);
+      hist_acceptance_mHH_numerator_class3_r1_r2->Fill(reco_HH_m_temp_hist/1000.);
+      //hist_acceptance_ptHH_numerator_class3_r1_r2->Fill(reco_HH_pt_temp_hist/1000.);
+      //hist_acceptance_etaHH_numerator_class3_r1_r2->Fill(reco_HH_eta_temp_hist);
+      //hist_acceptance_phiHH_numerator_class3_r1_r2->Fill(reco_HH_phi_temp_hist);
 
-      //hist_acceptance_mHbb_numerator_class3_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-      hist_acceptance_ptHbb_numerator_class3_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
-      //hist_acceptance_etaHbb_numerator_class3_r1_r2->Fill(reco_bbtt_bb_eta_BA);
-      //hist_acceptance_phiHbb_numerator_class3_r1_r2->Fill(reco_bbtt_bb_phi_BA);
+      //hist_acceptance_mHbb_numerator_class3_r1_r2->Fill(reco_bb_m_temp_hist/1000.);
+      hist_acceptance_ptHbb_numerator_class3_r1_r2->Fill(reco_bb_pt_temp_hist/1000.);
+      //hist_acceptance_etaHbb_numerator_class3_r1_r2->Fill(reco_bb_eta_temp_hist);
+      //hist_acceptance_phiHbb_numerator_class3_r1_r2->Fill(reco_bb_phi_temp_hist);
 
-      //hist_acceptance_mHtautau_numerator_class3_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-      hist_acceptance_ptHtautau_numerator_class3_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
-      //hist_acceptance_etaHtautau_numerator_class3_r1_r2->Fill(reco_bbtt_tautau_eta_BA);
-      //hist_acceptance_phiHtautau_numerator_class3_r1_r2->Fill(reco_bbtt_tautau_phi_BA);
+      //hist_acceptance_mHtautau_numerator_class3_r1_r2->Fill(reco_tautau_m_temp_hist/1000.);
+      hist_acceptance_ptHtautau_numerator_class3_r1_r2->Fill(reco_tautau_pt_temp_hist/1000.);
+      //hist_acceptance_etaHtautau_numerator_class3_r1_r2->Fill(reco_tautau_eta_temp_hist);
+      //hist_acceptance_phiHtautau_numerator_class3_r1_r2->Fill(reco_tautau_phi_temp_hist);
 
       // truth variables
       
-      hist_acceptance_truth_mHH_numerator_class3_r1_r2->Fill(truth_HH_m/1000.);
-      hist_acceptance_truth_ptHH_numerator_class3_r1_r2->Fill(truth_HH_pt/1000.);
-      hist_acceptance_truth_etaHH_numerator_class3_r1_r2->Fill(truth_HH_eta);
-      hist_acceptance_truth_phiHH_numerator_class3_r1_r2->Fill(truth_HH_phi);
+      hist_acceptance_truth_mHH_numerator_class3_r1_r2->Fill(truth_HH_m_temp_hist/1000.);
+      hist_acceptance_truth_ptHH_numerator_class3_r1_r2->Fill(truth_HH_pt_temp_hist/1000.);
+      hist_acceptance_truth_etaHH_numerator_class3_r1_r2->Fill(truth_HH_eta_temp_hist);
+      hist_acceptance_truth_phiHH_numerator_class3_r1_r2->Fill(truth_HH_phi_temp_hist);
 
-      hist_acceptance_truth_mHbb_numerator_class3_r1_r2->Fill(truth_bb_m/1000.);
-      hist_acceptance_truth_ptHbb_numerator_class3_r1_r2->Fill(truth_bb_pt/1000.);
-      hist_acceptance_truth_etaHbb_numerator_class3_r1_r2->Fill(truth_bb_eta);
-      hist_acceptance_truth_phiHbb_numerator_class3_r1_r2->Fill(truth_bb_phi);
+      hist_acceptance_truth_mHbb_numerator_class3_r1_r2->Fill(truth_bb_m_temp_hist/1000.);
+      hist_acceptance_truth_ptHbb_numerator_class3_r1_r2->Fill(truth_bb_pt_temp_hist/1000.);
+      hist_acceptance_truth_etaHbb_numerator_class3_r1_r2->Fill(truth_bb_eta_temp_hist);
+      hist_acceptance_truth_phiHbb_numerator_class3_r1_r2->Fill(truth_bb_phi_temp_hist);
 
-      hist_acceptance_truth_mHtautau_numerator_class3_r1_r2->Fill(truth_tautau_m/1000.);
-      hist_acceptance_truth_ptHtautau_numerator_class3_r1_r2->Fill(truth_tautau_pt/1000.);
-      hist_acceptance_truth_etaHtautau_numerator_class3_r1_r2->Fill(truth_tautau_eta);
-      hist_acceptance_truth_phiHtautau_numerator_class3_r1_r2->Fill(truth_tautau_phi);
+      hist_acceptance_truth_mHtautau_numerator_class3_r1_r2->Fill(truth_tautau_m_temp_hist/1000.);
+      hist_acceptance_truth_ptHtautau_numerator_class3_r1_r2->Fill(truth_tautau_pt_temp_hist/1000.);
+      hist_acceptance_truth_etaHtautau_numerator_class3_r1_r2->Fill(truth_tautau_eta_temp_hist);
+      hist_acceptance_truth_phiHtautau_numerator_class3_r1_r2->Fill(truth_tautau_phi_temp_hist);
 
     }
     
     if( (class_event==2) || (class_event==3) ){
       
-      hist_acceptance_all_Bbb_mHbb_numerator_r1_r2->Fill(reco_bbtt_bb_m_BA/1000.);
-      hist_acceptance_all_Bbb_ptHbb_numerator_r1_r2->Fill(reco_bbtt_bb_pt_BA/1000.);
+      hist_acceptance_all_Bbb_mHbb_numerator_r1_r2->Fill(reco_bb_m_temp_hist/1000.);
+      hist_acceptance_all_Bbb_ptHbb_numerator_r1_r2->Fill(reco_bb_pt_temp_hist/1000.);
       
-      hist_acceptance_all_Bbb_truth_mHbb_numerator_r1_r2->Fill(truth_bb_m/1000.);
-      hist_acceptance_all_Bbb_truth_ptHbb_numerator_r1_r2->Fill(truth_bb_pt/1000.);
+      hist_acceptance_all_Bbb_truth_mHbb_numerator_r1_r2->Fill(truth_bb_m_temp_hist/1000.);
+      hist_acceptance_all_Bbb_truth_ptHbb_numerator_r1_r2->Fill(truth_bb_pt_temp_hist/1000.);
       
     }
     
     if( (class_event==1) || (class_event==3) ){
       
-      hist_acceptance_all_Btautau_mHtautau_numerator_r1_r2->Fill(reco_bbtt_tautau_m_BA/1000.);
-      hist_acceptance_all_Btautau_ptHtautau_numerator_r1_r2->Fill(reco_bbtt_tautau_pt_BA/1000.);
+      hist_acceptance_all_Btautau_mHtautau_numerator_r1_r2->Fill(reco_tautau_m_temp_hist/1000.);
+      hist_acceptance_all_Btautau_ptHtautau_numerator_r1_r2->Fill(reco_tautau_pt_temp_hist/1000.);
       
-      hist_acceptance_all_Btautau_truth_mHtautau_numerator_r1_r2->Fill(truth_tautau_m/1000.);
-      hist_acceptance_all_Btautau_truth_ptHtautau_numerator_r1_r2->Fill(truth_tautau_pt/1000.);
+      hist_acceptance_all_Btautau_truth_mHtautau_numerator_r1_r2->Fill(truth_tautau_m_temp_hist/1000.);
+      hist_acceptance_all_Btautau_truth_ptHtautau_numerator_r1_r2->Fill(truth_tautau_pt_temp_hist/1000.);
       
     }
   }
@@ -477,7 +560,7 @@ void fill_histograms_matched_truth_recojets(){
       
       if(value_phbb >= min_tagger_Hbb_value){
 	taggerHbb_score_cut = true;
-	if(passed_preselection == true){
+	if(passed_reco_truth_match_pT_cut == true){
 	  hist_matched_recojet_bb_m_only_Hbb_tagger->Fill(recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
 	}
       }
@@ -486,7 +569,7 @@ void fill_histograms_matched_truth_recojets(){
       tau_n2_over_n1_subjettiness_bb = recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin);
       if( (tau_n2_over_n1_subjettiness_bb <= max_nsubjetiness_value_for_bb) && (tau_n2_over_n1_subjettiness_bb >= min_nsubjetiness_value_for_bb) ){
 	nsubjettiness_cut = true;
-	if(passed_preselection == true){
+	if(passed_reco_truth_match_pT_cut == true){
 	  hist_matched_recojet_bb_m_only_nsubjettiness->Fill(recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
 	}
       }
@@ -581,7 +664,7 @@ void fill_histograms_matched_truth_recojets(){
       
       if(value_phbb < min_tagger_Hbb_value){
 	taggerHbb_score_cut = true;
-	if(passed_preselection == true){
+	if(passed_reco_truth_match_pT_cut == true){
 	  hist_matched_recojet_tautau_m_only_Hbb_tagger->Fill(recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
 	}
       }
@@ -590,7 +673,7 @@ void fill_histograms_matched_truth_recojets(){
       tau_n2_over_n1_subjettiness_tautau = recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin);
       if( (tau_n2_over_n1_subjettiness_tautau <= max_nsubjetiness_value_for_tautau) && (tau_n2_over_n1_subjettiness_tautau >= min_nsubjetiness_value_for_tautau) ){
 	nsubjettiness_cut = true;
-	if(passed_preselection == true){
+	if(passed_reco_truth_match_pT_cut == true){
 	  hist_matched_recojet_tautau_m_only_nsubjettiness->Fill(recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
 	}
       }
