@@ -3,17 +3,6 @@
 #include "ratio_acceptances_preselected_events_variables_histograms.h"
 
 // *************************************
-// Declaration of useful structures
-// *************************************
-
-struct PlotInfo {
-  TH1F* hist_num;
-  TH1F* hist_den;
-  TString label;
-  TString title;
-};
-
-// *************************************
 // Declaration of global variables
 // *************************************
 
@@ -49,6 +38,33 @@ int count_all_objects_resolved_config = 0;
 
 int count_truth_HH_pt_pos_values = 0;
 int count_truth_HH_m_pos_values = 0;
+
+
+// preselected matched counter variables
+
+// for preselected-matched bb
+
+int matched_bb_events = 0;
+int matched_preselected_bb_events = 0;
+int overlap_matched_preselected_bb_events = 0;
+int matched_bb_non_preselected = 0;
+int preselected_bb_non_matched = 0;
+
+// for preselected-matched tautau
+
+int matched_tautau_events = 0;
+int matched_preselected_tautau_events = 0;
+int overlap_matched_preselected_tautau_events = 0;
+int matched_tautau_non_preselected = 0;
+int preselected_tautau_non_matched = 0;
+
+// for preselected-matched Bbb-Btautau
+
+int matched_events = 0;
+int matched_preselected_events = 0;
+int overlap_matched_preselected_events = 0;
+int matched_non_preselected = 0;
+int preselected_non_matched = 0;
 
 // *************************************
 // Declaration of leaf variables
@@ -179,7 +195,13 @@ Float_t preselected_HH_m;
 bool passed_preselection_pT_cut;
 bool passed_reco_truth_match_pT_cut;
 bool matched_preselection; // Tell us if the bb and tautau objects were defined with the preselection cuts on recovariables
+
+bool passed_preselection_bb_pT_cut;
+bool passed_reco_truth_match_bb_pT_cut;
 bool matched_preselected_bb;
+
+bool passed_preselection_tautau_pT_cut;
+bool passed_reco_truth_match_tautau_pT_cut;
 bool matched_preselected_tautau;
 
 // Declaration of the resolved variables results
@@ -215,11 +237,9 @@ Float_t bbtt_HH_vis_m;
 Float_t generatorWeight_NOSYS;
 vector<char> *recojet_antikt4PFlow_NOSYS_passesOR;
 
-
 // *************************************
 // Declaration of branches
 // *************************************
-
 
 // truth children from Higgs
 TBranch *b_truth_children_fromH1_pdgId;
@@ -415,7 +435,9 @@ Float_t preselected_tautau_phi_temp_hist;
 // *************************************
 
 // 2D histogram for matched and preselected percentages
-TH2F *percentages_matched_and_preselected_events = new TH2F("percentages_matched_and_preselected_events", "Percentages between matched and preselected events", 2, 0, 2, 2, 0, 2);
+TH2F *percentages_matched_and_preselected_events_BbbBtautau = new TH2F("percentages_matched_and_preselected_events_BbbBtautau", "Percentages between matched and preselected events for B_{bb} B_{#tau#tau}", 2, 0, 2, 2, 0, 2);
+TH2F *percentages_matched_and_preselected_events_only_Bbb = new TH2F("percentages_matched_and_preselected_events_only_Bbb", "Percentages between matched and preselected events for B_{bb}", 2, 0, 2, 2, 0, 2);
+TH2F *percentages_matched_and_preselected_events_only_Btautau = new TH2F("percentages_matched_and_preselected_events_only_Btautau", "Percentages between matched and preselected events for B_{#tau#tau}", 2, 0, 2, 2, 0, 2);
 
 // Declaration of distributions for recojets variables
 
@@ -591,7 +613,7 @@ TH1F *hist_matched_preselected_tautau_eta = new TH1F("hist_matched_preselected_t
 TH1F *hist_matched_preselected_bb_phi = new TH1F("hist_matched_preselected_bb_phi", "#phi distribution of the recojets that are bb boosted jets; #phi_{j(bb)} [GeV];Events", 100, -5, 5);
 TH1F *hist_matched_preselected_tautau_phi = new TH1F("hist_matched_preselected_tautau_phi", "#phi distribution of the recojets that are #tau#tau boosted jets; #phi_{j(#tau#tau)} [GeV];Events", 100, -5, 5);
 
-
+/*
 // Initialize the map with plot information
 std::unordered_map<std::string, PlotInfo> plotMap = {
   // mHH histograms
@@ -649,3 +671,4 @@ std::unordered_map<std::string, PlotInfo> plotMap = {
   {"class2_r2_ptHtautau", {hist_acceptance_ptHtautau_numerator_class2_r1_r2, hist_acceptance_ptHtautau_denominator_class2_r2, "B_{bb}-R_{#tau#tau}", "Acceptance plot using the p_{T}(H #rightarrow #tau#tau) variable (r_{2}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio"}},
   {"class3_r2_ptHtautau", {hist_acceptance_ptHtautau_numerator_class3_r1_r2, hist_acceptance_ptHtautau_denominator_class3_r2, "B_{bb}-B_{#tau#tau}", "Acceptance plot using the p_{T}(H #rightarrow #tau#tau) variable (r_{2}); p_{T}(H #rightarrow #tau#tau) [GeV];Ratio"}}
 };
+*/

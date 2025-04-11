@@ -33,8 +33,9 @@ sample_paths = [
     "/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples/mc20_13TeV_502996_vbf_lephad_l1cvv1p5cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH Cvv=1.5 lep-had channel
 ]
 """
-#min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
-min_pT_recojets = ["100", "200", "300"] # in GeV
+min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
+#min_pT_recojets = ["100", "200", "300"] # in GeV
+#min_pT_recojets = ["200"] # in GeV
 
 start = time.time() # time at start of whole processing
 

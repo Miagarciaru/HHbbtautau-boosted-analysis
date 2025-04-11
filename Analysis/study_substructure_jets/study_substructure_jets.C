@@ -43,13 +43,8 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   int bad_bjets_pt_selection = 0;
   int bad_taujets_pt_selection = 0;
   int b_tau_matched_jets = 0;
-  int matched_events = 0;
   int diff_size_recojet_antikt10UFO_Tau1_wta_NOSYS_pt = 0;
-  int matched_preselected_events = 0;
   int overlap_resolved_and_preselected = 0;
-  int overlap_matched_preselected_events = 0;
-  int matched_non_preselected = 0;
-  int preselected_non_matched = 0;
   
   // Convert char* to float using std::atof()
   float min_pT_recojet_cut_MeV = 1000*std::stoi(min_pT); // min pT in MeV
@@ -74,20 +69,66 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
       fill_histograms_preselected_jets();
     }
 
-    if( (matched_preselection == true) && (passed_preselection_pT_cut == true) ){
-      matched_preselected_events++;
-      if( (class_event==3) && (passed_reco_truth_match_pT_cut == true) ){
-	overlap_matched_preselected_events++;
+    // Counting preselected bb jets after each cut on pT min
+    if( matched_preselected_bb == true && passed_preselection_bb_pT_cut == true){
+      matched_preselected_bb_events++;
+      if( ( class_event==2 || class_event==3 ) && passed_reco_truth_match_bb_pT_cut == true ){
+        overlap_matched_preselected_bb_events++;
       }
-      if( class_event!=3 ){
-	preselected_non_matched++;
+      else{
+	preselected_bb_non_matched++;
       }
     }
 
-    if( (class_event==3) && (passed_reco_truth_match_pT_cut == true) ){
-      matched_events++;
-      if( matched_preselection == false ){
-	matched_non_preselected++;
+    // Counting preselected tautau jets after each cut on pT min
+    if( matched_preselected_tautau == true && passed_preselection_tautau_pT_cut == true){
+      matched_preselected_tautau_events++;
+      if( ( class_event==1 || class_event==3 ) && passed_reco_truth_match_tautau_pT_cut == true ){
+	overlap_matched_preselected_tautau_events++;
+      }
+      else{
+	preselected_tautau_non_matched++;
+      }
+    }
+
+    // Counting preselected Bbb Btautau jets after each cut on pT min
+    if( matched_preselection == true && passed_preselection_pT_cut == true){
+      matched_preselected_events++;
+      if( class_event==3 && passed_reco_truth_match_pT_cut == true ){
+	overlap_matched_preselected_events++;
+      }
+      else{
+	preselected_non_matched++;
+      }
+    }
+    
+    // Counting truth-reco bb jets after each cut on pT min
+    if( passed_reco_truth_match_bb_pT_cut == true ){
+      if( class_event==2 || class_event==3 ){
+	matched_bb_events++;
+	if( matched_preselected_bb == false || passed_preselection_bb_pT_cut == false ){
+	  matched_bb_non_preselected++;
+	}
+      }
+    }
+
+    // Counting truth-reco tautau jets after each cut on pT min
+    if( passed_reco_truth_match_tautau_pT_cut == true ){
+      if( class_event==1 || class_event==3 ){
+	matched_tautau_events++;
+	if( matched_preselected_tautau == false || passed_preselection_tautau_pT_cut == false ){
+	  matched_tautau_non_preselected++;
+	}
+      }
+    }
+
+    // Counting truth-reco Bbb-Btautau jets after each cut on pT min
+    if( passed_reco_truth_match_pT_cut == true ){
+      if( class_event==3 ){
+	matched_events++;
+	if( matched_preselection == false || passed_preselection_pT_cut == false ){
+	  matched_non_preselected++;
+	}
       }
     }
     
@@ -122,17 +163,35 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     
   }
 
-  percentages_matched_and_preselected_events->SetBinContent(1, 1, 100.0*matched_non_preselected/matched_events); // Matched events percentages not being preselected
-  percentages_matched_and_preselected_events->SetBinContent(1, 2, 100.0*overlap_matched_preselected_events/matched_events); // Matched events percentages being preselected
-  percentages_matched_and_preselected_events->SetBinContent(2, 1, 100.0*preselected_non_matched/matched_preselected_events); // Preselected events percentages not being matched
-  percentages_matched_and_preselected_events->SetBinContent(2, 2, 100.0*overlap_matched_preselected_events/matched_preselected_events); // Preselected events percentages being matched
+  // Fill percentages Bbb
+  percentages_matched_and_preselected_events_only_Bbb->SetBinContent(1, 1, 100.0*matched_bb_non_preselected/matched_bb_events); // Matched events percentages not being preselected
+  percentages_matched_and_preselected_events_only_Bbb->SetBinContent(1, 2, 100.0*overlap_matched_preselected_bb_events/matched_bb_events); // Matched events percentages being preselected
+  percentages_matched_and_preselected_events_only_Bbb->SetBinContent(2, 1, 100.0*preselected_bb_non_matched/matched_preselected_bb_events); // Preselected events percentages not being matched
+  percentages_matched_and_preselected_events_only_Bbb->SetBinContent(2, 2, 100.0*overlap_matched_preselected_bb_events/matched_preselected_bb_events); // Preselected events percentages being matched
 
-  percentages_matched_and_preselected_events->GetXaxis()->SetBinLabel(1, "Matched truth-recojet events");
-  percentages_matched_and_preselected_events->GetXaxis()->SetBinLabel(2, "Preselected events");
+  percentages_matched_and_preselected_events_only_Bbb->GetXaxis()->SetBinLabel(1, "Matched truth-recojet B_{bb} events");
+  percentages_matched_and_preselected_events_only_Bbb->GetXaxis()->SetBinLabel(2, "Preselected B_{bb} events");
 
-  //percentages_matched_and_preselected_events->SetOptStat(0);
-  //percentages_matched_and_preselected_events->SetMarkerColor(kBlack);
-  //percentages_matched_and_preselected_events->Draw("COLZ TEXT");
+
+  // Fill percentages Btautau
+  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(1, 1, 100.0*matched_tautau_non_preselected/matched_tautau_events); // Matched events percentages not being preselected
+  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(1, 2, 100.0*overlap_matched_preselected_tautau_events/matched_tautau_events); // Matched events percentages being preselected
+  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(2, 1, 100.0*preselected_tautau_non_matched/matched_preselected_tautau_events); // Preselected events percentages not being matched
+  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(2, 2, 100.0*overlap_matched_preselected_tautau_events/matched_preselected_tautau_events); // Preselected events percentages being matched
+
+  percentages_matched_and_preselected_events_only_Btautau->GetXaxis()->SetBinLabel(1, "Matched truth-recojet B_{#tau#tau} events");
+  percentages_matched_and_preselected_events_only_Btautau->GetXaxis()->SetBinLabel(2, "Preselected B_{#tau#tau} events");
+  
+  
+  // Fill percentages Bbb-Btautau
+  percentages_matched_and_preselected_events_BbbBtautau->SetBinContent(1, 1, 100.0*matched_non_preselected/matched_events); // Matched events percentages not being preselected
+  percentages_matched_and_preselected_events_BbbBtautau->SetBinContent(1, 2, 100.0*overlap_matched_preselected_events/matched_events); // Matched events percentages being preselected
+  percentages_matched_and_preselected_events_BbbBtautau->SetBinContent(2, 1, 100.0*preselected_non_matched/matched_preselected_events); // Preselected events percentages not being matched
+  percentages_matched_and_preselected_events_BbbBtautau->SetBinContent(2, 2, 100.0*overlap_matched_preselected_events/matched_preselected_events); // Preselected events percentages being matched
+
+  percentages_matched_and_preselected_events_BbbBtautau->GetXaxis()->SetBinLabel(1, "Matched truth-recojet B_{bb}-B{#tau#tau} events");
+  percentages_matched_and_preselected_events_BbbBtautau->GetXaxis()->SetBinLabel(2, "Preselected B_{bb}-B{#tau#tau} events");
+
   
   cout << "Entries: " << nentries << endl;
   cout << "Matched truth events number is: " << matched_truth_events << endl;
@@ -148,6 +207,35 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   cout << "Relative difference between preselected and all events: " << TMath::Abs(matched_preselected_events-nentries)/nentries << endl;
   cout << "Overlap between resolved selection and the preselection events: " << overlap_resolved_and_preselected << endl;
   cout << "Number of preselected bb jets ordered by pT - nsubjettiness: " << count_preselected_bb_jets_ordered_by_pT << "\t" << count_preselected_bb_jets_ordered_by_nsubjettiness << endl;
+
+  cout << "---------------------------" << endl;
+
+  cout << "Preselected truth-reco percentages Bbb-Btautau:" << endl;
+  cout << "Number of matched truth-reco Bbb-Btautau events: " << matched_events << endl;
+  cout << "Number of matched preselected Bbb-Btautau events: " << matched_preselected_events << endl;
+  cout << "Overlap of truth-reco and preselected Bbb-Btautau events: " << overlap_matched_preselected_events << endl;
+  cout << "Number of matched truth-reco non preselected Bbb-Btautau events: " << matched_non_preselected << endl;
+  cout << "Number of preselected non matched truth reco Bbb-Btautau events: " << preselected_non_matched << endl;
+  
+  cout << "---------------------------" << endl;
+
+  cout << "Preselected truth-reco percentages Bbb:" << endl;
+  cout << "Number of matched truth-reco Bbb events: " << matched_bb_events << endl;
+  cout << "Number of matched preselected Bbb events: " << matched_preselected_bb_events << endl;
+  cout << "Overlap of truth-reco and preselected Bbb events: " << overlap_matched_preselected_bb_events << endl;
+  cout << "Number of matched truth-reco non preselected Bbb events: " << matched_bb_non_preselected << endl;
+  cout << "Number of preselected non matched truth reco Bbb events: " << preselected_bb_non_matched << endl;
+
+  cout << "---------------------------" << endl;
+
+  cout << "Preselected truth-reco percentages Btautau:" << endl;
+  cout << "Number of matched truth-reco Btautau events: " << matched_tautau_events << endl;
+  cout << "Number of matched preselected Btautau events: " << matched_preselected_tautau_events << endl;
+  cout << "Overlap of truth-reco and preselected Btautau events: " << overlap_matched_preselected_tautau_events << endl;
+  cout << "Number of matched truth-reco non preselected Btautau events: " << matched_tautau_non_preselected << endl;
+  cout << "Number of preselected non matched truth reco Btautau events: " << preselected_tautau_non_matched << endl;
+
+  cout << "---------------------------" << endl;
   
   //****************************************************
   //Save Histograms in the output root file

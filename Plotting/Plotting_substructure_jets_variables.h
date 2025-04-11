@@ -77,7 +77,9 @@ TH1F *hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness;
 TH1F *hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness;
 
 //Percentages matched truth-recojets and preselected recojets
-TH2F *percentages_matched_and_preselected_events;
+TH2F *percentages_matched_and_preselected_events_BbbBtautau;
+TH2F *percentages_matched_and_preselected_events_only_Bbb;
+TH2F *percentages_matched_and_preselected_events_only_Btautau;
 
 struct hist_ratios {
     TH1F *hist_num_for_r1;
@@ -174,7 +176,9 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
   hist_nevents_per_class = dynamic_cast<TH1F*>(file->Get(("hist_nevents_per_class")));
 
   // Percentages of truth-recojets and preselected jets
-  percentages_matched_and_preselected_events = dynamic_cast<TH2F*>(file->Get(("percentages_matched_and_preselected_events")));
+  percentages_matched_and_preselected_events_BbbBtautau = dynamic_cast<TH2F*>(file->Get(("percentages_matched_and_preselected_events_BbbBtautau")));
+  percentages_matched_and_preselected_events_only_Bbb = dynamic_cast<TH2F*>(file->Get(("percentages_matched_and_preselected_events_only_Bbb")));
+  percentages_matched_and_preselected_events_only_Btautau = dynamic_cast<TH2F*>(file->Get(("percentages_matched_and_preselected_events_only_Btautau")));
   
   //**********************************************************************************************
   // Preselected variables distributions
@@ -209,7 +213,9 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
     plot_distributions_comparisons(comparison_list[ii], output_folder, minpT);
   }
 
-  plot_2D_distributions("percentages_matched_and_preselected_events", output_folder, minpT);
+  plot_2D_distributions("percentages_matched_and_preselected_events_BbbBtautau", output_folder, minpT);
+  plot_2D_distributions("percentages_matched_and_preselected_events_only_Bbb", output_folder, minpT);
+  plot_2D_distributions("percentages_matched_and_preselected_events_only_Btautau", output_folder, minpT);
 
   file->Close();
   
@@ -438,7 +444,15 @@ void plot_2D_distributions(const std::string& name_plot, const std::string& outp
   TCanvas *can = new TCanvas("can","", 800, 600);
   TH2F *hist = new TH2F();
   
-  if(name_plot == "percentages_matched_and_preselected_events"){ hist = percentages_matched_and_preselected_events;}
+  if(name_plot == "percentages_matched_and_preselected_events_BbbBtautau"){
+    hist = percentages_matched_and_preselected_events_BbbBtautau;
+  }
+  if(name_plot == "percentages_matched_and_preselected_events_only_Bbb"){
+    hist = percentages_matched_and_preselected_events_only_Bbb;
+  }
+  if(name_plot == "percentages_matched_and_preselected_events_only_Btautau"){
+    hist = percentages_matched_and_preselected_events_only_Btautau;
+  }
   
   double y_max = 1.25*hist->GetMaximum();
   

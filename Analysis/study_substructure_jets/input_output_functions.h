@@ -5,6 +5,7 @@
 void process_label(TString name_sample, const std::string& min_pT_recojets_str);
 void set_branch_address_inTree(TTree *inTree);
 void define_output_branches(TTree *outTree);
+void write_histograms();
 void print_list_of_branches(TTree* tree);
 void counter_for_stat();
 void print_stat(Int_t nentries);
@@ -375,7 +376,9 @@ void write_histograms(){
   hist_computed_HH_m->Write();
 
   // percentages matched and preselected events
-  percentages_matched_and_preselected_events->Write();
+  percentages_matched_and_preselected_events_BbbBtautau->Write();
+  percentages_matched_and_preselected_events_only_Bbb->Write();
+  percentages_matched_and_preselected_events_only_Btautau->Write();
   
   //********************************************************************************************
   // Ratio histograms for recovariables r1 and r2
