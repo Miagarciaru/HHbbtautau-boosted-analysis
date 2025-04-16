@@ -86,6 +86,8 @@ void set_branch_address_inTree(TTree *inTree){
 
   inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_phbb", &recojet_antikt10UFO_GN2Xv01_phbb, &b_recojet_antikt10UFO_GN2Xv01_phbb);
   inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_pqcd", &recojet_antikt10UFO_GN2Xv01_pqcd, &b_recojet_antikt10UFO_GN2Xv01_pqcd);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_phcc", &recojet_antikt10UFO_GN2Xv01_phcc, &b_recojet_antikt10UFO_GN2Xv01_phcc);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_ptop", &recojet_antikt10UFO_GN2Xv01_ptop, &b_recojet_antikt10UFO_GN2Xv01_ptop);
   
   inTree->SetBranchAddress("recojet_antikt10UFO_NOSYS_pt", &recojet_antikt10UFO_NOSYS_pt, &b_recojet_antikt10UFO_NOSYS_pt);
   inTree->SetBranchAddress("recojet_antikt10UFO_eta", &recojet_antikt10UFO_eta, &b_recojet_antikt10UFO_eta);
@@ -93,7 +95,15 @@ void set_branch_address_inTree(TTree *inTree){
   inTree->SetBranchAddress("recojet_antikt10UFO_m", &recojet_antikt10UFO_m, &b_recojet_antikt10UFO_m);
   inTree->SetBranchAddress("recojet_antikt10UFO_Tau1_wta", &recojet_antikt10UFO_Tau1_wta, &b_recojet_antikt10UFO_Tau1_wta);
   inTree->SetBranchAddress("recojet_antikt10UFO_Tau2_wta", &recojet_antikt10UFO_Tau2_wta, &b_recojet_antikt10UFO_Tau2_wta);
+  inTree->SetBranchAddress("recojet_antikt10UFO_Tau3_wta", &recojet_antikt10UFO_Tau3_wta, &b_recojet_antikt10UFO_Tau3_wta);
 
+  inTree->SetBranchAddress("recojet_antikt10UFO_ECF1", &recojet_antikt10UFO_ECF1, &b_recojet_antikt10UFO_ECF1);
+  inTree->SetBranchAddress("recojet_antikt10UFO_ECF2", &recojet_antikt10UFO_ECF2, &b_recojet_antikt10UFO_ECF2);
+  inTree->SetBranchAddress("recojet_antikt10UFO_ECF3", &recojet_antikt10UFO_ECF3, &b_recojet_antikt10UFO_ECF3);
+  inTree->SetBranchAddress("recojet_antikt10UFO_Split12", &recojet_antikt10UFO_Split12, &b_recojet_antikt10UFO_Split12);
+  inTree->SetBranchAddress("recojet_antikt10UFO_Split23", &recojet_antikt10UFO_Split23, &b_recojet_antikt10UFO_Split23);
+  inTree->SetBranchAddress("recojet_antikt10UFO_NOSYS_passesOR", &recojet_antikt10UFO_NOSYS_passesOR, &b_recojet_antikt10UFO_NOSYS_passesOR);
+    
   inTree->SetBranchAddress("bbtt_Jet_b1_pt_NOSYS", &bbtt_Jet_b1_pt_NOSYS, &b_bbtt_Jet_b1_pt_NOSYS);
   inTree->SetBranchAddress("bbtt_Jet_b1_eta", &bbtt_Jet_b1_eta, &b_bbtt_Jet_b1_eta);
   inTree->SetBranchAddress("bbtt_Jet_b1_phi", &bbtt_Jet_b1_phi, &b_bbtt_Jet_b1_phi);
@@ -290,9 +300,18 @@ void write_histograms(){
   hist_matched_recojet_bb_tau_n_prong->Write();
   hist_matched_recojet_bb_tau_n1_subjettiness->Write();
   hist_matched_recojet_bb_tau_n2_subjettiness->Write();
+  hist_matched_recojet_bb_tau_n3_subjettiness->Write();
   hist_matched_recojet_bb_tau_n2_over_n1_subjettiness->Write();
   hist_matched_recojet_bb_ak10_GN2Xv01_phbb->Write();
   hist_matched_recojet_bb_ak10_GN2Xv01_pqcd->Write();
+  hist_matched_recojet_bb_ak10_GN2Xv01_phcc->Write();
+  hist_matched_recojet_bb_ak10_GN2Xv01_ptop->Write();
+  hist_matched_recojet_bb_ak10_ECF1->Write();
+  hist_matched_recojet_bb_ak10_ECF2->Write();
+  hist_matched_recojet_bb_ak10_ECF3->Write();
+  hist_matched_recojet_bb_ak10_Split12->Write();
+  hist_matched_recojet_bb_ak10_Split23->Write();
+  hist_matched_recojet_bb_ak10_passesOR->Write();
   hist_matched_recojet_bb_dR->Write();
 
   hist_matched_recojet_bb_m_only_Hbb_tagger->Write();
@@ -306,9 +325,18 @@ void write_histograms(){
   hist_matched_recojet_tautau_tau_n_prong->Write();
   hist_matched_recojet_tautau_tau_n1_subjettiness->Write();
   hist_matched_recojet_tautau_tau_n2_subjettiness->Write();
+  hist_matched_recojet_tautau_tau_n3_subjettiness->Write();
   hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness->Write();
   hist_matched_recojet_tautau_ak10_GN2Xv01_phbb->Write();
   hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd->Write();
+  hist_matched_recojet_tautau_ak10_GN2Xv01_phcc->Write();
+  hist_matched_recojet_tautau_ak10_GN2Xv01_ptop->Write();
+  hist_matched_recojet_tautau_ak10_ECF1->Write();
+  hist_matched_recojet_tautau_ak10_ECF2->Write();
+  hist_matched_recojet_tautau_ak10_ECF3->Write();
+  hist_matched_recojet_tautau_ak10_Split12->Write();
+  hist_matched_recojet_tautau_ak10_Split23->Write();
+  hist_matched_recojet_tautau_ak10_passesOR->Write();
   hist_matched_recojet_tautau_dR->Write();
 
   hist_matched_recojet_tautau_m_only_Hbb_tagger->Write();
@@ -324,9 +352,18 @@ void write_histograms(){
   hist_non_matched_recojet_bb_tau_n_prong->Write();
   hist_non_matched_recojet_bb_tau_n1_subjettiness->Write();
   hist_non_matched_recojet_bb_tau_n2_subjettiness->Write();
+  hist_non_matched_recojet_bb_tau_n3_subjettiness->Write();
   hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness->Write();
   hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb->Write();
   hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd->Write();
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_phcc->Write();
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_ptop->Write();
+  hist_non_matched_recojet_bb_ak10_ECF1->Write();
+  hist_non_matched_recojet_bb_ak10_ECF2->Write();
+  hist_non_matched_recojet_bb_ak10_ECF3->Write();
+  hist_non_matched_recojet_bb_ak10_Split12->Write();
+  hist_non_matched_recojet_bb_ak10_Split23->Write();
+  hist_non_matched_recojet_bb_ak10_passesOR->Write();
   
   hist_non_matched_recojet_tautau_m->Write();
   hist_non_matched_recojet_tautau_pt->Write();
@@ -335,9 +372,18 @@ void write_histograms(){
   hist_non_matched_recojet_tautau_tau_n_prong->Write();
   hist_non_matched_recojet_tautau_tau_n1_subjettiness->Write();
   hist_non_matched_recojet_tautau_tau_n2_subjettiness->Write();
+  hist_non_matched_recojet_tautau_tau_n3_subjettiness->Write();
   hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness->Write();
   hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb->Write();
   hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd->Write();
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_phcc->Write();
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_ptop->Write();
+  hist_non_matched_recojet_tautau_ak10_ECF1->Write();
+  hist_non_matched_recojet_tautau_ak10_ECF2->Write();
+  hist_non_matched_recojet_tautau_ak10_ECF3->Write();
+  hist_non_matched_recojet_tautau_ak10_Split12->Write();
+  hist_non_matched_recojet_tautau_ak10_Split23->Write();
+  hist_non_matched_recojet_tautau_ak10_passesOR->Write();
   
   hist_nevents_per_class->Write();
   hist2d_dR_per_class_bb->Write();

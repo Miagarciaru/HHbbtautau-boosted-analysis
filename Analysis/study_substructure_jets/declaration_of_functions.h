@@ -79,27 +79,20 @@ void apply_preselection(float min_pT_cut_in_MeV){
   float reco_truth_tau1_pT_in_MeV = 0;
   float reco_truth_tau2_pT_in_MeV = 0;
 
-  if( class_event == 2 || class_event == 3 ){
-    
+  if( class_event != -1 ){
+
     reco_truth_b1_pT_in_MeV = recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin);
     reco_truth_b2_pT_in_MeV = recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin);
-    
-    if( reco_truth_b1_pT_in_MeV >= min_pT_cut_in_MeV ){
-      passed_reco_truth_match_bb_pT_cut = true;
-    }
-  }
-
-  if( class_event == 1 || class_event == 3 ){
-    
     reco_truth_tau1_pT_in_MeV = recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin);
     reco_truth_tau2_pT_in_MeV = recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin);
     
-    if( reco_truth_tau1_pT_in_MeV >= min_pT_cut_in_MeV ){
+    if( reco_truth_b1_pT_in_MeV >= min_pT_cut_in_MeV && reco_truth_b2_pT_in_MeV >= min_pT_cut_in_MeV ){
+      passed_reco_truth_match_bb_pT_cut = true;
+    }
+    
+    if( reco_truth_tau1_pT_in_MeV >= min_pT_cut_in_MeV && reco_truth_tau2_pT_in_MeV >= min_pT_cut_in_MeV ){
       passed_reco_truth_match_tautau_pT_cut = true;
     }
-  }
-  
-  if( class_event == 3 ){
     
     std::vector<float> reco_truth_pT_values = {reco_truth_b1_pT_in_MeV, reco_truth_b2_pT_in_MeV, reco_truth_tau1_pT_in_MeV, reco_truth_tau2_pT_in_MeV};
     
@@ -109,7 +102,6 @@ void apply_preselection(float min_pT_cut_in_MeV){
       passed_reco_truth_match_pT_cut = true;
     }
   }
-  
 }
 
 void define_preselected_events(){

@@ -1,6 +1,7 @@
 #include "AtlasStyle/AtlasStyle.C"
 #include "AtlasStyle/AtlasUtils.C"
 #include "AtlasStyle/AtlasLabels.C"
+#include <fstream>
 
 string process_name;
 string name_output_root_file;
@@ -8,14 +9,104 @@ string name_output_root_file;
 TH1F* hist_truth_b1_m;
 TH1F* hist_truth_b2_m;
 TH1F* hist_truth_b1_plus_b2_m;
+
+//******************************************************************************************************
+// Truth-recojets distributions histograms
+//******************************************************************************************************
+
+// Matched Truth-recojets distributions
+
 TH1F* hist_matched_recojet_bb_m;
-TH1F* hist_matched_recojet_tautau_m;
 TH1F* hist_matched_recojet_bb_pt;
-TH1F* hist_matched_recojet_tautau_pt;
 TH1F* hist_matched_recojet_bb_eta;
-TH1F* hist_matched_recojet_tautau_eta;
+TH1F* hist_matched_recojet_bb_phi;
 TH1F* hist_matched_recojet_bb_dR;
+TH1F* hist_matched_recojet_bb_tau_n_prong;
+TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_phbb;
+TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_pqcd;
+TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_phcc;
+TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_ptop;
+TH1F *hist_matched_recojet_bb_tau_n1_subjettiness;
+TH1F *hist_matched_recojet_bb_tau_n2_subjettiness;
+TH1F *hist_matched_recojet_bb_tau_n3_subjettiness;
+TH1F *hist_matched_recojet_bb_tau_n2_over_n1_subjettiness;
+TH1F *hist_matched_recojet_bb_ak10_ECF1;
+TH1F *hist_matched_recojet_bb_ak10_ECF2;
+TH1F *hist_matched_recojet_bb_ak10_ECF3;
+TH1F *hist_matched_recojet_bb_ak10_Split12;
+TH1F *hist_matched_recojet_bb_ak10_Split23;
+TH1F *hist_matched_recojet_bb_ak10_passesOR;
+
+
+TH1F* hist_matched_recojet_tautau_m;
+TH1F* hist_matched_recojet_tautau_pt;
+TH1F* hist_matched_recojet_tautau_eta;
+TH1F* hist_matched_recojet_tautau_phi;
 TH1F* hist_matched_recojet_tautau_dR;
+TH1F* hist_matched_recojet_tautau_tau_n_prong;
+TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_phbb;
+TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd;
+TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_phcc;
+TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_ptop;
+TH1F *hist_matched_recojet_tautau_tau_n1_subjettiness;
+TH1F *hist_matched_recojet_tautau_tau_n2_subjettiness;
+TH1F *hist_matched_recojet_tautau_tau_n3_subjettiness;
+TH1F *hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
+TH1F *hist_matched_recojet_tautau_ak10_ECF1;
+TH1F *hist_matched_recojet_tautau_ak10_ECF2;
+TH1F *hist_matched_recojet_tautau_ak10_ECF3;
+TH1F *hist_matched_recojet_tautau_ak10_Split12;
+TH1F *hist_matched_recojet_tautau_ak10_Split23;
+TH1F *hist_matched_recojet_tautau_ak10_passesOR;
+
+// Non Matched Truth-recojets distributions
+
+TH1F* hist_non_matched_recojet_bb_m;
+TH1F* hist_non_matched_recojet_bb_pt;
+TH1F* hist_non_matched_recojet_bb_eta;
+TH1F* hist_non_matched_recojet_bb_phi;
+TH1F* hist_non_matched_recojet_bb_dR;
+TH1F* hist_non_matched_recojet_bb_tau_n_prong;
+TH1F *hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb;
+TH1F *hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd;
+TH1F *hist_non_matched_recojet_bb_ak10_GN2Xv01_phcc;
+TH1F *hist_non_matched_recojet_bb_ak10_GN2Xv01_ptop;
+TH1F *hist_non_matched_recojet_bb_tau_n1_subjettiness;
+TH1F *hist_non_matched_recojet_bb_tau_n2_subjettiness;
+TH1F *hist_non_matched_recojet_bb_tau_n3_subjettiness;
+TH1F *hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness;
+TH1F *hist_non_matched_recojet_bb_ak10_ECF1;
+TH1F *hist_non_matched_recojet_bb_ak10_ECF2;
+TH1F *hist_non_matched_recojet_bb_ak10_ECF3;
+TH1F *hist_non_matched_recojet_bb_ak10_Split12;
+TH1F *hist_non_matched_recojet_bb_ak10_Split23;
+TH1F *hist_non_matched_recojet_bb_ak10_passesOR;
+
+
+TH1F* hist_non_matched_recojet_tautau_m;
+TH1F* hist_non_matched_recojet_tautau_pt;
+TH1F* hist_non_matched_recojet_tautau_eta;
+TH1F* hist_non_matched_recojet_tautau_phi;
+TH1F* hist_non_matched_recojet_tautau_dR;
+TH1F* hist_non_matched_recojet_tautau_tau_n_prong;
+TH1F *hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb;
+TH1F *hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd;
+TH1F *hist_non_matched_recojet_tautau_ak10_GN2Xv01_phcc;
+TH1F *hist_non_matched_recojet_tautau_ak10_GN2Xv01_ptop;
+TH1F *hist_non_matched_recojet_tautau_tau_n1_subjettiness;
+TH1F *hist_non_matched_recojet_tautau_tau_n2_subjettiness;
+TH1F *hist_non_matched_recojet_tautau_tau_n3_subjettiness;
+TH1F *hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
+TH1F *hist_non_matched_recojet_tautau_ak10_ECF1;
+TH1F *hist_non_matched_recojet_tautau_ak10_ECF2;
+TH1F *hist_non_matched_recojet_tautau_ak10_ECF3;
+TH1F *hist_non_matched_recojet_tautau_ak10_Split12;
+TH1F *hist_non_matched_recojet_tautau_ak10_Split23;
+TH1F *hist_non_matched_recojet_tautau_ak10_passesOR;
+
+
+
+
 TH1F* hist_non_matched_recojet_pt;
 TH1F* hist_non_matched_recojet_eta;
 TH1F* hist_non_matched_recojet_pt_no_class;
@@ -30,46 +121,11 @@ TH1F* hist_matched_preselected_tautau_pt;
 TH1F* hist_matched_preselected_bb_eta;
 TH1F* hist_matched_preselected_tautau_eta;
 
-//tau_nProng histograms
-TH1F* hist_matched_recojet_bb_tau_n_prong;
-TH1F* hist_matched_recojet_tautau_tau_n_prong;
-TH1F* hist_non_matched_recojet_bb_tau_n_prong;
-TH1F* hist_non_matched_recojet_tautau_tau_n_prong;
-
-//GN2X phbb
-TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_phbb;
-TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_phbb;
-TH1F *hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb;
-TH1F *hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb;
 
 TH1F *hist_matched_preselected_bb_ak10_GN2Xv01_phbb;
 TH1F *hist_matched_preselected_tautau_ak10_GN2Xv01_phbb;
 
 TH1F *hist_taggedHbb_recojet_bb_per_event;
-
-//GN2X pqcd
-TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_pqcd;
-TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd;
-TH1F *hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd;
-TH1F *hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd;
-
-//n1 subjettiness
-TH1F *hist_matched_recojet_bb_tau_n1_subjettiness;
-TH1F *hist_matched_recojet_tautau_tau_n1_subjettiness;
-TH1F *hist_non_matched_recojet_bb_tau_n1_subjettiness;
-TH1F *hist_non_matched_recojet_tautau_tau_n1_subjettiness;
-
-//n2 subjettiness
-TH1F *hist_matched_recojet_bb_tau_n2_subjettiness;
-TH1F *hist_matched_recojet_tautau_tau_n2_subjettiness;
-TH1F *hist_non_matched_recojet_bb_tau_n2_subjettiness;
-TH1F *hist_non_matched_recojet_tautau_tau_n2_subjettiness;
-
-//n2 over n1 subjettiness
-TH1F *hist_matched_recojet_bb_tau_n2_over_n1_subjettiness;
-TH1F *hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
-TH1F *hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness;
-TH1F *hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
 
 TH1F *hist_matched_preselected_bb_tau_n2_over_n1_subjettiness;
 TH1F *hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness;
@@ -81,36 +137,16 @@ TH2F *percentages_matched_and_preselected_events_BbbBtautau;
 TH2F *percentages_matched_and_preselected_events_only_Bbb;
 TH2F *percentages_matched_and_preselected_events_only_Btautau;
 
-struct hist_ratios {
-    TH1F *hist_num_for_r1;
-    TH1F *hist_den_for_r1;
-    TH1F *hist_num_for_r2;
-    TH1F *hist_den_for_r2;
-    TString label_r1;
-    TString title_r1;
-    TString label_r2;
-    TString title_r2;
-};
-
-struct plot_Teff {
-    TEfficiency* ratio_r1;
-    TEfficiency* ratio_r2;
-    TString label_r1;
-    TString label_r2;
-};
-
 void reading_distributions_histograms(const std::string& sample, const std::vector<std::string>& list_of_histograms,
 				      const std::vector<std::string>& comparison_list, const std::string& output_folder,
 				      const std::string& minpT);
 void plot_distributions_comparisons(const std::string& name_plot, const std::string& output_folder, const std::string& minpT);
 void plot_distributions(const std::string& name_plot, const std::string& output_folder, const std::string& minpT);
-void plot_2D_distributions(const std::string& name_plot, const std::string& output_folder, const std::string& minpT);
-
+void plot_2D_distributions(const std::string& sample, const std::string& name_plot, const std::string& minpT);
 void process_label(string name_sample);
 
 
-
-string output_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis_oct24/";
+string output_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
 
 //**********************************************************************************
 // Definition of the functions above
@@ -132,40 +168,91 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
   hist_matched_recojet_bb_m = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_m")));
   hist_matched_recojet_bb_pt = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_pt")));
   hist_matched_recojet_bb_eta = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_eta")));
+  hist_matched_recojet_bb_phi = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_phi")));
   hist_matched_recojet_bb_dR = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_dR")));
   hist_matched_recojet_bb_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_tau_n_prong")));
   hist_matched_recojet_bb_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_GN2Xv01_phbb")));
   hist_matched_recojet_bb_ak10_GN2Xv01_pqcd = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_GN2Xv01_pqcd")));
+  hist_matched_recojet_bb_ak10_GN2Xv01_phcc = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_GN2Xv01_phcc")));
+  hist_matched_recojet_bb_ak10_GN2Xv01_ptop = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_GN2Xv01_ptop")));
   hist_matched_recojet_bb_tau_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_tau_n1_subjettiness")));
   hist_matched_recojet_bb_tau_n2_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_tau_n2_subjettiness")));
+  hist_matched_recojet_bb_tau_n3_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_tau_n3_subjettiness")));
   hist_matched_recojet_bb_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_tau_n2_over_n1_subjettiness")));
-
+  hist_matched_recojet_bb_ak10_ECF1 = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_ECF1")));
+  hist_matched_recojet_bb_ak10_ECF2 = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_ECF2")));
+  hist_matched_recojet_bb_ak10_ECF3 = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_ECF3")));
+  hist_matched_recojet_bb_ak10_Split12 = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_Split12")));
+  hist_matched_recojet_bb_ak10_Split23 = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_Split23")));
+  hist_matched_recojet_bb_ak10_passesOR = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_bb_ak10_passesOR")));
   
+ 
   hist_matched_recojet_tautau_m = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_m")));
   hist_matched_recojet_tautau_pt = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_pt")));
   hist_matched_recojet_tautau_eta = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_eta")));
+  hist_matched_recojet_tautau_phi = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_phi")));
   hist_matched_recojet_tautau_dR = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_dR")));
   hist_matched_recojet_tautau_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_tau_n_prong")));
   hist_matched_recojet_tautau_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_GN2Xv01_phbb")));
   hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd")));
+  hist_matched_recojet_tautau_ak10_GN2Xv01_phcc = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_GN2Xv01_phcc")));
+  hist_matched_recojet_tautau_ak10_GN2Xv01_ptop = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_GN2Xv01_ptop")));
   hist_matched_recojet_tautau_tau_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_tau_n1_subjettiness")));
   hist_matched_recojet_tautau_tau_n2_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_tau_n2_subjettiness")));
+  hist_matched_recojet_tautau_tau_n3_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_tau_n3_subjettiness")));
   hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness")));
-
+  hist_matched_recojet_tautau_ak10_ECF1 = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_ECF1")));
+  hist_matched_recojet_tautau_ak10_ECF2 = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_ECF2")));
+  hist_matched_recojet_tautau_ak10_ECF3 = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_ECF3")));
+  hist_matched_recojet_tautau_ak10_Split12 = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_Split12")));
+  hist_matched_recojet_tautau_ak10_Split23 = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_Split23")));
+  hist_matched_recojet_tautau_ak10_passesOR = dynamic_cast<TH1F*>(file->Get(("hist_matched_recojet_tautau_ak10_passesOR")));
   
   // Non matched recojets
+  hist_non_matched_recojet_bb_m = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_m")));
+  hist_non_matched_recojet_bb_pt = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_pt")));
+  hist_non_matched_recojet_bb_eta = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_eta")));
+  hist_non_matched_recojet_bb_phi = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_phi")));
+  hist_non_matched_recojet_bb_dR = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_dR")));
+  hist_non_matched_recojet_bb_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n_prong")));
   hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb")));
   hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd")));
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_phcc = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_GN2Xv01_phcc")));
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_ptop = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_GN2Xv01_ptop")));
   hist_non_matched_recojet_bb_tau_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n1_subjettiness")));
   hist_non_matched_recojet_bb_tau_n2_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n2_subjettiness")));
+  hist_non_matched_recojet_bb_tau_n3_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n3_subjettiness")));
   hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness")));
+  hist_non_matched_recojet_bb_ak10_ECF1 = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_ECF1")));
+  hist_non_matched_recojet_bb_ak10_ECF2 = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_ECF2")));
+  hist_non_matched_recojet_bb_ak10_ECF3 = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_ECF3")));
+  hist_non_matched_recojet_bb_ak10_Split12 = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_Split12")));
+  hist_non_matched_recojet_bb_ak10_Split23 = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_Split23")));
+  hist_non_matched_recojet_bb_ak10_passesOR = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_bb_ak10_passesOR")));
   
   
+  hist_non_matched_recojet_tautau_m = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_m")));
+  hist_non_matched_recojet_tautau_pt = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_pt")));
+  hist_non_matched_recojet_tautau_eta = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_eta")));
+  hist_non_matched_recojet_tautau_phi = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_phi")));
+  hist_non_matched_recojet_tautau_dR = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_dR")));
+  hist_non_matched_recojet_tautau_tau_n_prong = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n_prong")));
   hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb")));
   hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd")));
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_phcc = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_GN2Xv01_phcc")));
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_ptop = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_GN2Xv01_ptop")));
   hist_non_matched_recojet_tautau_tau_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n1_subjettiness")));
   hist_non_matched_recojet_tautau_tau_n2_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n2_subjettiness")));
+  hist_non_matched_recojet_tautau_tau_n3_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n3_subjettiness")));
   hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness")));
+  hist_non_matched_recojet_tautau_ak10_ECF1 = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_ECF1")));
+  hist_non_matched_recojet_tautau_ak10_ECF2 = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_ECF2")));
+  hist_non_matched_recojet_tautau_ak10_ECF3 = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_ECF3")));
+  hist_non_matched_recojet_tautau_ak10_Split12 = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_Split12")));
+  hist_non_matched_recojet_tautau_ak10_Split23 = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_Split23")));
+  hist_non_matched_recojet_tautau_ak10_passesOR = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_tautau_ak10_passesOR")));
+
+  
   
   hist_non_matched_recojet_pt = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_pt")));
   hist_non_matched_recojet_eta = dynamic_cast<TH1F*>(file->Get(("hist_non_matched_recojet_eta")));
@@ -212,11 +299,29 @@ void reading_distributions_histograms(const std::string& sample, const std::vect
   for(int ii=0; ii < comparison_list.size(); ii++){
     plot_distributions_comparisons(comparison_list[ii], output_folder, minpT);
   }
+ 
+  plot_2D_distributions(sample, "percentages_matched_and_preselected_events_BbbBtautau", minpT);
+  plot_2D_distributions(sample, "percentages_matched_and_preselected_events_only_Bbb", minpT);
+  plot_2D_distributions(sample, "percentages_matched_and_preselected_events_only_Btautau", minpT);
+ 
+  // Save the percentages in a txt file
+  
+  std::ofstream outFile("output_plots/percentages/percentages_truth_reco_and_preselected.txt", std::ios::app); // Open in append mode
 
-  plot_2D_distributions("percentages_matched_and_preselected_events_BbbBtautau", output_folder, minpT);
-  plot_2D_distributions("percentages_matched_and_preselected_events_only_Bbb", output_folder, minpT);
-  plot_2D_distributions("percentages_matched_and_preselected_events_only_Btautau", output_folder, minpT);
+  outFile << "/----------------------------------------------------------------------" << endl;
+  outFile << "For "+minpT+"GeV: " << endl;
+  outFile << "\t Percentages of correct preselected BbbBtautau for "+name_output_root_file+" process: " << endl;
+  outFile << "Correct/Wrong preselected Bbb-Btautau: " << percentages_matched_and_preselected_events_BbbBtautau->GetBinContent(2, 2) << "% / " << percentages_matched_and_preselected_events_BbbBtautau->GetBinContent(2, 1) << "%" << endl;
+  outFile << "Correct/Wrong preselected Bbb: " << percentages_matched_and_preselected_events_only_Bbb->GetBinContent(2, 2) << "% / " << percentages_matched_and_preselected_events_only_Bbb->GetBinContent(2, 1) << "%" <<  endl;
+  outFile << "Correct/Wrong preselected Btautau: " << percentages_matched_and_preselected_events_only_Btautau->GetBinContent(2, 2) << "% / " << percentages_matched_and_preselected_events_only_Btautau->GetBinContent(2, 1) << "%" <<  endl;
+  outFile << "/--------" << endl;
+  outFile << "Correct/Wrong matched truth-reco Bbb-Btautau: " << percentages_matched_and_preselected_events_BbbBtautau->GetBinContent(1, 2) << "% / " << percentages_matched_and_preselected_events_BbbBtautau->GetBinContent(1, 1) << "%" << endl;
+  outFile << "Correct/Wrong matched truth-reco Bbb: " << percentages_matched_and_preselected_events_only_Bbb->GetBinContent(1, 2) << "% / " << percentages_matched_and_preselected_events_only_Bbb->GetBinContent(1, 1) << "%" <<  endl;
+  outFile << "Correct/Wrong matched truth-reco Btautau: " << percentages_matched_and_preselected_events_only_Btautau->GetBinContent(1, 2) << "% / " << percentages_matched_and_preselected_events_only_Btautau->GetBinContent(1, 1) << "%" <<  endl;
+  outFile << "/----------------------------------------------------------------------" << endl;
 
+  outFile.close();
+  
   file->Close();
   
 }
@@ -271,6 +376,26 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
     hist_boosted = hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd;
     hist_resolved = hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd;
   }
+
+  if(name_plot=="bb_GN2X_phcc"){
+    hist_boosted = hist_matched_recojet_bb_ak10_GN2Xv01_phcc;
+    hist_resolved = hist_non_matched_recojet_bb_ak10_GN2Xv01_phcc;
+  }
+  
+  if(name_plot=="tautau_GN2X_phcc"){
+    hist_boosted = hist_matched_recojet_tautau_ak10_GN2Xv01_phcc;
+    hist_resolved = hist_non_matched_recojet_tautau_ak10_GN2Xv01_phcc;
+  }
+
+  if(name_plot=="bb_GN2X_ptop"){
+    hist_boosted = hist_matched_recojet_bb_ak10_GN2Xv01_ptop;
+    hist_resolved = hist_non_matched_recojet_bb_ak10_GN2Xv01_ptop;
+  }
+  
+  if(name_plot=="tautau_GN2X_ptop"){
+    hist_boosted = hist_matched_recojet_tautau_ak10_GN2Xv01_ptop;
+    hist_resolved = hist_non_matched_recojet_tautau_ak10_GN2Xv01_ptop;
+  }
   
   if(name_plot=="bb_n1_subjettiness"){
     hist_boosted = hist_matched_recojet_bb_tau_n1_subjettiness;
@@ -292,6 +417,16 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
     hist_resolved = hist_non_matched_recojet_tautau_tau_n2_subjettiness;
   }
 
+  if(name_plot=="bb_n3_subjettiness"){
+    hist_boosted = hist_matched_recojet_bb_tau_n3_subjettiness;
+    hist_resolved = hist_non_matched_recojet_bb_tau_n3_subjettiness;
+  }
+
+  if(name_plot=="tautau_n3_subjettiness"){
+    hist_boosted = hist_matched_recojet_tautau_tau_n3_subjettiness;
+    hist_resolved = hist_non_matched_recojet_tautau_tau_n3_subjettiness;
+  }
+  
   if(name_plot=="bb_n2_over_n1_subjettiness"){
     hist_boosted = hist_matched_recojet_bb_tau_n2_over_n1_subjettiness;
     hist_resolved = hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness;
@@ -302,6 +437,67 @@ void plot_distributions_comparisons(const std::string& name_plot, const std::str
     hist_resolved = hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness;
   }
 
+  if(name_plot=="bb_ECF1"){
+    hist_boosted = hist_matched_recojet_bb_ak10_ECF1;
+    hist_resolved = hist_non_matched_recojet_bb_ak10_ECF1;
+  }
+  
+  if(name_plot=="tautau_ECF1"){
+    hist_boosted = hist_matched_recojet_tautau_ak10_ECF1;
+    hist_resolved = hist_non_matched_recojet_tautau_ak10_ECF1;
+  }
+
+  if(name_plot=="bb_ECF2"){
+    hist_boosted = hist_matched_recojet_bb_ak10_ECF2;
+    hist_resolved = hist_non_matched_recojet_bb_ak10_ECF2;
+  }
+  
+  if(name_plot=="tautau_ECF2"){
+    hist_boosted = hist_matched_recojet_tautau_ak10_ECF2;
+    hist_resolved = hist_non_matched_recojet_tautau_ak10_ECF2;
+  }
+
+  if(name_plot=="bb_ECF3"){
+    hist_boosted = hist_matched_recojet_bb_ak10_ECF3;
+    hist_resolved = hist_non_matched_recojet_bb_ak10_ECF3;
+  }
+  
+  if(name_plot=="tautau_ECF3"){
+    hist_boosted = hist_matched_recojet_tautau_ak10_ECF3;
+    hist_resolved = hist_non_matched_recojet_tautau_ak10_ECF3;
+  }
+
+  if(name_plot=="bb_Split12"){
+    hist_boosted = hist_matched_recojet_bb_ak10_Split12;
+    hist_resolved = hist_non_matched_recojet_bb_ak10_Split12;
+  }
+  
+  if(name_plot=="tautau_Split12"){
+    hist_boosted = hist_matched_recojet_tautau_ak10_Split12;
+    hist_resolved = hist_non_matched_recojet_tautau_ak10_Split12;
+  }
+
+  if(name_plot=="bb_Split23"){
+    hist_boosted = hist_matched_recojet_bb_ak10_Split23;
+    hist_resolved = hist_non_matched_recojet_bb_ak10_Split23;
+  }
+  
+  if(name_plot=="tautau_Split23"){
+    hist_boosted = hist_matched_recojet_tautau_ak10_Split23;
+    hist_resolved = hist_non_matched_recojet_tautau_ak10_Split23;
+  }
+
+  if(name_plot=="bb_passesOR"){
+    hist_boosted = hist_matched_recojet_bb_ak10_passesOR;
+    hist_resolved = hist_non_matched_recojet_bb_ak10_passesOR;
+  }
+  
+  if(name_plot=="tautau_passesOR"){
+    hist_boosted = hist_matched_recojet_tautau_ak10_passesOR;
+    hist_resolved = hist_non_matched_recojet_tautau_ak10_passesOR;
+  }
+
+  
   string label_boosted = "";
   string label_resolved = "";
   
@@ -413,7 +609,6 @@ void plot_distributions(const std::string& name_plot, const std::string& output_
   
   if(name_plot == "taggedHbb_jets_per_event"){ hist = hist_taggedHbb_recojet_bb_per_event;}
   if(name_plot == "candidates_tautau_nsubjettiness"){ hist = hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness;}
-  //if(name_plot == "percentages_matched_and_preselected_events"){ hist = percentages_matched_and_preselected_events;}
   
   double y_max = 1.25*hist->GetMaximum();
   
@@ -433,36 +628,41 @@ void plot_distributions(const std::string& name_plot, const std::string& output_
 
 }
 
-void plot_2D_distributions(const std::string& name_plot, const std::string& output_folder, const std::string& minpT){
+void plot_2D_distributions(const std::string& sample, const std::string& name_plot, const std::string& minpT){
 
   gROOT->SetBatch(kTRUE);
   SetAtlasStyle();
   
-  string name_image = output_folder+"/plots_substructure_jets/"+name_plot+".png";
-  
   ///// Plotting
   TCanvas *can = new TCanvas("can","", 800, 600);
   TH2F *hist = new TH2F();
+  string variable = "";
   
   if(name_plot == "percentages_matched_and_preselected_events_BbbBtautau"){
     hist = percentages_matched_and_preselected_events_BbbBtautau;
+    variable = "BbbBtautau";
   }
   if(name_plot == "percentages_matched_and_preselected_events_only_Bbb"){
     hist = percentages_matched_and_preselected_events_only_Bbb;
+    variable = "BbbB";
   }
   if(name_plot == "percentages_matched_and_preselected_events_only_Btautau"){
     hist = percentages_matched_and_preselected_events_only_Btautau;
+    variable = "Btautau";
   }
+
+  string name_image = "output_plots/percentages/"+name_output_root_file+"_"+variable+"_"+minpT+"GeV.png";
   
   double y_max = 1.25*hist->GetMaximum();
   
   //hist->SetMaximum(y_max);
-
+ 
   gStyle->SetTextFont(42);     // Set global font (42 = Helvetica, nice default)
   gStyle->SetTextSize(0.035);  // Set global text size
   
   hist->SetStats(0);
   hist->SetMarkerSize(2.0);
+ 
   //hist->SetMarkerFont(42);
 
   gPad->SetTopMargin(0.2);
@@ -482,28 +682,28 @@ void plot_2D_distributions(const std::string& name_plot, const std::string& outp
 void process_label(string name_sample){
 
   // ggF processes had-had channel
-  if(name_sample.find("600459") != string::npos){ process_name = "ggF HH SM had-had channel"; name_output_root_file = "ggF_SM_hh_600459.root";}
-  if(name_sample.find("600460") != string::npos){ process_name = "ggF HH #lambda = 10 had-had channel"; name_output_root_file = "ggF_lambda10_hh_600460.root";}
+  if(name_sample.find("600459") != string::npos){ process_name = "ggF HH SM had-had channel"; name_output_root_file = "ggF_SM_hh_600459";}
+  if(name_sample.find("600460") != string::npos){ process_name = "ggF HH #lambda = 10 had-had channel"; name_output_root_file = "ggF_lambda10_hh_600460";}
 
   // ggF processes lep-had channel
-  if(name_sample.find("600461") != string::npos){ process_name = "ggF HH SM lep-had channel"; name_output_root_file = "ggF_SM_lh_600461.root";}
-  if(name_sample.find("600462") != string::npos){ process_name = "ggF HH #lambda = 10 lep-had channel"; name_output_root_file = "ggF_lambda10_lh_600462.root";}
+  if(name_sample.find("600461") != string::npos){ process_name = "ggF HH SM lep-had channel"; name_output_root_file = "ggF_SM_lh_600461";}
+  if(name_sample.find("600462") != string::npos){ process_name = "ggF HH #lambda = 10 lep-had channel"; name_output_root_file = "ggF_lambda10_lh_600462";}
 
   //vbf processes had-had channel
-  if(name_sample.find("502982") != string::npos){ process_name = "VBF HH SM had-had channel"; name_output_root_file = "VBF_SM_hh_502982.root";}
-  if(name_sample.find("502985") != string::npos){ process_name = "VBF HH C_{VV} = 1.5 had-had channel"; name_output_root_file = "VBF_cvv1p5_hh_502985.root";}
-  if(name_sample.find("502989") != string::npos){ process_name = "VBF HH #lambda = 2.0 had-had channel"; name_output_root_file = "VBF_l2_hh_502989.root";}
-  if(name_sample.find("502990") != string::npos){ process_name = "VBF HH #lambda = 10.0 had-had channel"; name_output_root_file = "VBF_l10_hh_502990.root";}
-  if(name_sample.find("502991") != string::npos){ process_name = "VBF HH C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_cv0p5_hh_502991.root";}
-  if(name_sample.find("508690") != string::npos){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_l5cv0p5_hh_508690.root";}
+  if(name_sample.find("502982") != string::npos){ process_name = "VBF HH SM had-had channel"; name_output_root_file = "VBF_SM_hh_502982";}
+  if(name_sample.find("502985") != string::npos){ process_name = "VBF HH C_{VV} = 1.5 had-had channel"; name_output_root_file = "VBF_cvv1p5_hh_502985";}
+  if(name_sample.find("502989") != string::npos){ process_name = "VBF HH #lambda = 2.0 had-had channel"; name_output_root_file = "VBF_l2_hh_502989";}
+  if(name_sample.find("502990") != string::npos){ process_name = "VBF HH #lambda = 10.0 had-had channel"; name_output_root_file = "VBF_l10_hh_502990";}
+  if(name_sample.find("502991") != string::npos){ process_name = "VBF HH C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_cv0p5_hh_502991";}
+  if(name_sample.find("508690") != string::npos){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 had-had channel"; name_output_root_file = "VBF_l5cv0p5_hh_508690";}
 
   //vbf processes lep-had channel
-  if(name_sample.find("502993") != string::npos){ process_name = "VBF HH SM lep-had channel"; name_output_root_file = "VBF_SM_lh_502993.root";}
-  if(name_sample.find("502996") != string::npos){ process_name = "VBF HH C_{VV} = 1.5 lep-had channel"; name_output_root_file = "VBF_cvv1p5_lh_502996.root";}
-  if(name_sample.find("503000") != string::npos){ process_name = "VBF HH #lambda = 2.0 lep-had channel"; name_output_root_file = "VBF_l2_lh_503000.root";}
-  if(name_sample.find("503001") != string::npos){ process_name = "VBF HH #lambda = 10.0 lep-had channel"; name_output_root_file = "VBF_l10_lh_503001.root";}
-  if(name_sample.find("503002") != string::npos){ process_name = "VBF HH C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_cv0p5_lh_503002.root";}
-  if(name_sample.find("508691") != string::npos){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_l5cv0p5_lh_508691.root";}
+  if(name_sample.find("502993") != string::npos){ process_name = "VBF HH SM lep-had channel"; name_output_root_file = "VBF_SM_lh_502993";}
+  if(name_sample.find("502996") != string::npos){ process_name = "VBF HH C_{VV} = 1.5 lep-had channel"; name_output_root_file = "VBF_cvv1p5_lh_502996";}
+  if(name_sample.find("503000") != string::npos){ process_name = "VBF HH #lambda = 2.0 lep-had channel"; name_output_root_file = "VBF_l2_lh_503000";}
+  if(name_sample.find("503001") != string::npos){ process_name = "VBF HH #lambda = 10.0 lep-had channel"; name_output_root_file = "VBF_l10_lh_503001";}
+  if(name_sample.find("503002") != string::npos){ process_name = "VBF HH C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_cv0p5_lh_503002";}
+  if(name_sample.find("508691") != string::npos){ process_name = "VBF HH #lambda = 5.0, C_{V} = 0.5 lep-had channel"; name_output_root_file = "VBF_l5cv0p5_lh_508691";}
 
   //vbf SM processes both channels channel
   if(name_sample.find("vbf_SM_both_channels") != string::npos){ process_name = "VBF HH SM"; }
