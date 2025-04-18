@@ -4,23 +4,9 @@
 #include <unordered_map>
 #include <fstream>
 
-struct hist_ratios {
-  TH1F* hist_num_for_r1;
-  TH1F* hist_den_for_r1;
-  TH1F* hist_num_for_r2;
-  TH1F* hist_den_for_r2;
-  std::string label_r1;
-  std::string title_r1;
-  std::string label_r2;
-  std::string title_r2;
-};
+const string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
 
-struct plot_Teff {
-  TEfficiency* ratio_r1;
-  TEfficiency* ratio_r2;
-  std::string label_r1;
-  std::string label_r2;
-};
+const string base_output_folder = "output_plots/acceptance_ratios_plots/";
 
 //*******************************************************
 // Declaration of functions
@@ -155,7 +141,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   
   if(proper==true){
     description1 = "Proper B_{bb}-B_{#tau#tau} class";
-    name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"GeV_proper_ratios_"+ratio+"_comparison.png";
+    name_image = base_output_folder+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"GeV_proper_ratios_"+ratio+"_comparison.png";
   }
   if(proper==false){
     if(nameVar.find("HH")!=std::string::npos){
@@ -167,7 +153,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
     if(nameVar.find("tautau")!=std::string::npos){
       description1 = "#tau#tau-only";
     }
-    name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"GeV_ratios_"+ratio+"_comparison.png";
+    name_image = base_output_folder+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"GeV_ratios_"+ratio+"_comparison.png";
   }
   
   double dely = 0.05;
@@ -182,33 +168,16 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
 
 // Initialize the ap_ratios_info
 void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const std::string& nameVar, const std::string& min_pT, std::unordered_map<std::string, std::vector<TEfficiency>>& efficiency_map, bool proper){
-  
-  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
 
   gROOT->SetBatch(kTRUE);
   
-  std::ofstream outFile("percentages_ratios.txt", std::ios::app); // Open in append mode
-
-  if (!outFile) {
-    std::cerr << "Error al abrir el archivo de salida.\n";
-    return;
-  }
-  
+  std::ofstream outFile((base_output_folder+"percentages_ratios.txt").c_str(), std::ios::app); // Open in append mode
+ 
   for (const auto& sample : sampleFiles){
     string path_root_file = path_folder+sample+"_pT"+min_pT+"GeV.root";
     //TCanvas* can = new TCanvas(("can_"+sample+"_"+nameVar+"_pT"+min_pT+"GeV").c_str());
     
     TFile* file = TFile::Open(path_root_file.c_str());
-    
-    if (!file || file->IsZombie()) {
-      std::cout << "Error opening file: " << sample << std::endl;
-      if (file) file->Close();
-      continue;
-    }
-    else{
-      cout << "The file has been read " << sample << endl;
-    }
-    
     
     string name_hist_num_r1_r2 = ""; string name_hist_den_for_r1 = ""; string name_hist_den_for_r2 = "";
     string name_hist_num_for_r3 = ""; string name_hist_num_for_r4 = ""; string name_hist_den_for_r3_r4 = ""; 
@@ -282,10 +251,6 @@ void initializeMapRatiosInfo(const std::vector<std::string>& sampleFiles, const 
     TEfficiency *pEff_r3 = new TEfficiency(*hist_num_for_r3, *hist_den_for_r3_r4);
     TEfficiency *pEff_r4 = new TEfficiency(*hist_num_for_r4, *hist_den_for_r3_r4);
 
-    //pEff_r1->Draw();
-    // string name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"_ratio_r1_"+sample+".png";
-    //can->SaveAs(name_image.c_str());
-    
     // Store the ratios in a vector
     std::vector<TEfficiency> list_TEff_ratios = {*pEff_r1, *pEff_r2, *pEff_r3, *pEff_r4};
 

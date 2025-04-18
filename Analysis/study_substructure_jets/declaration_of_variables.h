@@ -533,80 +533,80 @@ TH1F *hist_truth_b2_m = new TH1F("hist_truth_b2_m", "Mass of the truth b2; m(b_2
 TH1F *hist_truth_b1_plus_b2_m = new TH1F("hist_truth_b1_plus_b2_m", "Mass of the two truth b; m(b_1+b_2) [GeV];Events / 5 bins", 100, 0, 5000);
 
 // Histograms for the mass of the chosen fatjets for bb and tautau recojets
-TH1F *hist_matched_recojet_bb_m = new TH1F("hist_matched_recojet_bb_m", "Mass distribution of the recojets that are bb boosted jets; m(bb) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_matched_recojet_bb_m = new TH1F("hist_matched_recojet_bb_m", "Mass distribution of the recojets that are bb boosted jets; m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_matched_recojet_bb_m_only_Hbb_tagger = new TH1F("hist_matched_recojet_bb_m_only_Hbb_tagger", "Mass distribution of the recojets that are bb boosted jets (only tagger); m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_matched_recojet_bb_m_only_nsubjettiness = new TH1F("hist_matched_recojet_bb_m_only_nsubjettiness", "Mass distribution of the recojets that are bb boosted jets (only nsubjettiness); m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_matched_recojet_bb_m_until_nsubjettiness = new TH1F("hist_matched_recojet_bb_m_until_nsubjettiness", "Mass distribution of the recojets that are bb boosted jets (tagger and nsubjettiness); m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
 
-TH1F *hist_matched_recojet_tautau_m = new TH1F("hist_matched_recojet_tautau_m", "Mass distribution of the recojets that are #tau#tau boosted jets; m(#tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_matched_recojet_tautau_m = new TH1F("hist_matched_recojet_tautau_m", "Mass distribution of the recojets that are #tau#tau boosted jets; m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_matched_recojet_tautau_m_only_Hbb_tagger = new TH1F("hist_matched_recojet_tautau_m_only_Hbb_tagger", "Mass distribution of the recojets that are #tau#tau boosted jets (only tagger); m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
 
 TH1F *hist_matched_recojet_tautau_m_only_nsubjettiness = new TH1F("hist_matched_recojet_tautau_m_only_nsubjettiness", "Mass distribution of the recojets that are #tau#tau boosted jets (only nsubjettiness); m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_matched_recojet_tautau_m_until_nsubjettiness = new TH1F("hist_matched_recojet_tautau_m_until_nsubjettiness", "Mass distribution of the recojets that are #tau#tau boosted jets (tagger and nsubjettiness); m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
 
-TH1F *hist_non_matched_recojet_bb_m = new TH1F("hist_non_matched_recojet_bb_m", "Mass distribution of the recojets that are not bb boosted jets; m(b) [GeV];Events / 5 bins", 70, 0, 350);
-TH1F *hist_non_matched_recojet_tautau_m = new TH1F("hist_non_matched_recojet_tautau_m", "Mass distribution of the recojets that are not #tau#tau boosted jets; m(#tau) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_non_matched_recojet_bb_m = new TH1F("hist_non_matched_recojet_bb_m", "Mass distribution of the recojets that are not bb boosted jets; m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_non_matched_recojet_tautau_m = new TH1F("hist_non_matched_recojet_tautau_m", "Mass distribution of the recojets that are not #tau#tau boosted jets; m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
 
 // Histograms for the pT of the chosen fatjets for bb and tautau jets
-TH1F *hist_matched_recojet_bb_pt = new TH1F("hist_matched_recojet_bb_pt", "pT distribution of the recojets that are bb boosted jets; pT(bb) [GeV];Events / 20 bins", 100, 0, 1000);
-TH1F *hist_matched_recojet_tautau_pt = new TH1F("hist_matched_recojet_tautau_pt", "pT distribution of the recojets that are #tau#tau boosted jets; pT(#tau#tau) [GeV];Events / 20 bins", 100, 0, 1000);
+TH1F *hist_matched_recojet_bb_pt = new TH1F("hist_matched_recojet_bb_pt", "pT distribution of the recojets that are bb boosted jets; p_{T}(H #rightarrow bb) [GeV];Events / 20 bins", 100, 0, 1000);
+TH1F *hist_matched_recojet_tautau_pt = new TH1F("hist_matched_recojet_tautau_pt", "pT distribution of the recojets that are #tau#tau boosted jets; p_{T}(H #rightarrow #tau#tau) [GeV];Events / 20 bins", 100, 0, 1000);
 
-TH1F *hist_non_matched_recojet_bb_pt = new TH1F("hist_non_matched_recojet_bb_pt", "pT distribution of the recojets that are not bb boosted jets; p_{T}(b) [GeV];Events / 20 bins", 100, 0, 1000);
-TH1F *hist_non_matched_recojet_tautau_pt = new TH1F("hist_non_matched_recojet_tautau_pt", "pT distribution of the recojets that are not #tau#tau boosted jets; p_{T}(#tau) [GeV];Events / 20 bins", 100, 0, 1000);
-
-// Histograms for the eta of the chosen fatjets for bb and tautau jets
-TH1F *hist_matched_recojet_bb_eta = new TH1F("hist_matched_recojet_bb_eta", "#eta distribution of the recojets that are bb boosted jets; #eta_{j(bb)} [GeV];Events", 100, -5, 5);
-TH1F *hist_matched_recojet_tautau_eta = new TH1F("hist_matched_recojet_tautau_eta", "#eta distribution of the recojets that are #tau#tau boosted jets; #eta_{j(#tau#tau)} [GeV];Events", 100, -5, 5);
-
-TH1F *hist_non_matched_recojet_bb_eta = new TH1F("hist_non_matched_recojet_bb_eta", "#eta distribution of the recojets that are not bb boosted jets; #eta_{j(b)} [GeV];Events", 100, -5, 5);
-TH1F *hist_non_matched_recojet_tautau_eta = new TH1F("hist_non_matched_recojet_tautau_eta", "#eta distribution of the recojets that are not #tau#tau boosted jets; #eta_{j(#tau)} [GeV];Events", 100, -5, 5);
+TH1F *hist_non_matched_recojet_bb_pt = new TH1F("hist_non_matched_recojet_bb_pt", "pT distribution of the recojets that are not bb boosted jets; p_{T}(H #rightarrow bb) [GeV];Events / 20 bins", 100, 0, 1000);
+TH1F *hist_non_matched_recojet_tautau_pt = new TH1F("hist_non_matched_recojet_tautau_pt", "pT distribution of the recojets that are not #tau#tau boosted jets; p_{T}(H #rightarrow #tau#tau) [GeV];Events / 20 bins", 100, 0, 1000);
 
 // Histograms for the eta of the chosen fatjets for bb and tautau jets
-TH1F *hist_matched_recojet_bb_phi = new TH1F("hist_matched_recojet_bb_phi", "#phi distribution of the recojets that are bb boosted jets; #phi_{j(bb)} [GeV];Events", 100, -5, 5);
-TH1F *hist_matched_recojet_tautau_phi = new TH1F("hist_matched_recojet_tautau_phi", "#phi distribution of the recojets that are #tau#tau boosted jets; #phi_{j(#tau#tau)} [GeV];Events", 100, -5, 5);
+TH1F *hist_matched_recojet_bb_eta = new TH1F("hist_matched_recojet_bb_eta", "#eta distribution of the recojets that are bb boosted jets; #eta_{j(H #rightarrow bb)} [GeV];Events", 100, -5, 5);
+TH1F *hist_matched_recojet_tautau_eta = new TH1F("hist_matched_recojet_tautau_eta", "#eta distribution of the recojets that are #tau#tau boosted jets; #eta_{j(H #rightarrow #tau#tau)} [GeV];Events", 100, -5, 5);
 
-TH1F *hist_non_matched_recojet_bb_phi = new TH1F("hist_non_matched_recojet_bb_phi", "#phi distribution of the recojets that are not bb boosted jets; #phi_{j(b)} [GeV];Events", 100, -5, 5);
-TH1F *hist_non_matched_recojet_tautau_phi = new TH1F("hist_non_matched_recojet_tautau_phi", "#phi distribution of the recojets that are not #tau#tau boosted jets; #phi_{j(#tau)} [GeV];Events", 100, -5, 5);
+TH1F *hist_non_matched_recojet_bb_eta = new TH1F("hist_non_matched_recojet_bb_eta", "#eta distribution of the recojets that are not bb boosted jets; #eta_{j(H #rightarrow bb)} [GeV];Events", 100, -5, 5);
+TH1F *hist_non_matched_recojet_tautau_eta = new TH1F("hist_non_matched_recojet_tautau_eta", "#eta distribution of the recojets that are not #tau#tau boosted jets; #eta_{j(H #rightarrow #tau#tau)} [GeV];Events", 100, -5, 5);
+
+// Histograms for the eta of the chosen fatjets for bb and tautau jets
+TH1F *hist_matched_recojet_bb_phi = new TH1F("hist_matched_recojet_bb_phi", "#phi distribution of the recojets that are bb boosted jets; #phi_{j(H #rightarrow bb)} [GeV];Events", 100, -5, 5);
+TH1F *hist_matched_recojet_tautau_phi = new TH1F("hist_matched_recojet_tautau_phi", "#phi distribution of the recojets that are #tau#tau boosted jets; #phi_{j(H #rightarrow #tau#tau)} [GeV];Events", 100, -5, 5);
+
+TH1F *hist_non_matched_recojet_bb_phi = new TH1F("hist_non_matched_recojet_bb_phi", "#phi distribution of the recojets that are not bb boosted jets; #phi_{j(H #rightarrow bb)} [GeV];Events", 100, -5, 5);
+TH1F *hist_non_matched_recojet_tautau_phi = new TH1F("hist_non_matched_recojet_tautau_phi", "#phi distribution of the recojets that are not #tau#tau boosted jets; #phi_{j(H #rightarrow #tau#tau)} [GeV];Events", 100, -5, 5);
 
 // Histograms for the ECF1 of the chosen fatjets for bb and tautau jets
 
-TH1F *hist_matched_recojet_bb_ak10_ECF1 = new TH1F("hist_matched_recojet_bb_ak10_ECF1", "ECF1 for boosted bb jets; ECF1;Events", 50, 0, 1000);
-TH1F *hist_non_matched_recojet_bb_ak10_ECF1 = new TH1F("hist_non_matched_recojet_bb_ak10_ECF1", "ECF1 for non boosted bb jets; ECF1;Events", 50, 0, 1000);
+TH1F *hist_matched_recojet_bb_ak10_ECF1 = new TH1F("hist_matched_recojet_bb_ak10_ECF1", "ECF1 for boosted bb jets; ECF1;Events", 50, 0, 700);
+TH1F *hist_non_matched_recojet_bb_ak10_ECF1 = new TH1F("hist_non_matched_recojet_bb_ak10_ECF1", "ECF1 for non boosted bb jets; ECF1;Events", 50, 0, 700);
 
-TH1F *hist_matched_recojet_tautau_ak10_ECF1 = new TH1F("hist_matched_recojet_tautau_ak10_ECF1", "ECF1 for boosted tautau jets; ECF1;Events", 50, 0, 1000);
-TH1F *hist_non_matched_recojet_tautau_ak10_ECF1 = new TH1F("hist_non_matched_recojet_tautau_ak10_ECF1", "ECF1 for non boosted tautau jets; ECF1;Events", 50, 0, 1000);
+TH1F *hist_matched_recojet_tautau_ak10_ECF1 = new TH1F("hist_matched_recojet_tautau_ak10_ECF1", "ECF1 for boosted tautau jets; ECF1;Events", 50, 0, 700);
+TH1F *hist_non_matched_recojet_tautau_ak10_ECF1 = new TH1F("hist_non_matched_recojet_tautau_ak10_ECF1", "ECF1 for non boosted tautau jets; ECF1;Events", 50, 0, 700);
 
 // Histograms for the ECF2 of the chosen fatjets for bb and tautau jets
 
-TH1F *hist_matched_recojet_bb_ak10_ECF2 = new TH1F("hist_matched_recojet_bb_ak10_ECF2", "ECF2 for boosted bb jets; ECF2;Events", 50, 0, 1000);
-TH1F *hist_non_matched_recojet_bb_ak10_ECF2 = new TH1F("hist_non_matched_recojet_bb_ak10_ECF2", "ECF2 for non boosted bb jets; ECF2;Events", 50, 0, 1000);
+TH1F *hist_matched_recojet_bb_ak10_ECF2 = new TH1F("hist_matched_recojet_bb_ak10_ECF2", "ECF2 for boosted bb jets; ECF2;Events", 50, 0, 10000);
+TH1F *hist_non_matched_recojet_bb_ak10_ECF2 = new TH1F("hist_non_matched_recojet_bb_ak10_ECF2", "ECF2 for non boosted bb jets; ECF2;Events", 50, 0, 10000);
 
-TH1F *hist_matched_recojet_tautau_ak10_ECF2 = new TH1F("hist_matched_recojet_tautau_ak10_ECF2", "ECF2 for boosted tautau jets; ECF2;Events", 50, 0, 1000);
-TH1F *hist_non_matched_recojet_tautau_ak10_ECF2 = new TH1F("hist_non_matched_recojet_tautau_ak10_ECF2", "ECF2 for non boosted tautau jets; ECF2;Events", 50, 0, 1000);
+TH1F *hist_matched_recojet_tautau_ak10_ECF2 = new TH1F("hist_matched_recojet_tautau_ak10_ECF2", "ECF2 for boosted tautau jets; ECF2;Events", 50, 0, 3000);
+TH1F *hist_non_matched_recojet_tautau_ak10_ECF2 = new TH1F("hist_non_matched_recojet_tautau_ak10_ECF2", "ECF2 for non boosted tautau jets; ECF2;Events", 50, 0, 3000);
 
 // Histograms for the ECF3 of the chosen fatjets for bb and tautau jets
 
-TH1F *hist_matched_recojet_bb_ak10_ECF3 = new TH1F("hist_matched_recojet_bb_ak10_ECF3", "ECF3 for boosted bb jets; ECF3;Events", 50, 0, 1000);
-TH1F *hist_non_matched_recojet_bb_ak10_ECF3 = new TH1F("hist_non_matched_recojet_bb_ak10_ECF3", "ECF3 for non boosted bb jets; ECF3;Events", 50, 0, 1000);
+TH1F *hist_matched_recojet_bb_ak10_ECF3 = new TH1F("hist_matched_recojet_bb_ak10_ECF3", "ECF3 for boosted bb jets; ECF3;Events", 50, 0, 10000);
+TH1F *hist_non_matched_recojet_bb_ak10_ECF3 = new TH1F("hist_non_matched_recojet_bb_ak10_ECF3", "ECF3 for non boosted bb jets; ECF3;Events", 50, 0, 10000);
 
-TH1F *hist_matched_recojet_tautau_ak10_ECF3 = new TH1F("hist_matched_recojet_tautau_ak10_ECF3", "ECF3 for boosted tautau jets; ECF3;Events", 50, 0, 1000);
-TH1F *hist_non_matched_recojet_tautau_ak10_ECF3 = new TH1F("hist_non_matched_recojet_tautau_ak10_ECF3", "ECF3 for non boosted tautau jets; ECF3;Events", 50, 0, 1000);
+TH1F *hist_matched_recojet_tautau_ak10_ECF3 = new TH1F("hist_matched_recojet_tautau_ak10_ECF3", "ECF3 for boosted tautau jets; ECF3;Events", 50, 0, 200);
+TH1F *hist_non_matched_recojet_tautau_ak10_ECF3 = new TH1F("hist_non_matched_recojet_tautau_ak10_ECF3", "ECF3 for non boosted tautau jets; ECF3;Events", 50, 0, 200);
 
 // Histograms for the Split12 of the chosen fatjets for bb and tautau jets
 
-TH1F *hist_matched_recojet_bb_ak10_Split12 = new TH1F("hist_matched_recojet_bb_ak10_Split12", "Split12 for boosted bb jets; Split12;Events", 50, 0, 500);
-TH1F *hist_non_matched_recojet_bb_ak10_Split12 = new TH1F("hist_non_matched_recojet_bb_ak10_Split12", "Split12 for non boosted bb jets; Split12;Events", 50, 0, 500);
+TH1F *hist_matched_recojet_bb_ak10_Split12 = new TH1F("hist_matched_recojet_bb_ak10_Split12", "Split12 for boosted bb jets; Split12;Events", 50, 0, 150);
+TH1F *hist_non_matched_recojet_bb_ak10_Split12 = new TH1F("hist_non_matched_recojet_bb_ak10_Split12", "Split12 for non boosted bb jets; Split12;Events", 50, 0, 150);
 
-TH1F *hist_matched_recojet_tautau_ak10_Split12 = new TH1F("hist_matched_recojet_tautau_ak10_Split12", "Split12 for boosted tautau jets; Split12;Events", 50, 0, 500);
-TH1F *hist_non_matched_recojet_tautau_ak10_Split12 = new TH1F("hist_non_matched_recojet_tautau_ak10_Split12", "Split12 for non boosted tautau jets; Split12;Events", 50, 0, 500);
+TH1F *hist_matched_recojet_tautau_ak10_Split12 = new TH1F("hist_matched_recojet_tautau_ak10_Split12", "Split12 for boosted tautau jets; Split12;Events", 50, 0, 150);
+TH1F *hist_non_matched_recojet_tautau_ak10_Split12 = new TH1F("hist_non_matched_recojet_tautau_ak10_Split12", "Split12 for non boosted tautau jets; Split12;Events", 50, 0, 150);
 
 // Histograms for the Split23 of the chosen fatjets for bb and tautau jets
 
-TH1F *hist_matched_recojet_bb_ak10_Split23 = new TH1F("hist_matched_recojet_bb_ak10_Split23", "Split23 for boosted bb jets; Split23;Events", 50, 0, 500);
-TH1F *hist_non_matched_recojet_bb_ak10_Split23 = new TH1F("hist_non_matched_recojet_bb_ak10_Split23", "Split23 for non boosted bb jets; Split23;Events", 50, 0, 500);
+TH1F *hist_matched_recojet_bb_ak10_Split23 = new TH1F("hist_matched_recojet_bb_ak10_Split23", "Split23 for boosted bb jets; Split23;Events", 50, 0, 100);
+TH1F *hist_non_matched_recojet_bb_ak10_Split23 = new TH1F("hist_non_matched_recojet_bb_ak10_Split23", "Split23 for non boosted bb jets; Split23;Events", 50, 0, 100);
 
-TH1F *hist_matched_recojet_tautau_ak10_Split23 = new TH1F("hist_matched_recojet_tautau_ak10_Split23", "Split23 for boosted tautau jets; Split23;Events", 50, 0, 500);
-TH1F *hist_non_matched_recojet_tautau_ak10_Split23 = new TH1F("hist_non_matched_recojet_tautau_ak10_Split23", "Split23 for non boosted tautau jets; Split23;Events", 50, 0, 500);
+TH1F *hist_matched_recojet_tautau_ak10_Split23 = new TH1F("hist_matched_recojet_tautau_ak10_Split23", "Split23 for boosted tautau jets; Split23;Events", 50, 0, 100);
+TH1F *hist_non_matched_recojet_tautau_ak10_Split23 = new TH1F("hist_non_matched_recojet_tautau_ak10_Split23", "Split23 for non boosted tautau jets; Split23;Events", 50, 0, 100);
 
 // Histograms for the passesOR of the chosen fatjets for bb and tautau jets
 
@@ -640,7 +640,7 @@ TH1F *hist_non_matched_recojet_eta_no_class = new TH1F("hist_non_matched_recojet
 
 
 // Histograms for the number of events per each class
-TH1F *hist_nevents_per_class = new TH1F("hist_nevents_per_class", "Number of events per class; ;Events", 6, -1, 5);
+TH1F *hist_nevents_per_class = new TH1F("hist_nevents_per_class", "Number of events per class; ;Events", 7, -2, 5);
 
 // 2D histogram for the dR values per each class
 TH2F *hist2d_dR_per_class_bb = new TH2F("hist2d_dR_per_class_bb", "dR values per each class for boosted bb jets; class; dR", 4, 0, 4, 50, 0, 5);
@@ -680,17 +680,17 @@ TH1F *hist_matched_preselected_tautau_m = new TH1F("hist_matched_preselected_tau
 
 
 // Histograms for the pT of the chosen fatjets for bb and tautau jets
-TH1F *hist_matched_preselected_bb_pt = new TH1F("hist_matched_preselected_bb_pt", "pT distribution of the recojets that are bb boosted jets; pT(bb) [GeV];Events / 20 bins", 100, 0, 2000);
-TH1F *hist_matched_preselected_tautau_pt = new TH1F("hist_matched_preselected_tautau_pt", "pT distribution of the recojets that are #tau#tau boosted jets; pT(#tau#tau) [GeV];Events / 20 bins", 100, 0, 2000);
+TH1F *hist_matched_preselected_bb_pt = new TH1F("hist_matched_preselected_bb_pt", "pT distribution of the recojets that are bb boosted jets; p_{T}(H #rightarrow bb) [GeV];Events / 20 bins", 100, 0, 2000);
+TH1F *hist_matched_preselected_tautau_pt = new TH1F("hist_matched_preselected_tautau_pt", "pT distribution of the recojets that are #tau#tau boosted jets; p_{T}(H #rightarrow #tau#tau) [GeV];Events / 20 bins", 100, 0, 2000);
 
 
 // Histograms for the eta of the chosen fatjets for bb and tautau jets
-TH1F *hist_matched_preselected_bb_eta = new TH1F("hist_matched_preselected_bb_eta", "#eta distribution of the recojets that are bb boosted jets; #eta_{j(bb)} [GeV];Events", 100, -5, 5);
-TH1F *hist_matched_preselected_tautau_eta = new TH1F("hist_matched_preselected_tautau_eta", "#eta distribution of the recojets that are #tau#tau boosted jets; #eta_{j(#tau#tau)} [GeV];Events", 100, -5, 5);
+TH1F *hist_matched_preselected_bb_eta = new TH1F("hist_matched_preselected_bb_eta", "#eta distribution of the recojets that are bb boosted jets; #eta_{j(H #rightarrow bb)} [GeV];Events", 100, -5, 5);
+TH1F *hist_matched_preselected_tautau_eta = new TH1F("hist_matched_preselected_tautau_eta", "#eta distribution of the recojets that are #tau#tau boosted jets; #eta_{j(H #rightarrow #tau#tau)} [GeV];Events", 100, -5, 5);
 
 // Histograms for the eta of the chosen fatjets for bb and tautau jets
-TH1F *hist_matched_preselected_bb_phi = new TH1F("hist_matched_preselected_bb_phi", "#phi distribution of the recojets that are bb boosted jets; #phi_{j(bb)} [GeV];Events", 100, -5, 5);
-TH1F *hist_matched_preselected_tautau_phi = new TH1F("hist_matched_preselected_tautau_phi", "#phi distribution of the recojets that are #tau#tau boosted jets; #phi_{j(#tau#tau)} [GeV];Events", 100, -5, 5);
+TH1F *hist_matched_preselected_bb_phi = new TH1F("hist_matched_preselected_bb_phi", "#phi distribution of the recojets that are bb boosted jets; #phi_{j(H #rightarrow bb)} [GeV];Events", 100, -5, 5);
+TH1F *hist_matched_preselected_tautau_phi = new TH1F("hist_matched_preselected_tautau_phi", "#phi distribution of the recojets that are #tau#tau boosted jets; #phi_{j(H #rightarrow #tau#tau)} [GeV];Events", 100, -5, 5);
 
 /*
 // Initialize the map with plot information

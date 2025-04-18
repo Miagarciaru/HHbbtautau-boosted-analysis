@@ -7,7 +7,7 @@ base_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analys
 
 #min_pT_recojets = ["100", "200", "300"] # in GeV
 min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
-#min_pT_recojets = ["100"] # in GeV  
+#min_pT_recojets = ["100", "250"] # in GeV  
 
 # Root folder for storing output
 output_root_folder = "output_plots"
@@ -16,7 +16,10 @@ output_root_folder = "output_plots"
 os.makedirs(output_root_folder, exist_ok=True)
 
 #os.makedirs("output_analysis/temp_folder", exist_ok=True)
-    
+
+percentages_folder = os.path.join(output_root_folder, "percentages")
+os.makedirs(percentages_folder, exist_ok=True)
+        
 for minpT in min_pT_recojets:
 
     sample_paths = [
@@ -32,33 +35,31 @@ for minpT in min_pT_recojets:
     ]
 
     
-    output_pT_folder = minpT+"GeV_normalized"
+    output_pT_folder = minpT+"GeV"
     output_pT_folder = os.path.join(output_root_folder, output_pT_folder)
     os.makedirs(output_pT_folder, exist_ok=True)
 
-    percentages_folder = "percentages"
-    percentages_folder = os.path.join(output_root_folder, percentages_folder)
-    os.makedirs(percentages_folder, exist_ok=True)
-    
+    grouped_distributions_plots_folder = os.path.join(output_pT_folder, "grouped_distributions_plots")
+    os.makedirs(grouped_distributions_plots_folder, exist_ok=True)
+        
     # Loop over each sample
     for sample in sample_paths:
         # Get the sample name (useful for naming the output folder)
         sample_name = os.path.basename(sample).removesuffix("_pT"+minpT+"GeV.root")
-    
+
         # Create a specific folder for this sample's output
         output_folder = os.path.join(output_pT_folder, sample_name)
-        
         os.makedirs(output_folder, exist_ok=True)
 
         # Define the output path in a way that can be accessed by your analysis script
         output_file_path = os.path.join(output_folder, "output_tree.root")
     
         # Define plots_substructure_jets folder
-        plots_substructure_jets = os.path.join(output_folder, "plots_substructure_jets")
+        plots_substructure_jets = os.path.join(output_folder, "substructure_jets_plots")
         os.makedirs(plots_substructure_jets, exist_ok=True)
         
         # Define plots_substructure_jets folder
-        plots_substructure_jets_comparison = os.path.join(plots_substructure_jets, "comparison_plots")
+        plots_substructure_jets_comparison = os.path.join(output_folder, "distributions_comparison")
         os.makedirs(plots_substructure_jets_comparison, exist_ok=True)
         
         # Define plots_comparison folder

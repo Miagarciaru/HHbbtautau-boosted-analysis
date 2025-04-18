@@ -3,6 +3,8 @@
 #include "AtlasStyle/AtlasLabels.C"
 #include <unordered_map>
 
+const string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
+
 //*******************************************************
 // Declaration of functions
 //*******************************************************
@@ -39,8 +41,11 @@ void plotDistributionsComparisons(const std::vector<std::string>& sampleFiles,
   int color_number = 0;
 
   if(min_pT.find("100")!=std::string::npos){ pT_value = 0;}
-  if(min_pT.find("200")!=std::string::npos){ pT_value = 1;}
-  if(min_pT.find("300")!=std::string::npos){ pT_value = 2;}
+  if(min_pT.find("150")!=std::string::npos){ pT_value = 1;}
+  if(min_pT.find("200")!=std::string::npos){ pT_value = 2;}
+  if(min_pT.find("250")!=std::string::npos){ pT_value = 3;}
+  if(min_pT.find("300")!=std::string::npos){ pT_value = 4;}
+  if(min_pT.find("350")!=std::string::npos){ pT_value = 5;}
   
   TH1F hist_ggF_lambda10_hh_600460;
   TH1F hist_ggF_lambda10_lh_600462;
@@ -113,7 +118,7 @@ void plotDistributionsComparisons(const std::vector<std::string>& sampleFiles,
   
   string name_image = "";
   
-  name_image = "output_plots/"+min_pT+"GeV_normalized/"+nameVar+"_min_pT"+min_pT+"GeV_comparison.png";
+  name_image = "output_plots/"+min_pT+"GeV/grouped_distributions_plots/"+nameVar+"_min_pT"+min_pT+"GeV_comparison.png";
   
   double dely = 0.05;
   myText(0.2, 0.7, kBlack, description1.c_str());
@@ -129,15 +134,13 @@ void initializeHistogramsDistributionsInfo(const std::vector<std::string>& sampl
 					   std::unordered_map<std::string, std::vector<TH1F>>& distributions_histograms,
 					   bool matched_objects){
   
-  string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
-  
   gROOT->SetBatch(kTRUE);
   
   for(const auto& sample : sampleFiles){
 
     string name_hist = "";
     
-    std::vector<TH1F> list_histograms(3);
+    std::vector<TH1F> list_histograms(6);
     
     if(matched_objects==true){
       name_hist = "hist_matched_"+nameVar;

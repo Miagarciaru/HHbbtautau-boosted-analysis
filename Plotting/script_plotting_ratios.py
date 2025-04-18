@@ -17,7 +17,7 @@ min_pT_recojets = ["100", "200", "300"] # in GeV
 #min_pT_recojets = ["100"] # in MeV  
 
 # Root folder for storing output
-output_root_folder = "output_combined_ratios_plots"
+output_root_folder = "output_plots/acceptance_ratios_plots"
 
 # Ensure the root folder exists
 os.makedirs(output_root_folder, exist_ok=True)
