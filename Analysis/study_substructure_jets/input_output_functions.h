@@ -289,10 +289,15 @@ void write_histograms(){
   hist_truth_b1_plus_b2_m->Write();
 
   //********************************************************************************************
+  //********************************************************************************************
   // Distributions histograms
   //********************************************************************************************
-  
+  //********************************************************************************************
+
+  //********************************************************************************************
   //matched_recojets_histograms
+  //********************************************************************************************
+  
   hist_matched_recojet_bb_m->Write();
   hist_matched_recojet_bb_pt->Write();
   hist_matched_recojet_bb_eta->Write();
@@ -343,7 +348,44 @@ void write_histograms(){
   hist_matched_recojet_tautau_m_only_nsubjettiness->Write();
   hist_matched_recojet_tautau_m_until_nsubjettiness->Write();
 
+  //********************************************************************************************
+  //matched_recojets_histograms for specific matches with preselected events (cpr - comparison preselected)
+  //********************************************************************************************
+  
+  hist_matched_recojet_bb_m_cpr->Write();
+  hist_matched_recojet_bb_pt_cpr->Write();
+  hist_matched_recojet_bb_eta_cpr->Write();
+  hist_matched_recojet_bb_phi_cpr->Write();
+  hist_matched_recojet_bb_tau_n2_over_n1_subjettiness_cpr->Write();
+  hist_matched_recojet_bb_ak10_GN2Xv01_phbb_cpr->Write();
+  hist_matched_recojet_bb_ak10_GN2Xv01_pqcd_cpr->Write();
+  hist_matched_recojet_bb_ak10_GN2Xv01_phcc_cpr->Write();
+  hist_matched_recojet_bb_ak10_GN2Xv01_ptop_cpr->Write();
+  hist_matched_recojet_bb_ak10_ECF1_cpr->Write();
+  hist_matched_recojet_bb_ak10_ECF2_cpr->Write();
+  hist_matched_recojet_bb_ak10_ECF3_cpr->Write();
+  hist_matched_recojet_bb_ak10_Split12_cpr->Write();
+  hist_matched_recojet_bb_ak10_Split23_cpr->Write();
+  
+  
+  hist_matched_recojet_tautau_m_cpr->Write();
+  hist_matched_recojet_tautau_pt_cpr->Write();
+  hist_matched_recojet_tautau_eta_cpr->Write();
+  hist_matched_recojet_tautau_phi_cpr->Write();
+  hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness_cpr->Write();
+  hist_matched_recojet_tautau_ak10_GN2Xv01_phbb_cpr->Write();
+  hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd_cpr->Write();
+  hist_matched_recojet_tautau_ak10_GN2Xv01_phcc_cpr->Write();
+  hist_matched_recojet_tautau_ak10_GN2Xv01_ptop_cpr->Write();
+  hist_matched_recojet_tautau_ak10_ECF1_cpr->Write();
+  hist_matched_recojet_tautau_ak10_ECF2_cpr->Write();
+  hist_matched_recojet_tautau_ak10_ECF3_cpr->Write();
+  hist_matched_recojet_tautau_ak10_Split12_cpr->Write();
+  hist_matched_recojet_tautau_ak10_Split23_cpr->Write();
+  
+  //********************************************************************************************
   //non_matched_recojets_histograms
+  //********************************************************************************************
   
   hist_non_matched_recojet_bb_m->Write();
   hist_non_matched_recojet_bb_pt->Write();
@@ -391,8 +433,87 @@ void write_histograms(){
 
   hist_taggedHbb_recojet_bb_per_event->Write();
   hist_candidates_preselected_tautau_tau_n2_over_n1_subjettiness->Write();
+
+  //********************************************************************************************
+  //non_matched_recojets_histograms for specific matches with preselected events (cpr - comparison preselected)
+  //********************************************************************************************
   
+  hist_non_matched_recojet_bb_m_cpr->Write();
+  hist_non_matched_recojet_bb_pt_cpr->Write();
+  hist_non_matched_recojet_bb_eta_cpr->Write();
+  hist_non_matched_recojet_bb_phi_cpr->Write();
+  hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness_cpr->Write();
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb_cpr->Write();
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd_cpr->Write();
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_phcc_cpr->Write();
+  hist_non_matched_recojet_bb_ak10_GN2Xv01_ptop_cpr->Write();
+  hist_non_matched_recojet_bb_ak10_ECF1_cpr->Write();
+  hist_non_matched_recojet_bb_ak10_ECF2_cpr->Write();
+  hist_non_matched_recojet_bb_ak10_ECF3_cpr->Write();
+  hist_non_matched_recojet_bb_ak10_Split12_cpr->Write();
+  hist_non_matched_recojet_bb_ak10_Split23_cpr->Write();
+
+  
+  hist_non_matched_recojet_tautau_m_cpr->Write();
+  hist_non_matched_recojet_tautau_pt_cpr->Write();
+  hist_non_matched_recojet_tautau_eta_cpr->Write();
+  hist_non_matched_recojet_tautau_phi_cpr->Write();
+  hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness_cpr->Write();
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb_cpr->Write();
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd_cpr->Write();
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_phcc_cpr->Write();
+  hist_non_matched_recojet_tautau_ak10_GN2Xv01_ptop_cpr->Write();
+  hist_non_matched_recojet_tautau_ak10_ECF1_cpr->Write();
+  hist_non_matched_recojet_tautau_ak10_ECF2_cpr->Write();
+  hist_non_matched_recojet_tautau_ak10_ECF3_cpr->Write();
+  hist_non_matched_recojet_tautau_ak10_Split12_cpr->Write();
+  hist_non_matched_recojet_tautau_ak10_Split23_cpr->Write();
+
+
+  //********************************************************************************************
+  //non_matched_recojets_histograms for non info with preselected events (cpr - comparison preselected)
+  //********************************************************************************************
+  
+  hist_non_matched_info_recojet_bb_m_cpr->Write();
+  hist_non_matched_info_recojet_bb_pt_cpr->Write();
+  hist_non_matched_info_recojet_bb_eta_cpr->Write();
+  hist_non_matched_info_recojet_bb_phi_cpr->Write();
+  hist_non_matched_info_recojet_bb_tau_n2_over_n1_subjettiness_cpr->Write();
+  hist_non_matched_info_recojet_bb_ak10_GN2Xv01_phbb_cpr->Write();
+  hist_non_matched_info_recojet_bb_ak10_GN2Xv01_pqcd_cpr->Write();
+  hist_non_matched_info_recojet_bb_ak10_GN2Xv01_phcc_cpr->Write();
+  hist_non_matched_info_recojet_bb_ak10_GN2Xv01_ptop_cpr->Write();
+  hist_non_matched_info_recojet_bb_ak10_ECF1_cpr->Write();
+  hist_non_matched_info_recojet_bb_ak10_ECF2_cpr->Write();
+  hist_non_matched_info_recojet_bb_ak10_ECF3_cpr->Write();
+  hist_non_matched_info_recojet_bb_ak10_Split12_cpr->Write();
+  hist_non_matched_info_recojet_bb_ak10_Split23_cpr->Write();
+
+  
+  hist_non_matched_info_recojet_tautau_m_cpr->Write();
+  hist_non_matched_info_recojet_tautau_pt_cpr->Write();
+  hist_non_matched_info_recojet_tautau_eta_cpr->Write();
+  hist_non_matched_info_recojet_tautau_phi_cpr->Write();
+  hist_non_matched_info_recojet_tautau_tau_n2_over_n1_subjettiness_cpr->Write();
+  hist_non_matched_info_recojet_tautau_ak10_GN2Xv01_phbb_cpr->Write();
+  hist_non_matched_info_recojet_tautau_ak10_GN2Xv01_pqcd_cpr->Write();
+  hist_non_matched_info_recojet_tautau_ak10_GN2Xv01_phcc_cpr->Write();
+  hist_non_matched_info_recojet_tautau_ak10_GN2Xv01_ptop_cpr->Write();
+  hist_non_matched_info_recojet_tautau_ak10_ECF1_cpr->Write();
+  hist_non_matched_info_recojet_tautau_ak10_ECF2_cpr->Write();
+  hist_non_matched_info_recojet_tautau_ak10_ECF3_cpr->Write();
+  hist_non_matched_info_recojet_tautau_ak10_Split12_cpr->Write();
+  hist_non_matched_info_recojet_tautau_ak10_Split23_cpr->Write();
+  
+  //***********************************************************************************
+  //***********************************************************************************
   //matched_preselected_histograms
+  //***********************************************************************************
+  //***********************************************************************************
+
+  //***********************************************************************************
+  // matched preselected
+  //***********************************************************************************
   
   hist_matched_preselected_bb_m->Write();
   hist_matched_preselected_bb_pt->Write();
@@ -400,7 +521,15 @@ void write_histograms(){
   hist_matched_preselected_bb_phi->Write();
   hist_matched_preselected_bb_tau_n2_over_n1_subjettiness->Write();
   hist_matched_preselected_bb_ak10_GN2Xv01_phbb->Write();
-
+  hist_matched_preselected_bb_ak10_GN2Xv01_pqcd->Write();
+  hist_matched_preselected_bb_ak10_GN2Xv01_phcc->Write();
+  hist_matched_preselected_bb_ak10_GN2Xv01_ptop->Write();
+  hist_matched_preselected_bb_ak10_ECF1->Write();
+  hist_matched_preselected_bb_ak10_ECF2->Write();
+  hist_matched_preselected_bb_ak10_ECF3->Write();
+  hist_matched_preselected_bb_ak10_Split12->Write();
+  hist_matched_preselected_bb_ak10_Split23->Write();
+  
   hist_matched_preselected_bb_m_only_Hbb_tagger->Write();
   hist_matched_preselected_bb_m_until_nsubjettiness->Write();
   hist_matched_preselected_bb_m_order_by_nsubjettiness->Write();
@@ -411,9 +540,86 @@ void write_histograms(){
   hist_matched_preselected_tautau_phi->Write();
   hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness->Write();
   hist_matched_preselected_tautau_ak10_GN2Xv01_phbb->Write();
-
+  hist_matched_preselected_tautau_ak10_GN2Xv01_pqcd->Write();
+  hist_matched_preselected_tautau_ak10_GN2Xv01_phcc->Write();
+  hist_matched_preselected_tautau_ak10_GN2Xv01_ptop->Write();
+  hist_matched_preselected_tautau_ak10_ECF1->Write();
+  hist_matched_preselected_tautau_ak10_ECF2->Write();
+  hist_matched_preselected_tautau_ak10_ECF3->Write();
+  hist_matched_preselected_tautau_ak10_Split12->Write();
+  hist_matched_preselected_tautau_ak10_Split23->Write();
+  
   hist_matched_preselected_tautau_m_only_Hbb_tagger->Write();
   hist_matched_preselected_tautau_m_until_nsubjettiness->Write();
+
+  //***********************************************************************************
+  // non matched preselected
+  //***********************************************************************************
+  
+  hist_non_matched_preselected_bb_m->Write();
+  hist_non_matched_preselected_bb_pt->Write();
+  hist_non_matched_preselected_bb_eta->Write();
+  hist_non_matched_preselected_bb_phi->Write();
+  hist_non_matched_preselected_bb_tau_n2_over_n1_subjettiness->Write();
+  hist_non_matched_preselected_bb_ak10_GN2Xv01_phbb->Write();
+  hist_non_matched_preselected_bb_ak10_GN2Xv01_pqcd->Write();
+  hist_non_matched_preselected_bb_ak10_GN2Xv01_phcc->Write();
+  hist_non_matched_preselected_bb_ak10_GN2Xv01_ptop->Write();
+  hist_non_matched_preselected_bb_ak10_ECF1->Write();
+  hist_non_matched_preselected_bb_ak10_ECF2->Write();
+  hist_non_matched_preselected_bb_ak10_ECF3->Write();
+  hist_non_matched_preselected_bb_ak10_Split12->Write();
+  hist_non_matched_preselected_bb_ak10_Split23->Write();
+  
+  hist_non_matched_preselected_tautau_m->Write();
+  hist_non_matched_preselected_tautau_pt->Write();
+  hist_non_matched_preselected_tautau_eta->Write();
+  hist_non_matched_preselected_tautau_phi->Write();
+  hist_non_matched_preselected_tautau_tau_n2_over_n1_subjettiness->Write();
+  hist_non_matched_preselected_tautau_ak10_GN2Xv01_phbb->Write();
+  hist_non_matched_preselected_tautau_ak10_GN2Xv01_pqcd->Write();
+  hist_non_matched_preselected_tautau_ak10_GN2Xv01_phcc->Write();
+  hist_non_matched_preselected_tautau_ak10_GN2Xv01_ptop->Write();
+  hist_non_matched_preselected_tautau_ak10_ECF1->Write();
+  hist_non_matched_preselected_tautau_ak10_ECF2->Write();
+  hist_non_matched_preselected_tautau_ak10_ECF3->Write();
+  hist_non_matched_preselected_tautau_ak10_Split12->Write();
+  hist_non_matched_preselected_tautau_ak10_Split23->Write();
+
+  //***********************************************************************************
+  // preselected non truth-reco info
+  //***********************************************************************************
+  
+  hist_non_matched_info_preselected_bb_m->Write();
+  hist_non_matched_info_preselected_bb_pt->Write();
+  hist_non_matched_info_preselected_bb_eta->Write();
+  hist_non_matched_info_preselected_bb_phi->Write();
+  hist_non_matched_info_preselected_bb_tau_n2_over_n1_subjettiness->Write();
+  hist_non_matched_info_preselected_bb_ak10_GN2Xv01_phbb->Write();
+  hist_non_matched_info_preselected_bb_ak10_GN2Xv01_pqcd->Write();
+  hist_non_matched_info_preselected_bb_ak10_GN2Xv01_phcc->Write();
+  hist_non_matched_info_preselected_bb_ak10_GN2Xv01_ptop->Write();
+  hist_non_matched_info_preselected_bb_ak10_ECF1->Write();
+  hist_non_matched_info_preselected_bb_ak10_ECF2->Write();
+  hist_non_matched_info_preselected_bb_ak10_ECF3->Write();
+  hist_non_matched_info_preselected_bb_ak10_Split12->Write();
+  hist_non_matched_info_preselected_bb_ak10_Split23->Write();
+  
+  hist_non_matched_info_preselected_tautau_m->Write();
+  hist_non_matched_info_preselected_tautau_pt->Write();
+  hist_non_matched_info_preselected_tautau_eta->Write();
+  hist_non_matched_info_preselected_tautau_phi->Write();
+  hist_non_matched_info_preselected_tautau_tau_n2_over_n1_subjettiness->Write();
+  hist_non_matched_info_preselected_tautau_ak10_GN2Xv01_phbb->Write();
+  hist_non_matched_info_preselected_tautau_ak10_GN2Xv01_pqcd->Write();
+  hist_non_matched_info_preselected_tautau_ak10_GN2Xv01_phcc->Write();
+  hist_non_matched_info_preselected_tautau_ak10_GN2Xv01_ptop->Write();
+  hist_non_matched_info_preselected_tautau_ak10_ECF1->Write();
+  hist_non_matched_info_preselected_tautau_ak10_ECF2->Write();
+  hist_non_matched_info_preselected_tautau_ak10_ECF3->Write();
+  hist_non_matched_info_preselected_tautau_ak10_Split12->Write();
+  hist_non_matched_info_preselected_tautau_ak10_Split23->Write();
+
   
   //comparison_histograms
   hist_truth_HH_pt->Write();
@@ -425,6 +631,7 @@ void write_histograms(){
   percentages_matched_and_preselected_events_BbbBtautau->Write();
   percentages_matched_and_preselected_events_only_Bbb->Write();
   percentages_matched_and_preselected_events_only_Btautau->Write();
+  percentages_statistical_parameters_for_preselected_events->Write();
   
   //********************************************************************************************
   // Ratio histograms for recovariables r1 and r2

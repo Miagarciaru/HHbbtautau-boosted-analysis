@@ -6,6 +6,9 @@
 // Declaration of functions
 // *************************************
 
+void compute_statistical_parameters();
+void counting_statistical_parameters();
+void correct_match_between_truth_reco_and_preselected_objects();
 void apply_preselection(float min_pT_cut_in_MeV);
 void define_preselected_events();
 void define_reconstructed_objects();
@@ -20,6 +23,361 @@ void default_values_for_preselected_variables();
 // *************************************
 // Definition of the functions declared above
 // *************************************
+
+void compute_statistical_parameters(){
+
+  //***************************************************************************
+  // Parameters for Boosted bb
+  //***************************************************************************
+  
+  efficiency_Bbb = 100.0*TP_Bbb/(TP_Bbb+FN_Bbb);
+  purity_Bbb = 100.0*TP_Bbb/(TP_Bbb+FP_Bbb);
+  accuracy_Bbb = 100.0*(TP_Bbb+TN_Bbb)/(TP_Bbb+FP_Bbb+TN_Bbb+FN_Bbb);
+  
+  //***************************************************************************
+  // Parameters for Boosted tautau
+  //***************************************************************************
+  
+  efficiency_Btautau = 100.0*TP_Btautau/(TP_Btautau+FN_Btautau);
+  purity_Btautau = 100.0*TP_Btautau/(TP_Btautau+FP_Btautau);
+  accuracy_Btautau = 100.0*(TP_Btautau+TN_Btautau)/(TP_Btautau+FP_Btautau+TN_Btautau+FN_Btautau);
+
+  //***************************************************************************
+  // Parameters for Boosted bbtautau
+  //***************************************************************************
+  
+  efficiency_BbbBtautau = 100.0*TP_BbbBtautau/(TP_BbbBtautau+FN_BbbBtautau);
+  purity_BbbBtautau = 100.0*TP_BbbBtautau/(TP_BbbBtautau+FP_BbbBtautau);
+  accuracy_BbbBtautau = 100.0*(TP_BbbBtautau+TN_BbbBtautau)/(TP_BbbBtautau+FP_BbbBtautau+TN_BbbBtautau+FN_BbbBtautau);
+
+  // Saving the parameters in the TH2F histogram
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(1, 1, efficiency_BbbBtautau);
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(1, 2, purity_BbbBtautau);
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(1, 3, accuracy_BbbBtautau);
+
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(2, 1, efficiency_Bbb);
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(2, 2, purity_Bbb);
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(2, 3, accuracy_Bbb);
+
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(3, 1, efficiency_Btautau);
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(3, 2, purity_Btautau);
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(3, 3, accuracy_Btautau);
+
+  
+  percentages_statistical_parameters_for_preselected_events->GetXaxis()->SetBinLabel(1, "B_{bb}-B_{#tau#tau} Preselected Events");
+  percentages_statistical_parameters_for_preselected_events->GetXaxis()->SetBinLabel(2, "B_{bb} Preselected Events");
+  percentages_statistical_parameters_for_preselected_events->GetXaxis()->SetBinLabel(3, "B_{#tau#tau} Preselected Events");
+
+  percentages_statistical_parameters_for_preselected_events->GetYaxis()->SetBinLabel(1, "Efficency (%)");
+  percentages_statistical_parameters_for_preselected_events->GetYaxis()->SetBinLabel(2, "Purity (%)");
+  percentages_statistical_parameters_for_preselected_events->GetYaxis()->SetBinLabel(3, "Accuracy (%)");
+
+  cout << "Efficiency for Bbb: " << efficiency_Bbb << endl;
+  cout << "Purity for Bbb: " << purity_Bbb << endl;
+  cout << "Accuracy for Bbb: " << accuracy_Bbb << endl;
+  cout << "--------------------------------" << endl;
+  cout << "Efficiency for Bbb: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(2,1) << endl;
+  cout << "Purity for Bbb: " <<percentages_statistical_parameters_for_preselected_events->GetBinContent(2,2) << endl;
+  cout << "Accuracy for Bbb: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(2,3) << endl;
+  
+  // Fill percentages Bbb
+  
+  percentages_matched_and_preselected_events_only_Bbb->SetBinContent(1, 1, 100.0*matched_bb_non_preselected/matched_bb_events); // Matched events percentages wrongly preselected                                     
+  percentages_matched_and_preselected_events_only_Bbb->SetBinContent(1, 2, 100.0*overlap_matched_preselected_bb_events/matched_bb_events); // Matched events percentages being preselected                            
+  percentages_matched_and_preselected_events_only_Bbb->SetBinContent(1, 3, 100.0*matched_bb_non_preselected_info/matched_bb_events); // Matched events percentages with no preselected info                           
+  percentages_matched_and_preselected_events_only_Bbb->SetBinContent(2, 1, 100.0*preselected_bb_non_matched/matched_preselected_bb_events); // Preselected events percentages wrongly matched                         
+  percentages_matched_and_preselected_events_only_Bbb->SetBinContent(2, 2, 100.0*overlap_matched_preselected_bb_events/matched_preselected_bb_events); // Preselected events percentages being matched                
+  percentages_matched_and_preselected_events_only_Bbb->SetBinContent(2, 3, 100.0*preselected_bb_non_matched_truth_reco_info/matched_preselected_bb_events); // Preselected events percentages with no truth-reco info 
+
+  percentages_matched_and_preselected_events_only_Bbb->GetXaxis()->SetBinLabel(1, "Matched truth-recojet B_{bb} events");
+  percentages_matched_and_preselected_events_only_Bbb->GetXaxis()->SetBinLabel(2, "Preselected B_{bb} events");
+
+  percentages_matched_and_preselected_events_only_Bbb->GetYaxis()->SetBinLabel(1, "Wrong");
+  percentages_matched_and_preselected_events_only_Bbb->GetYaxis()->SetBinLabel(2, "Correct");
+  percentages_matched_and_preselected_events_only_Bbb->GetYaxis()->SetBinLabel(3, "No info match");
+
+
+  // Fill percentages Btautau
+  
+  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(1, 1, 100.0*matched_tautau_non_preselected/matched_tautau_events); // Matched events percentages wrongly preselected                         
+  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(1, 2, 100.0*overlap_matched_preselected_tautau_events/matched_tautau_events); // Matched events percentages being preselected                
+  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(1, 3, 100.0*matched_tautau_non_preselected_info/matched_tautau_events); // Matched events percentages with no preselected info               
+  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(2, 1, 100.0*preselected_tautau_non_matched/matched_preselected_tautau_events); // Preselected events percentages not being matched           
+  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(2, 2, 100.0*overlap_matched_preselected_tautau_events/matched_preselected_tautau_events); // Preselected events percentages being matched    
+  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(2, 3, 100.0*preselected_tautau_non_matched_truth_reco_info/matched_preselected_tautau_events); // Preselected events percentages with no tru\
+th-reco info                                                                                                                                                                                                          
+
+  percentages_matched_and_preselected_events_only_Btautau->GetXaxis()->SetBinLabel(1, "Matched truth-recojet B_{#tau#tau} events");
+  percentages_matched_and_preselected_events_only_Btautau->GetXaxis()->SetBinLabel(2, "Preselected B_{#tau#tau} events");
+
+  percentages_matched_and_preselected_events_only_Btautau->GetYaxis()->SetBinLabel(1, "Wrong");
+  percentages_matched_and_preselected_events_only_Btautau->GetYaxis()->SetBinLabel(2, "Correct");
+  percentages_matched_and_preselected_events_only_Btautau->GetYaxis()->SetBinLabel(3, "No info match");
+
+
+  // Fill percentages Bbb-Btautau
+  
+  percentages_matched_and_preselected_events_BbbBtautau->SetBinContent(1, 1, 100.0*matched_bbtautau_non_preselected/matched_bbtautau_events); // Matched events percentages wrongly preselected
+  percentages_matched_and_preselected_events_BbbBtautau->SetBinContent(1, 2, 100.0*overlap_matched_preselected_bbtautau_events/matched_bbtautau_events); // Matched events percentages being preselected
+  percentages_matched_and_preselected_events_BbbBtautau->SetBinContent(1, 3, 100.0*matched_bbtautau_non_preselected_info/matched_bbtautau_events); // Matched events percentages with no preselected info
+  percentages_matched_and_preselected_events_BbbBtautau->SetBinContent(2, 1, 100.0*preselected_bbtautau_non_matched/matched_preselected_bbtautau_events); // Preselected events percentages not being matched
+  percentages_matched_and_preselected_events_BbbBtautau->SetBinContent(2, 2, 100.0*overlap_matched_preselected_bbtautau_events/matched_preselected_bbtautau_events); // Preselected events percentages being matched
+  percentages_matched_and_preselected_events_BbbBtautau->SetBinContent(2, 3, 100.0*preselected_bbtautau_non_matched_truth_reco_info/matched_preselected_bbtautau_events); // Preselected events percentages with no truth-reco info
+  
+  percentages_matched_and_preselected_events_BbbBtautau->GetXaxis()->SetBinLabel(1, "Matched truth-recojet B_{bb}-B_{#tau#tau} events");
+  percentages_matched_and_preselected_events_BbbBtautau->GetXaxis()->SetBinLabel(2, "Preselected B_{bb}-B_{#tau#tau} events");
+
+  percentages_matched_and_preselected_events_BbbBtautau->GetYaxis()->SetBinLabel(1, "Wrong");
+  percentages_matched_and_preselected_events_BbbBtautau->GetYaxis()->SetBinLabel(2, "Correct");
+  percentages_matched_and_preselected_events_BbbBtautau->GetYaxis()->SetBinLabel(3, "No info match");  
+}
+
+
+void counting_statistical_parameters(){
+
+  //******************************************************************************************
+  // Counting TP, FP, TN and FN boosted bb
+  //******************************************************************************************
+
+  if( (class_event == 2 || class_event == 3) && passed_reco_truth_match_bb_pT_cut == true ){ // All truth-reco Bbb
+    // Since Bbb has the same index for b1 and b2, we only compare the b1 indexes
+    if( truth_reco_matched_preselected_Bbb == true ){
+      // Truth Boosted bb that are preselected as boosted bb (Correct clasiffication)
+      TP_Bbb++;
+    }
+    else{
+      // Truth Boosted bb that are preselected as non boosted bb (Lost of correct boosted events)
+      FN_Bbb++;
+    }
+  }
+  else{
+    if( matched_preselected_bb == true && passed_preselection_bb_pT_cut == true ){
+      // False Boosted bb that are preselected as boosted bb (Wrong classification)
+      FP_Bbb++;
+    }
+    else{
+      // False boosted bb that are non preselected bb (Correctly discarded)
+      TN_Bbb++;
+    }
+  }
+
+  //******************************************************************************************
+  // Counting TP, FP, TN and FN boosted tautau
+  //******************************************************************************************
+
+  if( (class_event == 1 || class_event == 3) && passed_reco_truth_match_tautau_pT_cut == true ){ // All truth-reco Btautau
+    // Since Btautau has the same index for tau1 and tau2, we only compare the b1 indexes
+    if( truth_reco_matched_preselected_Btautau == true ){ 
+      // Truth Boosted tautau that are preselected as boosted tautau (Correct clasiffication)
+      TP_Btautau++;
+    }
+    else{
+      // Truth Boosted tautau that are preselected as non boosted tautau (Lost of correct boosted events)
+      FN_Btautau++;
+    }
+  }
+  else{
+    if( matched_preselected_tautau == true && passed_preselection_tautau_pT_cut == true ){
+      // False Boosted tautau that are preselected as boosted tautau (Wrong classification)
+      FP_Btautau++;
+    }
+    else{
+      // False boosted tautau that are non preselected tautau (Correctly discarded)
+      TN_Btautau++;
+    }
+  }
+
+  //******************************************************************************************
+  // Counting TP, FP, TN and FN boosted bbtautau
+  //******************************************************************************************
+
+  if( class_event == 3 && passed_reco_truth_match_pT_cut == true ){ // All truth-reco Btautau
+    if( truth_reco_matched_preselected_BbbBtautau == true ){ 
+      // Truth Boosted BbbBtautau that are preselected as boosted BbbBtautau (Correct clasiffication)
+      TP_BbbBtautau++;
+    }
+    else{
+      // Truth Boosted BbbBtautau that are preselected as non boosted BbbBtautau (Lost of correct boosted events)
+      FN_BbbBtautau++;
+    }
+  }
+  else{
+    if( matched_preselection == true && passed_preselection_pT_cut == true ){
+      // False Boosted BbbBtautau that are preselected as boosted BbbBtautau (Wrong classification)
+      FP_BbbBtautau++;
+    }
+    else{
+      // False boosted BbbBtautau that are non preselected BbbBtautau (Correctly discarded)
+      TN_BbbBtautau++;
+    }
+  }
+  
+}
+
+void correct_match_between_truth_reco_and_preselected_objects(){
+
+  //**************************************************************
+  // Preselected verification
+  //**************************************************************
+
+  correct_matched_preselected_Bbb = false;
+  wrong_matched_preselected_Bbb = false;
+  matched_preselected_Bbb_non_matched_truth_reco_info = false;
+  
+  correct_matched_preselected_Btautau = false;
+  wrong_matched_preselected_Btautau = false;
+  matched_preselected_Btautau_non_matched_truth_reco_info = false;
+  
+  correct_matched_preselected_BbbBtautau = false;
+  wrong_matched_preselected_BbbBtautau = false;
+  matched_preselected_BbbBtautau_non_matched_truth_reco_info = false;
+  
+  if( matched_preselected_bb == true && passed_preselection_bb_pT_cut == true ){
+    matched_preselected_bb_events++;
+    if( class_event != -1 && passed_reco_truth_match_bb_pT_cut == true ){
+      // Since Bbb has the same index for b1 and b2, we only compare the b1 indexes
+      if( (class_event == 2 || class_event == 3) && idx_b1truth_recoak10_dRmin == idx_b1_preselected ){
+	correct_matched_preselected_Bbb = true;
+	preselected_bb_well_matched++;
+      }
+      else{
+	wrong_matched_preselected_Bbb = true;
+	preselected_bb_non_matched++;
+      }
+    }
+    else{
+      matched_preselected_Bbb_non_matched_truth_reco_info = true;
+      preselected_bb_non_matched_truth_reco_info++;
+    }
+  }
+
+  if( matched_preselected_tautau == true && passed_preselection_tautau_pT_cut == true ){
+    matched_preselected_tautau_events++;
+    if( class_event != -1 && passed_reco_truth_match_tautau_pT_cut == true ){
+      // Since Btautau has the same index for tau1 and tau2, we only compare the tau1 indexes
+      if( (class_event == 1 || class_event == 3) && idx_tau1truth_recoak10_dRmin == idx_tau1_preselected ){
+	correct_matched_preselected_Btautau = true;
+	preselected_tautau_well_matched++;
+      }
+      else{
+	wrong_matched_preselected_Btautau = true;
+	preselected_tautau_non_matched++;
+      }
+    }
+    else{
+      matched_preselected_Btautau_non_matched_truth_reco_info = true;
+      preselected_tautau_non_matched_truth_reco_info++;
+    }
+  }
+
+  
+  if( matched_preselection == true && passed_preselection_pT_cut == true ){
+    matched_preselected_bbtautau_events++;
+    if( class_event != -1 && passed_reco_truth_match_pT_cut == true ){ // class != -1 means all truth-reco info
+      if( correct_matched_preselected_Bbb == true && correct_matched_preselected_Btautau == true){ // only possible when class3
+	correct_matched_preselected_BbbBtautau = true;
+	preselected_bbtautau_well_matched++;
+      }
+      else{ // other classes different from 3, means wrong matches
+	wrong_matched_preselected_BbbBtautau = true;
+	preselected_bbtautau_non_matched++;
+      }
+    }
+    else{ // No info truth-reco to determine if the preselction was done correctly or not
+      matched_preselected_BbbBtautau_non_matched_truth_reco_info = true;
+      preselected_bbtautau_non_matched_truth_reco_info++;
+    }
+  }
+
+  //**************************************************************
+  // Truth-reco verification
+  //**************************************************************
+
+  truth_reco_matched_preselected_Bbb = false;
+  truth_reco_non_matched_preselected_Bbb = false;
+  truth_reco_Bbb_non_matched_preselected_info = false;
+  
+  truth_reco_matched_preselected_Btautau = false;
+  truth_reco_non_matched_preselected_Btautau = false;
+  truth_reco_Btautau_non_matched_preselected_info = false;
+
+  truth_reco_matched_preselected_BbbBtautau = false;
+  truth_reco_non_matched_preselected_BbbBtautau = false;
+  truth_reco_BbbBtautau_non_matched_preselected_info = false;
+  
+  if( (class_event == 2 || class_event == 3) && passed_reco_truth_match_bb_pT_cut == true ){ // All truth-reco Bbb
+    matched_bb_events++;
+    if( matched_preselected_bb == true && passed_preselection_bb_pT_cut == true ){ 
+      // Since Bbb has the same index for b1 and b2, we only compare the b1 indexes
+      if( idx_b1truth_recoak10_dRmin == idx_b1_preselected ){
+	truth_reco_matched_preselected_Bbb = true;
+	matched_bb_well_preselection++;
+      }
+      else{
+	truth_reco_non_matched_preselected_Bbb = true;
+	matched_bb_non_preselected++;
+      }
+    }
+    else{
+      truth_reco_Bbb_non_matched_preselected_info = true;
+      matched_bb_non_preselected_info++;
+    }
+  }
+
+  if( (class_event == 1 || class_event == 3) && passed_reco_truth_match_tautau_pT_cut == true ){ // All truth-reco Btautau
+    matched_tautau_events++;
+    if( matched_preselected_tautau == true && passed_preselection_tautau_pT_cut == true ){ 
+      // Since Btautau has the same index for tau1 and tau2, we only compare the tau1 indexes
+      if( idx_tau1truth_recoak10_dRmin == idx_tau1_preselected ){
+	truth_reco_matched_preselected_Btautau = true;
+	matched_tautau_well_preselection++;
+      }
+      else{
+	truth_reco_non_matched_preselected_Btautau = true;
+	matched_tautau_non_preselected++;
+      }
+    }
+    else{
+      truth_reco_Btautau_non_matched_preselected_info = true;
+      matched_tautau_non_preselected_info++;
+    }
+  }
+
+  if( class_event == 3 && passed_reco_truth_match_pT_cut == true ){ // All truth-reco BbbBtautau
+    matched_bbtautau_events++;
+    if( matched_preselection == true && passed_preselection_pT_cut == true ){
+      if( truth_reco_matched_preselected_Bbb == true && truth_reco_matched_preselected_Btautau == true ){
+	truth_reco_matched_preselected_BbbBtautau = true;
+	matched_bbtautau_well_preselected++;
+      }
+      else{
+	truth_reco_non_matched_preselected_BbbBtautau = true;
+	matched_bbtautau_non_preselected++;
+      }
+    }
+    else{
+      truth_reco_BbbBtautau_non_matched_preselected_info = true;
+      matched_bbtautau_non_preselected_info++;
+    }
+  }
+
+  //**************************************************************
+  // Overlaps truth-reco and preselection verification
+  //**************************************************************
+
+  if( correct_matched_preselected_Bbb == true && truth_reco_matched_preselected_Bbb == true){
+    overlap_matched_preselected_bb_events++;
+  }
+
+  if( correct_matched_preselected_Btautau == true && truth_reco_matched_preselected_Btautau == true){
+    overlap_matched_preselected_tautau_events++;
+  }
+  
+  if( correct_matched_preselected_BbbBtautau == true && truth_reco_matched_preselected_BbbBtautau == true){
+    overlap_matched_preselected_bbtautau_events++;
+  }
+  
+}
 
 void apply_preselection(float min_pT_cut_in_MeV){
   

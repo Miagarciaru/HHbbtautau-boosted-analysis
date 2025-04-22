@@ -6,8 +6,8 @@ import subprocess
 base_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/"
 
 #min_pT_recojets = ["100", "200", "300"] # in GeV
-min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
-#min_pT_recojets = ["100", "250"] # in GeV  
+#min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
+min_pT_recojets = ["100", "250"] # in GeV  
 
 # Root folder for storing output
 output_root_folder = "output_plots"
@@ -56,11 +56,14 @@ for minpT in min_pT_recojets:
     
         # Define plots_substructure_jets folder
         plots_substructure_jets = os.path.join(output_folder, "substructure_jets_plots")
-        os.makedirs(plots_substructure_jets, exist_ok=True)
+        #os.makedirs(plots_substructure_jets, exist_ok=True)
         
         # Define plots_substructure_jets folder
         plots_substructure_jets_comparison = os.path.join(output_folder, "distributions_comparison")
-        os.makedirs(plots_substructure_jets_comparison, exist_ok=True)
+        #os.makedirs(plots_substructure_jets_comparison, exist_ok=True)
+
+        plots_substructure_jets_cpr_comparison = os.path.join(output_folder, "distributions_comparison_cpr")
+        #os.makedirs(plots_substructure_jets_cpr_comparison, exist_ok=True)
         
         # Define plots_comparison folder
         plots_comparison = os.path.join(output_folder, "plots_comparison")
@@ -99,4 +102,4 @@ for var in variables:
     root_command = f'root -l -q \'Plotting_comparison_substructure_jets_variables.C("{var}")\''
 
     # Run the ROOT script                                                                                                                                   
-    subprocess.run(root_command, shell=True)
+    #subprocess.run(root_command, shell=True)

@@ -571,7 +571,7 @@ void fill_histograms_matched_truth_recojets(){
 
       hist_matched_recojet_bb_ak10_ECF1->Fill(recojet_antikt10UFO_ECF1->at(idx_b1truth_recoak10_dRmin)/1000.);
       hist_matched_recojet_bb_ak10_ECF2->Fill(recojet_antikt10UFO_ECF2->at(idx_b1truth_recoak10_dRmin)/10000000.);
-      hist_matched_recojet_bb_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_b1truth_recoak10_dRmin)/10000000.);
+      hist_matched_recojet_bb_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_b1truth_recoak10_dRmin)/1000000000.);
       hist_matched_recojet_bb_ak10_Split12->Fill(recojet_antikt10UFO_Split12->at(idx_b1truth_recoak10_dRmin)/1000.);
       hist_matched_recojet_bb_ak10_Split23->Fill(recojet_antikt10UFO_Split23->at(idx_b1truth_recoak10_dRmin)/1000.);
 
@@ -620,6 +620,82 @@ void fill_histograms_matched_truth_recojets(){
 	hist_matched_recojet_bb_m_until_nsubjettiness->Fill(recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
       }
 
+      //********************************************************************************************
+      // truth-recojets with preselected criteria (cpr) for boosted bb
+      //********************************************************************************************
+
+      if( truth_reco_matched_preselected_Bbb == true){
+	
+	//float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin);
+	
+	hist_matched_recojet_bb_m_cpr->Fill(recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_matched_recojet_bb_pt_cpr->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_matched_recojet_bb_eta_cpr->Fill(recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin));
+	hist_matched_recojet_bb_phi_cpr->Fill(recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin));
+	
+	hist_matched_recojet_bb_tau_n2_over_n1_subjettiness_cpr->Fill(tau_n2_over_n1_subjettiness);
+
+	hist_matched_recojet_bb_ak10_GN2Xv01_phbb_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1truth_recoak10_dRmin));
+	hist_matched_recojet_bb_ak10_GN2Xv01_pqcd_cpr->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_b1truth_recoak10_dRmin));
+	hist_matched_recojet_bb_ak10_GN2Xv01_phcc_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_b1truth_recoak10_dRmin));
+	hist_matched_recojet_bb_ak10_GN2Xv01_ptop_cpr->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_b1truth_recoak10_dRmin));
+
+	hist_matched_recojet_bb_ak10_ECF1_cpr->Fill(recojet_antikt10UFO_ECF1->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_matched_recojet_bb_ak10_ECF2_cpr->Fill(recojet_antikt10UFO_ECF2->at(idx_b1truth_recoak10_dRmin)/10000000.);
+	hist_matched_recojet_bb_ak10_ECF3_cpr->Fill(recojet_antikt10UFO_ECF3->at(idx_b1truth_recoak10_dRmin)/1000000000.);
+	hist_matched_recojet_bb_ak10_Split12_cpr->Fill(recojet_antikt10UFO_Split12->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_matched_recojet_bb_ak10_Split23_cpr->Fill(recojet_antikt10UFO_Split23->at(idx_b1truth_recoak10_dRmin)/1000.);
+      
+      }
+
+      if( truth_reco_non_matched_preselected_Bbb == true){
+	
+	//float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin);
+	
+	hist_non_matched_recojet_bb_m_cpr->Fill(recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_recojet_bb_pt_cpr->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_recojet_bb_eta_cpr->Fill(recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin));
+	hist_non_matched_recojet_bb_phi_cpr->Fill(recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin));
+	
+	hist_non_matched_recojet_bb_tau_n2_over_n1_subjettiness_cpr->Fill(tau_n2_over_n1_subjettiness);
+
+	hist_non_matched_recojet_bb_ak10_GN2Xv01_phbb_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1truth_recoak10_dRmin));
+	hist_non_matched_recojet_bb_ak10_GN2Xv01_pqcd_cpr->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_b1truth_recoak10_dRmin));
+	hist_non_matched_recojet_bb_ak10_GN2Xv01_phcc_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_b1truth_recoak10_dRmin));
+	hist_non_matched_recojet_bb_ak10_GN2Xv01_ptop_cpr->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_b1truth_recoak10_dRmin));
+
+	hist_non_matched_recojet_bb_ak10_ECF1_cpr->Fill(recojet_antikt10UFO_ECF1->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_recojet_bb_ak10_ECF2_cpr->Fill(recojet_antikt10UFO_ECF2->at(idx_b1truth_recoak10_dRmin)/10000000.);
+	hist_non_matched_recojet_bb_ak10_ECF3_cpr->Fill(recojet_antikt10UFO_ECF3->at(idx_b1truth_recoak10_dRmin)/1000000000.);
+	hist_non_matched_recojet_bb_ak10_Split12_cpr->Fill(recojet_antikt10UFO_Split12->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_recojet_bb_ak10_Split23_cpr->Fill(recojet_antikt10UFO_Split23->at(idx_b1truth_recoak10_dRmin)/1000.);
+      
+      }
+
+      if( truth_reco_Bbb_non_matched_preselected_info == true){
+	
+	//float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_b1truth_recoak10_dRmin);
+	
+	hist_non_matched_info_recojet_bb_m_cpr->Fill(recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_info_recojet_bb_pt_cpr->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_info_recojet_bb_eta_cpr->Fill(recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin));
+	hist_non_matched_info_recojet_bb_phi_cpr->Fill(recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin));
+	
+	hist_non_matched_info_recojet_bb_tau_n2_over_n1_subjettiness_cpr->Fill(tau_n2_over_n1_subjettiness);
+
+	hist_non_matched_info_recojet_bb_ak10_GN2Xv01_phbb_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1truth_recoak10_dRmin));
+	hist_non_matched_info_recojet_bb_ak10_GN2Xv01_pqcd_cpr->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_b1truth_recoak10_dRmin));
+	hist_non_matched_info_recojet_bb_ak10_GN2Xv01_phcc_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_b1truth_recoak10_dRmin));
+	hist_non_matched_info_recojet_bb_ak10_GN2Xv01_ptop_cpr->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_b1truth_recoak10_dRmin));
+
+	hist_non_matched_info_recojet_bb_ak10_ECF1_cpr->Fill(recojet_antikt10UFO_ECF1->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_info_recojet_bb_ak10_ECF2_cpr->Fill(recojet_antikt10UFO_ECF2->at(idx_b1truth_recoak10_dRmin)/10000000.);
+	hist_non_matched_info_recojet_bb_ak10_ECF3_cpr->Fill(recojet_antikt10UFO_ECF3->at(idx_b1truth_recoak10_dRmin)/1000000000.);
+	hist_non_matched_info_recojet_bb_ak10_Split12_cpr->Fill(recojet_antikt10UFO_Split12->at(idx_b1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_info_recojet_bb_ak10_Split23_cpr->Fill(recojet_antikt10UFO_Split23->at(idx_b1truth_recoak10_dRmin)/1000.);
+      
+      }
+      
     }
 
     // Fill m, pt, eta... distribution of those recojets that were matched to be boosted tautau (classes Rbb-Btautau or Bbb-Btautua)
@@ -634,7 +710,6 @@ void fill_histograms_matched_truth_recojets(){
       hist_matched_recojet_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000.);
       hist_matched_recojet_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin));
       hist_matched_recojet_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin));
-      hist_matched_recojet_tautau_dR->Fill(dR_tautau);
       
       hist_matched_recojet_tautau_tau_n1_subjettiness->Fill(recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin));
       hist_matched_recojet_tautau_tau_n2_subjettiness->Fill(recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin));
@@ -663,6 +738,75 @@ void fill_histograms_matched_truth_recojets(){
 	  }
 	}
       }
+
+      if( truth_reco_matched_preselected_Btautau == true ){
+
+	//float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin);
+      
+	hist_matched_recojet_tautau_m_cpr->Fill(recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_matched_recojet_tautau_pt_cpr->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_matched_recojet_tautau_eta_cpr->Fill(recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin));
+	hist_matched_recojet_tautau_phi_cpr->Fill(recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin));
+	
+	hist_matched_recojet_tautau_tau_n2_over_n1_subjettiness_cpr->Fill(tau_n2_over_n1_subjettiness);
+	
+	hist_matched_recojet_tautau_ak10_GN2Xv01_phbb_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau1truth_recoak10_dRmin));
+	hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd_cpr->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_tau1truth_recoak10_dRmin));
+	hist_matched_recojet_tautau_ak10_GN2Xv01_phcc_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_tau1truth_recoak10_dRmin));
+	hist_matched_recojet_tautau_ak10_GN2Xv01_ptop_cpr->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_tau1truth_recoak10_dRmin));
+
+	hist_matched_recojet_tautau_ak10_ECF1_cpr->Fill(recojet_antikt10UFO_ECF1->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_matched_recojet_tautau_ak10_ECF2_cpr->Fill(recojet_antikt10UFO_ECF2->at(idx_tau1truth_recoak10_dRmin)/10000000.);
+	hist_matched_recojet_tautau_ak10_ECF3_cpr->Fill(recojet_antikt10UFO_ECF3->at(idx_tau1truth_recoak10_dRmin)/10000000.);
+	hist_matched_recojet_tautau_ak10_Split12_cpr->Fill(recojet_antikt10UFO_Split12->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_matched_recojet_tautau_ak10_Split23_cpr->Fill(recojet_antikt10UFO_Split23->at(idx_tau1truth_recoak10_dRmin)/1000.);
+      }
+      
+      if( truth_reco_non_matched_preselected_Btautau == true ){
+
+	//float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin);
+      
+	hist_non_matched_recojet_tautau_m_cpr->Fill(recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_recojet_tautau_pt_cpr->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_recojet_tautau_eta_cpr->Fill(recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin));
+	hist_non_matched_recojet_tautau_phi_cpr->Fill(recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin));
+	
+	hist_non_matched_recojet_tautau_tau_n2_over_n1_subjettiness_cpr->Fill(tau_n2_over_n1_subjettiness);
+	
+	hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau1truth_recoak10_dRmin));
+	hist_non_matched_recojet_tautau_ak10_GN2Xv01_pqcd_cpr->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_tau1truth_recoak10_dRmin));
+	hist_non_matched_recojet_tautau_ak10_GN2Xv01_phcc_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_tau1truth_recoak10_dRmin));
+	hist_non_matched_recojet_tautau_ak10_GN2Xv01_ptop_cpr->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_tau1truth_recoak10_dRmin));
+
+	hist_non_matched_recojet_tautau_ak10_ECF1_cpr->Fill(recojet_antikt10UFO_ECF1->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_recojet_tautau_ak10_ECF2_cpr->Fill(recojet_antikt10UFO_ECF2->at(idx_tau1truth_recoak10_dRmin)/10000000.);
+	hist_non_matched_recojet_tautau_ak10_ECF3_cpr->Fill(recojet_antikt10UFO_ECF3->at(idx_tau1truth_recoak10_dRmin)/10000000.);
+	hist_non_matched_recojet_tautau_ak10_Split12_cpr->Fill(recojet_antikt10UFO_Split12->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_recojet_tautau_ak10_Split23_cpr->Fill(recojet_antikt10UFO_Split23->at(idx_tau1truth_recoak10_dRmin)/1000.);
+      }
+
+      if( truth_reco_Btautau_non_matched_preselected_info == true ){
+
+	//float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_tau1truth_recoak10_dRmin)/recojet_antikt10UFO_Tau1_wta->at(idx_tau1truth_recoak10_dRmin);
+      
+	hist_non_matched_info_recojet_tautau_m_cpr->Fill(recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_info_recojet_tautau_pt_cpr->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_info_recojet_tautau_eta_cpr->Fill(recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin));
+	hist_non_matched_info_recojet_tautau_phi_cpr->Fill(recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin));
+	
+	hist_non_matched_info_recojet_tautau_tau_n2_over_n1_subjettiness_cpr->Fill(tau_n2_over_n1_subjettiness);
+	
+	hist_non_matched_info_recojet_tautau_ak10_GN2Xv01_phbb_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau1truth_recoak10_dRmin));
+	hist_non_matched_info_recojet_tautau_ak10_GN2Xv01_pqcd_cpr->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_tau1truth_recoak10_dRmin));
+	hist_non_matched_info_recojet_tautau_ak10_GN2Xv01_phcc_cpr->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_tau1truth_recoak10_dRmin));
+	hist_non_matched_info_recojet_tautau_ak10_GN2Xv01_ptop_cpr->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_tau1truth_recoak10_dRmin));
+
+	hist_non_matched_info_recojet_tautau_ak10_ECF1_cpr->Fill(recojet_antikt10UFO_ECF1->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_info_recojet_tautau_ak10_ECF2_cpr->Fill(recojet_antikt10UFO_ECF2->at(idx_tau1truth_recoak10_dRmin)/10000000.);
+	hist_non_matched_info_recojet_tautau_ak10_ECF3_cpr->Fill(recojet_antikt10UFO_ECF3->at(idx_tau1truth_recoak10_dRmin)/10000000.);
+	hist_non_matched_info_recojet_tautau_ak10_Split12_cpr->Fill(recojet_antikt10UFO_Split12->at(idx_tau1truth_recoak10_dRmin)/1000.);
+	hist_non_matched_info_recojet_tautau_ak10_Split23_cpr->Fill(recojet_antikt10UFO_Split23->at(idx_tau1truth_recoak10_dRmin)/1000.);
+      }
       
     }
 
@@ -688,7 +832,7 @@ void fill_histograms_matched_truth_recojets(){
 
       hist_non_matched_recojet_bb_ak10_ECF1->Fill(recojet_antikt10UFO_ECF1->at(idx_b1truth_recoak10_dRmin)/1000.);
       hist_non_matched_recojet_bb_ak10_ECF2->Fill(recojet_antikt10UFO_ECF2->at(idx_b1truth_recoak10_dRmin)/10000000.);
-      hist_non_matched_recojet_bb_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_b1truth_recoak10_dRmin)/10000000.);
+      hist_non_matched_recojet_bb_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_b1truth_recoak10_dRmin)/1000000000.);
       hist_non_matched_recojet_bb_ak10_Split12->Fill(recojet_antikt10UFO_Split12->at(idx_b1truth_recoak10_dRmin)/1000.);
       hist_non_matched_recojet_bb_ak10_Split23->Fill(recojet_antikt10UFO_Split23->at(idx_b1truth_recoak10_dRmin)/1000.);
 
@@ -713,7 +857,7 @@ void fill_histograms_matched_truth_recojets(){
 
       hist_non_matched_recojet_bb_ak10_ECF1->Fill(recojet_antikt10UFO_ECF1->at(idx_b2truth_recoak10_dRmin)/1000.);
       hist_non_matched_recojet_bb_ak10_ECF2->Fill(recojet_antikt10UFO_ECF2->at(idx_b2truth_recoak10_dRmin)/10000000.);
-      hist_non_matched_recojet_bb_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_b2truth_recoak10_dRmin)/10000000.);
+      hist_non_matched_recojet_bb_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_b2truth_recoak10_dRmin)/1000000000.);
       hist_non_matched_recojet_bb_ak10_Split12->Fill(recojet_antikt10UFO_Split12->at(idx_b2truth_recoak10_dRmin)/1000.);
       hist_non_matched_recojet_bb_ak10_Split23->Fill(recojet_antikt10UFO_Split23->at(idx_b2truth_recoak10_dRmin)/1000.);
 
@@ -871,31 +1015,147 @@ void fill_histograms_preselected_jets(){
   //if(matched_preselection == true){
 
   // Fill m, pt, eta... distributions of those recojets that were preselected matched to be boosted bb
-  if(matched_preselected_bb == true){
-    
+  if( matched_preselected_bb == true ){
+
     float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_b1_preselected)/recojet_antikt10UFO_Tau1_wta->at(idx_b1_preselected);
     
-    hist_matched_preselected_bb_m->Fill(recojet_antikt10UFO_m->at(idx_b1_preselected)/1000.);
-    hist_matched_preselected_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1_preselected)/1000.);
-    hist_matched_preselected_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b1_preselected));
-    hist_matched_preselected_bb_phi->Fill(recojet_antikt10UFO_phi->at(idx_b1_preselected));
+    if( correct_matched_preselected_Bbb == true ){
+      
+      hist_matched_preselected_bb_m->Fill(recojet_antikt10UFO_m->at(idx_b1_preselected)/1000.);
+      hist_matched_preselected_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1_preselected)/1000.);
+      hist_matched_preselected_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b1_preselected));
+      hist_matched_preselected_bb_phi->Fill(recojet_antikt10UFO_phi->at(idx_b1_preselected));
     
-    hist_matched_preselected_bb_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
-    hist_matched_preselected_bb_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1_preselected));
+      hist_matched_preselected_bb_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+      
+      hist_matched_preselected_bb_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1_preselected));
+      hist_matched_preselected_bb_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_b1_preselected));
+      hist_matched_preselected_bb_ak10_GN2Xv01_phcc->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_b1_preselected));
+      hist_matched_preselected_bb_ak10_GN2Xv01_ptop->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_b1_preselected));
+
+      hist_matched_preselected_bb_ak10_ECF1->Fill(recojet_antikt10UFO_ECF1->at(idx_b1_preselected)/1000.);
+      hist_matched_preselected_bb_ak10_ECF2->Fill(recojet_antikt10UFO_ECF2->at(idx_b1_preselected)/10000000.);
+      hist_matched_preselected_bb_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_b1_preselected)/1000000000.);
+      hist_matched_preselected_bb_ak10_Split12->Fill(recojet_antikt10UFO_Split12->at(idx_b1_preselected)/1000.);
+      hist_matched_preselected_bb_ak10_Split23->Fill(recojet_antikt10UFO_Split23->at(idx_b1_preselected)/1000.);
+    }
+
+    if( wrong_matched_preselected_Bbb == true ){
+      
+      hist_non_matched_preselected_bb_m->Fill(recojet_antikt10UFO_m->at(idx_b1_preselected)/1000.);
+      hist_non_matched_preselected_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1_preselected)/1000.);
+      hist_non_matched_preselected_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b1_preselected));
+      hist_non_matched_preselected_bb_phi->Fill(recojet_antikt10UFO_phi->at(idx_b1_preselected));
+    
+      hist_non_matched_preselected_bb_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+      
+      hist_non_matched_preselected_bb_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1_preselected));
+      hist_non_matched_preselected_bb_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_b1_preselected));
+      hist_non_matched_preselected_bb_ak10_GN2Xv01_phcc->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_b1_preselected));
+      hist_non_matched_preselected_bb_ak10_GN2Xv01_ptop->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_b1_preselected));
+
+      hist_non_matched_preselected_bb_ak10_ECF1->Fill(recojet_antikt10UFO_ECF1->at(idx_b1_preselected)/1000.);
+      hist_non_matched_preselected_bb_ak10_ECF2->Fill(recojet_antikt10UFO_ECF2->at(idx_b1_preselected)/10000000.);
+      hist_non_matched_preselected_bb_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_b1_preselected)/1000000000.);
+      hist_non_matched_preselected_bb_ak10_Split12->Fill(recojet_antikt10UFO_Split12->at(idx_b1_preselected)/1000.);
+      hist_non_matched_preselected_bb_ak10_Split23->Fill(recojet_antikt10UFO_Split23->at(idx_b1_preselected)/1000.);
+
+    }
+
+    if( matched_preselected_Bbb_non_matched_truth_reco_info == true ){
+      
+      hist_non_matched_info_preselected_bb_m->Fill(recojet_antikt10UFO_m->at(idx_b1_preselected)/1000.);
+      hist_non_matched_info_preselected_bb_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_b1_preselected)/1000.);
+      hist_non_matched_info_preselected_bb_eta->Fill(recojet_antikt10UFO_eta->at(idx_b1_preselected));
+      hist_non_matched_info_preselected_bb_phi->Fill(recojet_antikt10UFO_phi->at(idx_b1_preselected));
+    
+      hist_non_matched_info_preselected_bb_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+      
+      hist_non_matched_info_preselected_bb_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_b1_preselected));
+      hist_non_matched_info_preselected_bb_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_b1_preselected));
+      hist_non_matched_info_preselected_bb_ak10_GN2Xv01_phcc->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_b1_preselected));
+      hist_non_matched_info_preselected_bb_ak10_GN2Xv01_ptop->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_b1_preselected));
+
+      hist_non_matched_info_preselected_bb_ak10_ECF1->Fill(recojet_antikt10UFO_ECF1->at(idx_b1_preselected)/1000.);
+      hist_non_matched_info_preselected_bb_ak10_ECF2->Fill(recojet_antikt10UFO_ECF2->at(idx_b1_preselected)/10000000.);
+      hist_non_matched_info_preselected_bb_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_b1_preselected)/1000000000.);
+      hist_non_matched_info_preselected_bb_ak10_Split12->Fill(recojet_antikt10UFO_Split12->at(idx_b1_preselected)/1000.);
+      hist_non_matched_info_preselected_bb_ak10_Split23->Fill(recojet_antikt10UFO_Split23->at(idx_b1_preselected)/1000.);
+
+    }
+    
   }
 
     // Fill m, pt, eta... distributions of those recojets that were preselected matched to be boosted tautau
-  if(matched_preselected_tautau == true){
+  if( matched_preselected_tautau == true ){
     
     float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(idx_tau1_preselected)/recojet_antikt10UFO_Tau1_wta->at(idx_tau1_preselected);
-    
-    hist_matched_preselected_tautau_m->Fill(recojet_antikt10UFO_m->at(idx_tau1_preselected)/1000.);
-    hist_matched_preselected_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1_preselected)/1000.);
-    hist_matched_preselected_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau1_preselected));
-    hist_matched_preselected_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau1_preselected));
-    
-    hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
-    hist_matched_preselected_tautau_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau1_preselected));
+
+    if( correct_matched_preselected_Btautau == true ){
+
+      hist_matched_preselected_tautau_m->Fill(recojet_antikt10UFO_m->at(idx_tau1_preselected)/1000.);
+      hist_matched_preselected_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1_preselected)/1000.);
+      hist_matched_preselected_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau1_preselected));
+      hist_matched_preselected_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau1_preselected));
+      
+      hist_matched_preselected_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+      
+      hist_matched_preselected_tautau_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau1_preselected));
+      hist_matched_preselected_tautau_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_tau1_preselected));
+      hist_matched_preselected_tautau_ak10_GN2Xv01_phcc->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_tau1_preselected));
+      hist_matched_preselected_tautau_ak10_GN2Xv01_ptop->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_tau1_preselected));
+
+      hist_matched_preselected_tautau_ak10_ECF1->Fill(recojet_antikt10UFO_ECF1->at(idx_tau1_preselected)/1000.);
+      hist_matched_preselected_tautau_ak10_ECF2->Fill(recojet_antikt10UFO_ECF2->at(idx_tau1_preselected)/10000000.);
+      hist_matched_preselected_tautau_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_tau1_preselected)/10000000.);
+      hist_matched_preselected_tautau_ak10_Split12->Fill(recojet_antikt10UFO_Split12->at(idx_tau1_preselected)/1000.);
+      hist_matched_preselected_tautau_ak10_Split23->Fill(recojet_antikt10UFO_Split23->at(idx_tau1_preselected)/1000.);
+
+    }
+
+    if( wrong_matched_preselected_Btautau == true ){
+
+      hist_non_matched_preselected_tautau_m->Fill(recojet_antikt10UFO_m->at(idx_tau1_preselected)/1000.);
+      hist_non_matched_preselected_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1_preselected)/1000.);
+      hist_non_matched_preselected_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau1_preselected));
+      hist_non_matched_preselected_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau1_preselected));
+      
+      hist_non_matched_preselected_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+      
+      hist_non_matched_preselected_tautau_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau1_preselected));
+      hist_non_matched_preselected_tautau_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_tau1_preselected));
+      hist_non_matched_preselected_tautau_ak10_GN2Xv01_phcc->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_tau1_preselected));
+      hist_non_matched_preselected_tautau_ak10_GN2Xv01_ptop->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_tau1_preselected));
+
+      hist_non_matched_preselected_tautau_ak10_ECF1->Fill(recojet_antikt10UFO_ECF1->at(idx_tau1_preselected)/1000.);
+      hist_non_matched_preselected_tautau_ak10_ECF2->Fill(recojet_antikt10UFO_ECF2->at(idx_tau1_preselected)/10000000.);
+      hist_non_matched_preselected_tautau_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_tau1_preselected)/10000000.);
+      hist_non_matched_preselected_tautau_ak10_Split12->Fill(recojet_antikt10UFO_Split12->at(idx_tau1_preselected)/1000.);
+      hist_non_matched_preselected_tautau_ak10_Split23->Fill(recojet_antikt10UFO_Split23->at(idx_tau1_preselected)/1000.);
+
+    }
+
+    if( matched_preselected_Btautau_non_matched_truth_reco_info == true ){
+
+      hist_non_matched_info_preselected_tautau_m->Fill(recojet_antikt10UFO_m->at(idx_tau1_preselected)/1000.);
+      hist_non_matched_info_preselected_tautau_pt->Fill(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1_preselected)/1000.);
+      hist_non_matched_info_preselected_tautau_eta->Fill(recojet_antikt10UFO_eta->at(idx_tau1_preselected));
+      hist_non_matched_info_preselected_tautau_phi->Fill(recojet_antikt10UFO_phi->at(idx_tau1_preselected));
+      
+      hist_non_matched_info_preselected_tautau_tau_n2_over_n1_subjettiness->Fill(tau_n2_over_n1_subjettiness);
+      
+      hist_non_matched_info_preselected_tautau_ak10_GN2Xv01_phbb->Fill(recojet_antikt10UFO_GN2Xv01_phbb->at(idx_tau1_preselected));
+      hist_non_matched_info_preselected_tautau_ak10_GN2Xv01_pqcd->Fill(recojet_antikt10UFO_GN2Xv01_pqcd->at(idx_tau1_preselected));
+      hist_non_matched_info_preselected_tautau_ak10_GN2Xv01_phcc->Fill(recojet_antikt10UFO_GN2Xv01_phcc->at(idx_tau1_preselected));
+      hist_non_matched_info_preselected_tautau_ak10_GN2Xv01_ptop->Fill(recojet_antikt10UFO_GN2Xv01_ptop->at(idx_tau1_preselected));
+
+      hist_non_matched_info_preselected_tautau_ak10_ECF1->Fill(recojet_antikt10UFO_ECF1->at(idx_tau1_preselected)/1000.);
+      hist_non_matched_info_preselected_tautau_ak10_ECF2->Fill(recojet_antikt10UFO_ECF2->at(idx_tau1_preselected)/10000000.);
+      hist_non_matched_info_preselected_tautau_ak10_ECF3->Fill(recojet_antikt10UFO_ECF3->at(idx_tau1_preselected)/10000000.);
+      hist_non_matched_info_preselected_tautau_ak10_Split12->Fill(recojet_antikt10UFO_Split12->at(idx_tau1_preselected)/1000.);
+      hist_non_matched_info_preselected_tautau_ak10_Split23->Fill(recojet_antikt10UFO_Split23->at(idx_tau1_preselected)/1000.);
+      
+    }
     
   }
 
@@ -914,6 +1174,7 @@ void fill_histograms_preselected_jets(){
 
   // Fill n2/n1 subjettiness for non preselected boosted bb jets. This is done to known the distribution of possible candidates for boosted tautau when there is a matched preselection for Hbb
 
+  /*
   if( matched_preselected_bb==true ){
     for(Int_t ii=0; ii<recojet_antikt10UFO_Tau2_wta->size(); ii++){
       float tau_n2_over_n1_subjettiness = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
@@ -930,5 +1191,6 @@ void fill_histograms_preselected_jets(){
       }
     }
   }
+  */
   
 }
