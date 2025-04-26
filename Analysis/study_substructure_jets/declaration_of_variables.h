@@ -63,6 +63,11 @@ float efficiency_Bbb = 0;
 float purity_Bbb = 0;
 float accuracy_Bbb = 0;
 
+// Truth reco matching for boosted events
+bool truth_reco_match_for_boosted_bb;
+bool truth_reco_match_for_boosted_tautau;
+bool truth_reco_match_for_boosted_bbtautau;
+
 // for preselected-matched tautau
 
 int matched_tautau_events = 0;

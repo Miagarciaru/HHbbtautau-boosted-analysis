@@ -32,7 +32,7 @@ void Plotting_substructure_jets_variables(string sample, string output_folder, s
 
   reading_distributions_histograms(sample, list_of_histograms, comparison_list, comparison_list_cpr, output_folder, distributions_histograms, comparison_distributions_histograms, distributions_histograms_cpr, minpT);
   
-  //plot_distributions_comparisons(comparison_distributions_histograms, output_folder, minpT);
+  plot_distributions_comparisons(comparison_distributions_histograms, output_folder, minpT);
   //plot_distributions_comparisons_cpr(distributions_histograms_cpr, output_folder, minpT);
 
   //plot_distributions(distributions_histograms, output_folder, minpT);

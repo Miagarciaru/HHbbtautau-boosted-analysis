@@ -60,7 +60,7 @@ for minpT in min_pT_recojets:
         
         # Define plots_substructure_jets folder
         plots_substructure_jets_comparison = os.path.join(output_folder, "distributions_comparison")
-        #os.makedirs(plots_substructure_jets_comparison, exist_ok=True)
+        os.makedirs(plots_substructure_jets_comparison, exist_ok=True)
 
         plots_substructure_jets_cpr_comparison = os.path.join(output_folder, "distributions_comparison_cpr")
         #os.makedirs(plots_substructure_jets_cpr_comparison, exist_ok=True)

@@ -318,21 +318,21 @@ void plot_distributions_comparisons(const std::unordered_map<std::string, std::v
     TLegend* leg = new TLegend(0.7, 0.75, 0.9, 0.9);
 
     TH1F hist_boosted;
-    TH1F hist_resolved;
+    TH1F hist_non_boosted;
     
     hist_boosted = histograms[0];
-    hist_resolved = histograms[1];
+    hist_non_boosted = histograms[1];
 
     string label_boosted = "";
-    string label_resolved = "";
+    string label_non_boosted = "";
   
     if(nameVar.find("bb")!=std::string::npos){
       label_boosted = "boosted bb jet";
-      label_resolved = "single b jet";
+      label_non_boosted = "non boosted bb jet";
     }
     if(nameVar.find("tautau")!=std::string::npos){
       label_boosted = "boosted #tau#tau jet";
-      label_resolved = "single #tau jet";
+      label_non_boosted = "non boosted #tau#tau jet";
     }
   
     hist_boosted.SetStats(0);
@@ -340,35 +340,35 @@ void plot_distributions_comparisons(const std::unordered_map<std::string, std::v
     hist_boosted.SetFillColorAlpha(kBlue, 0.45);
     hist_boosted.SetLineColor(4);
   
-    hist_resolved.SetStats(0);
-    hist_resolved.SetFillStyle(3003);
-    hist_resolved.SetFillColorAlpha(kRed, 0.45);
-    hist_resolved.SetLineColor(2);
+    hist_non_boosted.SetStats(0);
+    hist_non_boosted.SetFillStyle(3003);
+    hist_non_boosted.SetFillColorAlpha(kRed, 0.45);
+    hist_non_boosted.SetLineColor(2);
 
     // Step 1: Normalize the histograms manually (or use DrawNormalized to visualize them directly).
-    //hist_boosted.Scale(1.0 / hist_boosted.Integral());
-    //hist_resolved.Scale(1.0 / hist_resolved.Integral());
+    hist_boosted.Scale(1.0 / hist_boosted.Integral());
+    hist_non_boosted.Scale(1.0 / hist_non_boosted.Integral());
     
     // Step 2: Get the maximum value of each histogram after normalization.
     double max_boosted = hist_boosted.GetMaximum();
-    double max_resolved = hist_resolved.GetMaximum();
+    double max_non_boosted = hist_non_boosted.GetMaximum();
     
     // Step 3: Set the y-axis maximum to the maximum of the two histograms.
-    double y_max = std::max(max_boosted, max_resolved);
+    double y_max = std::max(max_boosted, max_non_boosted);
     
     // Optionally, you can set the y-axis maximum slightly higher than the actual maximum value for better visualization.
     y_max = y_max*1.5;  // Increase by 10% for padding
     
     // Step 4: Draw the histograms and set the maximum.
     hist_boosted.SetMaximum(y_max);
-    hist_resolved.SetMaximum(y_max);
+    hist_non_boosted.SetMaximum(y_max);
   
     // Step 5: Draw the histograms on the same canvas for comparison.
     hist_boosted.Draw("H");   // Draw the first histogram
-    hist_resolved.Draw("sameH");  // Draw the second histogram on the same canvas
+    hist_non_boosted.Draw("sameH");  // Draw the second histogram on the same canvas
   
     leg->AddEntry(&hist_boosted, label_boosted.c_str(), "l");
-    leg->AddEntry(&hist_resolved, label_resolved.c_str(),"l");
+    leg->AddEntry(&hist_non_boosted, label_non_boosted.c_str(),"l");
     leg->SetBorderSize();
     leg->Draw();
     

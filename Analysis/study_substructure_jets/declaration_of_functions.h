@@ -307,8 +307,8 @@ void correct_match_between_truth_reco_and_preselected_objects(){
   
   if( (class_event == 2 || class_event == 3) && passed_reco_truth_match_bb_pT_cut == true ){ // All truth-reco Bbb
     matched_bb_events++;
-    if( matched_preselected_bb == true && passed_preselection_bb_pT_cut == true ){ 
-      // Since Bbb has the same index for b1 and b2, we only compare the b1 indexes
+    // Since Bbb has the same index for b1 and b2, we only compare the b1 indexes
+    if( matched_preselected_bb == true && passed_preselection_bb_pT_cut == true ){
       if( idx_b1truth_recoak10_dRmin == idx_b1_preselected ){
 	truth_reco_matched_preselected_Bbb = true;
 	matched_bb_well_preselection++;
@@ -460,6 +460,7 @@ void apply_preselection(float min_pT_cut_in_MeV){
       passed_reco_truth_match_pT_cut = true;
     }
   }
+
 }
 
 void define_preselected_events(){
@@ -476,12 +477,18 @@ void define_preselected_events(){
   if( recojet_antikt10UFO_NOSYS_pt->size() >= 2 ){
     
     float min_tagger_Hbb_value = 0.85;
-    float value_phbb = 0;
     
+    float ECF2_bb_cut_value = 500.0;
+    float split12_bb_cut_value = 20.0;
+    float mHH_bb_cut_value = 50.0;
+    float n1_nsubjettiness_bb_cut_value = 0.1;
+
+    /*
     float max_nsubjetiness_value_for_bb = 0.45;
     float min_nsubjetiness_value_for_bb = 0.05;
     
     float tau_n2_over_n1_subjettiness_bb = 0;
+    */
     
     float max_pT_bb_current = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
     float max_pT_bb_previous = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
@@ -490,22 +497,34 @@ void define_preselected_events(){
     for(Int_t ii=0; ii<recojet_antikt10UFO_GN2Xv01_phbb->size(); ii++){
       
       bool taggerHbb_score_cut = false;
-      value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
-      
-      if(value_phbb >= min_tagger_Hbb_value){
+      if(recojet_antikt10UFO_GN2Xv01_phbb->at(ii) >= min_tagger_Hbb_value){
 	taggerHbb_score_cut = true;
 	hist_matched_preselected_bb_m_only_Hbb_tagger->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
       }
       
-      bool nsubjettiness_cut = false;
-      tau_n2_over_n1_subjettiness_bb = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
-      
-      if( (tau_n2_over_n1_subjettiness_bb <= max_nsubjetiness_value_for_bb) && (tau_n2_over_n1_subjettiness_bb >= min_nsubjetiness_value_for_bb) ){
-	nsubjettiness_cut = true;
+      bool nsubjettiness_bb_cut = false;
+      //tau_n2_over_n1_subjettiness_bb = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
+      if( recojet_antikt10UFO_Tau1_wta->at(ii) >= n1_nsubjettiness_bb_cut_value ){
+	nsubjettiness_bb_cut = true;
 	hist_matched_preselected_bb_m_until_nsubjettiness->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
       }
-      
-      if( (taggerHbb_score_cut==true) && (nsubjettiness_cut==true) ){
+
+      bool ECF2_bb_cut = false;
+      if( recojet_antikt10UFO_ECF2->at(ii)/10000000.0 >= ECF2_bb_cut_value ){
+	ECF2_bb_cut = true;
+      }
+
+      bool split12_bb_cut = false;
+      if( recojet_antikt10UFO_Split12->at(ii)/1000.0 >= split12_bb_cut_value ){
+	split12_bb_cut = true;
+      }
+
+      bool mHH_bb_cut = false;
+      if( recojet_antikt10UFO_m->at(ii)/1000.0 >= mHH_bb_cut_value ){
+	mHH_bb_cut = true;
+      }
+
+      if( (taggerHbb_score_cut==true) && (nsubjettiness_bb_cut==true) && (ECF2_bb_cut==true) && (split12_bb_cut==true) && (mHH_bb_cut==true) ){
 	
 	max_pT_bb_current = recojet_antikt10UFO_NOSYS_pt->at(ii);
 	
@@ -517,40 +536,67 @@ void define_preselected_events(){
 	}
       }
     }
-    
+
+    /*
     float max_nsubjetiness_value_for_tautau = 0.30;
     float min_nsubjetiness_value_for_tautau = 0.05;
     
     float tau_n2_over_n1_subjettiness_tautau = 0;
-    
+    */
     float max_pT_tautau_current = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
     float max_pT_tautau_previous = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
     
     //if(matched_preselected_bb == true){
+
+    float max_tagger_Hbb_for_tautau_value = 0.15;
+    float min_tagger_hcc_for_tautau_value = 0.15;
+    float max_nsubjetiness_value_for_tautau = 0.30;
+    float ECF2_tautau_cut_value = 500.0;
+    float split12_tautau_cut_value = 20.0;
+    float mHH_tautau_cut_value = 50.0;
     
     for(Int_t ii=0; ii < recojet_antikt10UFO_Tau2_wta->size(); ii++){
       
       if( matched_preselected_bb == true && ii == idx_b1_preselected ){
 	continue;
       }
-      
+
       bool taggerHbb_score_cut = false;
-      value_phbb = recojet_antikt10UFO_GN2Xv01_phbb->at(ii);
-      
-      if(value_phbb < min_tagger_Hbb_value){
+      if(recojet_antikt10UFO_GN2Xv01_phbb->at(ii) <= max_tagger_Hbb_for_tautau_value){
 	taggerHbb_score_cut = true;
-	hist_matched_preselected_tautau_m_only_Hbb_tagger->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
+	//hist_matched_preselected_tautau_m_only_Hbb_tagger->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
+      }
+
+      bool taggerhcc_score_cut = false;
+      if(recojet_antikt10UFO_GN2Xv01_phcc->at(ii) >= min_tagger_hcc_for_tautau_value){
+	taggerhcc_score_cut = true;
       }
       
       bool nsubjettiness_cut = false;
-      tau_n2_over_n1_subjettiness_tautau = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
+      //tau_n2_over_n1_subjettiness_tautau = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
       
-      if( (tau_n2_over_n1_subjettiness_tautau <= max_nsubjetiness_value_for_tautau) && (tau_n2_over_n1_subjettiness_tautau >= min_nsubjetiness_value_for_tautau) ){
+      if( recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii) <= max_nsubjetiness_value_for_tautau ){
 	nsubjettiness_cut = true;
-	hist_matched_preselected_tautau_m_until_nsubjettiness->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
+	//hist_matched_preselected_tautau_m_until_nsubjettiness->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
       }
       
-      if( (taggerHbb_score_cut==true) && (nsubjettiness_cut==true) ){
+      bool ECF2_tautau_cut = false;
+      if( recojet_antikt10UFO_ECF2->at(ii)/10000000.0 >= ECF2_tautau_cut_value ){
+	ECF2_tautau_cut = true;
+      }
+
+      bool split12_tautau_cut = false;
+      if( recojet_antikt10UFO_Split12->at(ii)/1000.0 >= split12_tautau_cut_value ){
+	split12_tautau_cut = true;
+      }
+
+      bool mHH_tautau_cut = false;
+      if( recojet_antikt10UFO_m->at(ii)/1000.0 >= mHH_tautau_cut_value ){
+	mHH_tautau_cut = true;
+      }
+      
+      if( (taggerHbb_score_cut==true) && (taggerhcc_score_cut==true) && (nsubjettiness_cut==true) && (ECF2_tautau_cut==true) && (split12_tautau_cut==true) && (mHH_tautau_cut==true) ){
+	
 	max_pT_tautau_current = recojet_antikt10UFO_NOSYS_pt->at(ii);
 	
 	if(max_pT_tautau_current >= max_pT_tautau_previous){
@@ -561,8 +607,6 @@ void define_preselected_events(){
 	}
       }          
     }
-    
-    //}
     
     if( matched_preselected_bb == true && matched_preselected_tautau == true ){
       matched_preselection = true;
@@ -716,40 +760,42 @@ void define_classes(){
 
   class_event = -1;
 
+  truth_reco_match_for_boosted_bb = false;
+  truth_reco_match_for_boosted_tautau = false;
+  truth_reco_match_for_boosted_bbtautau = false;
+  
   if( (idx_b1truth_recoak10_dRmin != -1) && (idx_b2truth_recoak10_dRmin != -1) && (idx_tau1truth_recoak10_dRmin != -1) && (idx_tau2truth_recoak10_dRmin != -1) ){
 
-    if( (idx_b1truth_recoak10_dRmin!=idx_tau1truth_recoak10_dRmin) && (idx_b1truth_recoak10_dRmin!=idx_tau2truth_recoak10_dRmin) && (idx_b2truth_recoak10_dRmin!=idx_tau1truth_recoak10_dRmin) && (idx_b2truth_recoak10_dRmin!=idx_tau2truth_recoak10_dRmin)){  
-      
-      bool are_boosted_bb_matched = false;
-      bool are_boosted_tautau_matched = false;
-      
+    if( (idx_b1truth_recoak10_dRmin!=idx_tau1truth_recoak10_dRmin) && (idx_b1truth_recoak10_dRmin!=idx_tau2truth_recoak10_dRmin) && (idx_b2truth_recoak10_dRmin!=idx_tau1truth_recoak10_dRmin) && (idx_b2truth_recoak10_dRmin!=idx_tau2truth_recoak10_dRmin)){      
       if( idx_b1truth_recoak10_dRmin == idx_b2truth_recoak10_dRmin ){
-	are_boosted_bb_matched = true;
+        truth_reco_match_for_boosted_bb = true;
       }
       if( idx_tau1truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin ){
-	are_boosted_tautau_matched = true;
+        truth_reco_match_for_boosted_tautau = true;
       }
-      
+      if( truth_reco_match_for_boosted_bb==true && truth_reco_match_for_boosted_tautau==true ){
+	truth_reco_match_for_boosted_bbtautau = true;
+      }
       // ************************************
       // For the boosted and resolved jets that are correctly identified matched to fat jets
       
       // For the R_bb R_tautau class
-      if( (are_boosted_bb_matched==false) && (are_boosted_tautau_matched==false) ){
+      if( (truth_reco_match_for_boosted_bb==false) && (truth_reco_match_for_boosted_tautau==false) ){
 	class_event = 0;
       }
       
       // For the R_bb B_tautau class
-      if( (are_boosted_bb_matched==false) && (are_boosted_tautau_matched==true) ){
+      if( (truth_reco_match_for_boosted_bb==false) && (truth_reco_match_for_boosted_tautau==true) ){
 	class_event = 1;
       }
       
       // For the B_bb R_tautau class
-      if( (are_boosted_bb_matched==true) && (are_boosted_tautau_matched==false) ){
+      if( (truth_reco_match_for_boosted_bb==true) && (truth_reco_match_for_boosted_tautau==false) ){
 	class_event = 2;
       }
 
       // For the B_bb B_tautau class
-      if( (are_boosted_bb_matched==true) && (are_boosted_tautau_matched==true) ){
+      if( (truth_reco_match_for_boosted_bb==true) && (truth_reco_match_for_boosted_tautau==true) ){
 	class_event = 3;
       }
     }
@@ -768,7 +814,7 @@ void compute_dR_min_index_fat_jets(){
 
 void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m){
 
-  dR_min = 1; // Min dR value for which a truth object can be matched to a recojet
+  dR_min = 1.0; // Min dR value for which a truth object can be matched to a recojet
   idx = -1;
   
   if(recojet_antikt10UFO_NOSYS_pt->size() > 0){
@@ -801,6 +847,9 @@ void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, fl
 
 void define_truth_tau_and_b_jets(){
 
+  // set -99 to truth variables
+  default_values_for_truth_variables();
+  
   if((truth_children_fromH1_pdgId->size() == 2) && (truth_children_fromH2_pdgId->size() == 2)){
 
     int sum_type_H1 = TMath::Abs(truth_children_fromH1_pdgId->at(0)) + TMath::Abs(truth_children_fromH1_pdgId->at(1));
@@ -829,7 +878,8 @@ void define_truth_tau_and_b_jets(){
 	if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
 	  index_b1 = 1;
 	  index_b2 = 0;
-	} 
+	}
+	
 	if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
 	  index_tau1 = 1;
 	  index_tau2 = 0;
@@ -856,7 +906,7 @@ void define_truth_tau_and_b_jets(){
 	truth_tau2_m = truth_children_fromH2_m->at(index_tau2);
       } 
 
-      else if( (sum_type_H1 == 30) && (sum_type_H2 == 10) ){
+      if( (sum_type_H1 == 30) && (sum_type_H2 == 10) ){
 	
 	// Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1tautau_H2bb scenario
 	if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
@@ -914,14 +964,6 @@ void define_truth_tau_and_b_jets(){
       truth_HH_phi = HH_jet.Phi();
       truth_HH_m = HH_jet.M();	
     }
-    else{
-      // set -99 to truth variables
-      default_values_for_truth_variables();
-    }
-  }
-  else{
-    // set -99 to truth variables
-    default_values_for_truth_variables();
   }
 }
 

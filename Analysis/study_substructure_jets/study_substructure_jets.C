@@ -68,13 +68,8 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     
     fill_acceptance_ratios();
 
-    if(passed_reco_truth_match_pT_cut == true){
-      fill_histograms_matched_truth_recojets();
-    }
-
-    if(passed_preselection_pT_cut == true){
-      fill_histograms_preselected_jets();
-    }
+    fill_histograms_matched_truth_recojets(min_pT_recojet_cut_MeV);
+    fill_histograms_preselected_jets();
     
     hist_nevents_per_class->Fill(class_event);
     
