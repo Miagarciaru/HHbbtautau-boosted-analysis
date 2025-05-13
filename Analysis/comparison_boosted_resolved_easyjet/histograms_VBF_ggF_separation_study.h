@@ -32,7 +32,7 @@ TH1F *hist_boosted_bb_n2_nsubjettiness_VBF = new TH1F("hist_boosted_bb_n2_nsubje
 TH1F *hist_boosted_bb_n3_nsubjettiness_VBF = new TH1F("hist_boosted_bb_n3_nsubjettiness_VBF", "n3 nsubjettiness for boosted bb jets; n_3 nsubjettiness;Events", 50, 0, 1);
 
 
-TH1F *hist_boosted_njets_VBF = new TH1F("hist_boosted_njets_VBF", "Number of jets for VBF; n jets;Events", 10, 0, 10);
+TH1F *hist_boosted_njets_VBF = new TH1F("hist_boosted_njets_VBF", "Number of small jets for VBF; small n jets;Events", 10, 0, 10);
 TH1F *hist_boosted_bb_candidates_VBF = new TH1F("hist_boosted_bb_candidates_VBF", "Number of jets passing the phbb tagger for VBF; n jets;Events", 5, 0, 5);
 TH1F *hist_boosted_tautau_candidates_VBF = new TH1F("hist_boosted_tautau_candidates_VBF", "Number of jets not passing the phbb tagger for VBF; n jets;Events", 5, 0, 5);
 TH1F *hist_non_boosted_jets_m_VBF = new TH1F("hist_non_boosted_jets_m_VBF", "Mass of jets that are non boosted; m(jet) [GeV];Events", n_bins_pT, 0, 350);
@@ -66,7 +66,7 @@ TH1F *hist_boosted_bb_ECF1_ggF = new TH1F("hist_boosted_bb_ECF1_ggF", "ECF1 for 
 TH1F *hist_boosted_bb_ECF2_ggF = new TH1F("hist_boosted_bb_ECF2_ggF", "ECF2 for boosted bb jets; ECF2;Events", 50, 0, 5000);
 TH1F *hist_boosted_bb_ECF3_ggF = new TH1F("hist_boosted_bb_ECF3_ggF", "ECF3 for boosted bb jets; ECF3;Events", 50, 0, 10000);
 
-TH1F *hist_boosted_njets_ggF = new TH1F("hist_boosted_njets_ggF", "Number of jets for ggF; n jets;Events", 10, 0, 10);
+TH1F *hist_boosted_njets_ggF = new TH1F("hist_boosted_njets_ggF", "Number of small jets for ggF; small n jets;Events", 10, 0, 10);
 TH1F *hist_boosted_bb_candidates_ggF = new TH1F("hist_boosted_bb_candidates_ggF", "Number of jets passing the phbb tagger for ggF; n jets;Events", 5, 0, 5);
 TH1F *hist_boosted_tautau_candidates_ggF = new TH1F("hist_boosted_tautau_candidates_ggF", "Number of jets not passing the phbb tagger for ggF; n jets;Events", 5, 0, 5);
 TH1F *hist_non_boosted_jets_m_ggF = new TH1F("hist_non_boosted_jets_m_ggF", "Mass of jets that are non boosted; m(jet) [GeV];Events", n_bins_pT, 0, 350);
@@ -83,11 +83,20 @@ TH1F *hist_boosted_jet12_m_ggF = new TH1F("hist_boosted_jet12_m_ggF", "Mass of t
 TH1F *hist_boosted_jet12_pt_VBF = new TH1F("hist_boosted_jet12_pt_VBF", "pT of the two jets j1 and j2; p_{T}(j_{1,2}) [GeV];Events", 30, 0, 2000);
 TH1F *hist_boosted_jet12_pt_ggF = new TH1F("hist_boosted_jet12_pt_ggF", "pT of the two jets j1 and j2; p_{T}(j_{1,2}) [GeV];Events", 30, 0, 2000);
 
-TH1F *hist_boosted_jet12_deta_VBF = new TH1F("hist_boosted_jet12_deta_VBF", "#Delta #eta of the two jets j1 and j2; #Delta #eta(j_{1},j_{2}) [GeV];Events", 30, 0, 5);
-TH1F *hist_boosted_jet12_deta_ggF = new TH1F("hist_boosted_jet12_deta_ggF", "#Delta #eta of the two jets j1 and j2; #Delta #eta(j_{1},j_{2}) [GeV];Events", 30, 0, 5);
+TH1F *hist_boosted_jet12_deta_VBF = new TH1F("hist_boosted_jet12_deta_VBF", "#Delta #eta of the two jets j1 and j2; #Delta #eta(j_{1},j_{2}) [GeV];Events", 30, 0, 10);
+TH1F *hist_boosted_jet12_deta_ggF = new TH1F("hist_boosted_jet12_deta_ggF", "#Delta #eta of the two jets j1 and j2; #Delta #eta(j_{1},j_{2}) [GeV];Events", 30, 0, 10);
 
 TH1F *hist_boosted_jet12_dphi_VBF = new TH1F("hist_boosted_jet12_phi_VBF", "#Delta #eta of the two jets j1 and j2; #Delta #phi(j_{1},j_{2}) [GeV];Events", 30, 0, 5);
 TH1F *hist_boosted_jet12_dphi_ggF = new TH1F("hist_boosted_jet12_phi_ggF", "#Delta #eta of the two jets j1 and j2; #Delta #phi(j_{1},j_{2}) [GeV];Events", 30, 0, 5);
 
-TH1F *hist_boosted_jet12_dR_VBF = new TH1F("hist_boosted_jet12_dR_VBF", "#Delta #eta of the two jets j1 and j2; #Delta R(j_{1},j_{2}) [GeV];Events", 30, 0, 5);
-TH1F *hist_boosted_jet12_dR_ggF = new TH1F("hist_boosted_jet12_dR_ggF", "#Delta #eta of the two jets j1 and j2; #Delta R(j_{1},j_{2}) [GeV];Events", 30, 0, 5);
+TH1F *hist_boosted_jet12_dR_VBF = new TH1F("hist_boosted_jet12_dR_VBF", "#Delta #eta of the two jets j1 and j2; #Delta R(j_{1},j_{2}) [GeV];Events", 30, 0, 10);
+TH1F *hist_boosted_jet12_dR_ggF = new TH1F("hist_boosted_jet12_dR_ggF", "#Delta #eta of the two jets j1 and j2; #Delta R(j_{1},j_{2}) [GeV];Events", 30, 0, 10);
+
+TH1F *hist_boosted_jet12_Zeppenfeld_Hbb_VBF = new TH1F("hist_boosted_jet12_Zeppenfeld_Hbb_VBF", "Zeppenfeld Z_{Hbb}^{*} of the two jets j1 and j2; Z_{H #rightarrow bb}^{*};Events", 30, 0, 5);
+TH1F *hist_boosted_jet12_Zeppenfeld_Hbb_ggF = new TH1F("hist_boosted_jet12_Zeppenfeld_Hbb_ggF", "Zeppenfeld Z_{Hbb}^{*} of the two jets j1 and j2; Z_{H #rightarrow bb}^{*};Events", 30, 0, 5);
+
+TH1F *hist_boosted_jet12_Zeppenfeld_Htautau_VBF = new TH1F("hist_boosted_jet12_Zeppenfeld_Htautau_VBF", "Zeppenfeld Z_{Htautau}^{*} of the two jets j1 and j2; Z_{H #rightarrow #tau#tau}^{*};Events", 30, 0, 5);
+TH1F *hist_boosted_jet12_Zeppenfeld_Htautau_ggF = new TH1F("hist_boosted_jet12_Zeppenfeld_Htautau_ggF", "Zeppenfeld Z_{Htautau}^{*} of the two jets j1 and j2; Z_{H #rightarrow #tau#tau}^{*};Events", 30, 0, 5);
+
+TH1F *hist_boosted_jet12_Zeppenfeld_jet12_VBF = new TH1F("hist_boosted_jet12_Zeppenfeld_jet12_VBF", "Zeppenfeld Z_{jet12}^{*} of the two jets j1 and j2; Z_{j_{12}}^{*};Events", 30, 0, 5);
+TH1F *hist_boosted_jet12_Zeppenfeld_jet12_ggF = new TH1F("hist_boosted_jet12_Zeppenfeld_jet12_ggF", "Zeppenfeld Z_{jet12}^{*} of the two jets j1 and j2; Z_{j_{12}}^{*};Events", 30, 0, 5);

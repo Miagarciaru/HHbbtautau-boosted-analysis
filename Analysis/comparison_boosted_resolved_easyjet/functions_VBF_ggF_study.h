@@ -393,7 +393,20 @@ void fill_histograms_VBF(){
   hist_boosted_jet12_deta_VBF->Fill(two_jets_j12_deta_VBF);
   hist_boosted_jet12_dphi_VBF->Fill(two_jets_j12_dphi_VBF);
   hist_boosted_jet12_dR_VBF->Fill(two_jets_j12_dR_VBF);
-    
+
+  float eta_Hbb_VBF = VBF_recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_bb_VBF);
+  float eta_Htautau_VBF = VBF_recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_tautau_VBF);
+  float eta_jet1_VBF = VBF_recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF);
+  float eta_jet2_VBF = VBF_recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF);
+  
+  float Zeppenfeld_Hbb_variable_VBF = std::abs( eta_Hbb_VBF-(eta_jet1_VBF+eta_jet2_VBF) )/2;
+  float Zeppenfeld_Htautau_variable_VBF = std::abs( eta_Htautau_VBF-(eta_jet1_VBF+eta_jet2_VBF) )/2;
+  float Zeppenfeld_jet12_variable_VBF = std::abs( two_jets_j12_eta_VBF-(eta_jet1_VBF+eta_jet2_VBF) )/2; 
+
+  hist_boosted_jet12_Zeppenfeld_Hbb_VBF->Fill(Zeppenfeld_Hbb_variable_VBF);
+  hist_boosted_jet12_Zeppenfeld_Htautau_VBF->Fill(Zeppenfeld_Htautau_variable_VBF);
+  hist_boosted_jet12_Zeppenfeld_jet12_VBF->Fill(Zeppenfeld_jet12_variable_VBF);
+  
   for(int ii=0; ii<VBF_recojet_antikt10UFO_ECF1___NOSYS->size(); ii++){
     if(ii!=idx_boosted_bb_VBF && ii!=idx_boosted_tautau_VBF){
       hist_non_boosted_jets_ECF1_VBF->Fill(VBF_recojet_antikt10UFO_ECF1___NOSYS->at(ii)/1000.);
@@ -451,6 +464,19 @@ void fill_histograms_ggF(){
   hist_boosted_jet12_deta_ggF->Fill(two_jets_j12_deta_ggF);
   hist_boosted_jet12_dphi_ggF->Fill(two_jets_j12_dphi_ggF);
   hist_boosted_jet12_dR_ggF->Fill(two_jets_j12_dR_ggF);
+
+  float eta_Hbb_ggF = ggF_recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_bb_ggF);
+  float eta_Htautau_ggF = ggF_recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_tautau_ggF);
+  float eta_jet1_ggF = ggF_recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_ggF);
+  float eta_jet2_ggF = ggF_recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_ggF);
+  
+  float Zeppenfeld_Hbb_variable_ggF = std::abs( eta_Hbb_ggF-(eta_jet1_ggF+eta_jet2_ggF) )/2;
+  float Zeppenfeld_Htautau_variable_ggF = std::abs( eta_Htautau_ggF-(eta_jet1_ggF+eta_jet2_ggF) )/2; 
+  float Zeppenfeld_jet12_variable_ggF = std::abs( two_jets_j12_eta_ggF-(eta_jet1_ggF+eta_jet2_ggF) )/2;
+  
+  hist_boosted_jet12_Zeppenfeld_Hbb_ggF->Fill(Zeppenfeld_Hbb_variable_ggF);
+  hist_boosted_jet12_Zeppenfeld_Htautau_ggF->Fill(Zeppenfeld_Htautau_variable_ggF);
+  hist_boosted_jet12_Zeppenfeld_jet12_ggF->Fill(Zeppenfeld_jet12_variable_ggF);
   
   for(int ii=0; ii<ggF_recojet_antikt10UFO_ECF1___NOSYS->size(); ii++){
     if(ii!=idx_boosted_bb_ggF && ii!=idx_boosted_tautau_ggF){
@@ -719,10 +745,22 @@ void plot_distributions(TString name_plot){
     hist_VBF = hist_boosted_jet12_dR_VBF;
     hist_ggF = hist_boosted_jet12_dR_ggF;
   }
+  if(name_plot=="jet12_Zeppenfeld_Hbb"){
+    hist_VBF = hist_boosted_jet12_Zeppenfeld_Hbb_VBF;
+    hist_ggF = hist_boosted_jet12_Zeppenfeld_Hbb_ggF;
+  }
+  if(name_plot=="jet12_Zeppenfeld_Htautau"){
+    hist_VBF = hist_boosted_jet12_Zeppenfeld_Htautau_VBF;
+    hist_ggF = hist_boosted_jet12_Zeppenfeld_Htautau_ggF;
+  }
+  if(name_plot=="Zeppenfeld_jet12"){
+    hist_VBF = hist_boosted_jet12_Zeppenfeld_jet12_VBF;
+    hist_ggF = hist_boosted_jet12_Zeppenfeld_jet12_ggF;
+  }
   
   // Step 1: Normalize the histograms manually (or use DrawNormalized to visualize them directly).
-  //hist_VBF->Scale(1.0 / hist_VBF->Integral());
-  //hist_ggF->Scale(1.0 / hist_ggF->Integral());
+  hist_VBF->Scale(1.0 / hist_VBF->Integral());
+  hist_ggF->Scale(1.0 / hist_ggF->Integral());
   
   // Step 2: Get the maximum value of each histogram after normalization.
   double max_VBF = hist_VBF->GetMaximum();

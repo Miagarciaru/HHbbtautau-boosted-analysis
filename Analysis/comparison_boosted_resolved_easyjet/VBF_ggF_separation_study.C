@@ -1,10 +1,11 @@
 #include "functions_VBF_ggF_study.h"
 
-void VBF_ggF_separation_study(){
+void VBF_ggF_separation_study(TString sample, TString output_folder){
   
   // *************************************
   // Set Branch Address for the leafs on each tree
   // ************************************* 
+
   
   set_branch_address();
   
@@ -83,7 +84,7 @@ void VBF_ggF_separation_study(){
   vector<string> list_of_plots = {"tautau_m", "tautau_pT", "tautau_ECF1", "tautau_ECF2", "tautau_ECF3" , "tautau_Split12", "tautau_Split23", "tautau_n1_nsubjettiness", "tautau_n2_nsubjettiness", "tautau_n3_nsubjettiness", "bb_m", "bb_pT", "bb_ECF1", "bb_ECF2", "bb_ECF3", "bb_Split12", "bb_Split23", "bb_n1_nsubjettiness", "bb_n2_nsubjettiness", "bb_n3_nsubjettiness", "njets", "bb_jets_n", "tautau_jets_n", "neither_bb_nor_tautau_jets_m", "neither_bb_nor_tautau_jets_pT", "neither_bb_nor_tautau_jets_ECF1", "neither_bb_nor_tautau_jets_ECF2", "neither_bb_nor_tautau_jets_ECF3"};
   */
   
-  vector<string> list_of_plots = {"tautau_m", "tautau_pT", "bb_m", "bb_pT", "njets", "bb_jets_n", "tautau_jets_n", "jet12_m", "jet12_pt", "jet12_deta", "jet12_dphi", "jet12_dR"};
+  vector<string> list_of_plots = {"tautau_m", "tautau_pT", "bb_m", "bb_pT", "njets", "bb_jets_n", "tautau_jets_n", "jet12_m", "jet12_pt", "jet12_deta", "jet12_dphi", "jet12_dR", "jet12_Zeppenfeld_Hbb", "jet12_Zeppenfeld_Htautau", "Zeppenfeld_jet12"};
   
   for(int ii=0; ii < list_of_plots.size(); ii++){
     plot_distributions(list_of_plots[ii]);
