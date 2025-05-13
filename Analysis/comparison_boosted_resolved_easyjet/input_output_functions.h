@@ -1,0 +1,491 @@
+// *************************************
+// Declaration of some functions
+// *************************************
+
+//void plot_distributions(TString name_plot);
+void fill_histograms();
+void write_histograms();
+void set_branch_address_inTree(TTree *inTree);
+void define_output_branches(TTree *outTree);
+
+
+// This functions plots some distributions for the H_bb and H_tautau and compare the distributions
+// for the two configurations, boosted and resolved
+void fill_histograms(){
+
+  hist_boosted_tautau_ECF1->Fill(recojet_antikt10UFO_ECF1___NOSYS->at(idx_boosted_tautau)/1000.);
+  hist_boosted_tautau_ECF2->Fill(recojet_antikt10UFO_ECF2___NOSYS->at(idx_boosted_tautau)/10000000.);
+  hist_boosted_tautau_ECF3->Fill(recojet_antikt10UFO_ECF3___NOSYS->at(idx_boosted_tautau)/1000000000.);
+  hist_boosted_tautau_Split12->Fill(recojet_antikt10UFO_Split12___NOSYS->at(idx_boosted_tautau)/1000.);
+  hist_boosted_tautau_Split23->Fill(recojet_antikt10UFO_Split23___NOSYS->at(idx_boosted_tautau)/1000.);
+  hist_boosted_tautau_n1_nsubjettiness->Fill(recojet_antikt10UFO_Tau1_wta___NOSYS->at(idx_boosted_tautau));
+  hist_boosted_tautau_n2_nsubjettiness->Fill(recojet_antikt10UFO_Tau2_wta___NOSYS->at(idx_boosted_tautau));
+  hist_boosted_tautau_n3_nsubjettiness->Fill(recojet_antikt10UFO_Tau3_wta___NOSYS->at(idx_boosted_tautau));
+  hist_boosted_tautau_pt_NOSYS->Fill(recojet_antikt10UFO_pt___NOSYS->at(idx_boosted_tautau)/1000.);
+  hist_boosted_tautau_m->Fill(recojet_antikt10UFO_m___NOSYS->at(idx_boosted_tautau)/1000.);
+
+  hist_boosted_bb_ECF1->Fill(recojet_antikt10UFO_ECF1___NOSYS->at(idx_boosted_bb)/1000.);
+  hist_boosted_bb_ECF2->Fill(recojet_antikt10UFO_ECF2___NOSYS->at(idx_boosted_bb)/10000000.);
+  hist_boosted_bb_ECF3->Fill(recojet_antikt10UFO_ECF3___NOSYS->at(idx_boosted_bb)/1000000000.);
+  hist_boosted_bb_Split12->Fill(recojet_antikt10UFO_Split12___NOSYS->at(idx_boosted_bb)/1000.);
+  hist_boosted_bb_Split23->Fill(recojet_antikt10UFO_Split23___NOSYS->at(idx_boosted_bb)/1000.);
+  hist_boosted_bb_n1_nsubjettiness->Fill(recojet_antikt10UFO_Tau1_wta___NOSYS->at(idx_boosted_bb));
+  hist_boosted_bb_n2_nsubjettiness->Fill(recojet_antikt10UFO_Tau2_wta___NOSYS->at(idx_boosted_bb));
+  hist_boosted_bb_n3_nsubjettiness->Fill(recojet_antikt10UFO_Tau3_wta___NOSYS->at(idx_boosted_bb));
+  hist_boosted_bb_pt_NOSYS->Fill(recojet_antikt10UFO_pt___NOSYS->at(idx_boosted_bb)/1000.);
+  hist_boosted_bb_m->Fill(recojet_antikt10UFO_m___NOSYS->at(idx_boosted_tautau)/1000.);
+
+  hist_boosted_jet12_m->Fill(two_jets_j12_m/1000.);
+  hist_boosted_jet12_pt->Fill(two_jets_j12_m/1000.);
+  hist_boosted_jet12_deta->Fill(two_jets_j12_deta);
+  hist_boosted_jet12_dphi->Fill(two_jets_j12_dphi);
+  hist_boosted_jet12_dR->Fill(two_jets_j12_dR);
+
+  float eta_Hbb = recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_bb);
+  float eta_Htautau = recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_tautau);
+  float eta_jet1 = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology);
+  float eta_jet2 = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology);
+  
+  float Zeppenfeld_Hbb_variable = std::abs( eta_Hbb-(eta_jet1+eta_jet2) )/2;
+  float Zeppenfeld_Htautau_variable = std::abs( eta_Htautau-(eta_jet1+eta_jet2) )/2;
+  float Zeppenfeld_jet12_variable = std::abs( two_jets_j12_eta-(eta_jet1+eta_jet2) )/2; 
+
+  hist_boosted_jet12_Zeppenfeld_Hbb->Fill(Zeppenfeld_Hbb_variable);
+  hist_boosted_jet12_Zeppenfeld_Htautau->Fill(Zeppenfeld_Htautau_variable);
+  hist_boosted_jet12_Zeppenfeld_jet12->Fill(Zeppenfeld_jet12_variable);
+  
+  for(int ii=0; ii<recojet_antikt10UFO_ECF1___NOSYS->size(); ii++){
+    if(ii!=idx_boosted_bb && ii!=idx_boosted_tautau){
+      hist_non_boosted_jets_ECF1->Fill(recojet_antikt10UFO_ECF1___NOSYS->at(ii)/1000.);
+    }
+  }
+  for(int ii=0; ii<recojet_antikt10UFO_ECF2___NOSYS->size(); ii++){
+    if(ii!=idx_boosted_bb && ii!=idx_boosted_tautau){
+      hist_non_boosted_jets_ECF2->Fill(recojet_antikt10UFO_ECF2___NOSYS->at(ii)/10000000.);
+    }
+  }
+  for(int ii=0; ii<recojet_antikt10UFO_ECF3___NOSYS->size(); ii++){
+    if(ii!=idx_boosted_bb && ii!=idx_boosted_tautau){
+      hist_non_boosted_jets_ECF3->Fill(recojet_antikt10UFO_ECF3___NOSYS->at(ii)/1000000000.);
+    }
+  }
+  for(int ii=0; ii<recojet_antikt10UFO_m___NOSYS->size(); ii++){
+    if(ii!=idx_boosted_bb && ii!=idx_boosted_tautau){
+      hist_non_boosted_jets_m->Fill(recojet_antikt10UFO_m___NOSYS->at(ii)/1000.);
+    }
+  }
+  for(int ii=0; ii<recojet_antikt10UFO_pt___NOSYS->size(); ii++){
+    if(ii!=idx_boosted_bb && ii!=idx_boosted_tautau){
+      hist_non_boosted_jets_pt_NOSYS->Fill(recojet_antikt10UFO_pt___NOSYS->at(ii)/1000.);
+    }
+  }
+  
+}
+
+void write_histograms(){
+
+  //***********************************************************
+  // Histograms for large R jets matched to be tautau
+  //***********************************************************
+
+  hist_boosted_tautau_ECF1->Write();
+  hist_boosted_tautau_ECF2->Write();
+  hist_boosted_tautau_ECF3->Write();
+  hist_boosted_tautau_Split12->Write();
+  hist_boosted_tautau_Split23->Write();
+  hist_boosted_tautau_n1_nsubjettiness->Write();
+  hist_boosted_tautau_n2_nsubjettiness->Write();
+  hist_boosted_tautau_n3_nsubjettiness->Write();
+  hist_boosted_tautau_pt_NOSYS->Write();
+  hist_boosted_tautau_m->Write();
+
+  //***********************************************************
+  // Histograms for large R jets matched to be bb
+  //***********************************************************
+  
+  hist_boosted_bb_ECF1->Write();
+  hist_boosted_bb_ECF2->Write();
+  hist_boosted_bb_ECF3->Write();
+  hist_boosted_bb_Split12->Write();
+  hist_boosted_bb_Split23->Write();
+  hist_boosted_bb_n1_nsubjettiness->Write();
+  hist_boosted_bb_n2_nsubjettiness->Write();
+  hist_boosted_bb_n3_nsubjettiness->Write();
+  hist_boosted_bb_pt_NOSYS->Write();
+  hist_boosted_bb_m->Write();
+
+  //***********************************************************
+  // Histograms for large R jets matched to be jet 1 and jet 2 in the VBF topology
+  //***********************************************************
+  
+  hist_boosted_jet12_m->Write();
+  hist_boosted_jet12_pt->Write();
+  hist_boosted_jet12_deta->Write();
+  hist_boosted_jet12_dphi->Write();
+  hist_boosted_jet12_dR->Write();
+
+  hist_boosted_jet12_Zeppenfeld_Hbb->Write();
+  hist_boosted_jet12_Zeppenfeld_Htautau->Write();
+  hist_boosted_jet12_Zeppenfeld_jet12->Write();
+
+  //***********************************************************
+  // Histograms for large R jets non matched
+  //***********************************************************
+  
+  hist_non_boosted_jets_ECF1->Write();
+  hist_non_boosted_jets_ECF2->Write();
+  hist_non_boosted_jets_ECF3->Write();
+  hist_non_boosted_jets_m->Write();
+  hist_non_boosted_jets_pt_NOSYS->Write();
+  
+}
+
+// This function saves the branches info for a given tree in the variables defined above
+void set_branch_address_inTree(TTree *inTree){
+
+  // Declaration of branches for boosted tree
+  
+  inTree->SetBranchAddress("recojet_antikt10UFO_ECF1___NOSYS", &recojet_antikt10UFO_ECF1___NOSYS, &b_recojet_antikt10UFO_ECF1___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_ECF2___NOSYS", &recojet_antikt10UFO_ECF2___NOSYS, &b_recojet_antikt10UFO_ECF2___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_ECF3___NOSYS", &recojet_antikt10UFO_ECF3___NOSYS, &b_recojet_antikt10UFO_ECF3___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_phbb___NOSYS", &recojet_antikt10UFO_GN2Xv01_phbb___NOSYS, &b_recojet_antikt10UFO_GN2Xv01_phbb___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_phcc___NOSYS", &recojet_antikt10UFO_GN2Xv01_phcc___NOSYS, &b_recojet_antikt10UFO_GN2Xv01_phcc___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_pqcd___NOSYS", &recojet_antikt10UFO_GN2Xv01_pqcd___NOSYS, &b_recojet_antikt10UFO_GN2Xv01_pqcd___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_ptop___NOSYS", &recojet_antikt10UFO_GN2Xv01_ptop___NOSYS, &b_recojet_antikt10UFO_GN2Xv01_ptop___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv02_phbb___NOSYS", &recojet_antikt10UFO_GN2Xv02_phbb___NOSYS, &b_recojet_antikt10UFO_GN2Xv02_phbb___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv02_phcc___NOSYS", &recojet_antikt10UFO_GN2Xv02_phcc___NOSYS, &b_recojet_antikt10UFO_GN2Xv02_phcc___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv02_pqcd___NOSYS", &recojet_antikt10UFO_GN2Xv02_pqcd___NOSYS, &b_recojet_antikt10UFO_GN2Xv02_pqcd___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv02_ptop___NOSYS", &recojet_antikt10UFO_GN2Xv02_ptop___NOSYS, &b_recojet_antikt10UFO_GN2Xv02_ptop___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GhostBHadronsFinalCount___NOSYS", &recojet_antikt10UFO_GhostBHadronsFinalCount___NOSYS, &b_recojet_antikt10UFO_GhostBHadronsFinalCount___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GhostCHadronsFinalCount___NOSYS", &recojet_antikt10UFO_GhostCHadronsFinalCount___NOSYS, &b_recojet_antikt10UFO_GhostCHadronsFinalCount___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_R10TruthLabel_R21Precision_2022v1___NOSYS", &recojet_antikt10UFO_R10TruthLabel_R21Precision_2022v1___NOSYS, &b_recojet_antikt10UFO_R10TruthLabel_R21Precision_2022v1___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_R10TruthLabel_R22v1___NOSYS", &recojet_antikt10UFO_R10TruthLabel_R22v1___NOSYS, &b_recojet_antikt10UFO_R10TruthLabel_R22v1___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_Split12___NOSYS", &recojet_antikt10UFO_Split12___NOSYS, &b_recojet_antikt10UFO_Split12___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_Split23___NOSYS", &recojet_antikt10UFO_Split23___NOSYS, &b_recojet_antikt10UFO_Split23___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_Tau1_wta___NOSYS", &recojet_antikt10UFO_Tau1_wta___NOSYS, &b_recojet_antikt10UFO_Tau1_wta___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_Tau2_wta___NOSYS", &recojet_antikt10UFO_Tau2_wta___NOSYS, &b_recojet_antikt10UFO_Tau2_wta___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_Tau3_wta___NOSYS", &recojet_antikt10UFO_Tau3_wta___NOSYS, &b_recojet_antikt10UFO_Tau3_wta___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_eta___NOSYS", &recojet_antikt10UFO_eta___NOSYS, &b_recojet_antikt10UFO_eta___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_isAnalysisJet___NOSYS", &recojet_antikt10UFO_isAnalysisJet___NOSYS, &b_recojet_antikt10UFO_isAnalysisJet___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_isjet1___NOSYS", &recojet_antikt10UFO_isjet1___NOSYS, &b_recojet_antikt10UFO_isjet1___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_isjet2___NOSYS", &recojet_antikt10UFO_isjet2___NOSYS, &b_recojet_antikt10UFO_isjet2___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_m___NOSYS", &recojet_antikt10UFO_m___NOSYS, &b_recojet_antikt10UFO_m___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_phi___NOSYS", &recojet_antikt10UFO_phi___NOSYS, &b_recojet_antikt10UFO_phi___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_pt___NOSYS", &recojet_antikt10UFO_pt___NOSYS, &b_recojet_antikt10UFO_pt___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p25___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p25___NOSYS, &b_recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p25___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p37___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p37___NOSYS, &b_recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p37___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p3___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p3___NOSYS, &b_recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p3___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p46___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p46___NOSYS, &b_recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p46___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p58___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p58___NOSYS, &b_recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p58___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p74___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p74___NOSYS, &b_recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p74___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p94___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p94___NOSYS, &b_recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p94___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p25___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p25___NOSYS, &b_recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p25___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p55___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p55___NOSYS, &b_recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p55___NOSYS);
+
+  inTree->SetBranchAddress("recojet_antikt4PFlow_m___NOSYS", &recojet_antikt4PFlow_m___NOSYS, &b_recojet_antikt4PFlow_m___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt4PFlow_eta___NOSYS", &recojet_antikt4PFlow_eta___NOSYS, &b_recojet_antikt4PFlow_eta___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt4PFlow_phi___NOSYS", &recojet_antikt4PFlow_phi___NOSYS, &b_recojet_antikt4PFlow_phi___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt4PFlow_pt___NOSYS", &recojet_antikt4PFlow_pt___NOSYS, &b_recojet_antikt4PFlow_pt___NOSYS);
+  
+}
+
+void define_output_branches(TTree *outTree){
+
+  // Declaration of branches for boosted tree
+  
+  outTree->Branch("recojet_antikt10UFO_ECF1___NOSYS", &recojet_antikt10UFO_ECF1___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_ECF2___NOSYS", &recojet_antikt10UFO_ECF2___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_ECF3___NOSYS", &recojet_antikt10UFO_ECF3___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_GN2Xv01_phbb___NOSYS", &recojet_antikt10UFO_GN2Xv01_phbb___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_GN2Xv01_phcc___NOSYS", &recojet_antikt10UFO_GN2Xv01_phcc___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_GN2Xv01_pqcd___NOSYS", &recojet_antikt10UFO_GN2Xv01_pqcd___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_GN2Xv01_ptop___NOSYS", &recojet_antikt10UFO_GN2Xv01_ptop___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_GN2Xv02_phbb___NOSYS", &recojet_antikt10UFO_GN2Xv02_phbb___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_GN2Xv02_phcc___NOSYS", &recojet_antikt10UFO_GN2Xv02_phcc___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_GN2Xv02_pqcd___NOSYS", &recojet_antikt10UFO_GN2Xv02_pqcd___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_GN2Xv02_ptop___NOSYS", &recojet_antikt10UFO_GN2Xv02_ptop___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_GhostBHadronsFinalCount___NOSYS", &recojet_antikt10UFO_GhostBHadronsFinalCount___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_GhostCHadronsFinalCount___NOSYS", &recojet_antikt10UFO_GhostCHadronsFinalCount___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_R10TruthLabel_R21Precision_2022v1___NOSYS", &recojet_antikt10UFO_R10TruthLabel_R21Precision_2022v1___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_R10TruthLabel_R22v1___NOSYS", &recojet_antikt10UFO_R10TruthLabel_R22v1___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_Split12___NOSYS", &recojet_antikt10UFO_Split12___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_Split23___NOSYS", &recojet_antikt10UFO_Split23___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_Tau1_wta___NOSYS", &recojet_antikt10UFO_Tau1_wta___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_Tau2_wta___NOSYS", &recojet_antikt10UFO_Tau2_wta___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_Tau3_wta___NOSYS", &recojet_antikt10UFO_Tau3_wta___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_eta___NOSYS", &recojet_antikt10UFO_eta___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_isAnalysisJet___NOSYS", &recojet_antikt10UFO_isAnalysisJet___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_isjet1___NOSYS", &recojet_antikt10UFO_isjet1___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_isjet2___NOSYS", &recojet_antikt10UFO_isjet2___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_m___NOSYS", &recojet_antikt10UFO_m___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_phi___NOSYS", &recojet_antikt10UFO_phi___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_pt___NOSYS", &recojet_antikt10UFO_pt___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p25___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p25___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p37___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p37___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p3___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p3___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p46___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p46___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p58___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p58___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p74___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p74___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p94___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_0p94___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p25___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p25___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p55___NOSYS", &recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p55___NOSYS);
+
+  outTree->Branch("recojet_antikt4PFlow_m___NOSYS", &recojet_antikt4PFlow_m___NOSYS);
+  outTree->Branch("recojet_antikt4PFlow_eta___NOSYS", &recojet_antikt4PFlow_eta___NOSYS);
+  outTree->Branch("recojet_antikt4PFlow_phi___NOSYS", &recojet_antikt4PFlow_phi___NOSYS);
+  outTree->Branch("recojet_antikt4PFlow_pt___NOSYS", &recojet_antikt4PFlow_pt___NOSYS);
+
+  // Variables defined for VBF topology
+
+  outTree->Branch("process_name", &process_name);
+  outTree->Branch("name_output_root_file", &name_output_root_file);
+  outTree->Branch("process_type_like", &process_type_like);
+
+  outTree->Branch("idx_boosted_bb", &idx_boosted_bb);
+  outTree->Branch("idx_boosted_tautau", &idx_boosted_tautau);
+  outTree->Branch("is_boosted_bb", &is_boosted_bb);
+  outTree->Branch("is_boosted_tautau", &is_boosted_tautau);
+  outTree->Branch("is_boosted_bbtautau", &is_boosted_bbtautau);
+  outTree->Branch("idx_jet1_VBF_topology", &idx_jet1_VBF_topology);
+  outTree->Branch("idx_jet2_VBF_topology", &idx_jet2_VBF_topology);
+  outTree->Branch("is_jet12_matched", &is_jet12_matched);
+  
+  outTree->Branch("count_bb_candidates", &count_bb_candidates);
+  outTree->Branch("count_tautau_candidates", &count_tautau_candidates);
+
+  outTree->Branch("two_jets_j12_m", &two_jets_j12_m);
+  outTree->Branch("two_jets_j12_pt", &two_jets_j12_pt);
+  outTree->Branch("two_jets_j12_eta", &two_jets_j12_eta);
+  outTree->Branch("two_jets_j12_phi", &two_jets_j12_phi);
+  outTree->Branch("two_jets_j12_deta", &two_jets_j12_deta);
+  outTree->Branch("two_jets_j12_dphi", &two_jets_j12_dphi);
+  outTree->Branch("two_jets_j12_dR", &two_jets_j12_dR);
+  
+}
+
+
+void process_label(TString name_sample){
+  
+  // ggF processes had-had channel
+  if(name_sample.Contains("600459")==true){
+    process_name = "ggF HH SM had-had channel";
+    name_output_root_file = "ggF_SM_hh_600459.root";
+    process_type_like = 0; // For ggF we choose 0
+  }                                       
+                                                                                       
+  //vbf processes had-had channel
+  if(name_sample.Contains("502982")==true){
+    process_name = "VBF HH SM had-had channel";
+    name_output_root_file = "VBF_SM_hh_502982.root";
+    process_type_like = 1; // for VBF we choose 1
+  }                                       
+  
+}   
+
+/*
+// This functions plots some distributions for the H_bb and H_tautau and compare the distributions
+// for the two configurations, boosted and resolved
+void plot_distributions(TString name_plot){
+
+  gROOT->SetBatch(kTRUE);
+  SetAtlasStyle();
+  
+  TLegend *leg = new TLegend(0.7, 0.75, 0.85, 0.85);
+  TH1F *hist_VBF = new TH1F();
+  TH1F *hist_ggF = new TH1F();
+  TString name_image = "plots_comparison/";
+  name_image+=name_plot+".png";
+  
+  if(name_plot=="tautau_m"){
+    hist_VBF = hist_boosted_tautau_m_VBF;
+    hist_ggF = hist_boosted_tautau_m_ggF;
+  }
+
+  if(name_plot=="bb_m"){
+    hist_VBF = hist_boosted_bb_m_VBF;
+    hist_ggF = hist_boosted_bb_m_ggF;
+  }
+  if(name_plot=="tautau_pT"){
+    hist_VBF = hist_boosted_tautau_pt_NOSYS_VBF;
+    hist_ggF = hist_boosted_tautau_pt_NOSYS_ggF;
+  }
+  if(name_plot=="bb_pT"){
+    hist_VBF = hist_boosted_bb_pt_NOSYS_VBF;
+    hist_ggF = hist_boosted_bb_pt_NOSYS_ggF;
+  }
+  if(name_plot=="tautau_ECF1"){
+    hist_VBF = hist_boosted_tautau_ECF1_VBF;
+    hist_ggF = hist_boosted_tautau_ECF1_ggF;
+  }
+  if(name_plot=="bb_ECF1"){
+    hist_VBF = hist_boosted_bb_ECF1_VBF;
+    hist_ggF = hist_boosted_bb_ECF1_ggF;
+  }
+  if(name_plot=="tautau_ECF2"){
+    hist_VBF = hist_boosted_tautau_ECF2_VBF;
+    hist_ggF = hist_boosted_tautau_ECF2_ggF;
+  }
+  if(name_plot=="bb_ECF2"){
+    hist_VBF = hist_boosted_bb_ECF2_VBF;
+    hist_ggF = hist_boosted_bb_ECF2_ggF;
+  }
+  if(name_plot=="tautau_ECF3"){
+    hist_VBF = hist_boosted_tautau_ECF3_VBF;
+    hist_ggF = hist_boosted_tautau_ECF3_ggF;
+  }
+  if(name_plot=="bb_ECF3"){
+    hist_VBF = hist_boosted_bb_ECF3_VBF;
+    hist_ggF = hist_boosted_bb_ECF3_ggF;
+  }
+  if(name_plot=="tautau_Split12"){
+    hist_VBF = hist_boosted_tautau_Split12_VBF;
+    hist_ggF = hist_boosted_tautau_Split12_ggF;
+  }
+  if(name_plot=="bb_Split12"){
+    hist_VBF = hist_boosted_bb_Split12_VBF;
+    hist_ggF = hist_boosted_bb_Split12_ggF;
+  }
+  if(name_plot=="tautau_Split23"){
+    hist_VBF = hist_boosted_tautau_Split23_VBF;
+    hist_ggF = hist_boosted_tautau_Split23_ggF;
+  }
+  if(name_plot=="bb_Split23"){
+    hist_VBF = hist_boosted_bb_Split23_VBF;
+    hist_ggF = hist_boosted_bb_Split23_ggF;
+  }
+  if(name_plot=="tautau_n1_nsubjettiness"){
+    hist_VBF = hist_boosted_tautau_n1_nsubjettiness_VBF;
+    hist_ggF = hist_boosted_tautau_n1_nsubjettiness_ggF;
+  }
+  if(name_plot=="bb_n1_nsubjettiness"){
+    hist_VBF = hist_boosted_bb_n1_nsubjettiness_VBF;
+    hist_ggF = hist_boosted_bb_n1_nsubjettiness_ggF;
+  }
+  if(name_plot=="tautau_n2_nsubjettiness"){
+    hist_VBF = hist_boosted_tautau_n2_nsubjettiness_VBF;
+    hist_ggF = hist_boosted_tautau_n2_nsubjettiness_ggF;
+  }
+  if(name_plot=="bb_n2_nsubjettiness"){
+    hist_VBF = hist_boosted_bb_n2_nsubjettiness_VBF;
+    hist_ggF = hist_boosted_bb_n2_nsubjettiness_ggF;
+  }
+  if(name_plot=="tautau_n3_nsubjettiness"){
+    hist_VBF = hist_boosted_tautau_n3_nsubjettiness_VBF;
+    hist_ggF = hist_boosted_tautau_n3_nsubjettiness_ggF;
+  }
+  if(name_plot=="bb_n3_nsubjettiness"){
+    hist_VBF = hist_boosted_bb_n3_nsubjettiness_VBF;
+    hist_ggF = hist_boosted_bb_n3_nsubjettiness_ggF;
+  }
+  if(name_plot=="njets"){
+    hist_VBF = hist_boosted_njets_VBF;
+    hist_ggF = hist_boosted_njets_ggF;
+  }
+  if(name_plot=="bb_jets_n"){
+    hist_VBF = hist_boosted_bb_candidates_VBF;
+    hist_ggF = hist_boosted_bb_candidates_ggF;
+  }
+  if(name_plot=="tautau_jets_n"){
+    hist_VBF = hist_boosted_tautau_candidates_VBF;
+    hist_ggF = hist_boosted_tautau_candidates_ggF;
+  }
+  if(name_plot=="neither_bb_nor_tautau_jets_m"){
+    hist_VBF = hist_non_boosted_jets_m_VBF;
+    hist_ggF = hist_non_boosted_jets_m_ggF;
+  }
+  if(name_plot=="neither_bb_nor_tautau_jets_pT"){
+    hist_VBF = hist_non_boosted_jets_pt_NOSYS_VBF;
+    hist_ggF = hist_non_boosted_jets_pt_NOSYS_ggF;
+  }
+  if(name_plot=="neither_bb_nor_tautau_jets_ECF1"){
+    hist_VBF = hist_non_boosted_jets_ECF1_VBF;
+    hist_ggF = hist_non_boosted_jets_ECF1_ggF;
+  }
+  if(name_plot=="neither_bb_nor_tautau_jets_ECF2"){
+    hist_VBF = hist_non_boosted_jets_ECF2_VBF;
+    hist_ggF = hist_non_boosted_jets_ECF2_ggF;
+  }
+  if(name_plot=="neither_bb_nor_tautau_jets_ECF3"){
+    hist_VBF = hist_non_boosted_jets_ECF3_VBF;
+    hist_ggF = hist_non_boosted_jets_ECF3_ggF;
+  }
+  if(name_plot=="jet12_m"){
+    hist_VBF = hist_boosted_jet12_m_VBF;
+    hist_ggF = hist_boosted_jet12_m_ggF;
+  }
+  if(name_plot=="jet12_pt"){
+    hist_VBF = hist_boosted_jet12_pt_VBF;
+    hist_ggF = hist_boosted_jet12_pt_ggF;
+  }
+  if(name_plot=="jet12_deta"){
+    hist_VBF = hist_boosted_jet12_deta_VBF;
+    hist_ggF = hist_boosted_jet12_deta_ggF;
+  }
+  if(name_plot=="jet12_dphi"){
+    hist_VBF = hist_boosted_jet12_dphi_VBF;
+    hist_ggF = hist_boosted_jet12_dphi_ggF;
+  }
+  if(name_plot=="jet12_dR"){
+    hist_VBF = hist_boosted_jet12_dR_VBF;
+    hist_ggF = hist_boosted_jet12_dR_ggF;
+  }
+  if(name_plot=="jet12_Zeppenfeld_Hbb"){
+    hist_VBF = hist_boosted_jet12_Zeppenfeld_Hbb_VBF;
+    hist_ggF = hist_boosted_jet12_Zeppenfeld_Hbb_ggF;
+  }
+  if(name_plot=="jet12_Zeppenfeld_Htautau"){
+    hist_VBF = hist_boosted_jet12_Zeppenfeld_Htautau_VBF;
+    hist_ggF = hist_boosted_jet12_Zeppenfeld_Htautau_ggF;
+  }
+  if(name_plot=="Zeppenfeld_jet12"){
+    hist_VBF = hist_boosted_jet12_Zeppenfeld_jet12_VBF;
+    hist_ggF = hist_boosted_jet12_Zeppenfeld_jet12_ggF;
+  }
+  
+  // Step 1: Normalize the histograms manually (or use DrawNormalized to visualize them directly).
+  hist_VBF->Scale(1.0 / hist_VBF->Integral());
+  hist_ggF->Scale(1.0 / hist_ggF->Integral());
+  
+  // Step 2: Get the maximum value of each histogram after normalization.
+  double max_VBF = hist_VBF->GetMaximum();
+  double max_ggF = hist_ggF->GetMaximum();
+  
+  // Step 3: Set the y-axis maximum to the maximum of the two histograms.
+  double y_max = std::max(max_VBF, max_ggF);
+  
+  // Optionally, you can set the y-axis maximum slightly higher than the actual maximum value for better visualization.
+  y_max = y_max*1.5;  // Increase by 10% for padding
+  
+  // Step 4: Draw the histograms and set the maximum.
+  hist_VBF->SetMaximum(y_max);
+  hist_ggF->SetMaximum(y_max);
+  
+  hist_VBF->SetStats(0);
+  hist_VBF->SetFillStyle(3001);
+  hist_VBF->SetFillColorAlpha(kBlue, 0.45);
+  hist_VBF->SetLineColor(4);
+  
+  hist_ggF->SetStats(0);
+  hist_ggF->SetFillStyle(3003);
+  hist_ggF->SetFillColorAlpha(kRed, 0.45);
+  hist_ggF->SetLineColor(2);
+  
+  ///// Plotting
+  TCanvas *can = new TCanvas("can","", 800, 600);
+
+  hist_VBF->Draw("H");
+  hist_ggF->Draw("sameH");
+  
+  leg->AddEntry(hist_VBF, "VBF SM process", "l");
+  leg->AddEntry(hist_ggF,"ggF SM process","l");
+  leg->SetBorderSize();
+  leg->Draw();
+
+  double dely = 0.05;
+  myText(0.2, 0.9, kBlack, name_plot);
+    
+  can->Draw();
+  can->SaveAs(name_image);
+}
+
+*/
