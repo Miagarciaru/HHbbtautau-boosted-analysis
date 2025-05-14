@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_curve, auc
 
 # Reading ROOT file
 file = uproot.open("output_analysis/input_BDT.root")
@@ -24,6 +25,7 @@ bdt.fit(X_train, y_train)
 
 # Evaluation
 y_pred = bdt.predict_proba(X_test)[:, 1]
+
 print("AUC:", roc_auc_score(y_test, y_pred))
 
 # Apply BDT to all the events
@@ -57,3 +59,21 @@ plt.xticks(range(len(features)), features[indices], rotation=45)
 plt.tight_layout()
 plt.savefig("output_analysis/importance_ranking_BDT.png")
 #plt.show()
+
+# Calcular los puntos de la curva ROC
+fpr, tpr, thresholds = roc_curve(y_test, y_pred)
+roc_auc = auc(fpr, tpr)
+
+# Dibujar la curva ROC
+plt.figure(figsize=(6, 6))
+plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC (AUC = {roc_auc:.3f})')
+plt.plot([0, 1], [0, 1], color='navy', lw=1, linestyle='--')  # línea diagonal (azar)
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Ratio (FPR)')
+plt.ylabel('True Positive Ratio (TPR)')
+plt.title('ROC Curve - VBF vs ggF Classification')
+plt.legend(loc="lower right")
+plt.grid(True)
+plt.tight_layout()
+plt.savefig("output_analysis/ROC_curve_BDT.png")
