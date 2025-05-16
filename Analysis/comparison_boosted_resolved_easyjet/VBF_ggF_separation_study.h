@@ -73,7 +73,14 @@ vector<float> *recojet_antikt4PFlow_eta___NOSYS;
 vector<float> *recojet_antikt4PFlow_phi___NOSYS;
 vector<float> *recojet_antikt4PFlow_pt___NOSYS;
 
-// New variables to develop
+// *******************************************************************
+// New variables for VBF topology
+// *******************************************************************
+
+int smallR_jets_n;
+int largeR_jets_n;
+
+// Two small jets j1 and j2 variables
 float two_jets_j12_m;
 float two_jets_j12_pt;
 float two_jets_j12_eta;
@@ -81,6 +88,60 @@ float two_jets_j12_phi;
 float two_jets_j12_deta;
 float two_jets_j12_dphi;
 float two_jets_j12_dR;
+
+// Boosted bb and boosted tautau variables
+float boosted_bb_tautau_system_m;
+float boosted_bb_tautau_system_pt;
+float boosted_bb_tautau_system_eta;
+float boosted_bb_tautau_system_phi;
+float boosted_bb_tautau_system_deta;
+float boosted_bb_tautau_system_dphi;
+float boosted_bb_tautau_system_dR;
+
+// Boosted bb and small jets j1 variables
+float boosted_bb_j1_system_m;
+float boosted_bb_j1_system_pt;
+float boosted_bb_j1_system_eta;
+float boosted_bb_j1_system_phi;
+float boosted_bb_j1_system_deta;
+float boosted_bb_j1_system_dphi;
+float boosted_bb_j1_system_dR;
+
+// Boosted tautau and small jets j1 variables
+float boosted_tautau_j1_system_m;
+float boosted_tautau_j1_system_pt;
+float boosted_tautau_j1_system_eta;
+float boosted_tautau_j1_system_phi;
+float boosted_tautau_j1_system_deta;
+float boosted_tautau_j1_system_dphi;
+float boosted_tautau_j1_system_dR;
+
+// Boosted bb and small jets j2 variables
+float boosted_bb_j2_system_m;
+float boosted_bb_j2_system_pt;
+float boosted_bb_j2_system_eta;
+float boosted_bb_j2_system_phi;
+float boosted_bb_j2_system_deta;
+float boosted_bb_j2_system_dphi;
+float boosted_bb_j2_system_dR;
+
+// Boosted tautau and small jets j1 variables
+float boosted_tautau_j2_system_m;
+float boosted_tautau_j2_system_pt;
+float boosted_tautau_j2_system_eta;
+float boosted_tautau_j2_system_phi;
+float boosted_tautau_j2_system_deta;
+float boosted_tautau_j2_system_dphi;
+float boosted_tautau_j2_system_dR;
+
+// All jets system variables
+float boosted_all_jets_system_m;
+float boosted_all_jets_system_pt;
+float boosted_all_jets_system_eta;
+float boosted_all_jets_system_phi;
+float boosted_all_jets_system_deta;
+float boosted_all_jets_system_dphi;
+float boosted_all_jets_system_dR;
 
 // *************************************
 // Declaration of branches

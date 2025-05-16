@@ -53,6 +53,9 @@ void VBF_ggF_separation_study(TString sample, TString output_folder){
     boosted_candidates();
     pairs_small_jets();
     compute_variables_for_topological_processes();
+
+    smallR_jets_n = recojet_antikt4PFlow_pt___NOSYS->size();
+    largeR_jets_n = recojet_antikt10UFO_pt___NOSYS->size();
     
     if(is_boosted_bbtautau == true && is_jet12_matched == true){
       fill_histograms();

@@ -13,7 +13,7 @@ void fix_underflow_overflow(TH1F* histo);
 void compute_variables_for_topological_processes();
 void pairs_small_jets();
 void boosted_candidates();
-
+void default_values_for_topological_processes();
 
 void fix_underflow_overflow(TH1F* histo){
   
@@ -25,9 +25,9 @@ void fix_underflow_overflow(TH1F* histo){
 
 }
 
-// This functions computes some useful variables to determine characteristics of topological processes
-void compute_variables_for_topological_processes(){
+void default_values_for_topological_processes(){
 
+  // Two small jets j1 and j2 variables
   two_jets_j12_m = -99;
   two_jets_j12_pt = -99;
   two_jets_j12_eta = -99;
@@ -35,11 +35,81 @@ void compute_variables_for_topological_processes(){
   two_jets_j12_deta = -99;
   two_jets_j12_dphi = -99;
   two_jets_j12_dR = -99;
+
+  // Boosted bb and boosted tautau variables
+  boosted_bb_tautau_system_m = -99;
+  boosted_bb_tautau_system_pt = -99;
+  boosted_bb_tautau_system_eta = -99;
+  boosted_bb_tautau_system_phi = -99;
+  boosted_bb_tautau_system_deta = -99;
+  boosted_bb_tautau_system_dphi = -99;
+  boosted_bb_tautau_system_dR = -99;
+
+  // Boosted bb and small jets j1 variables
+  boosted_bb_j1_system_m = -99;
+  boosted_bb_j1_system_pt = -99;
+  boosted_bb_j1_system_eta = -99;
+  boosted_bb_j1_system_phi = -99;
+  boosted_bb_j1_system_deta = -99;
+  boosted_bb_j1_system_dphi = -99;
+  boosted_bb_j1_system_dR = -99;
+
+  // Boosted tautau and small jets j1 variables
+  boosted_tautau_j1_system_m = -99;
+  boosted_tautau_j1_system_pt = -99;
+  boosted_tautau_j1_system_eta = -99;
+  boosted_tautau_j1_system_phi = -99;
+  boosted_tautau_j1_system_deta = -99;
+  boosted_tautau_j1_system_dphi = -99;
+  boosted_tautau_j1_system_dR = -99;
   
+  // Boosted bb and small jets j2 variables
+  boosted_bb_j2_system_m = -99;
+  boosted_bb_j2_system_pt = -99;
+  boosted_bb_j2_system_eta = -99;
+  boosted_bb_j2_system_phi = -99;
+  boosted_bb_j2_system_deta = -99;
+  boosted_bb_j2_system_dphi = -99;
+  boosted_bb_j2_system_dR = -99;
+  
+  // Boosted tautau and small jets j1 variables
+  boosted_tautau_j2_system_m = -99;
+  boosted_tautau_j2_system_pt = -99;
+  boosted_tautau_j2_system_eta = -99;
+  boosted_tautau_j2_system_phi = -99;
+  boosted_tautau_j2_system_deta = -99;
+  boosted_tautau_j2_system_dphi = -99;
+  boosted_tautau_j2_system_dR = -99;
+
+  // All jets system variables
+  boosted_all_jets_system_m = -99;
+  boosted_all_jets_system_pt = -99;
+  boosted_all_jets_system_eta = -99;
+  boosted_all_jets_system_phi = -99;
+  boosted_all_jets_system_deta = -99;
+  boosted_all_jets_system_dphi = -99;
+  boosted_all_jets_system_dR = -99;
+
+}
+
+// This functions computes some useful variables to determine characteristics of topological processes
+void compute_variables_for_topological_processes(){
+
+  default_values_for_topological_processes();
+    
   if( is_jet12_matched == true ){
 
     TLorentzVector jet1 = TLorentzVector();
     TLorentzVector jet2 = TLorentzVector();
+    TLorentzVector Hbb = TLorentzVector();
+    TLorentzVector Htautau = TLorentzVector();
+    TLorentzVector jet12 = TLorentzVector();
+    TLorentzVector bb_jet1 = TLorentzVector();
+    TLorentzVector bb_jet2 = TLorentzVector();
+    TLorentzVector tautau_jet1 = TLorentzVector();
+    TLorentzVector tautau_jet2 = TLorentzVector();
+    TLorentzVector bb_tautau = TLorentzVector();
+    TLorentzVector all_jets = TLorentzVector();
     
     float jet1_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology);
     float jet1_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology);
@@ -50,12 +120,30 @@ void compute_variables_for_topological_processes(){
     float jet2_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology);
     float jet2_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet2_VBF_topology);
     float jet2_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet2_VBF_topology);
+
+    float Hbb_pt = recojet_antikt10UFO_pt___NOSYS->at(idx_boosted_bb);
+    float Hbb_eta = recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_bb);
+    float Hbb_phi = recojet_antikt10UFO_phi___NOSYS->at(idx_boosted_bb);
+    float Hbb_m = recojet_antikt10UFO_m___NOSYS->at(idx_boosted_bb);
     
+    float Htautau_pt = recojet_antikt10UFO_pt___NOSYS->at(idx_boosted_tautau);
+    float Htautau_eta = recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_tautau);
+    float Htautau_phi = recojet_antikt10UFO_phi___NOSYS->at(idx_boosted_tautau);
+    float Htautau_m = recojet_antikt10UFO_m___NOSYS->at(idx_boosted_tautau);
+      
     jet1.SetPtEtaPhiM(jet1_pt, jet1_eta, jet1_phi, jet1_m);
     jet2.SetPtEtaPhiM(jet2_pt, jet2_eta, jet2_phi, jet2_m);
-
-    TLorentzVector jet12 = TLorentzVector();
+    Hbb.SetPtEtaPhiM(Hbb_pt, Hbb_eta, Hbb_phi, Hbb_m);
+    Htautau.SetPtEtaPhiM(Htautau_pt, Htautau_eta, Htautau_phi, Htautau_m);
+    
     jet12 = jet1 + jet2;
+    bb_jet1 = Hbb + jet1;
+    bb_jet2 = Hbb + jet2;
+    tautau_jet1 = Htautau + jet1;
+    tautau_jet2 = Htautau + jet2;
+    bb_tautau = Hbb + Htautau;
+    all_jets = Hbb + Htautau + jet1 + jet2;
+
     two_jets_j12_m = jet12.M();
     two_jets_j12_pt = jet12.Pt();
     two_jets_j12_eta = jet12.Eta();
@@ -63,7 +151,61 @@ void compute_variables_for_topological_processes(){
     two_jets_j12_deta = std::abs(jet1.Eta()-jet2.Eta());
     two_jets_j12_dphi = std::abs(jet1.Phi()-jet2.Phi());
     two_jets_j12_dR = jet1.DeltaR(jet2);
+
+    // Boosted bb and boosted tautau variables
+    boosted_bb_tautau_system_m = bb_tautau.M();
+    boosted_bb_tautau_system_pt = bb_tautau.Pt();
+    boosted_bb_tautau_system_eta = bb_tautau.Eta();
+    boosted_bb_tautau_system_phi = bb_tautau.Phi();
+    boosted_bb_tautau_system_deta = std::abs(Hbb.Eta()-Htautau.Eta());
+    boosted_bb_tautau_system_dphi = std::abs(Hbb.Phi()-Htautau.Phi());
+    boosted_bb_tautau_system_dR = Hbb.DeltaR(Htautau);
     
+    // Boosted bb and small jets j1 variables
+    boosted_bb_j1_system_m = bb_jet1.M();
+    boosted_bb_j1_system_pt = bb_jet1.Pt();
+    boosted_bb_j1_system_eta = bb_jet1.Eta();
+    boosted_bb_j1_system_phi = bb_jet1.Phi();
+    boosted_bb_j1_system_deta = std::abs(Hbb.Eta()-jet1.Eta());
+    boosted_bb_j1_system_dphi = std::abs(Hbb.Phi()-jet1.Phi());
+    boosted_bb_j1_system_dR = Hbb.DeltaR(jet1);
+    
+    // Boosted tautau and small jets j1 variables
+    boosted_tautau_j1_system_m = tautau_jet1.M();
+    boosted_tautau_j1_system_pt = tautau_jet1.Pt();
+    boosted_tautau_j1_system_eta = tautau_jet1.Eta();
+    boosted_tautau_j1_system_phi = tautau_jet1.Phi();
+    boosted_tautau_j1_system_deta = std::abs(Htautau.Eta()-jet1.Eta());
+    boosted_tautau_j1_system_dphi = std::abs(Htautau.Phi()-jet1.Phi());
+    boosted_tautau_j1_system_dR = Htautau.DeltaR(jet1);
+    
+    // Boosted bb and small jets j2 variables
+    boosted_bb_j2_system_m = bb_jet2.M();
+    boosted_bb_j2_system_pt = bb_jet2.Pt();
+    boosted_bb_j2_system_eta = bb_jet2.Eta();
+    boosted_bb_j2_system_phi = bb_jet2.Phi();
+    boosted_bb_j2_system_deta = std::abs(Hbb.Eta()-jet2.Eta());
+    boosted_bb_j2_system_dphi = std::abs(Hbb.Phi()-jet2.Phi());
+    boosted_bb_j2_system_dR = Hbb.DeltaR(jet2);
+    
+    // Boosted tautau and small jets j1 variables
+    boosted_tautau_j2_system_m = tautau_jet2.M();
+    boosted_tautau_j2_system_pt = tautau_jet2.Pt();
+    boosted_tautau_j2_system_eta = tautau_jet2.Eta();
+    boosted_tautau_j2_system_phi = tautau_jet2.Phi();
+    boosted_tautau_j2_system_deta = std::abs(Htautau.Eta()-jet2.Eta());
+    boosted_tautau_j2_system_dphi = std::abs(Htautau.Phi()-jet2.Phi());
+    boosted_tautau_j2_system_dR = Htautau.DeltaR(jet2);
+
+    // All jets system variables
+    boosted_all_jets_system_m = all_jets.M();
+    boosted_all_jets_system_pt = all_jets.Pt();
+    boosted_all_jets_system_eta = all_jets.Eta();
+    boosted_all_jets_system_phi = all_jets.Phi();
+    boosted_all_jets_system_deta = std::abs(bb_tautau.Eta()-jet12.Eta());
+    boosted_all_jets_system_dphi = std::abs(bb_tautau.Eta()-jet12.Eta());
+    boosted_all_jets_system_dR = bb_tautau.DeltaR(jet12);
+  
   }
   
 }

@@ -37,7 +37,8 @@ void reading_distributions_histograms(const std::vector<std::string>& list_of_hi
     
     std::vector<TH1F> list_histograms(2);
 
-    //cout << "name matched hist: " << name_matched_hist << endl;
+    cout << "name VBF hist: " << name_VBF_hist << endl;
+    cout << "name ggF hist: " << name_ggF_hist << endl;
 
     TH1F* VBF_hist = new TH1F();
     TH1F* ggF_hist = new TH1F();

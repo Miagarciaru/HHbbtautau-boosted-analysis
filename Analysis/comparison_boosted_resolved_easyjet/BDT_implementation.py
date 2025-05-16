@@ -15,7 +15,12 @@ df = tree.arrays(library="pd")
 
 # Training
 #X = df[["two_jets_j12_m", "two_jets_j12_pt", "two_jets_j12_dR", "idx_jet1_VBF_topology", "idx_jet2_VBF_topology", "is_jet12_matched"]]  # variables to use in the training part
-X = df[["two_jets_j12_m", "two_jets_j12_pt", "two_jets_j12_dR"]]  # variables to use in the training part
+"""
+X = df[["two_jets_j12_m", "two_jets_j12_pt", "two_jets_j12_eta", "two_jets_j12_phi", "two_jets_j12_deta", "two_jets_j12_dphi", "two_jets_j12_dR", "boosted_bb_tautau_system_m", "boosted_bb_tautau_system_pt", "boosted_bb_tautau_system_eta", "boosted_bb_tautau_system_phi", "boosted_bb_tautau_system_deta" , "boosted_bb_tautau_system_dphi", "boosted_bb_tautau_system_dR", "boosted_bb_j1_system_m", "boosted_bb_j1_system_pt", "boosted_bb_j1_system_eta", "boosted_bb_j1_system_phi", "boosted_bb_j1_system_deta", "boosted_bb_j1_system_dphi", "boosted_bb_j1_system_dR",  "boosted_bb_j2_system_m", "boosted_bb_j2_system_pt", "boosted_bb_j2_system_eta", "boosted_bb_j2_system_phi", "boosted_bb_j2_system_deta", "boosted_bb_j2_system_dphi", "boosted_bb_j2_system_dR", "boosted_tautau_j1_system_m", "boosted_tautau_j1_system_pt", "boosted_tautau_j1_system_eta", "boosted_tautau_j1_system_phi", "boosted_tautau_j1_system_deta", "boosted_tautau_j1_system_dphi", "boosted_tautau_j1_system_dR",  "boosted_tautau_j2_system_m", "boosted_tautau_j2_system_pt", "boosted_tautau_j2_system_eta", "boosted_tautau_j2_system_phi", "boosted_tautau_j2_system_deta", "boosted_tautau_j2_system_dphi", "boosted_tautau_j2_system_dR", "boosted_all_jets_system_m", "boosted_all_jets_system_pt", "boosted_all_jets_system_eta", "boosted_all_jets_system_phi", "boosted_all_jets_system_deta", "boosted_all_jets_system_dphi", "boosted_all_jets_system_dR"]]  # variables to use in the training part
+"""
+
+X = df[["boosted_all_jets_system_m", "boosted_bb_tautau_system_deta", "two_jets_j12_m", "boosted_tautau_j1_system_m", "two_jets_j12_pt", "boosted_bb_j1_system_eta", "boosted_bb_j2_system_pt", "boosted_tautau_j2_system_eta", "boosted_tautau_j1_system_eta", "boosted_bb_j1_system_pt", "smallR_jets_n", "largeR_jets_n"]]  # variables to use in the training part
+
 y = df["process_type_like"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
