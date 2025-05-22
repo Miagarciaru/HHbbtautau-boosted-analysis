@@ -7,7 +7,7 @@ void fill_histograms();
 void write_histograms();
 void set_branch_address_inTree(TTree *inTree);
 void define_output_branches(TTree *outTree);
-
+void process_label(TString name_sample);
 
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions
 // for the two configurations, boosted and resolved
@@ -33,7 +33,7 @@ void fill_histograms(){
   hist_boosted_bb_n2_nsubjettiness->Fill(recojet_antikt10UFO_Tau2_wta___NOSYS->at(idx_boosted_bb));
   hist_boosted_bb_n3_nsubjettiness->Fill(recojet_antikt10UFO_Tau3_wta___NOSYS->at(idx_boosted_bb));
   hist_boosted_bb_pt_NOSYS->Fill(recojet_antikt10UFO_pt___NOSYS->at(idx_boosted_bb)/1000.);
-  hist_boosted_bb_m->Fill(recojet_antikt10UFO_m___NOSYS->at(idx_boosted_tautau)/1000.);
+  hist_boosted_bb_m->Fill(recojet_antikt10UFO_m___NOSYS->at(idx_boosted_bb)/1000.);
 
   hist_boosted_jet12_m->Fill(two_jets_j12_m/1000.);
   hist_boosted_jet12_pt->Fill(two_jets_j12_pt/1000.);
@@ -229,6 +229,12 @@ void write_histograms(){
   hist_boosted_jet12_Zeppenfeld_jet12->Write();
 
   //***********************************************************
+  // Histograms for small R jets
+  //***********************************************************
+
+  hist_boosted_njets->Write();
+  
+  //***********************************************************
   // Histograms for large R jets non matched
   //***********************************************************
   
@@ -421,229 +427,21 @@ void define_output_branches(TTree *outTree){
   
 }
 
-
 void process_label(TString name_sample){
   
   // ggF processes had-had channel
-  if(name_sample.Contains("600459")==true){
+  if(name_sample.Contains("ggF")==true){
     process_name = "ggF HH SM had-had channel";
     name_output_root_file = "ggF_SM_hh_600459.root";
     process_type_like = 0; // For ggF we choose 0
   }                                       
                                                                                        
   //vbf processes had-had channel
-  if(name_sample.Contains("502982")==true){
+  //if(name_sample.Contains("502982")==true){
+  if(name_sample.Contains("vbf")==true){
     process_name = "VBF HH SM had-had channel";
     name_output_root_file = "VBF_SM_hh_502982.root";
     process_type_like = 1; // for VBF we choose 1
   }                                       
   
 }   
-
-/*
-// This functions plots some distributions for the H_bb and H_tautau and compare the distributions
-// for the two configurations, boosted and resolved
-void plot_distributions(TString name_plot){
-
-  gROOT->SetBatch(kTRUE);
-  SetAtlasStyle();
-  
-  TLegend *leg = new TLegend(0.7, 0.75, 0.85, 0.85);
-  TH1F *hist_VBF = new TH1F();
-  TH1F *hist_ggF = new TH1F();
-  TString name_image = "plots_comparison/";
-  name_image+=name_plot+".png";
-  
-  if(name_plot=="tautau_m"){
-    hist_VBF = hist_boosted_tautau_m_VBF;
-    hist_ggF = hist_boosted_tautau_m_ggF;
-  }
-
-  if(name_plot=="bb_m"){
-    hist_VBF = hist_boosted_bb_m_VBF;
-    hist_ggF = hist_boosted_bb_m_ggF;
-  }
-  if(name_plot=="tautau_pT"){
-    hist_VBF = hist_boosted_tautau_pt_NOSYS_VBF;
-    hist_ggF = hist_boosted_tautau_pt_NOSYS_ggF;
-  }
-  if(name_plot=="bb_pT"){
-    hist_VBF = hist_boosted_bb_pt_NOSYS_VBF;
-    hist_ggF = hist_boosted_bb_pt_NOSYS_ggF;
-  }
-  if(name_plot=="tautau_ECF1"){
-    hist_VBF = hist_boosted_tautau_ECF1_VBF;
-    hist_ggF = hist_boosted_tautau_ECF1_ggF;
-  }
-  if(name_plot=="bb_ECF1"){
-    hist_VBF = hist_boosted_bb_ECF1_VBF;
-    hist_ggF = hist_boosted_bb_ECF1_ggF;
-  }
-  if(name_plot=="tautau_ECF2"){
-    hist_VBF = hist_boosted_tautau_ECF2_VBF;
-    hist_ggF = hist_boosted_tautau_ECF2_ggF;
-  }
-  if(name_plot=="bb_ECF2"){
-    hist_VBF = hist_boosted_bb_ECF2_VBF;
-    hist_ggF = hist_boosted_bb_ECF2_ggF;
-  }
-  if(name_plot=="tautau_ECF3"){
-    hist_VBF = hist_boosted_tautau_ECF3_VBF;
-    hist_ggF = hist_boosted_tautau_ECF3_ggF;
-  }
-  if(name_plot=="bb_ECF3"){
-    hist_VBF = hist_boosted_bb_ECF3_VBF;
-    hist_ggF = hist_boosted_bb_ECF3_ggF;
-  }
-  if(name_plot=="tautau_Split12"){
-    hist_VBF = hist_boosted_tautau_Split12_VBF;
-    hist_ggF = hist_boosted_tautau_Split12_ggF;
-  }
-  if(name_plot=="bb_Split12"){
-    hist_VBF = hist_boosted_bb_Split12_VBF;
-    hist_ggF = hist_boosted_bb_Split12_ggF;
-  }
-  if(name_plot=="tautau_Split23"){
-    hist_VBF = hist_boosted_tautau_Split23_VBF;
-    hist_ggF = hist_boosted_tautau_Split23_ggF;
-  }
-  if(name_plot=="bb_Split23"){
-    hist_VBF = hist_boosted_bb_Split23_VBF;
-    hist_ggF = hist_boosted_bb_Split23_ggF;
-  }
-  if(name_plot=="tautau_n1_nsubjettiness"){
-    hist_VBF = hist_boosted_tautau_n1_nsubjettiness_VBF;
-    hist_ggF = hist_boosted_tautau_n1_nsubjettiness_ggF;
-  }
-  if(name_plot=="bb_n1_nsubjettiness"){
-    hist_VBF = hist_boosted_bb_n1_nsubjettiness_VBF;
-    hist_ggF = hist_boosted_bb_n1_nsubjettiness_ggF;
-  }
-  if(name_plot=="tautau_n2_nsubjettiness"){
-    hist_VBF = hist_boosted_tautau_n2_nsubjettiness_VBF;
-    hist_ggF = hist_boosted_tautau_n2_nsubjettiness_ggF;
-  }
-  if(name_plot=="bb_n2_nsubjettiness"){
-    hist_VBF = hist_boosted_bb_n2_nsubjettiness_VBF;
-    hist_ggF = hist_boosted_bb_n2_nsubjettiness_ggF;
-  }
-  if(name_plot=="tautau_n3_nsubjettiness"){
-    hist_VBF = hist_boosted_tautau_n3_nsubjettiness_VBF;
-    hist_ggF = hist_boosted_tautau_n3_nsubjettiness_ggF;
-  }
-  if(name_plot=="bb_n3_nsubjettiness"){
-    hist_VBF = hist_boosted_bb_n3_nsubjettiness_VBF;
-    hist_ggF = hist_boosted_bb_n3_nsubjettiness_ggF;
-  }
-  if(name_plot=="njets"){
-    hist_VBF = hist_boosted_njets_VBF;
-    hist_ggF = hist_boosted_njets_ggF;
-  }
-  if(name_plot=="bb_jets_n"){
-    hist_VBF = hist_boosted_bb_candidates_VBF;
-    hist_ggF = hist_boosted_bb_candidates_ggF;
-  }
-  if(name_plot=="tautau_jets_n"){
-    hist_VBF = hist_boosted_tautau_candidates_VBF;
-    hist_ggF = hist_boosted_tautau_candidates_ggF;
-  }
-  if(name_plot=="neither_bb_nor_tautau_jets_m"){
-    hist_VBF = hist_non_boosted_jets_m_VBF;
-    hist_ggF = hist_non_boosted_jets_m_ggF;
-  }
-  if(name_plot=="neither_bb_nor_tautau_jets_pT"){
-    hist_VBF = hist_non_boosted_jets_pt_NOSYS_VBF;
-    hist_ggF = hist_non_boosted_jets_pt_NOSYS_ggF;
-  }
-  if(name_plot=="neither_bb_nor_tautau_jets_ECF1"){
-    hist_VBF = hist_non_boosted_jets_ECF1_VBF;
-    hist_ggF = hist_non_boosted_jets_ECF1_ggF;
-  }
-  if(name_plot=="neither_bb_nor_tautau_jets_ECF2"){
-    hist_VBF = hist_non_boosted_jets_ECF2_VBF;
-    hist_ggF = hist_non_boosted_jets_ECF2_ggF;
-  }
-  if(name_plot=="neither_bb_nor_tautau_jets_ECF3"){
-    hist_VBF = hist_non_boosted_jets_ECF3_VBF;
-    hist_ggF = hist_non_boosted_jets_ECF3_ggF;
-  }
-  if(name_plot=="jet12_m"){
-    hist_VBF = hist_boosted_jet12_m_VBF;
-    hist_ggF = hist_boosted_jet12_m_ggF;
-  }
-  if(name_plot=="jet12_pt"){
-    hist_VBF = hist_boosted_jet12_pt_VBF;
-    hist_ggF = hist_boosted_jet12_pt_ggF;
-  }
-  if(name_plot=="jet12_deta"){
-    hist_VBF = hist_boosted_jet12_deta_VBF;
-    hist_ggF = hist_boosted_jet12_deta_ggF;
-  }
-  if(name_plot=="jet12_dphi"){
-    hist_VBF = hist_boosted_jet12_dphi_VBF;
-    hist_ggF = hist_boosted_jet12_dphi_ggF;
-  }
-  if(name_plot=="jet12_dR"){
-    hist_VBF = hist_boosted_jet12_dR_VBF;
-    hist_ggF = hist_boosted_jet12_dR_ggF;
-  }
-  if(name_plot=="jet12_Zeppenfeld_Hbb"){
-    hist_VBF = hist_boosted_jet12_Zeppenfeld_Hbb_VBF;
-    hist_ggF = hist_boosted_jet12_Zeppenfeld_Hbb_ggF;
-  }
-  if(name_plot=="jet12_Zeppenfeld_Htautau"){
-    hist_VBF = hist_boosted_jet12_Zeppenfeld_Htautau_VBF;
-    hist_ggF = hist_boosted_jet12_Zeppenfeld_Htautau_ggF;
-  }
-  if(name_plot=="Zeppenfeld_jet12"){
-    hist_VBF = hist_boosted_jet12_Zeppenfeld_jet12_VBF;
-    hist_ggF = hist_boosted_jet12_Zeppenfeld_jet12_ggF;
-  }
-  
-  // Step 1: Normalize the histograms manually (or use DrawNormalized to visualize them directly).
-  hist_VBF->Scale(1.0 / hist_VBF->Integral());
-  hist_ggF->Scale(1.0 / hist_ggF->Integral());
-  
-  // Step 2: Get the maximum value of each histogram after normalization.
-  double max_VBF = hist_VBF->GetMaximum();
-  double max_ggF = hist_ggF->GetMaximum();
-  
-  // Step 3: Set the y-axis maximum to the maximum of the two histograms.
-  double y_max = std::max(max_VBF, max_ggF);
-  
-  // Optionally, you can set the y-axis maximum slightly higher than the actual maximum value for better visualization.
-  y_max = y_max*1.5;  // Increase by 10% for padding
-  
-  // Step 4: Draw the histograms and set the maximum.
-  hist_VBF->SetMaximum(y_max);
-  hist_ggF->SetMaximum(y_max);
-  
-  hist_VBF->SetStats(0);
-  hist_VBF->SetFillStyle(3001);
-  hist_VBF->SetFillColorAlpha(kBlue, 0.45);
-  hist_VBF->SetLineColor(4);
-  
-  hist_ggF->SetStats(0);
-  hist_ggF->SetFillStyle(3003);
-  hist_ggF->SetFillColorAlpha(kRed, 0.45);
-  hist_ggF->SetLineColor(2);
-  
-  ///// Plotting
-  TCanvas *can = new TCanvas("can","", 800, 600);
-
-  hist_VBF->Draw("H");
-  hist_ggF->Draw("sameH");
-  
-  leg->AddEntry(hist_VBF, "VBF SM process", "l");
-  leg->AddEntry(hist_ggF,"ggF SM process","l");
-  leg->SetBorderSize();
-  leg->Draw();
-
-  double dely = 0.05;
-  myText(0.2, 0.9, kBlack, name_plot);
-    
-  can->Draw();
-  can->SaveAs(name_image);
-}
-
-*/

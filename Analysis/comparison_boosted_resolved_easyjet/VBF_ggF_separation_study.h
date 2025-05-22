@@ -21,6 +21,9 @@ bool is_jet12_matched;
 int count_bb_candidates;
 int count_tautau_candidates;
 
+int overlap_jj_selection_methods = 0;
+int number_of_desordered_small_jets_pT_candidates = 0;
+
 // *************************************
 // Declaration of leaf variables
 // *************************************

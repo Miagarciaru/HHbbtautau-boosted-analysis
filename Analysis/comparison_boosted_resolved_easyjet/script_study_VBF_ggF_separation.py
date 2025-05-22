@@ -7,8 +7,9 @@ import time
 base_path="/eos/user/g/garciarm/HHbbtautau-output-easyjet-framework/grid-outputs-easyjet/boosted_samples_May_2025/";
 
 sample_paths = [
-    base_path+"mc20_13TeV_502982_vbf_hadhad_l1cvv1cv1_PHYS_merged_boosted_bypass_config.root", # vbf HH SM had-had channel
-    base_path+"mc20_13TeV_600459_ggf_hadhad_cHHH01d0_PHYS_merged_boosted_bypass_config.root" # ggf HH SM had-had channel
+    #base_path+"user.gmagni.44636303._000001.output-tree_Boosted_vbf_SM.root",
+    base_path+"user.gmagni.44636306._000001.output-tree_Boosted_vbf_cv1p5.root",
+    base_path+"user.gmagni.44636309._000001.output-tree_Boosted_ggF_SM.root" # ggf HH SM had-had channel
     # Add as many samples as you need
 ]
 

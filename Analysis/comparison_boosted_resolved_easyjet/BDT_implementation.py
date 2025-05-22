@@ -23,7 +23,7 @@ X = df[["boosted_all_jets_system_m", "boosted_bb_tautau_system_deta", "two_jets_
 
 y = df["process_type_like"]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 bdt = GradientBoostingClassifier(n_estimators=100, max_depth=3)
 bdt.fit(X_train, y_train)

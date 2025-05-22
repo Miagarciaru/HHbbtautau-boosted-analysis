@@ -59,10 +59,10 @@ void VBF_ggF_separation_study(TString sample, TString output_folder){
     
     if(is_boosted_bbtautau == true && is_jet12_matched == true){
       fill_histograms();
+      hist_boosted_njets->Fill(recojet_antikt4PFlow_pt___NOSYS->size());
       count_matched_events++;
     }
    
-    hist_boosted_njets->Fill(recojet_antikt4PFlow_pt___NOSYS->size());
     hist_boosted_bb_candidates->Fill(count_bb_candidates);
     hist_boosted_tautau_candidates->Fill(count_tautau_candidates);
 
@@ -85,7 +85,9 @@ void VBF_ggF_separation_study(TString sample, TString output_folder){
   
   cout << "Number of VBF boosted events like (number of entries in the sample): " << n_entries << endl;
   cout << "Number of VBF boosted events like (by the selected cuts): " << count_matched_events << endl;
-
+  cout << "Number of events overlapped between the two jj selection methods: " << overlap_jj_selection_methods << " (" << 100.0*overlap_jj_selection_methods/count_matched_events << " %)" << endl;
+  cout << "Number of jets unordered: " << number_of_desordered_small_jets_pT_candidates << endl;
+  
   // ************************************* 
   // Ploting distributions for boosted and resolved configs
   // *************************************
