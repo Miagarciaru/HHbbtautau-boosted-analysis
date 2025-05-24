@@ -53,11 +53,12 @@ void VBF_ggF_separation_study(TString sample, TString output_folder){
     boosted_candidates();
     pairs_small_jets();
     compute_variables_for_topological_processes();
-
+    cutflow_small_R_jets();
+    
     smallR_jets_n = recojet_antikt4PFlow_pt___NOSYS->size();
     largeR_jets_n = recojet_antikt10UFO_pt___NOSYS->size();
     
-    if(is_boosted_bbtautau == true && is_jet12_matched == true){
+    if(is_boosted_bbtautau == true && is_jet12_matched_mjj_sel == true){
       fill_histograms();
       hist_boosted_njets->Fill(recojet_antikt4PFlow_pt___NOSYS->size());
       count_matched_events++;
@@ -66,7 +67,7 @@ void VBF_ggF_separation_study(TString sample, TString output_folder){
     hist_boosted_bb_candidates->Fill(count_bb_candidates);
     hist_boosted_tautau_candidates->Fill(count_tautau_candidates);
 
-    if(is_boosted_bbtautau == true && is_jet12_matched == true) outTree_root->Fill();
+    if(is_boosted_bbtautau == true && is_jet12_matched_mjj_sel == true) outTree_root->Fill();
   }
   
   fix_underflow_overflow(hist_boosted_jet12_m);
@@ -75,6 +76,23 @@ void VBF_ggF_separation_study(TString sample, TString output_folder){
   fix_underflow_overflow(hist_boosted_jet12_dphi);
   fix_underflow_overflow(hist_boosted_jet12_dR);
 
+  hist_boosted_cutflow_small_jets->SetBinContent(1, 100.0*count_matched_events/count_matched_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(2, 100.0*overlap_jj_selection_methods/count_matched_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(3, 100.0*eta_smalljets_cutflow/count_matched_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(4, 100.0*minpt_smalljets_cutflow/count_matched_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(5, 100.0*min_mjj_smalljets_cutflow/count_matched_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(6, 100.0*min_dR_smalljets_cutflow/count_matched_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(7, 100.0*all_cuts_applied_cutflow/count_matched_events);
+
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(1, "Total Events");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(2, "pT same sel");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(3, "eta op. sign");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(4, "min pT > 30 GeV");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(5, "min mjj > 500 GeV");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(6, "dR > 3");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(7, "all cuts ap.");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(8, "BDT cut > 0.8");
+  
   //****************************************************
   //Save Histograms in the output root file
   //****************************************************

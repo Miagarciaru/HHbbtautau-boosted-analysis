@@ -45,8 +45,8 @@ void fill_histograms(){
 
   float eta_Hbb = recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_bb);
   float eta_Htautau = recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_tautau);
-  float eta_jet1 = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology);
-  float eta_jet2 = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology);
+  float eta_jet1 = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_mjj_sel);
+  float eta_jet2 = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_mjj_sel);
   
   float Zeppenfeld_Hbb_variable = std::abs( eta_Hbb-(eta_jet1+eta_jet2) )/2;
   float Zeppenfeld_Htautau_variable = std::abs( eta_Htautau-(eta_jet1+eta_jet2) )/2;
@@ -228,6 +228,8 @@ void write_histograms(){
   hist_boosted_jet12_Zeppenfeld_Htautau->Write();
   hist_boosted_jet12_Zeppenfeld_jet12->Write();
 
+  hist_boosted_cutflow_small_jets->Write();
+  
   //***********************************************************
   // Histograms for small R jets
   //***********************************************************
@@ -352,9 +354,9 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("is_boosted_bb", &is_boosted_bb);
   outTree->Branch("is_boosted_tautau", &is_boosted_tautau);
   outTree->Branch("is_boosted_bbtautau", &is_boosted_bbtautau);
-  outTree->Branch("idx_jet1_VBF_topology", &idx_jet1_VBF_topology);
-  outTree->Branch("idx_jet2_VBF_topology", &idx_jet2_VBF_topology);
-  outTree->Branch("is_jet12_matched", &is_jet12_matched);
+  outTree->Branch("idx_jet1_VBF_topology", &idx_jet1_VBF_topology_mjj_sel);
+  outTree->Branch("idx_jet2_VBF_topology", &idx_jet2_VBF_topology_mjj_sel);
+  outTree->Branch("is_jet12_matched", &is_jet12_matched_mjj_sel);
   
   outTree->Branch("count_bb_candidates", &count_bb_candidates);
   outTree->Branch("count_tautau_candidates", &count_tautau_candidates);

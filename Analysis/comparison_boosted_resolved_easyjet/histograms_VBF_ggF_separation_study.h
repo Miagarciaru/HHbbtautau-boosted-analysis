@@ -112,3 +112,5 @@ TH1F *hist_boosted_all_jets_dR = new TH1F("hist_boosted_all_jets_dR", "#Delta #e
 TH1F *hist_boosted_jet12_Zeppenfeld_Hbb = new TH1F("hist_boosted_jet12_Zeppenfeld_Hbb", "Zeppenfeld Z_{Hbb}^{*} of the two jets j1 and j2; Z_{H #rightarrow bb}^{*};Events", 30, 0, 5);
 TH1F *hist_boosted_jet12_Zeppenfeld_Htautau = new TH1F("hist_boosted_jet12_Zeppenfeld_Htautau", "Zeppenfeld Z_{Htautau}^{*} of the two jets j1 and j2; Z_{H #rightarrow #tau#tau}^{*};Events", 30, 0, 5);
 TH1F *hist_boosted_jet12_Zeppenfeld_jet12 = new TH1F("hist_boosted_jet12_Zeppenfeld_jet12", "Zeppenfeld Z_{jet12}^{*} of the two jets j1 and j2; Z_{j_{12}}^{*};Events", 30, 0, 5);
+
+TH1F *hist_boosted_cutflow_small_jets = new TH1F("hist_boosted_cutflow_small_jets", "Cutflow of the two jets j1 and j2; cut;Events", 8, 0, 8);

@@ -5,6 +5,8 @@
 TH1F* hist_boosted_bdt_score_separation_VBF = new TH1F("hist_boosted_bdt_score_separation_VBF", "BDT score to separate ggF and VBF processes; BDT score;Events", 30, 0, 1);
 TH1F* hist_boosted_bdt_score_separation_ggF = new TH1F("hist_boosted_bdt_score_separation_ggF", "BDT score to separate ggF and VBF processes; BDT score;Events", 30, 0, 1);
 
+float perc_accepted_ggF_BDT_cut = 0;
+float perc_accepted_VBF_BDT_cut = 0;
 
 // *************************************
 // Declaration of some functions
@@ -103,8 +105,17 @@ void plot_distributions_comparisons(const std::unordered_map<std::string, std::v
     hist_ggF.SetLineColor(2);
 
     // Step 1: Normalize the histograms manually (or use DrawNormalized to visualize them directly).
-    hist_VBF.Scale(1.0 / hist_VBF.Integral());
-    hist_ggF.Scale(1.0 / hist_ggF.Integral());
+    if(nameVar.find("cutflow_small_jets")==std::string::npos){
+      hist_VBF.Scale(1.0 / hist_VBF.Integral());
+      hist_ggF.Scale(1.0 / hist_ggF.Integral());
+    }
+    else{
+      hist_VBF.SetBinContent(8, perc_accepted_VBF_BDT_cut);
+      hist_ggF.SetBinContent(8, perc_accepted_ggF_BDT_cut);
+      
+      hist_VBF.SetMinimum(0);
+      hist_ggF.SetMinimum(0);
+    }
     
     // Step 2: Get the maximum value of each histogram after normalization.
     double max_VBF = hist_VBF.GetMaximum();
@@ -114,12 +125,12 @@ void plot_distributions_comparisons(const std::unordered_map<std::string, std::v
     double y_max = std::max(max_VBF, max_ggF);
     
     // Optionally, you can set the y-axis maximum slightly higher than the actual maximum value for better visualization.
-    y_max = y_max*1.5;  // Increase by 10% for padding
+    y_max = y_max*1.4;  // Increase by 10% for padding
     
     // Step 4: Draw the histograms and set the maximum.
     hist_VBF.SetMaximum(y_max);
     hist_ggF.SetMaximum(y_max);
-  
+    
     // Step 5: Draw the histograms on the same canvas for comparison.
     hist_VBF.Draw("H");   // Draw the first histogram
     hist_ggF.Draw("sameH");  // Draw the second histogram on the same canvas

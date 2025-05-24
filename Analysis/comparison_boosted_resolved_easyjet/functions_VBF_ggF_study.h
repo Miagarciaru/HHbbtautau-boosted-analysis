@@ -9,6 +9,7 @@
 // Declaration of some functions
 // *************************************
 
+void cutflow_small_R_jets();
 void fix_underflow_overflow(TH1F* histo);
 void compute_variables_for_topological_processes();
 void pairs_small_jets();
@@ -23,6 +24,49 @@ void fix_underflow_overflow(TH1F* histo){
   // Adding the overflow to the last bin
   histo->AddBinContent(histo->GetNbinsX(), histo->GetBinContent(histo->GetNbinsX() + 1));
 
+}
+
+// This function tries to develop different cuts on the selected pair of small jets
+void cutflow_small_R_jets(){
+
+  if( is_jet12_matched_mjj_sel == true ){
+
+    // Verify if the two small jets chosen by mjj method are the ones for the highest pT pair
+    if( idx_jet1_VBF_topology_mjj_sel==idx_jet1_VBF_topology_ptjj_sel && idx_jet2_VBF_topology_mjj_sel==idx_jet2_VBF_topology_ptjj_sel ){
+      overlap_jj_selection_methods++;
+    }
+
+    // Verify if the candidates have an opposite eta sign
+    if( recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_mjj_sel)*recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_mjj_sel) < 0 ){
+      eta_smalljets_cutflow++;
+    }
+    
+    // Verify that each chosen jets pass the pt>30GeV
+    if( recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel) > 30000){
+      minpt_smalljets_cutflow++;
+    }
+
+    // Verify if the invariant mass of the two jets is larger than 500 GeV
+    if( two_jets_j12_m > 500000 ){
+      min_mjj_smalljets_cutflow++;
+    }
+
+    // Verify if the dR of the two jets is larger than 3
+    if( two_jets_j12_dR > 3.0 ){
+      min_dR_smalljets_cutflow++;
+    }
+
+    bool cond_pt_sel = idx_jet1_VBF_topology_mjj_sel==idx_jet1_VBF_topology_ptjj_sel && idx_jet2_VBF_topology_mjj_sel==idx_jet2_VBF_topology_ptjj_sel;
+    bool cond_eta_sig = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_mjj_sel)*recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_mjj_sel) < 0;
+    bool cond_minpt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel) > 30000;
+    bool cond_min_mjj = two_jets_j12_m > 500000;
+    bool cond_min_dR = two_jets_j12_dR > 3.0;
+    
+    if( cond_eta_sig==true && cond_minpt==true && cond_min_mjj==true && cond_min_dR==true){
+      all_cuts_applied_cutflow++;
+    }
+  }
+  
 }
 
 void default_values_for_topological_processes(){
@@ -97,7 +141,7 @@ void compute_variables_for_topological_processes(){
 
   default_values_for_topological_processes();
     
-  if( is_jet12_matched == true ){
+  if( is_jet12_matched_mjj_sel == true ){
 
     TLorentzVector jet1 = TLorentzVector();
     TLorentzVector jet2 = TLorentzVector();
@@ -111,15 +155,15 @@ void compute_variables_for_topological_processes(){
     TLorentzVector bb_tautau = TLorentzVector();
     TLorentzVector all_jets = TLorentzVector();
     
-    float jet1_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology);
-    float jet1_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology);
-    float jet1_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet1_VBF_topology);
-    float jet1_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet1_VBF_topology);
+    float jet1_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_mjj_sel);
+    float jet1_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_mjj_sel);
+    float jet1_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet1_VBF_topology_mjj_sel);
+    float jet1_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet1_VBF_topology_mjj_sel);
     
-    float jet2_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology);
-    float jet2_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology);
-    float jet2_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet2_VBF_topology);
-    float jet2_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet2_VBF_topology);
+    float jet2_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel);
+    float jet2_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_mjj_sel);
+    float jet2_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet2_VBF_topology_mjj_sel);
+    float jet2_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet2_VBF_topology_mjj_sel);
 
     float Hbb_pt = recojet_antikt10UFO_pt___NOSYS->at(idx_boosted_bb);
     float Hbb_eta = recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_bb);
@@ -213,9 +257,14 @@ void compute_variables_for_topological_processes(){
 // This functions pairs the 2 small jets in the VBF topology
 void pairs_small_jets(){
 
-  idx_jet1_VBF_topology = -99;
-  idx_jet2_VBF_topology = -99;
-  is_jet12_matched = false;
+  idx_jet1_VBF_topology_ptjj_sel = -99;
+  idx_jet2_VBF_topology_ptjj_sel = -99;
+
+  idx_jet1_VBF_topology_mjj_sel = -99;
+  idx_jet2_VBF_topology_mjj_sel = -99;
+  
+  is_jet12_matched_ptjj_sel = false;
+  is_jet12_matched_mjj_sel = false;
   
   float dR_min = 1.0;
   
@@ -259,30 +308,11 @@ void pairs_small_jets(){
       }
     }
     
-    /*
-    // Mathod 1 (leading and subleading jet)
     if( candidates_smallJets.size()>=2 ){
 
-      int idx_jet1 = candidates_smallJets.at(0);
-      int idx_jet2 = candidates_smallJets.at(1);
-
-      
-      if(){
-	idx_jet1_VBF_topology = candidates_smallJets.at(0);
-	idx_jet2_VBF_topology = candidates_smallJets.at(1);
-	is_jet12_matched = true;
-      }
-      
-    }
-    */
-    
-    // Method 2 (highest invariant mass mjj)
-    if( candidates_smallJets.size()>=2 ){
-
-      float current_jet12_m = 0;
-
+      // Method 1 (leading and subleading jet)
       int current_pT_value = 0;
-    
+      
       for(int ii=0; ii<candidates_smallJets.size(); ii++){
 	if(recojet_antikt4PFlow_pt___NOSYS->at(candidates_smallJets.at(ii)) > current_pT_value){
 	  current_pT_value = recojet_antikt4PFlow_pt___NOSYS->at(candidates_smallJets.at(ii));
@@ -300,16 +330,19 @@ void pairs_small_jets(){
 	}
       }
       
-      //idx_jet1_VBF_topology = idx_leading_jet;
-      //idx_jet2_VBF_topology = idx_subleading_jet;
-      //is_jet12_matched = true;
+      idx_jet1_VBF_topology_ptjj_sel = idx_leading_jet;
+      idx_jet2_VBF_topology_ptjj_sel = idx_subleading_jet;
+      is_jet12_matched_ptjj_sel = true;
+
+      // Method 2 (largest mjj)
+      float current_jet12_m = 0;
       
       for(int ii=0; ii<candidates_smallJets.size(); ii++){
 	for(int jj=ii+1; jj<candidates_smallJets.size(); jj++){
 
 	  int idx_jet1 = candidates_smallJets.at(ii);
 	  int idx_jet2 = candidates_smallJets.at(jj);
-	  
+
 	  TLorentzVector jet1 = TLorentzVector();
 	  TLorentzVector jet2 = TLorentzVector();
 
@@ -317,7 +350,7 @@ void pairs_small_jets(){
 	  float jet1_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1);
 	  float jet1_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet1);
 	  float jet1_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet1);
-
+	  
 	  float jet2_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2);
 	  float jet2_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2);
 	  float jet2_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet2);
@@ -335,34 +368,29 @@ void pairs_small_jets(){
 	    
 	    // Takes the jet1 as the highest pT jet and the jet2 as the subleading jet
 	    if(jet1_pt < jet2_pt){
-	      idx_jet1_VBF_topology = idx_jet2;
-	      idx_jet2_VBF_topology = idx_jet1;
+	      idx_jet1_VBF_topology_mjj_sel = idx_jet2;
+	      idx_jet2_VBF_topology_mjj_sel = idx_jet1;
 	    }
 	    else{
-	      idx_jet1_VBF_topology = idx_jet1;
-	      idx_jet2_VBF_topology = idx_jet2;
+	      idx_jet1_VBF_topology_mjj_sel = idx_jet1;
+	      idx_jet2_VBF_topology_mjj_sel = idx_jet2;
 	    }
 	    
-	    is_jet12_matched = true;
+	    is_jet12_matched_mjj_sel = true;
 	  }
         }
       }
       
-      if( (recojet_antikt4PFlow_pt___NOSYS->at(idx_leading_jet) < recojet_antikt4PFlow_pt___NOSYS->at(idx_subleading_jet)) || (recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology) < recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology)) ){
+      if( (recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel) < recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel)) || (recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_mjj_sel) < recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel)) ){
 	//cout << "The jets are not organized by pT" << endl;
 	number_of_desordered_small_jets_pT_candidates++;
-	cout << "idx leading jet " << recojet_antikt4PFlow_pt___NOSYS->at(idx_leading_jet) << endl;
-	cout << "idx subleading jet " << recojet_antikt4PFlow_pt___NOSYS->at(idx_subleading_jet) << endl;
+	cout << "idx leading jet " << recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel) << endl;
+	cout << "idx subleading jet " << recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel) << endl;
 
-	cout << "idx jet1 mjj " << recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology) << endl;
-	cout << "idx jet2 mjj " << recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology) << endl;
+	cout << "idx jet1 mjj " << recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_mjj_sel) << endl;
+	cout << "idx jet2 mjj " << recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel) << endl;
       }
       
-      //if( (idx_jet1_VBF_topology==idx_leading_jet && idx_jet2_VBF_topology==idx_subleading_jet) || (idx_jet1_VBF_topology==idx_subleading_jet && idx_jet2_VBF_topology==idx_leading_jet) ){
-
-      if( idx_jet1_VBF_topology==idx_leading_jet && idx_jet2_VBF_topology==idx_subleading_jet ){
-        overlap_jj_selection_methods++;
-      }
     }
   }
 }

@@ -14,14 +14,23 @@ int idx_boosted_tautau;
 bool is_boosted_bb;
 bool is_boosted_tautau;
 bool is_boosted_bbtautau;
-int idx_jet1_VBF_topology;
-int idx_jet2_VBF_topology;
-bool is_jet12_matched;
+int idx_jet1_VBF_topology_mjj_sel;
+int idx_jet2_VBF_topology_mjj_sel;
+int idx_jet1_VBF_topology_ptjj_sel;
+int idx_jet2_VBF_topology_ptjj_sel;
+bool is_jet12_matched_mjj_sel;
+bool is_jet12_matched_ptjj_sel;
 
 int count_bb_candidates;
 int count_tautau_candidates;
 
 int overlap_jj_selection_methods = 0;
+int eta_smalljets_cutflow = 0;
+int minpt_smalljets_cutflow = 0;
+int min_mjj_smalljets_cutflow = 0;
+int min_dR_smalljets_cutflow = 0;
+int all_cuts_applied_cutflow = 0;
+
 int number_of_desordered_small_jets_pT_candidates = 0;
 
 // *************************************
