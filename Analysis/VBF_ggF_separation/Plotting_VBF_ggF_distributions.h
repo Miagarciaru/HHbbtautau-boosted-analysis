@@ -24,9 +24,9 @@ void plot_distributions_comparisons(const std::unordered_map<std::string, std::v
 void reading_distributions_histograms(const std::vector<std::string>& list_of_histograms,
 				      std::unordered_map<std::string, std::vector<TH1F>>& distributions_histograms){
 
-  string sample_VBF_path = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/comparison_boosted_resolved_easyjet/output_analysis/VBF_SM_hh_502982.root";
+  string sample_VBF_path = "output_analysis/VBF_SM_hh_502982.root";
   
-  string sample_ggF_path = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/comparison_boosted_resolved_easyjet/output_analysis/ggF_SM_hh_600459.root";
+  string sample_ggF_path = "output_analysis/ggF_SM_hh_600459.root";
   
   TFile* file_sample_VBF = TFile::Open(sample_VBF_path.c_str());
   TFile* file_sample_ggF = TFile::Open(sample_ggF_path.c_str());

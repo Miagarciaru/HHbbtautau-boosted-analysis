@@ -2,8 +2,10 @@
 
 void Plotting_VBF_ggF_distributions(){
   
-  string sample_BDT_output_path = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/comparison_boosted_resolved_easyjet/output_analysis/BDT_output.root";
+  string sample_BDT_output_path = "output_analysis/BDT_output.root";
 
+  cout << sample_BDT_output_path << endl;
+  
   TFile* file_sample_BDT_output = TFile::Open(sample_BDT_output_path.c_str());
   TTree* BDT_output_root = (TTree*) file_sample_BDT_output->Get("AnalysisMiniTree");
 
