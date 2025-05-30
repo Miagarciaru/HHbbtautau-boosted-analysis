@@ -52,7 +52,7 @@ void cutflow_small_R_jets(){
     }
 
     // Verify if the dR of the two jets is larger than 3
-    if( two_jets_j12_dR > 3.0 ){
+    if( two_jets_j12_dR > 5.0 ){
       min_dR_smalljets_cutflow++;
     }
 
@@ -60,7 +60,7 @@ void cutflow_small_R_jets(){
     bool cond_eta_sig = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_mjj_sel)*recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_mjj_sel) < 0;
     bool cond_minpt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel) > 30000;
     bool cond_min_mjj = two_jets_j12_m > 500000;
-    bool cond_min_dR = two_jets_j12_dR > 3.0;
+    bool cond_min_dR = two_jets_j12_dR > 5.0;
     
     if( cond_eta_sig==true && cond_minpt==true && cond_min_mjj==true && cond_min_dR==true){
       all_cuts_applied_cutflow++;

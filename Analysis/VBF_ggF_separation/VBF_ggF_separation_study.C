@@ -89,7 +89,7 @@ void VBF_ggF_separation_study(TString sample, TString output_folder){
   hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(3, "eta op. sign");
   hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(4, "min pT > 30 GeV");
   hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(5, "min mjj > 500 GeV");
-  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(6, "dR > 3");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(6, "dR > 5");
   hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(7, "all cuts ap.");
   hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(8, "BDT cut > 0.8");
   
