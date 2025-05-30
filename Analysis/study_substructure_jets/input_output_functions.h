@@ -84,6 +84,11 @@ void set_branch_address_inTree(TTree *inTree){
 
   inTree->SetBranchAddress("tau_nProng", &tau_nProng, &b_tau_nProng);
 
+  inTree->SetBranchAddress("recojet_antikt4PFlow_NOSYS_pt", &recojet_antikt4PFlow_NOSYS_pt, &b_recojet_antikt4PFlow_NOSYS_pt);
+  inTree->SetBranchAddress("recojet_antikt4PFlow_eta", &recojet_antikt4PFlow_eta, &b_recojet_antikt4PFlow_eta);
+  inTree->SetBranchAddress("recojet_antikt4PFlow_phi", &recojet_antikt4PFlow_phi, &b_recojet_antikt4PFlow_phi);
+  inTree->SetBranchAddress("recojet_antikt4PFlow_m", &recojet_antikt4PFlow_m, &b_recojet_antikt4PFlow_m);
+
   inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_phbb", &recojet_antikt10UFO_GN2Xv01_phbb, &b_recojet_antikt10UFO_GN2Xv01_phbb);
   inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_pqcd", &recojet_antikt10UFO_GN2Xv01_pqcd, &b_recojet_antikt10UFO_GN2Xv01_pqcd);
   inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_phcc", &recojet_antikt10UFO_GN2Xv01_phcc, &b_recojet_antikt10UFO_GN2Xv01_phcc);
@@ -187,6 +192,11 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("truth_tau2_m", &truth_tau2_m);
 
   outTree->Branch("tau_nProng", &tau_nProng);
+
+  outTree->Branch("recojet_antikt4PFlow_NOSYS_pt", &recojet_antikt4PFlow_NOSYS_pt);
+  outTree->Branch("recojet_antikt4PFlow_eta", &recojet_antikt4PFlow_eta);
+  outTree->Branch("recojet_antikt4PFlow_phi", &recojet_antikt4PFlow_phi);
+  outTree->Branch("recojet_antikt4PFlow_m", &recojet_antikt4PFlow_m);
 
   outTree->Branch("recojet_antikt10UFO_GN2Xv01_phbb", &recojet_antikt10UFO_GN2Xv01_phbb);
   outTree->Branch("recojet_antikt10UFO_GN2Xv01_pqcd", &recojet_antikt10UFO_GN2Xv01_pqcd);
@@ -620,6 +630,77 @@ void write_histograms(){
   hist_non_matched_info_preselected_tautau_ak10_Split12->Write();
   hist_non_matched_info_preselected_tautau_ak10_Split23->Write();
 
+  //***********************************************************
+  // Histograms for large R jets matched to be jet 1 and jet 2 in the VBF topology
+  //***********************************************************
+  
+  hist_boosted_jet12_m->Write();
+  hist_boosted_jet12_pt->Write();
+  hist_boosted_jet12_eta->Write();
+  hist_boosted_jet12_phi->Write();
+  hist_boosted_jet12_deta->Write();
+  hist_boosted_jet12_dphi->Write();
+  hist_boosted_jet12_dR->Write();
+
+  hist_boosted_bbtautau_m->Write();
+  hist_boosted_bbtautau_pt->Write();
+  hist_boosted_bbtautau_eta->Write();
+  hist_boosted_bbtautau_phi->Write();
+  hist_boosted_bbtautau_deta->Write();
+  hist_boosted_bbtautau_dphi->Write();
+  hist_boosted_bbtautau_dR->Write();
+
+  hist_boosted_bb_jet1_m->Write();
+  hist_boosted_bb_jet1_pt->Write();
+  hist_boosted_bb_jet1_eta->Write();
+  hist_boosted_bb_jet1_phi->Write();
+  hist_boosted_bb_jet1_deta->Write();
+  hist_boosted_bb_jet1_dphi->Write();
+  hist_boosted_bb_jet1_dR->Write();
+
+  hist_boosted_bb_jet2_m->Write();
+  hist_boosted_bb_jet2_pt->Write();
+  hist_boosted_bb_jet2_eta->Write();
+  hist_boosted_bb_jet2_phi->Write();
+  hist_boosted_bb_jet2_deta->Write();
+  hist_boosted_bb_jet2_dphi->Write();
+  hist_boosted_bb_jet2_dR->Write();
+
+  hist_boosted_tautau_jet1_m->Write();
+  hist_boosted_tautau_jet1_pt->Write();
+  hist_boosted_tautau_jet1_eta->Write();
+  hist_boosted_tautau_jet1_phi->Write();
+  hist_boosted_tautau_jet1_deta->Write();
+  hist_boosted_tautau_jet1_dphi->Write();
+  hist_boosted_tautau_jet1_dR->Write();
+
+  hist_boosted_tautau_jet2_m->Write();
+  hist_boosted_tautau_jet2_pt->Write();
+  hist_boosted_tautau_jet2_eta->Write();
+  hist_boosted_tautau_jet2_phi->Write();
+  hist_boosted_tautau_jet2_deta->Write();
+  hist_boosted_tautau_jet2_dphi->Write();
+  hist_boosted_tautau_jet2_dR->Write();
+
+  hist_boosted_all_jets_m->Write();
+  hist_boosted_all_jets_pt->Write();
+  hist_boosted_all_jets_eta->Write();
+  hist_boosted_all_jets_phi->Write();
+  hist_boosted_all_jets_deta->Write();
+  hist_boosted_all_jets_dphi->Write();
+  hist_boosted_all_jets_dR->Write();
+
+  hist_boosted_jet12_Zeppenfeld_Hbb->Write();
+  hist_boosted_jet12_Zeppenfeld_Htautau->Write();
+  hist_boosted_jet12_Zeppenfeld_jet12->Write();
+
+  hist_boosted_cutflow_small_jets->Write();
+  
+  //***********************************************************
+  // Histograms for small R jets
+  //***********************************************************
+
+  hist_boosted_njets->Write();
   
   //comparison_histograms
   hist_truth_HH_pt->Write();

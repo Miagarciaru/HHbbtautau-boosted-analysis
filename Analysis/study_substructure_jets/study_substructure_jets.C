@@ -62,6 +62,10 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     define_classes();
     define_reconstructed_objects();
     define_preselected_events();
+    pairs_small_jets();
+    compute_variables_for_topological_processes();
+    cutflow_small_R_jets();
+
     apply_preselection(min_pT_recojet_cut_MeV);
     correct_match_between_truth_reco_and_preselected_objects();
     counting_statistical_parameters();
@@ -295,6 +299,29 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   
   fix_underflow_overflow(hist_matched_recojet_bb_ak10_Split23);
   fix_underflow_overflow(hist_non_matched_recojet_bb_ak10_Split23);
+
+  fix_underflow_overflow(hist_boosted_jet12_m);
+  fix_underflow_overflow(hist_boosted_jet12_pt);
+  fix_underflow_overflow(hist_boosted_jet12_deta);
+  fix_underflow_overflow(hist_boosted_jet12_dphi);
+  fix_underflow_overflow(hist_boosted_jet12_dR);
+
+  hist_boosted_cutflow_small_jets->SetBinContent(1, 100.0*matched_preselected_bbtautau_events/matched_preselected_bbtautau_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(2, 100.0*overlap_jj_selection_methods/matched_preselected_bbtautau_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(3, 100.0*eta_smalljets_cutflow/matched_preselected_bbtautau_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(4, 100.0*minpt_smalljets_cutflow/matched_preselected_bbtautau_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(5, 100.0*min_mjj_smalljets_cutflow/matched_preselected_bbtautau_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(6, 100.0*min_dR_smalljets_cutflow/matched_preselected_bbtautau_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(7, 100.0*all_cuts_applied_cutflow/matched_preselected_bbtautau_events);
+
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(1, "Total Events");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(2, "pT same sel");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(3, "eta op. sign");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(4, "min pT > 30 GeV");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(5, "min mjj > 500 GeV");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(6, "dR > 5");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(7, "all cuts ap.");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(8, "BDT cut > 0.8");
 
   //****************************************************
   //Save Histograms in the output root file

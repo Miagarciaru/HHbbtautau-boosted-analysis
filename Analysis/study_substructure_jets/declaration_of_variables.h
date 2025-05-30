@@ -41,6 +41,96 @@ int count_all_objects_resolved_config = 0;
 int count_truth_HH_pt_pos_values = 0;
 int count_truth_HH_m_pos_values = 0;
 
+// *******************************************************************
+// New variables for VBF topology
+// *******************************************************************
+
+// small jets matching variables
+int idx_jet1_VBF_topology_mjj_sel;
+int idx_jet2_VBF_topology_mjj_sel;
+int idx_jet1_VBF_topology_ptjj_sel;
+int idx_jet2_VBF_topology_ptjj_sel;
+bool is_jet12_matched_mjj_sel;
+bool is_jet12_matched_ptjj_sel;
+
+int count_bb_candidates;
+int count_tautau_candidates;
+
+int overlap_jj_selection_methods = 0;
+int eta_smalljets_cutflow = 0;
+int minpt_smalljets_cutflow = 0;
+int min_mjj_smalljets_cutflow = 0;
+int min_dR_smalljets_cutflow = 0;
+int all_cuts_applied_cutflow = 0;
+
+int number_of_desordered_small_jets_pT_candidates = 0;
+
+int smallR_jets_n;
+int largeR_jets_n;
+
+// Two small jets j1 and j2 variables
+float two_jets_j12_m;
+float two_jets_j12_pt;
+float two_jets_j12_eta;
+float two_jets_j12_phi;
+float two_jets_j12_deta;
+float two_jets_j12_dphi;
+float two_jets_j12_dR;
+
+// Boosted bb and boosted tautau variables
+float boosted_bb_tautau_system_m;
+float boosted_bb_tautau_system_pt;
+float boosted_bb_tautau_system_eta;
+float boosted_bb_tautau_system_phi;
+float boosted_bb_tautau_system_deta;
+float boosted_bb_tautau_system_dphi;
+float boosted_bb_tautau_system_dR;
+
+// Boosted bb and small jets j1 variables
+float boosted_bb_j1_system_m;
+float boosted_bb_j1_system_pt;
+float boosted_bb_j1_system_eta;
+float boosted_bb_j1_system_phi;
+float boosted_bb_j1_system_deta;
+float boosted_bb_j1_system_dphi;
+float boosted_bb_j1_system_dR;
+
+// Boosted tautau and small jets j1 variables
+float boosted_tautau_j1_system_m;
+float boosted_tautau_j1_system_pt;
+float boosted_tautau_j1_system_eta;
+float boosted_tautau_j1_system_phi;
+float boosted_tautau_j1_system_deta;
+float boosted_tautau_j1_system_dphi;
+float boosted_tautau_j1_system_dR;
+
+// Boosted bb and small jets j2 variables
+float boosted_bb_j2_system_m;
+float boosted_bb_j2_system_pt;
+float boosted_bb_j2_system_eta;
+float boosted_bb_j2_system_phi;
+float boosted_bb_j2_system_deta;
+float boosted_bb_j2_system_dphi;
+float boosted_bb_j2_system_dR;
+
+// Boosted tautau and small jets j1 variables
+float boosted_tautau_j2_system_m;
+float boosted_tautau_j2_system_pt;
+float boosted_tautau_j2_system_eta;
+float boosted_tautau_j2_system_phi;
+float boosted_tautau_j2_system_deta;
+float boosted_tautau_j2_system_dphi;
+float boosted_tautau_j2_system_dR;
+
+// All jets system variables
+float boosted_all_jets_system_m;
+float boosted_all_jets_system_pt;
+float boosted_all_jets_system_eta;
+float boosted_all_jets_system_phi;
+float boosted_all_jets_system_deta;
+float boosted_all_jets_system_dphi;
+float boosted_all_jets_system_dR;
+
 // preselected matched counter variables
 
 // for preselected-matched bb
@@ -176,6 +266,12 @@ Float_t truth_tautau_phi;
 Float_t truth_tautau_m;
 
 vector<float> *tau_nProng;
+
+// Declaration of leafs types for reconstructed_ak4 jets (small-jets) branches for boosted tree variables
+vector<float> *recojet_antikt4PFlow_NOSYS_pt;
+vector<float> *recojet_antikt4PFlow_eta;
+vector<float> *recojet_antikt4PFlow_phi;
+vector<float> *recojet_antikt4PFlow_m;
 
 // Declaration of leafs types for reconstructed_ak10UFO jets (fat-jets) branches for boosted tree variables
 vector<float> *recojet_antikt10UFO_NOSYS_pt;
@@ -362,6 +458,12 @@ TBranch *b_truth_tau2_phi;
 TBranch *b_truth_tau2_m;
 
 TBranch *b_tau_nProng;
+
+// Declaration branches for reconstructed_ak4 jets (small-jets) branches for boosted tree variables
+TBranch *b_recojet_antikt4PFlow_NOSYS_pt;
+TBranch *b_recojet_antikt4PFlow_eta;
+TBranch *b_recojet_antikt4PFlow_phi;
+TBranch *b_recojet_antikt4PFlow_m;
 
 // Declaration branches for reconstructed_ak10UFO jets (fat-jets) branches for boosted tree variables
 TBranch *b_recojet_antikt10UFO_NOSYS_pt;
