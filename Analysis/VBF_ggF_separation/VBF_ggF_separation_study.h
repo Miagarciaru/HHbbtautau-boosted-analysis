@@ -42,6 +42,7 @@ int number_of_desordered_small_jets_pT_candidates = 0;
 // Declaration of leaf types for boosted VBF tree variables
 
 // Large R-jets variables
+vector<float> *recojet_antikt10UFO_GN2XTauV00_disc___NOSYS;
 vector<float> *recojet_antikt10UFO_ECF1___NOSYS;
 vector<float> *recojet_antikt10UFO_ECF2___NOSYS;
 vector<float> *recojet_antikt10UFO_ECF3___NOSYS;
@@ -163,6 +164,7 @@ float boosted_all_jets_system_dR;
 TBranch *b_recojet_antikt10UFO_ECF1___NOSYS;
 TBranch *b_recojet_antikt10UFO_ECF2___NOSYS;
 TBranch *b_recojet_antikt10UFO_ECF3___NOSYS;
+TBranch *b_recojet_antikt10UFO_GN2XTauV00_disc___NOSYS;
 TBranch *b_recojet_antikt10UFO_GN2Xv01_phbb___NOSYS;
 TBranch *b_recojet_antikt10UFO_GN2Xv01_phcc___NOSYS;
 TBranch *b_recojet_antikt10UFO_GN2Xv01_pqcd___NOSYS;

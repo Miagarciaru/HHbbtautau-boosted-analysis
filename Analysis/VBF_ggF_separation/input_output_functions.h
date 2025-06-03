@@ -256,6 +256,7 @@ void set_branch_address_inTree(TTree *inTree){
   inTree->SetBranchAddress("recojet_antikt10UFO_ECF1___NOSYS", &recojet_antikt10UFO_ECF1___NOSYS, &b_recojet_antikt10UFO_ECF1___NOSYS);
   inTree->SetBranchAddress("recojet_antikt10UFO_ECF2___NOSYS", &recojet_antikt10UFO_ECF2___NOSYS, &b_recojet_antikt10UFO_ECF2___NOSYS);
   inTree->SetBranchAddress("recojet_antikt10UFO_ECF3___NOSYS", &recojet_antikt10UFO_ECF3___NOSYS, &b_recojet_antikt10UFO_ECF3___NOSYS);
+  inTree->SetBranchAddress("recojet_antikt10UFO_GN2XTauV00_disc___NOSYS", &recojet_antikt10UFO_GN2XTauV00_disc___NOSYS, &b_recojet_antikt10UFO_GN2XTauV00_disc___NOSYS);
   inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_phbb___NOSYS", &recojet_antikt10UFO_GN2Xv01_phbb___NOSYS, &b_recojet_antikt10UFO_GN2Xv01_phbb___NOSYS);
   inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_phcc___NOSYS", &recojet_antikt10UFO_GN2Xv01_phcc___NOSYS, &b_recojet_antikt10UFO_GN2Xv01_phcc___NOSYS);
   inTree->SetBranchAddress("recojet_antikt10UFO_GN2Xv01_pqcd___NOSYS", &recojet_antikt10UFO_GN2Xv01_pqcd___NOSYS, &b_recojet_antikt10UFO_GN2Xv01_pqcd___NOSYS);
@@ -304,6 +305,7 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("recojet_antikt10UFO_ECF1___NOSYS", &recojet_antikt10UFO_ECF1___NOSYS);
   outTree->Branch("recojet_antikt10UFO_ECF2___NOSYS", &recojet_antikt10UFO_ECF2___NOSYS);
   outTree->Branch("recojet_antikt10UFO_ECF3___NOSYS", &recojet_antikt10UFO_ECF3___NOSYS);
+  outTree->Branch("recojet_antikt10UFO_GN2XTauV00_disc___NOSYS", &recojet_antikt10UFO_GN2XTauV00_disc___NOSYS);
   outTree->Branch("recojet_antikt10UFO_GN2Xv01_phbb___NOSYS", &recojet_antikt10UFO_GN2Xv01_phbb___NOSYS);
   outTree->Branch("recojet_antikt10UFO_GN2Xv01_phcc___NOSYS", &recojet_antikt10UFO_GN2Xv01_phcc___NOSYS);
   outTree->Branch("recojet_antikt10UFO_GN2Xv01_pqcd___NOSYS", &recojet_antikt10UFO_GN2Xv01_pqcd___NOSYS);
@@ -426,7 +428,6 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("smallR_jets_n", &smallR_jets_n);
   outTree->Branch("largeR_jets_n", &largeR_jets_n);
 
-  
 }
 
 void process_label(TString name_sample){
