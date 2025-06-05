@@ -10,7 +10,6 @@ void cutflow_small_R_jets();
 void compute_variables_for_topological_processes();
 void pairs_small_jets();
 void default_values_for_topological_processes();
-
 void compute_statistical_parameters();
 void counting_statistical_parameters();
 void correct_match_between_truth_reco_and_preselected_objects();
@@ -271,7 +270,7 @@ void pairs_small_jets(){
   
   float dR_min = 1.0;
   
-  if(matched_preselection == true){
+  if( matched_preselection == true && passed_preselection_pT_cut == true ){
 
     int idx_leading_jet = 0;
     int idx_subleading_jet = 0;
@@ -477,8 +476,7 @@ void compute_statistical_parameters(){
   percentages_matched_and_preselected_events_only_Btautau->SetBinContent(1, 3, 100.0*matched_tautau_non_preselected_info/matched_tautau_events); // Matched events percentages with no preselected info               
   percentages_matched_and_preselected_events_only_Btautau->SetBinContent(2, 1, 100.0*preselected_tautau_non_matched/matched_preselected_tautau_events); // Preselected events percentages not being matched           
   percentages_matched_and_preselected_events_only_Btautau->SetBinContent(2, 2, 100.0*overlap_matched_preselected_tautau_events/matched_preselected_tautau_events); // Preselected events percentages being matched    
-  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(2, 3, 100.0*preselected_tautau_non_matched_truth_reco_info/matched_preselected_tautau_events); // Preselected events percentages with no tru\
-th-reco info                                                                                                                                                                                                          
+  percentages_matched_and_preselected_events_only_Btautau->SetBinContent(2, 3, 100.0*preselected_tautau_non_matched_truth_reco_info/matched_preselected_tautau_events); // Preselected events percentages with no truth-reco info                                                                                                                                                                                                          
 
   percentages_matched_and_preselected_events_only_Btautau->GetXaxis()->SetBinLabel(1, "Matched truth-recojet B_{#tau#tau} events");
   percentages_matched_and_preselected_events_only_Btautau->GetXaxis()->SetBinLabel(2, "Preselected B_{#tau#tau} events");

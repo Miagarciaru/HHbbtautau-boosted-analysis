@@ -2,6 +2,7 @@
 // Declaration of functions
 // *************************************
 
+void process_like();
 void process_label(TString name_sample, const std::string& min_pT_recojets_str);
 void set_branch_address_inTree(TTree *inTree);
 void define_output_branches(TTree *outTree);
@@ -10,6 +11,28 @@ void print_list_of_branches(TTree* tree);
 void counter_for_stat();
 void print_stat(Int_t nentries);
 
+void process_like(){
+
+  process_type_like = "NA";
+
+  if( matched_preselection == true && passed_preselection_pT_cut == true ){
+    
+    process_type_like = "Boosted bbtt";
+
+    if( is_jet12_matched_mjj_sel == true ){
+      
+      if( process_name.find("ggF")!=std::string::npos){
+        process_type_like = "ggF"; 
+      }
+
+      if( process_name.find("VBF")!=std::string::npos){
+        process_type_like = "VBF"; 
+      }
+
+    }
+  }
+
+}
 
 void process_label(TString name_sample, const std::string& min_pT_recojets_str){
   
@@ -50,7 +73,7 @@ void process_label(TString name_sample, const std::string& min_pT_recojets_str){
 
   //ggf cHHH = 10 processes both channels channel
   if(name_sample.Contains("ggf_cHHH10d0_both_channels")==true){ process_name = "ggF HH #lambda = 10"; }
-  
+
 }   
 
 
@@ -143,6 +166,9 @@ void set_branch_address_inTree(TTree *inTree){
 }
 
 void define_output_branches(TTree *outTree){
+
+  outTree->Branch("process_name", &process_name);
+  outTree->Branch("process_type_like", &process_type_like);
 
   outTree->Branch("truth_children_fromH1_pdgId", &truth_children_fromH1_pdgId);
   outTree->Branch("truth_children_fromH1_pt", &truth_children_fromH1_pt);
@@ -255,6 +281,93 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("preselected_HH_phi", &preselected_HH_phi);
   outTree->Branch("preselected_HH_m", &preselected_HH_m);
 
+  // small jets matching variables
+  outTree->Branch("idx_jet1_VBF_topology_mjj_sel", &idx_jet1_VBF_topology_mjj_sel);
+  outTree->Branch("idx_jet2_VBF_topology_mjj_sel", &idx_jet2_VBF_topology_mjj_sel);
+  outTree->Branch("idx_jet1_VBF_topology_ptjj_sel", &idx_jet1_VBF_topology_ptjj_sel);
+  outTree->Branch("idx_jet2_VBF_topology_ptjj_sel", &idx_jet2_VBF_topology_ptjj_sel);
+  outTree->Branch("is_jet12_matched_mjj_sel", &is_jet12_matched_mjj_sel);
+  outTree->Branch("is_jet12_matched_ptjj_sel", &is_jet12_matched_ptjj_sel);
+
+  outTree->Branch("count_bb_candidates", &count_bb_candidates);
+  outTree->Branch("count_tautau_candidates", &count_tautau_candidates);
+
+  outTree->Branch("overlap_jj_selection_methods", &overlap_jj_selection_methods);
+  outTree->Branch("eta_smalljets_cutflow", &eta_smalljets_cutflow);
+  outTree->Branch("minpt_smalljets_cutflow", &minpt_smalljets_cutflow);
+  outTree->Branch("min_mjj_smalljets_cutflow", &min_mjj_smalljets_cutflow);
+  outTree->Branch("min_dR_smalljets_cutflow", &min_dR_smalljets_cutflow);
+  outTree->Branch("all_cuts_applied_cutflow", &all_cuts_applied_cutflow);
+
+  outTree->Branch("number_of_desordered_small_jets_pT_candidates", &number_of_desordered_small_jets_pT_candidates);
+
+  outTree->Branch("smallR_jets_n", &smallR_jets_n);
+  outTree->Branch("largeR_jets_n", &largeR_jets_n);
+
+  // Two small jets j1 and j2 variables
+  outTree->Branch("two_jets_j12_m", &two_jets_j12_m);
+  outTree->Branch("two_jets_j12_pt", &two_jets_j12_pt);
+  outTree->Branch("two_jets_j12_eta", &two_jets_j12_eta);
+  outTree->Branch("two_jets_j12_phi", &two_jets_j12_phi);
+  outTree->Branch("two_jets_j12_deta", &two_jets_j12_deta);
+  outTree->Branch("two_jets_j12_dphi", &two_jets_j12_dphi);
+  outTree->Branch("two_jets_j12_dR", &two_jets_j12_dR);
+
+  // Boosted bb and boosted tautau variables
+  outTree->Branch("boosted_bb_tautau_system_m", &boosted_bb_tautau_system_m);
+  outTree->Branch("boosted_bb_tautau_system_pt", &boosted_bb_tautau_system_pt);
+  outTree->Branch("boosted_bb_tautau_system_eta", &boosted_bb_tautau_system_eta);
+  outTree->Branch("boosted_bb_tautau_system_phi", &boosted_bb_tautau_system_phi);
+  outTree->Branch("boosted_bb_tautau_system_deta", &boosted_bb_tautau_system_deta);
+  outTree->Branch("boosted_bb_tautau_system_dphi", &boosted_bb_tautau_system_dphi);
+  outTree->Branch("boosted_bb_tautau_system_dR", &boosted_bb_tautau_system_dR);
+
+  // Boosted bb and small jets j1 variables
+  outTree->Branch("boosted_bb_j1_system_m", &boosted_bb_j1_system_m);
+  outTree->Branch("boosted_bb_j1_system_pt", &boosted_bb_j1_system_pt);
+  outTree->Branch("boosted_bb_j1_system_eta", &boosted_bb_j1_system_eta);
+  outTree->Branch("boosted_bb_j1_system_phi", &boosted_bb_j1_system_phi);
+  outTree->Branch("boosted_bb_j1_system_deta", &boosted_bb_j1_system_deta);
+  outTree->Branch("boosted_bb_j1_system_dphi", &boosted_bb_j1_system_dphi);
+  outTree->Branch("boosted_bb_j1_system_dR", &boosted_bb_j1_system_dR);
+
+  // Boosted tautau and small jets j1 variables
+  outTree->Branch("boosted_tautau_j1_system_m", &boosted_tautau_j1_system_m);
+  outTree->Branch("boosted_tautau_j1_system_pt", &boosted_tautau_j1_system_pt);
+  outTree->Branch("boosted_tautau_j1_system_eta", &boosted_tautau_j1_system_eta);
+  outTree->Branch("boosted_tautau_j1_system_phi", &boosted_tautau_j1_system_phi);
+  outTree->Branch("boosted_tautau_j1_system_deta", &boosted_tautau_j1_system_deta);
+  outTree->Branch("boosted_tautau_j1_system_dphi", &boosted_tautau_j1_system_dphi);
+  outTree->Branch("boosted_tautau_j1_system_dR", &boosted_tautau_j1_system_dR);
+
+  // Boosted bb and small jets j2 variables
+  outTree->Branch("boosted_bb_j2_system_m", &boosted_bb_j2_system_m);
+  outTree->Branch("boosted_bb_j2_system_pt", &boosted_bb_j2_system_pt);
+  outTree->Branch("boosted_bb_j2_system_eta", &boosted_bb_j2_system_eta);
+  outTree->Branch("boosted_bb_j2_system_phi", &boosted_bb_j2_system_phi);
+  outTree->Branch("boosted_bb_j2_system_deta", &boosted_bb_j2_system_deta);
+  outTree->Branch("boosted_bb_j2_system_dphi", &boosted_bb_j2_system_dphi);
+  outTree->Branch("boosted_bb_j2_system_dR", &boosted_bb_j2_system_dR);
+
+  // Boosted tautau and small jets j1 variables
+  outTree->Branch("boosted_tautau_j2_system_m", &boosted_tautau_j2_system_m);
+  outTree->Branch("boosted_tautau_j2_system_pt", &boosted_tautau_j2_system_pt);
+  outTree->Branch("boosted_tautau_j2_system_eta", &boosted_tautau_j2_system_eta);
+  outTree->Branch("boosted_tautau_j2_system_phi", &boosted_tautau_j2_system_phi);
+  outTree->Branch("boosted_tautau_j2_system_deta", &boosted_tautau_j2_system_deta);
+  outTree->Branch("boosted_tautau_j2_system_dphi", &boosted_tautau_j2_system_dphi);
+  outTree->Branch("boosted_tautau_j2_system_dR", &boosted_tautau_j2_system_dR);
+
+  // All jets system variables
+  outTree->Branch("boosted_all_jets_system_m", &boosted_all_jets_system_m);
+  outTree->Branch("boosted_all_jets_system_pt", &boosted_all_jets_system_pt);
+  outTree->Branch("boosted_all_jets_system_eta", &boosted_all_jets_system_eta);
+  outTree->Branch("boosted_all_jets_system_phi", &boosted_all_jets_system_phi);
+  outTree->Branch("boosted_all_jets_system_deta", &boosted_all_jets_system_deta);
+  outTree->Branch("boosted_all_jets_system_dphi", &boosted_all_jets_system_dphi);
+  outTree->Branch("boosted_all_jets_system_dR", &boosted_all_jets_system_dR);
+
+
   outTree->Branch("passed_reco_truth_match_pT_cut", &passed_reco_truth_match_pT_cut);
   outTree->Branch("passed_preselection_pT_cut", &passed_preselection_pT_cut);
   outTree->Branch("matched_preselection", &matched_preselection);
@@ -288,6 +401,7 @@ void define_output_branches(TTree *outTree){
 
   outTree->Branch("bbtt_HH_vis_pt_NOSYS", &bbtt_HH_vis_pt_NOSYS);
   outTree->Branch("bbtt_HH_vis_m", &bbtt_HH_vis_m);
+
 }
 
 // Write histograms in the output root file

@@ -62,16 +62,16 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     define_classes();
     define_reconstructed_objects();
     define_preselected_events();
+    apply_preselection(min_pT_recojet_cut_MeV);
     pairs_small_jets();
     compute_variables_for_topological_processes();
     cutflow_small_R_jets();
-
-    apply_preselection(min_pT_recojet_cut_MeV);
+    //apply_preselection(min_pT_recojet_cut_MeV);
     correct_match_between_truth_reco_and_preselected_objects();
     counting_statistical_parameters();
-    
-    fill_acceptance_ratios();
+    process_like();
 
+    fill_acceptance_ratios();
     fill_histograms_matched_truth_recojets(min_pT_recojet_cut_MeV);
     fill_histograms_preselected_jets();
     
@@ -104,7 +104,8 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
         
     counter_for_stat();
     // Fill the output files with the info for events passing the Boosted analysis or the resolved selection only
-    if( (class_event!=-1) || (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
+    //if( (class_event!=-1) || (matched_preselection == true && passed_preselection_pT_cut == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
+    if( (matched_preselection == true && passed_preselection_pT_cut == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
     
   }
   

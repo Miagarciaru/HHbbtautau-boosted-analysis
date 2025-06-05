@@ -9,6 +9,7 @@
 // *************************************
 
 string process_name = "";
+string process_type_like = "";
 string name_output_root_file = "";
 float fraction = 1.0;
 
