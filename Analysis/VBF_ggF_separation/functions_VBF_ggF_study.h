@@ -63,21 +63,13 @@ void cutflow_small_R_jets() {
       min_dR_smalljets_cutflow++;
     }
 
-    bool cond_pt_sel =
-        idx_jet1_VBF_topology_mjj_sel == idx_jet1_VBF_topology_ptjj_sel &&
-        idx_jet2_VBF_topology_mjj_sel == idx_jet2_VBF_topology_ptjj_sel;
-    bool cond_eta_sig =
-        recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_mjj_sel) *
-            recojet_antikt4PFlow_eta___NOSYS->at(
-                idx_jet2_VBF_topology_mjj_sel) <
-        0;
-    bool cond_minpt = recojet_antikt4PFlow_pt___NOSYS->at(
-                          idx_jet2_VBF_topology_mjj_sel) > 30000;
+    bool cond_pt_sel = idx_jet1_VBF_topology_mjj_sel == idx_jet1_VBF_topology_ptjj_sel && idx_jet2_VBF_topology_mjj_sel == idx_jet2_VBF_topology_ptjj_sel;
+    bool cond_eta_sig = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_mjj_sel)*recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_mjj_sel)<0;
+    bool cond_minpt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel)>30000;
     bool cond_min_mjj = two_jets_j12_m > 500000;
     bool cond_min_dR = two_jets_j12_dR > 5.0;
 
-    if (cond_eta_sig == true && cond_minpt == true && cond_min_mjj == true &&
-        cond_min_dR == true) {
+    if (cond_eta_sig == true && cond_minpt == true && cond_min_mjj == true && cond_min_dR == true) {
       all_cuts_applied_cutflow++;
     }
   }
@@ -169,23 +161,16 @@ void compute_variables_for_topological_processes() {
     TLorentzVector bb_tautau = TLorentzVector();
     TLorentzVector all_jets = TLorentzVector();
 
-    float jet1_pt =
-        recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
-    float jet1_eta =
-        recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
-    float jet1_phi =
-        recojet_antikt4PFlow_phi___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
-    float jet1_m =
-        recojet_antikt4PFlow_m___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
+    float jet1_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
+    float jet1_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
+    float jet1_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
+    float jet1_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
 
-    float jet2_pt =
-        recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
-    float jet2_eta =
-        recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
-    float jet2_phi =
-        recojet_antikt4PFlow_phi___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
-    float jet2_m =
-        recojet_antikt4PFlow_m___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
+    float jet2_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
+    float jet2_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
+    float jet2_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
+    float jet2_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
+    
     /*
     float jet1_pt =
     recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_mjj_sel); float
@@ -322,35 +307,24 @@ void pairs_small_jets() {
       float small_jet_phi = recojet_antikt4PFlow_phi___NOSYS->at(ii);
       float small_jet_m = recojet_antikt4PFlow_m___NOSYS->at(ii);
 
-      float large_R1_jet_pt =
-          recojet_antikt10UFO_pt___NOSYS->at(idx_boosted_bb);
-      float large_R1_jet_eta =
-          recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_bb);
-      float large_R1_jet_phi =
-          recojet_antikt10UFO_phi___NOSYS->at(idx_boosted_bb);
+      float large_R1_jet_pt = recojet_antikt10UFO_pt___NOSYS->at(idx_boosted_bb);
+      float large_R1_jet_eta = recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_bb);
+      float large_R1_jet_phi = recojet_antikt10UFO_phi___NOSYS->at(idx_boosted_bb);
       float large_R1_jet_m = recojet_antikt10UFO_m___NOSYS->at(idx_boosted_bb);
 
-      float large_R2_jet_pt =
-          recojet_antikt10UFO_pt___NOSYS->at(idx_boosted_tautau);
-      float large_R2_jet_eta =
-          recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_tautau);
-      float large_R2_jet_phi =
-          recojet_antikt10UFO_phi___NOSYS->at(idx_boosted_tautau);
-      float large_R2_jet_m =
-          recojet_antikt10UFO_m___NOSYS->at(idx_boosted_tautau);
+      float large_R2_jet_pt = recojet_antikt10UFO_pt___NOSYS->at(idx_boosted_tautau);
+      float large_R2_jet_eta = recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_tautau);
+      float large_R2_jet_phi = recojet_antikt10UFO_phi___NOSYS->at(idx_boosted_tautau);
+      float large_R2_jet_m = recojet_antikt10UFO_m___NOSYS->at(idx_boosted_tautau);
 
-      large_R1_jet.SetPtEtaPhiM(large_R1_jet_pt, large_R1_jet_eta,
-                                large_R1_jet_phi, large_R1_jet_m);
-      large_R2_jet.SetPtEtaPhiM(large_R2_jet_pt, large_R2_jet_eta,
-                                large_R2_jet_phi, large_R2_jet_m);
-      small_jet.SetPtEtaPhiM(small_jet_pt, small_jet_eta, small_jet_phi,
-                             small_jet_m);
+      large_R1_jet.SetPtEtaPhiM(large_R1_jet_pt, large_R1_jet_eta, large_R1_jet_phi, large_R1_jet_m);
+      large_R2_jet.SetPtEtaPhiM(large_R2_jet_pt, large_R2_jet_eta, large_R2_jet_phi, large_R2_jet_m);
+      small_jet.SetPtEtaPhiM(small_jet_pt, small_jet_eta, small_jet_phi, small_jet_m);
 
       float deltaR_smallJet_largeR1_jet = large_R1_jet.DeltaR(small_jet);
       float deltaR_smallJet_largeR2_jet = large_R2_jet.DeltaR(small_jet);
 
-      if (deltaR_smallJet_largeR1_jet > dR_min &&
-          deltaR_smallJet_largeR2_jet > dR_min) {
+      if (deltaR_smallJet_largeR1_jet > dR_min && deltaR_smallJet_largeR2_jet > dR_min) {
         candidates_smallJets.push_back(ii);
       }
     }
@@ -361,10 +335,8 @@ void pairs_small_jets() {
       int current_pT_value = 0;
 
       for (int ii = 0; ii < candidates_smallJets.size(); ii++) {
-        if (recojet_antikt4PFlow_pt___NOSYS->at(candidates_smallJets.at(ii)) >
-            current_pT_value) {
-          current_pT_value =
-              recojet_antikt4PFlow_pt___NOSYS->at(candidates_smallJets.at(ii));
+        if (recojet_antikt4PFlow_pt___NOSYS->at(candidates_smallJets.at(ii)) > current_pT_value) {
+          current_pT_value = recojet_antikt4PFlow_pt___NOSYS->at(candidates_smallJets.at(ii));
           idx_leading_jet = candidates_smallJets.at(ii);
         }
       }
@@ -372,10 +344,8 @@ void pairs_small_jets() {
       current_pT_value = 0;
       for (int jj = 0; jj < candidates_smallJets.size(); jj++) {
         if (candidates_smallJets.at(jj) != idx_leading_jet) {
-          if (recojet_antikt4PFlow_pt___NOSYS->at(candidates_smallJets.at(jj)) >
-              current_pT_value) {
-            current_pT_value = recojet_antikt4PFlow_pt___NOSYS->at(
-                candidates_smallJets.at(jj));
+          if (recojet_antikt4PFlow_pt___NOSYS->at(candidates_smallJets.at(jj)) > current_pT_value) {
+            current_pT_value = recojet_antikt4PFlow_pt___NOSYS->at(candidates_smallJets.at(jj));
             idx_subleading_jet = candidates_smallJets.at(jj);
           }
         }
@@ -421,7 +391,8 @@ void pairs_small_jets() {
             if (jet1_pt < jet2_pt) {
               idx_jet1_VBF_topology_mjj_sel = idx_jet2;
               idx_jet2_VBF_topology_mjj_sel = idx_jet1;
-            } else {
+            } 
+            else {
               idx_jet1_VBF_topology_mjj_sel = idx_jet1;
               idx_jet2_VBF_topology_mjj_sel = idx_jet2;
             }
@@ -430,31 +401,15 @@ void pairs_small_jets() {
         }
       }
 
-      if ((recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel) <
-           recojet_antikt4PFlow_pt___NOSYS->at(
-               idx_jet2_VBF_topology_ptjj_sel)) ||
-          (recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_mjj_sel) <
-           recojet_antikt4PFlow_pt___NOSYS->at(
-               idx_jet2_VBF_topology_mjj_sel))) {
+      if ((recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel) < recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel)) ||
+          (recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_mjj_sel) < recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel))) {
         // cout << "The jets are not organized by pT" << endl;
         number_of_desordered_small_jets_pT_candidates++;
-        cout << "idx leading jet "
-             << recojet_antikt4PFlow_pt___NOSYS->at(
-                    idx_jet1_VBF_topology_ptjj_sel)
-             << endl;
-        cout << "idx subleading jet "
-             << recojet_antikt4PFlow_pt___NOSYS->at(
-                    idx_jet2_VBF_topology_ptjj_sel)
-             << endl;
+        cout << "idx leading jet " << recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel) << endl;
+        cout << "idx subleading jet " << recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel) << endl;
 
-        cout << "idx jet1 mjj "
-             << recojet_antikt4PFlow_pt___NOSYS->at(
-                    idx_jet1_VBF_topology_mjj_sel)
-             << endl;
-        cout << "idx jet2 mjj "
-             << recojet_antikt4PFlow_pt___NOSYS->at(
-                    idx_jet2_VBF_topology_mjj_sel)
-             << endl;
+        cout << "idx jet1 mjj " << recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_mjj_sel) << endl;
+        cout << "idx jet2 mjj " << recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel) << endl;
       }
     }
   }
@@ -475,8 +430,7 @@ void boosted_candidates() {
 
   float current_pT_tautau = 0;
   for (int ii = 0; ii < recojet_antikt10UFO_pt___NOSYS->size(); ii++) {
-    if (recojet_antikt10UFO_GN2XTauV00_disc___NOSYS->at(ii) >=
-        4.763458223757214) {
+    if (recojet_antikt10UFO_GN2XTauV00_disc___NOSYS->at(ii) >= 4.763458223757214) {
       if (recojet_antikt10UFO_pt___NOSYS->at(ii) >= current_pT_tautau) {
         current_pT_tautau = recojet_antikt10UFO_pt___NOSYS->at(ii);
         idx_boosted_tautau = ii;
@@ -488,11 +442,9 @@ void boosted_candidates() {
 
   float current_pT_bb = 0;
   for (int ii = 0; ii < recojet_antikt10UFO_pt___NOSYS->size(); ii++) {
-    if (recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p55___NOSYS->at(
-            ii) == 1) {
+    if (recojet_antikt10UFO_xbb_select_GN2Xv01_FlatMassQCDEff_1p55___NOSYS->at(ii) == 1) {
       if (is_boosted_tautau == true) {
-        if (recojet_antikt10UFO_pt___NOSYS->at(ii) >= current_pT_bb &&
-            ii != idx_boosted_tautau) {
+        if (recojet_antikt10UFO_pt___NOSYS->at(ii) >= current_pT_bb && ii != idx_boosted_tautau) {
           current_pT_bb = recojet_antikt10UFO_pt___NOSYS->at(ii);
           idx_boosted_bb = ii;
           is_boosted_bb = true;

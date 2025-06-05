@@ -5,12 +5,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time # to measure time to analyse
 import seaborn as sns
+import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import classification_report, roc_auc_score
 from sklearn.metrics import roc_curve, auc
+from skl2onnx import convert_sklearn
+from skl2onnx.common.data_types import FloatTensorType
 
 # Reading ROOT file
 file = uproot.open("output_analysis/input_BDT.root")
@@ -63,6 +66,20 @@ indices = np.argsort(importances)[::-1]
 print("Ranking of the most important variables:")
 for i in range(len(features)):
     print(f"{i+1}. {features[indices[i]]} ({importances[indices[i]]:.3f})")
+
+# Save the model
+joblib.dump(bdt, "bdt_model.pkl")
+print("Saved model as 'bdt_model.pkl'")
+
+# Convert the model into a ONNX file
+initial_type = [("input", FloatTensorType([None, X.shape[1]]))]
+onnx_model = convert_sklearn(bdt, initial_types=initial_type)
+
+# Save the file .onnx
+with open("bdt_model.onnx", "wb") as f:
+    f.write(onnx_model.SerializeToString())
+
+print("Saved model in ONNX format in 'bdt_model.onnx'")
 
 # Plotting                                                                                                                                                     
 plt.figure(figsize=(8, 6))
