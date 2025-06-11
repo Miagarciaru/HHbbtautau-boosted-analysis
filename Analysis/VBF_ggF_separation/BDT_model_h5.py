@@ -6,6 +6,7 @@ import numpy as np
 import time # to measure time to analyse
 import seaborn as sns
 import joblib
+import h5py
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -15,25 +16,55 @@ from sklearn.metrics import roc_curve, auc
 from skl2onnx import convert_sklearn
 from skl2onnx.common.data_types import FloatTensorType
 
-# Reading ROOT file
-file = uproot.open("output_analysis/input_BDT.root")
-tree = file["AnalysisMiniTree"]
-df = tree.arrays(library="pd")
+# Reading VBF File
+# file_VBF = "HHARD_input_h5files/mva_VBFHHbbttSM_ONE_PASS.h5"
+# file_VBF = "HHARD_input_h5files/mva_VBFHHbbttSM_TWO_PASS.h5"
+# file_VBF = "HHARD_input_h5files/mva_VBFHHbbttEFT_ONE_PASS.h5"
+file_VBF = "HHARD_input_h5files/mva_VBFHHbbttEFT_TWO_PASS.h5"
 
-# Training
+# Open file HDF5
+with h5py.File(file_VBF, "r") as f:
+    # Convert the 'events' branch in a df
+    df_VBF_events = pd.DataFrame(f["events"][:])
 
-# variables\to use in the training part
-#X = df[["two_jets_j12_m", "two_jets_j12_pt", "two_jets_j12_eta", "two_jets_j12_phi", "two_jets_j12_deta", "two_jets_j12_dphi", "two_jets_j12_dR", "boosted_bb_tautau_system_m", "boosted_bb_tautau_system_pt", "boosted_bb_tautau_system_eta", "boosted_bb_tautau_system_phi", "boosted_bb_tautau_system_deta" , "boosted_bb_tautau_system_dphi", "boosted_bb_tautau_system_dR", "boosted_bb_j1_system_m", "boosted_bb_j1_system_pt", "boosted_bb_j1_system_eta", "boosted_bb_j1_system_phi", "boosted_bb_j1_system_deta", "boosted_bb_j1_system_dphi", "boosted_bb_j1_system_dR",  "boosted_bb_j2_system_m", "boosted_bb_j2_system_pt", "boosted_bb_j2_system_eta", "boosted_bb_j2_system_phi", "boosted_bb_j2_system_deta", "boosted_bb_j2_system_dphi", "boosted_bb_j2_system_dR", "boosted_tautau_j1_system_m", "boosted_tautau_j1_system_pt", "boosted_tautau_j1_system_eta", "boosted_tautau_j1_system_phi", "boosted_tautau_j1_system_deta", "boosted_tautau_j1_system_dphi", "boosted_tautau_j1_system_dR",  "boosted_tautau_j2_system_m", "boosted_tautau_j2_system_pt", "boosted_tautau_j2_system_eta", "boosted_tautau_j2_system_phi", "boosted_tautau_j2_system_deta", "boosted_tautau_j2_system_dphi", "boosted_tautau_j2_system_dR", "boosted_all_jets_system_m", "boosted_all_jets_system_pt", "boosted_all_jets_system_eta", "boosted_all_jets_system_phi", "boosted_all_jets_system_deta", "boosted_all_jets_system_dphi", "boosted_all_jets_system_dR", "smallR_jets_n", "largeR_jets_n"]]  
+    # Convert the dataset 'objects' in a structure per event (optional)
+    objects_VBF_array = f["objects"][:]
 
-#X = df[["boosted_all_jets_system_m", "boosted_bb_tautau_system_deta", "two_jets_j12_m", "boosted_tautau_j1_system_m", "two_jets_j12_pt", "boosted_bb_j1_system_eta", "boosted_bb_j2_system_pt", "boosted_tautau_j2_system_eta", "boosted_tautau_j1_system_eta", "boosted_bb_j1_system_pt", "smallR_jets_n", "largeR_jets_n"]]  # variables to use in the training part
+# Show the first events
+print(len(df_VBF_events))
 
-#X = df[["boosted_all_jets_system_m", "two_jets_j12_m", "boosted_bb_j1_system_pt", "smallR_jets_n", "boosted_bb_tautau_system_m", "two_jets_j12_dR", "boosted_tautau_j1_system_deta", "boosted_bb_j2_system_deta", "boosted_bb_j2_system_dR"]]
+# Reading VBF File
+# file_ggF = "HHARD_input_h5files/mva_ggFHHbbttSM_ONE_PASS.h5"
+file_ggF = "HHARD_input_h5files/mva_ggFHHbbttSM_TWO_PASS.h5"
 
-# X = df[["boosted_all_jets_system_m", "two_jets_j12_m", "boosted_bb_j1_system_pt", "smallR_jets_n", "boosted_bb_tautau_system_m", "two_jets_j12_dR", "boosted_tautau_j1_system_deta", "boosted_bb_j2_system_deta", "boosted_bb_j2_system_dR"]]
+# Open file HDF5
+with h5py.File(file_ggF, "r") as f:
+    # Convert the 'events' branch in a df
+    df_ggF_events = pd.DataFrame(f["events"][:])
 
-X = df[["two_jets_j12_m", "smallR_jets_n", "boosted_bb_tautau_system_m", "two_jets_j12_dR", "boosted_tautau_j1_system_deta", "boosted_bb_j2_system_deta"]]
+    # Convert the dataset 'objects' in a structure per event (optional)
+    objects_ggF_array = f["objects"][:]
 
-y = df["process_type_like"]
+# Show the first events
+print(len(df_ggF_events))
+
+##### Training
+
+# variables to use in the training part
+
+features = ["two_jets_j12_m", "Hbb_j1_Pt", "NSmallRJets", "mHH", "two_jets_j12_dR", "Htt_j1_dEta", "Hbb_j2_dEta", "Hbb_j2_dR"]
+
+X_VBF = df_VBF_events[features].copy()
+y_VBF = df_VBF_events["class_label"].copy()
+
+X_ggF = df_ggF_events[features].copy()
+y_ggF = df_ggF_events["class_label"].copy()
+
+X = pd.concat([X_ggF, X_VBF]).astype(np.float32)
+y = pd.concat([y_ggF, y_VBF]).astype(int)
+
+# print(X)
+# print(y)
 
 correlation_matrix = X.corr()
 plt.figure(figsize=(20, 16)) # make new figure
@@ -51,7 +82,6 @@ bdt = AdaBoostClassifier(dt,
                         learning_rate=0.5) # shrinks the contribution of each classifier by learning_rate
 
 start = time.time() # time at start of BDT fit
-#bdt = GradientBoostingClassifier(n_estimators=100, max_depth=3)
 bdt.fit(X_train, y_train)
 elapsed = time.time() - start # time after fitting BDT
 print("Time taken to fit BDT: "+str(round(elapsed,1))+"s") # print total time taken to fit BDT
@@ -71,33 +101,6 @@ print("Ranking of the most important variables:")
 for i in range(len(features)):
     print(f"{i+1}. {features[indices[i]]} ({importances[indices[i]]:.3f})")
 
-# # Save the model
-# joblib.dump(bdt, "bdt_model.pkl")
-# print("Saved model as 'bdt_model.pkl'")
-
-# initial_type = [("float_input", FloatTensorType([None, X_train.shape[1]]))]
-# onnx_model = convert_sklearn(
-#     bdt, initial_types=initial_type, options={type(bdt): {"zipmap": False}}
-# )
-#onnx_model = select_model_inputs_outputs(onx, outputs=["probabilities"])
-
-
-# Convert the model into a ONNX file
-# Define entry type
-initial_type = [("input", FloatTensorType([None, X.shape[1]]))]
-
-# Forcing the output to save the probabilities
-# options = {id(bdt): {"output_class_labels": False, "zipmap": False}}  # Avoid dict returns
-# options = {type(bdt): {"zipmap": False}}  # Avoid dict returns
-options = {id(bdt): {"zipmap": False}}  # Avoid dict returns
-onnx_model = convert_sklearn(bdt, initial_types=initial_type, options=options)
-
-# Save the file .onnx
-with open("bdt_model.onnx", "wb") as f:
-    f.write(onnx_model.SerializeToString())
-
-print("Saved model in ONNX format in 'bdt_model.onnx'")
-
 # Plotting                                                                                                                                                     
 plt.figure(figsize=(8, 6))
 plt.title("Importance of each variable")
@@ -115,38 +118,22 @@ print ("Area under ROC curve for test data: %.4f"%(roc_auc_score(y_test,
                                                     bdt.decision_function(X_test))) )
 
 # we first plot the Neural Network output
-#signal_decisions = bdt.decision_function(X[y>0.5]).ravel() # get probabilities on signal
-#background_decisions = bdt.decision_function(X[y<0.5]).ravel() # get decisions on background
+# signal_decisions = bdt.decision_function(X[y>0.5]).ravel() # get probabilities on signal
+# background_decisions = bdt.decision_function(X[y<0.5]).ravel() # get decisions on background
 
 signal_decisions = bdt.predict_proba(X[y>0.5])[:, 1] # get probabilities on signal
 background_decisions = bdt.predict_proba(X[y<0.5])[:, 1] # get decisions on background
 
-# highest_decision = max(np.max(signal_decisions) for d in decisions) # get maximum score
-highest_decision = np.max(signal_decisions) # get maximum score
-lowest_decision = np.min(signal_decisions)
-bin_edges = [] # list to hold bin edges
-# bin_edge = lowest_decision # start counter for bin_edges
-bin_edge = -0.1 # start counter for bin_edges
-while bin_edge < highest_decision: # up to highest score
-#while bin_edge < 1.0: # up to highest score
-    bin_edge += 0.05 # increment
-    bin_edges.append(bin_edge)
-
-plt.hist(background_decisions, 
-         bins=bin_edges, 
-         color='red', label='ggF processes', 
+plt.hist(background_decisions, color='red', label='ggF processes', 
          histtype='step', # lineplot that's unfilled
          density=True ) # normalize to form a probability density
-plt.hist(signal_decisions, 
-         bins=bin_edges,
-         color='blue', label='VBF processes', 
+plt.hist(signal_decisions, color='blue', label='VBF processes', 
          histtype='step', # lineplot that's unfilled
          density=True, # normalize to form a probability density
          linestyle='--' ) # dashed line
 plt.xlabel('BDT output') # add x-axis label
 plt.ylabel('Arbitrary units') # add y-axis label
-plt.legend(loc='upper left') # add legend
-plt.tight_layout()
+plt.legend() # add legend
 #plt.show()
 plt.savefig("BDT_plots/distributions_BDT_score.pdf")
 
@@ -167,13 +154,13 @@ plt.plot(fpr, tpr, label='ROC (area = %0.2f)'%(roc_auc)) # plot test ROC curve
 plt.plot([0, 1], # x from 0 to 1
          [0, 1], # y from 0 to 1
          '--', # dashed line
-         color='grey', label='Random Classifier')
+         color='grey', label='Luck')
+
 plt.xlabel('False Positive Rate') # x-axis label
 plt.ylabel('True Positive Rate') # y-axis label
 plt.title('Receiver operating characteristic (ROC) curve') # title
 plt.legend() # add legend
 plt.grid() # add grid
-plt.tight_layout()
 #plt.show()
 plt.savefig("BDT_plots/ROC_Curve.pdf")
 
@@ -193,7 +180,7 @@ def compare_train_test(clf, X_train, y_train, X_test, y_test):
     bin_edge = -0.1 # start counter for bin_edges
     while bin_edge < highest_decision: # up to highest score
     #while bin_edge < 1.0: # up to highest score
-        bin_edge += 0.05 # increment
+        bin_edge += 0.1 # increment
         bin_edges.append(bin_edge)
 
     plt.figure() # make new figure 
@@ -235,16 +222,27 @@ def compare_train_test(clf, X_train, y_train, X_test, y_test):
     plt.xlabel("BDT output") # write x-axis label
     plt.ylabel("Arbitrary units") # write y-axis label
     plt.legend() # add legend
-    plt.tight_layout()
     #plt.show()
     plt.savefig("BDT_plots/overtraining_check.pdf")
     
 compare_train_test(bdt, X_train, y_train, X_test, y_test) # call compare_train_test
 
-# Apply BDT to all the events
-df["bdt_score"] = bdt.predict_proba(X)[:, 1]
+# # Apply BDT to all the events
+# df["bdt_score"] = bdt.predict_proba(X)[:, 1]
 
-with uproot.recreate("output_analysis/BDT_output.root") as fout:
-    fout["AnalysisMiniTree"] = {**{col: ak.Array(df[col].to_numpy()) for col in X.columns},
-                                "bdt_score": ak.Array(df["bdt_score"].to_numpy()),
-                                "process_type_like": ak.Array(df["process_type_like"].to_numpy())}
+print(X.dtypes)
+print(y.dtypes)
+
+# Convert the model into a ONNX file
+# Define entry type
+initial_type = [("input", FloatTensorType([None, X.shape[1]]))]
+
+# # Force to save the onnx as predict proba 2d array
+options = {type(bdt): {"zipmap": False}}  # Avoid dict returns
+onnx_model = convert_sklearn(bdt, initial_types=initial_type, options=options)
+
+# Save the file .onnx
+with open("bdt_model.onnx", "wb") as f:
+    f.write(onnx_model.SerializeToString())
+
+print("Saved model in ONNX format in 'bdt_model.onnx'")

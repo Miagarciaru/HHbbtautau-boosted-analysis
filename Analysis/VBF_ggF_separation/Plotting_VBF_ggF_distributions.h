@@ -79,7 +79,7 @@ void plot_distributions_comparisons(const std::unordered_map<std::string, std::v
     const std::string& nameVar = name_distribution.first;
     const auto& histograms = name_distribution.second;
 
-    string name_image = distributions_comparison_folder+nameVar+".png";
+    string name_image = distributions_comparison_folder+nameVar+".pdf";
     
     ///// Plotting
     TCanvas* can = new TCanvas(("can_"+nameVar).c_str(),"", 800, 600);
@@ -131,6 +131,9 @@ void plot_distributions_comparisons(const std::unordered_map<std::string, std::v
     hist_VBF.SetMaximum(y_max);
     hist_ggF.SetMaximum(y_max);
     
+    hist_VBF.GetYaxis()->SetTitle("Arbitrary Units");
+    hist_ggF.GetYaxis()->SetTitle("Arbitrary Units");
+
     // Step 5: Draw the histograms on the same canvas for comparison.
     hist_VBF.Draw("H");   // Draw the first histogram
     hist_ggF.Draw("sameH");  // Draw the second histogram on the same canvas

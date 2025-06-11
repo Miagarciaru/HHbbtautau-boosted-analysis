@@ -30,7 +30,7 @@ void fix_underflow_overflow(TH1F *histo) {
 // jets
 void cutflow_small_R_jets() {
 
-  if (is_jet12_matched_ptjj_sel == true) {
+  if (is_jet12_matched_mjj_sel == true) {
 
     // Verify if the two small jets chosen by mjj method are the ones for the
     // highest pT pair
@@ -40,16 +40,12 @@ void cutflow_small_R_jets() {
     }
 
     // Verify if the candidates have an opposite eta sign
-    if (recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_mjj_sel) *
-            recojet_antikt4PFlow_eta___NOSYS->at(
-                idx_jet2_VBF_topology_mjj_sel) <
-        0) {
+    if(recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_mjj_sel)*recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_mjj_sel)<0){
       eta_smalljets_cutflow++;
     }
 
     // Verify that each chosen jets pass the pt>30GeV
-    if (recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel) >
-        30000) {
+    if (recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel)>30000) {
       minpt_smalljets_cutflow++;
     }
 
@@ -161,33 +157,26 @@ void compute_variables_for_topological_processes() {
     TLorentzVector bb_tautau = TLorentzVector();
     TLorentzVector all_jets = TLorentzVector();
 
-    float jet1_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
-    float jet1_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
-    float jet1_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
-    float jet1_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
+    // float jet1_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
+    // float jet1_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
+    // float jet1_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
+    // float jet1_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet1_VBF_topology_ptjj_sel);
 
-    float jet2_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
-    float jet2_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
-    float jet2_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
-    float jet2_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
+    // float jet2_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
+    // float jet2_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
+    // float jet2_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
+    // float jet2_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet2_VBF_topology_ptjj_sel);
     
-    /*
-    float jet1_pt =
-    recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_mjj_sel); float
-    jet1_eta =
-    recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_mjj_sel); float
-    jet1_phi =
-    recojet_antikt4PFlow_phi___NOSYS->at(idx_jet1_VBF_topology_mjj_sel); float
-    jet1_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet1_VBF_topology_mjj_sel);
+    float jet1_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet1_VBF_topology_mjj_sel); 
+    float jet1_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet1_VBF_topology_mjj_sel); 
+    float jet1_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet1_VBF_topology_mjj_sel); 
+    float jet1_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet1_VBF_topology_mjj_sel);
 
-    float jet2_pt =
-    recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel); float
-    jet2_eta =
-    recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_mjj_sel); float
-    jet2_phi =
-    recojet_antikt4PFlow_phi___NOSYS->at(idx_jet2_VBF_topology_mjj_sel); float
-    jet2_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet2_VBF_topology_mjj_sel);
-    */
+    float jet2_pt = recojet_antikt4PFlow_pt___NOSYS->at(idx_jet2_VBF_topology_mjj_sel); 
+    float jet2_eta = recojet_antikt4PFlow_eta___NOSYS->at(idx_jet2_VBF_topology_mjj_sel); 
+    float jet2_phi = recojet_antikt4PFlow_phi___NOSYS->at(idx_jet2_VBF_topology_mjj_sel); 
+    float jet2_m = recojet_antikt4PFlow_m___NOSYS->at(idx_jet2_VBF_topology_mjj_sel);
+
     float Hbb_pt = recojet_antikt10UFO_pt___NOSYS->at(idx_boosted_bb);
     float Hbb_eta = recojet_antikt10UFO_eta___NOSYS->at(idx_boosted_bb);
     float Hbb_phi = recojet_antikt10UFO_phi___NOSYS->at(idx_boosted_bb);
