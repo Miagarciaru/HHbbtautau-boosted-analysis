@@ -57,16 +57,15 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   for(int ii=0; ii < nentries*fraction; ii++){
     
     nbytes = inTree_root->GetEntry(ii);  
+
     define_truth_tau_and_b_jets();
     compute_dR_min_index_fat_jets();
-    define_classes();
+    define_classes(min_pT_recojet_cut_MeV);
     define_reconstructed_objects();
-    define_preselected_events();
-    apply_preselection(min_pT_recojet_cut_MeV);
+    define_preselected_events(min_pT_recojet_cut_MeV);
     pairs_small_jets();
     compute_variables_for_topological_processes();
     cutflow_small_R_jets();
-    //apply_preselection(min_pT_recojet_cut_MeV);
     correct_match_between_truth_reco_and_preselected_objects();
     counting_statistical_parameters();
     process_like();
@@ -77,7 +76,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     
     hist_nevents_per_class->Fill(class_event);
     
-    if( (matched_preselection == true) && (bbtt_HH_vis_m > 0) && (passed_preselection_pT_cut == true) ){
+    if( (matched_preselection == true) && (bbtt_HH_vis_m > 0) ){
       overlap_resolved_and_preselected++;
     }
       
@@ -104,8 +103,8 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
         
     counter_for_stat();
     // Fill the output files with the info for events passing the Boosted analysis or the resolved selection only
-    //if( (class_event!=-1) || (matched_preselection == true && passed_preselection_pT_cut == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
-    if( (matched_preselection == true && passed_preselection_pT_cut == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
+    //if( (class_event!=-1) || (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
+    if( (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
     
   }
   

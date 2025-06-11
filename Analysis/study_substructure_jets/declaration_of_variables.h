@@ -11,6 +11,7 @@
 string process_name = "";
 string process_type_like = "";
 string name_output_root_file = "";
+int class_label;
 float fraction = 1.0;
 
 // values to be printed in the screen for statistical checks
@@ -340,8 +341,6 @@ Float_t preselected_HH_eta;
 Float_t preselected_HH_phi;
 Float_t preselected_HH_m;
 
-bool passed_preselection_pT_cut;
-bool passed_reco_truth_match_pT_cut;
 bool matched_preselection; // Tell us if the bb and tautau objects were defined with the preselection cuts on recovariables
 bool correct_matched_preselected_BbbBtautau;
 bool wrong_matched_preselected_BbbBtautau;
@@ -350,8 +349,6 @@ bool truth_reco_matched_preselected_BbbBtautau;
 bool truth_reco_non_matched_preselected_BbbBtautau;
 bool truth_reco_BbbBtautau_non_matched_preselected_info;
 
-bool passed_preselection_bb_pT_cut;
-bool passed_reco_truth_match_bb_pT_cut;
 bool matched_preselected_bb;
 bool correct_matched_preselected_Bbb;
 bool wrong_matched_preselected_Bbb;
@@ -360,8 +357,6 @@ bool truth_reco_matched_preselected_Bbb;
 bool truth_reco_non_matched_preselected_Bbb;
 bool truth_reco_Bbb_non_matched_preselected_info;
 
-bool passed_preselection_tautau_pT_cut;
-bool passed_reco_truth_match_tautau_pT_cut;
 bool matched_preselected_tautau;
 bool correct_matched_preselected_Btautau;
 bool wrong_matched_preselected_Btautau;
@@ -519,7 +514,6 @@ TBranch *b_preselected_HH_eta;
 TBranch *b_preselected_HH_phi;
 TBranch *b_preselected_HH_m;
 
-TBranch *b_passed_preselection;
 TBranch *b_matched_preselection;
 TBranch *b_matched_preselected_bb;
 TBranch *b_matched_preselected_tautau;

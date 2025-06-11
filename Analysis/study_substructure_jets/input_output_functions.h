@@ -14,21 +14,24 @@ void print_stat(Int_t nentries);
 void process_like(){
 
   process_type_like = "NA";
+  class_label = -99;
 
-  if( matched_preselection == true && passed_preselection_pT_cut == true ){
+  if( matched_preselection == true ){
     
     process_type_like = "Boosted bbtt";
+    class_label = -1;
 
     if( is_jet12_matched_mjj_sel == true ){
       
       if( process_name.find("ggF")!=std::string::npos){
-        process_type_like = "ggF"; 
+        process_type_like = "ggF";
+        class_label = 0; 
       }
 
       if( process_name.find("VBF")!=std::string::npos){
         process_type_like = "VBF"; 
+        class_label = 1;
       }
-
     }
   }
 
@@ -75,7 +78,6 @@ void process_label(TString name_sample, const std::string& min_pT_recojets_str){
   if(name_sample.Contains("ggf_cHHH10d0_both_channels")==true){ process_name = "ggF HH #lambda = 10"; }
 
 }   
-
 
 // This function saves the branches info for a given tree in the variables defined above
 void set_branch_address_inTree(TTree *inTree){
@@ -168,8 +170,8 @@ void set_branch_address_inTree(TTree *inTree){
 void define_output_branches(TTree *outTree){
 
   outTree->Branch("process_name", &process_name);
-  outTree->Branch("process_type_like", &process_type_like);
-
+  outTree->Branch("process_type_like", &process_type_like); 
+  outTree->Branch("class_label", &class_label);
   outTree->Branch("truth_children_fromH1_pdgId", &truth_children_fromH1_pdgId);
   outTree->Branch("truth_children_fromH1_pt", &truth_children_fromH1_pt);
   outTree->Branch("truth_children_fromH1_eta", &truth_children_fromH1_eta);
@@ -367,9 +369,6 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("boosted_all_jets_system_dphi", &boosted_all_jets_system_dphi);
   outTree->Branch("boosted_all_jets_system_dR", &boosted_all_jets_system_dR);
 
-
-  outTree->Branch("passed_reco_truth_match_pT_cut", &passed_reco_truth_match_pT_cut);
-  outTree->Branch("passed_preselection_pT_cut", &passed_preselection_pT_cut);
   outTree->Branch("matched_preselection", &matched_preselection);
   outTree->Branch("matched_preselected_bb", &matched_preselected_bb);
   outTree->Branch("matched_preselected_tautau", &matched_preselected_tautau);
