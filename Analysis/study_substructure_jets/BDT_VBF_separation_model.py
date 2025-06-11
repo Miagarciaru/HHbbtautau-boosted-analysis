@@ -6,37 +6,70 @@ import numpy as np
 import time # to measure time to analyse
 import seaborn as sns
 import joblib
+import h5py
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import classification_report, roc_auc_score
 from sklearn.metrics import roc_curve, auc
-##from sklearn.ensemble import GradientBoostingClassifier
 from skl2onnx import convert_sklearn
 from skl2onnx.common.data_types import FloatTensorType
 
-# Reading ROOT file
-file = uproot.open("output_analysis/input_BDT.root")
-tree = file["AnalysisMiniTree"]
-df = tree.arrays(library="pd")
+# Reading VBF Files
+# list_VBF = ["VBF_SM_hh_502982_pT250GeV", "VBF_SM_lh_502993_pT250GeV"]
+list_VBF = ["VBF_cvv1p5_hh_502985_pT250GeV", "VBF_cvv1p5_lh_502996_pT250GeV"]
 
-# Training
+frames_VBF = []
 
-# variables\to use in the training part
-#X = df[["two_jets_j12_m", "two_jets_j12_pt", "two_jets_j12_eta", "two_jets_j12_phi", "two_jets_j12_deta", "two_jets_j12_dphi", "two_jets_j12_dR", "boosted_bb_tautau_system_m", "boosted_bb_tautau_system_pt", "boosted_bb_tautau_system_eta", "boosted_bb_tautau_system_phi", "boosted_bb_tautau_system_deta" , "boosted_bb_tautau_system_dphi", "boosted_bb_tautau_system_dR", "boosted_bb_j1_system_m", "boosted_bb_j1_system_pt", "boosted_bb_j1_system_eta", "boosted_bb_j1_system_phi", "boosted_bb_j1_system_deta", "boosted_bb_j1_system_dphi", "boosted_bb_j1_system_dR",  "boosted_bb_j2_system_m", "boosted_bb_j2_system_pt", "boosted_bb_j2_system_eta", "boosted_bb_j2_system_phi", "boosted_bb_j2_system_deta", "boosted_bb_j2_system_dphi", "boosted_bb_j2_system_dR", "boosted_tautau_j1_system_m", "boosted_tautau_j1_system_pt", "boosted_tautau_j1_system_eta", "boosted_tautau_j1_system_phi", "boosted_tautau_j1_system_deta", "boosted_tautau_j1_system_dphi", "boosted_tautau_j1_system_dR",  "boosted_tautau_j2_system_m", "boosted_tautau_j2_system_pt", "boosted_tautau_j2_system_eta", "boosted_tautau_j2_system_phi", "boosted_tautau_j2_system_deta", "boosted_tautau_j2_system_dphi", "boosted_tautau_j2_system_dR", "boosted_all_jets_system_m", "boosted_all_jets_system_pt", "boosted_all_jets_system_eta", "boosted_all_jets_system_phi", "boosted_all_jets_system_deta", "boosted_all_jets_system_dphi", "boosted_all_jets_system_dR", "smallR_jets_n", "largeR_jets_n"]]  
+for file_name in list_VBF:
+    file_VBF_name = "output_analysis/"+file_name+".root"
+    file_VBF = uproot.open(file_VBF_name)
+    tree_VBF = file_VBF["AnalysisMiniTree"]
+    temp = tree_VBF.arrays(library="pd")
+    temp = temp[temp["process_type_like"] == "VBF"]
+    frames_VBF.append(temp)
 
-#X = df[["boosted_all_jets_system_m", "boosted_bb_tautau_system_deta", "two_jets_j12_m", "boosted_tautau_j1_system_m", "two_jets_j12_pt", "boosted_bb_j1_system_eta", "boosted_bb_j2_system_pt", "boosted_tautau_j2_system_eta", "boosted_tautau_j1_system_eta", "boosted_bb_j1_system_pt", "smallR_jets_n", "largeR_jets_n"]]  # variables to use in the training part
+df_VBF_events = pd.concat(frames_VBF) 
 
-df_simplified = df.loc[df["is_jet12_matched_mjj_sel"] == True]
-X = df_simplified[["boosted_all_jets_system_m", "two_jets_j12_m", "boosted_bb_j1_system_pt", "smallR_jets_n", "boosted_bb_tautau_system_m", "two_jets_j12_dR", "boosted_tautau_j1_system_deta", "boosted_bb_j2_system_deta", "boosted_bb_j2_system_dR"]]
-y = df_simplified["process_type_like"].map({"ggF": 0, "VBF": 1})
+# Show the first events
+print(len(df_VBF_events))
 
-print(X)
-print(X.columns)
-print(y)
+# Reading ggF Files
+list_ggF = ["ggF_SM_hh_600459_pT250GeV", "ggF_SM_lh_600461_pT250GeV"]
+# list_ggF = ["", ""]
+frames_ggF = []
 
-# import pdb; pdb.set_trace()
+for file_name in list_ggF:
+    file_ggF_name = "output_analysis/"+file_name+".root"
+    file_ggF = uproot.open(file_ggF_name)
+    tree_ggF = file_ggF["AnalysisMiniTree"]
+    temp = tree_ggF.arrays(library="pd")
+    temp = temp[temp["process_type_like"] == "ggF"]
+    frames_ggF.append(temp)
+
+df_ggF_events = pd.concat(frames_ggF) 
+
+# Show the first events
+print(len(df_ggF_events))
+
+##### Training
+
+# variables to use in the training part
+
+features = ["two_jets_j12_m", "boosted_bb_j1_system_pt", "smallR_jets_n", "boosted_bb_tautau_system_m", "two_jets_j12_dR", "boosted_tautau_j1_system_deta", "boosted_bb_j2_system_deta", "boosted_bb_j2_system_dR"]
+
+X_VBF = df_VBF_events[features].copy()
+y_VBF = df_VBF_events["class_label"].copy()
+
+X_ggF = df_ggF_events[features].copy()
+y_ggF = df_ggF_events["class_label"].copy()
+
+X = pd.concat([X_ggF, X_VBF]).astype(np.float32)
+y = pd.concat([y_ggF, y_VBF]).astype(int)
+
+# print(X)
+# print(y)
 
 correlation_matrix = X.corr()
 plt.figure(figsize=(20, 16)) # make new figure
@@ -54,7 +87,6 @@ bdt = AdaBoostClassifier(dt,
                         learning_rate=0.5) # shrinks the contribution of each classifier by learning_rate
 
 start = time.time() # time at start of BDT fit
-#bdt = GradientBoostingClassifier(n_estimators=100, max_depth=3)
 bdt.fit(X_train, y_train)
 elapsed = time.time() - start # time after fitting BDT
 print("Time taken to fit BDT: "+str(round(elapsed,1))+"s") # print total time taken to fit BDT
@@ -74,20 +106,6 @@ print("Ranking of the most important variables:")
 for i in range(len(features)):
     print(f"{i+1}. {features[indices[i]]} ({importances[indices[i]]:.3f})")
 
-# Save the model
-joblib.dump(bdt, "BDT_plots/bdt_model.pkl")
-print("Saved model as 'bdt_model.pkl'")
-
-# Convert the model into a ONNX file
-initial_type = [("input", FloatTensorType([None, X.shape[1]]))]
-onnx_model = convert_sklearn(bdt, initial_types=initial_type)
-
-# Save the file .onnx
-with open("BDT_plots/bdt_model.onnx", "wb") as f:
-    f.write(onnx_model.SerializeToString())
-
-print("Saved model in ONNX format in 'bdt_model.onnx'")
-
 # Plotting                                                                                                                                                     
 plt.figure(figsize=(8, 6))
 plt.title("Importance of each variable")
@@ -105,8 +123,8 @@ print ("Area under ROC curve for test data: %.4f"%(roc_auc_score(y_test,
                                                     bdt.decision_function(X_test))) )
 
 # we first plot the Neural Network output
-#signal_decisions = bdt.decision_function(X[y>0.5]).ravel() # get probabilities on signal
-#background_decisions = bdt.decision_function(X[y<0.5]).ravel() # get decisions on background
+# signal_decisions = bdt.decision_function(X[y>0.5]).ravel() # get probabilities on signal
+# background_decisions = bdt.decision_function(X[y<0.5]).ravel() # get decisions on background
 
 signal_decisions = bdt.predict_proba(X[y>0.5])[:, 1] # get probabilities on signal
 background_decisions = bdt.predict_proba(X[y<0.5])[:, 1] # get decisions on background
@@ -217,7 +235,19 @@ compare_train_test(bdt, X_train, y_train, X_test, y_test) # call compare_train_t
 # # Apply BDT to all the events
 # df["bdt_score"] = bdt.predict_proba(X)[:, 1]
 
-# with uproot.recreate("output_analysis/BDT_output.root") as fout:
-#     fout["AnalysisMiniTree"] = {**{col: ak.Array(df[col].to_numpy()) for col in X.columns},
-#                                 "bdt_score": ak.Array(df["bdt_score"].to_numpy()),
-#                                 "process_type_like": ak.Array(df["process_type_like"].to_numpy())}
+print(X.dtypes)
+print(y.dtypes)
+
+# Convert the model into a ONNX file
+# Define entry type
+initial_type = [("input", FloatTensorType([None, X.shape[1]]))]
+
+# # Force to save the onnx as predict proba 2d array
+options = {type(bdt): {"zipmap": False}}  # Avoid dict returns
+onnx_model = convert_sklearn(bdt, initial_types=initial_type, options=options)
+
+# Save the file .onnx
+with open("bdt_model.onnx", "wb") as f:
+    f.write(onnx_model.SerializeToString())
+
+print("Saved model in ONNX format in 'bdt_model.onnx'")
