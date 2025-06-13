@@ -15,6 +15,10 @@ from sklearn.metrics import classification_report, roc_auc_score
 from sklearn.metrics import roc_curve, auc
 from skl2onnx import convert_sklearn
 from skl2onnx.common.data_types import FloatTensorType
+# from skl2onnx.helpers import save_model
+# from skl2onnx.helpers
+import onnx
+from onnx import helper, numpy_helper, TensorProto
 
 # Reading VBF File
 # file_VBF = "HHARD_input_h5files/mva_VBFHHbbttSM_ONE_PASS.h5"
@@ -235,14 +239,66 @@ print(y.dtypes)
 
 # Convert the model into a ONNX file
 # Define entry type
-initial_type = [("input", FloatTensorType([None, X.shape[1]]))]
 
-# # Force to save the onnx as predict proba 2d array
-options = {type(bdt): {"zipmap": False}}  # Avoid dict returns
+# bdt[0].name = "jet_features"
+input_name = bdt[0].name  # input name
+
+# initial_type = [("input", FloatTensorType([None, X.shape[1]]))]
+initial_type = [(input_name, FloatTensorType([None, X.shape[1]]))]
+
+# Force to save the onnx as predict proba 2d array
+# options = {type(bdt): {"zipmap": False}}  # Avoid dict returns
+options = {id(bdt): {"zipmap": False}}  # Avoid dict returns
 onnx_model = convert_sklearn(bdt, initial_types=initial_type, options=options)
 
+# Now we separate the output called "probabilities" in two separated outputs
+graph = onnx_model.graph
+
+# Original output name 
+original_output_name = graph.output[0].name  # "probabilities"
+
+
+# Crear inicializador para [1, 1]
+split_initializer = helper.make_tensor(
+    name="split_sizes",
+    data_type=TensorProto.INT64,
+    dims=[2],
+    vals=[1, 1]
+)
+
+# Nodo split (en opset ≥13, 'split' se pasa como entrada)
+split_node = helper.make_node(
+    'Split',
+    inputs=[original_output_name, "split_sizes"],  # split_sizes es la nueva entrada
+    outputs=['bdt_pggF', 'bdt_pVBF'],
+    axis=1,
+    name='SplitProbabilities'
+)
+
+# Agregar inicializador y nodo al grafo
+graph.initializer.append(split_initializer)
+graph.node.append(split_node)
+
+# Add news outputs 
+graph.output.extend([
+    helper.make_tensor_value_info('bdt_pggF', TensorProto.FLOAT, [None, 1]),
+    helper.make_tensor_value_info('bdt_pVBF', TensorProto.FLOAT, [None, 1]),
+])
+
+for output_name in ["label", "probabilities"]:
+    for output in graph.output:
+        if output.name == output_name:
+            graph.output.remove(output)
+            break  # salir del inner loop tras eliminar
+
+# for input in onnx_model.graph.input:
+#     print("Input name:", input.name)
+
+for output in onnx_model.graph.output:
+    print("Output name:", output.name)
+
 # Save the file .onnx
-with open("bdt_model.onnx", "wb") as f:
+with open("ML_models/bdt_model.onnx", "wb") as f:
     f.write(onnx_model.SerializeToString())
 
-print("Saved model in ONNX format in 'bdt_model.onnx'")
+print("Saved model in ONNX format in 'ML_models/bdt_model.onnx'")
