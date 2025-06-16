@@ -23,30 +23,46 @@ import plotting_BDT
 # file_VBF = "HHARD_input_h5files/mva_VBFHHbbttSM_ONE_PASS.h5"
 # file_VBF = "HHARD_input_h5files/mva_VBFHHbbttSM_TWO_PASS.h5"
 # file_VBF = "HHARD_input_h5files/mva_VBFHHbbttEFT_ONE_PASS.h5"
-file_VBF = "HHARD_input_h5files/mva_VBFHHbbttEFT_TWO_PASS.h5"
+# file_VBF = "HHARD_input_h5files/mva_VBFHHbbttEFT_TWO_PASS.h5"
 
-# Open file HDF5
-with h5py.File(file_VBF, "r") as f:
-    # Convert the 'events' branch in a df
-    df_VBF_events = pd.DataFrame(f["events"][:])
+list_VBF = ["mva_VBFHHbbttEFT_ONE_PASS.h5", "mva_VBFHHbbttEFT_TWO_PASS.h5"]
 
-    # Convert the dataset 'objects' in a structure per event (optional)
-    objects_VBF_array = f["objects"][:]
+frames_VBF = []
+
+for file_name in list_VBF:
+    file_VBF_name = "HHARD_input_h5files/"+file_name
+    # Open file HDF5
+    with h5py.File(file_VBF_name, "r") as f:
+        # Convert the 'events' branch in a df
+        temp_events = pd.DataFrame(f["events"][:])
+        # Convert the dataset 'objects' in a structure per event (optional)
+        temp_array = f["objects"][:]
+        frames_VBF.append(temp_events)
+
+df_VBF_events = pd.concat(frames_VBF) 
 
 # Show the first events
 print(len(df_VBF_events))
 
-# Reading VBF File
+# Reading ggF File
 # file_ggF = "HHARD_input_h5files/mva_ggFHHbbttSM_ONE_PASS.h5"
-file_ggF = "HHARD_input_h5files/mva_ggFHHbbttSM_TWO_PASS.h5"
+# file_ggF = "HHARD_input_h5files/mva_ggFHHbbttSM_TWO_PASS.h5"
 
-# Open file HDF5
-with h5py.File(file_ggF, "r") as f:
-    # Convert the 'events' branch in a df
-    df_ggF_events = pd.DataFrame(f["events"][:])
+list_ggF = ["mva_ggFHHbbttSM_ONE_PASS.h5", "mva_ggFHHbbttSM_TWO_PASS.h5"]
 
-    # Convert the dataset 'objects' in a structure per event (optional)
-    objects_ggF_array = f["objects"][:]
+frames_ggF = []
+
+for file_name in list_ggF:
+    file_ggF_name = "HHARD_input_h5files/"+file_name
+    # Open file HDF5
+    with h5py.File(file_ggF_name, "r") as f:
+        # Convert the 'events' branch in a df
+        temp_events = pd.DataFrame(f["events"][:])
+        # Convert the dataset 'objects' in a structure per event (optional)
+        temp_array = f["objects"][:]
+        frames_ggF.append(temp_events)
+
+df_ggF_events = pd.concat(frames_ggF) 
 
 # Show the first events
 print(len(df_ggF_events))
@@ -55,7 +71,13 @@ print(len(df_ggF_events))
 
 # variables to use in the training part
 
-features = ["two_jets_j12_m", "Hbb_j1_Pt", "NSmallRJets", "mHH", "two_jets_j12_dR", "Htt_j1_dEta", "Hbb_j2_dEta", "Hbb_j2_dR"]
+# features = ["two_jets_j12_m", "Hbb_j1_Pt", "NSmallRJets", "mHH", "two_jets_j12_dR", "Htt_j1_dEta", "Hbb_j2_dEta", "Hbb_j2_dR"]
+
+features = ["two_jets_j12_m", "two_jets_eta0eta1", "two_jets_j12_deta", "two_jets_j12_dphi", "two_jets_j12_dR", 
+            "Htt_j1_Pt", "Htt_j1_dR", "Htt_j1_dEta", "Htt_j1_dPhi", "Htt_j2_Pt", "Htt_j2_dR", "Htt_j2_dEta", 
+            "Htt_j2_dPhi", "Hbb_j1_Pt", "Hbb_j1_dR", "Hbb_j1_dEta", "Hbb_j1_dPhi", "Hbb_j2_Pt", "Hbb_j2_dR", 
+            "Hbb_j2_dEta", "Hbb_j2_dPhi", "mHH", "pTHH", "etaHH", "phiHH", "dEtaHH", "NSmallRJets", "NLargeRJets", 
+            "NBJets", "NTauJets"]
 
 X_VBF = df_VBF_events[features].copy()
 y_VBF = df_VBF_events["class_label"].copy()
@@ -65,9 +87,6 @@ y_ggF = df_ggF_events["class_label"].copy()
 
 X = pd.concat([X_ggF, X_VBF]).astype(np.float32)
 y = pd.concat([y_ggF, y_VBF]).astype(int)
-
-# print(X)
-# print(y)
 
 plotting_BDT.correlation_plots(X) # plotting correlation between variables
 
@@ -124,16 +143,32 @@ input_name = "jet_features"  # input name
 # initial_type = [("input", FloatTensorType([None, X.shape[1]]))]
 initial_type = [(input_name, FloatTensorType([None, X.shape[1]]))]
 
+# initial_type = [
+#     ("jet_features", FloatTensorType([None, X.shape[1]])),
+#     ("track_features", FloatTensorType([None, 2, 4])) # 2 objetos, 4 variables
+# ]
+
 # Force to save the onnx as predict proba 2d array
-# options = {type(bdt): {"zipmap": False}}  # Avoid dict returns
 options = {id(bdt): {"zipmap": False}}  # Avoid dict returns
 onnx_model = convert_sklearn(bdt, initial_types=initial_type, options=options)
+
+# track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, [None, X["NSmallRJets"].astype(int), 4])
+track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, [None, 2, 4])
+onnx_model.graph.input.append(track_input)
 
 # Now we separate the output called "probabilities" in two separated outputs
 graph = onnx_model.graph
 
 # Original output name 
-original_output_name = graph.output[0].name  # "probabilities"
+original_output_name = graph.output[1].name  # "probabilities"
+
+# print(graph.output[0].name)
+# import pdb; pdb.set_trace()
+# print("*****************************************************")
+# for output in onnx_model.graph.output:
+#     print(output.name, output.type)
+#     # import pdb; pdb.set_trace()
+# print("*****************************************************")
 
 split_initializer = helper.make_tensor(
     name="split_sizes",
@@ -164,9 +199,6 @@ for output_name in ["label", "probabilities"]:
         if output.name == output_name:
             graph.output.remove(output)
             break
-
-# for input in onnx_model.graph.input:
-#     print("Input name:", input.name)
 
 for output in onnx_model.graph.output:
     print("Output name:", output.name)
