@@ -52,6 +52,7 @@ def roc_curve_plots(clf, X, y, X_test, y_test):
             histtype='step', # lineplot that's unfilled
             density=True, # normalize to form a probability density
             linestyle='--' ) # dashed line
+    plt.tight_layout()
     plt.xlabel('BDT output') # add x-axis label
     plt.ylabel('Arbitrary units') # add y-axis label
     plt.legend() # add legend
@@ -80,6 +81,7 @@ def roc_curve_plots(clf, X, y, X_test, y_test):
     plt.xlabel('False Positive Rate') # x-axis label
     plt.ylabel('True Positive Rate') # y-axis label
     plt.title('Receiver operating characteristic (ROC) curve') # title
+    plt.tight_layout()
     plt.legend() # add legend
     plt.grid() # add grid
     #plt.show()
@@ -139,9 +141,38 @@ def compare_train_test(clf, X_train, y_train, X_test, y_test):
     
     plt.errorbar(x=center, y=hist_signal, yerr=err_signal, fmt='o', # circles
                  c='blue', label='VBF (test)' ) # Signal (test)
-    
+    plt.tight_layout()
     plt.xlabel("BDT output") # write x-axis label
     plt.ylabel("Arbitrary units") # write y-axis label
     plt.legend() # add legend
     #plt.show()
     plt.savefig("BDT_plots/overtraining_check.pdf")
+
+### Plotting distributions per sample
+def distribution_plots(samples_dict, samples_list):
+    
+    highest_decision = 0.95 # get maximum score
+    bin_edges = [] # list to hold bin edges
+    bin_edge = 0.3 # start counter for bin_edges
+    while bin_edge < highest_decision: # up to highest score
+    #while bin_edge < 1.0: # up to highest score
+        bin_edge += 0.05 # increment
+        bin_edges.append(bin_edge)
+
+    plt.figure() # make new figure 
+
+    for sample_name in samples_list:
+        plt.hist(samples_dict[sample_name]["variable"], # background in train set
+                bins=bin_edges, # lower and upper range of the bins
+                density=True, # area under the histogram will sum to 1
+                histtype='step', # lineplot that's filled
+                color=samples_dict[sample_name]["color"], label=sample_name, # Background (train)
+                alpha=1.0 ) # half transparency
+
+    plt.xlabel("BDT output") # write x-axis label
+    plt.ylabel("Arbitrary units") # write y-axis label
+    plt.legend(loc = "upper left") # add legend
+    plt.tight_layout()
+    #plt.show()
+    name_figure = "BDT_plots/comparison_samples_bdt_score.pdf"
+    plt.savefig(name_figure)
