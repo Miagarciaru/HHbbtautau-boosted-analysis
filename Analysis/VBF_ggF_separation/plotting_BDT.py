@@ -1,22 +1,10 @@
-import uproot
-import pandas as pd
-import awkward as ak
 import matplotlib.pyplot as plt
 import numpy as np
-import time # to measure time to analyse
 import seaborn as sns
-import joblib
-import h5py
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.metrics import classification_report, roc_auc_score
 from sklearn.metrics import roc_curve, auc
-from skl2onnx import convert_sklearn
-from skl2onnx.common.data_types import FloatTensorType
-import onnx
-from onnx import helper, numpy_helper, TensorProto
+import os
+
+os.makedirs("BDT_plots", exist_ok=True)
 
 def correlation_plots(df):
     correlation_matrix = df.corr()

@@ -1,22 +1,15 @@
-import uproot
 import pandas as pd
-import awkward as ak
-import matplotlib.pyplot as plt
+import os
 import numpy as np
 import time # to measure time to analyse
-import seaborn as sns
-import joblib
 import h5py
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import classification_report, roc_auc_score
-from sklearn.metrics import roc_curve, auc
 from skl2onnx import convert_sklearn
 from skl2onnx.common.data_types import FloatTensorType
-import onnx
-from onnx import helper, numpy_helper, TensorProto
+from onnx import helper, TensorProto
 import plotting_BDT
 
 # Reading VBF File
@@ -47,6 +40,8 @@ print(len(df_VBF_events))
 # Reading ggF File
 # file_ggF = "HHARD_input_h5files/mva_ggFHHbbttSM_ONE_PASS.h5"
 # file_ggF = "HHARD_input_h5files/mva_ggFHHbbttSM_TWO_PASS.h5"
+
+#### TODO: this code block has the same stucture as the one above, move it to a function?? 
 
 list_ggF = ["mva_ggFHHbbttSM_ONE_PASS.h5", "mva_ggFHHbbttSM_TWO_PASS.h5"]
 
@@ -153,7 +148,7 @@ options = {id(bdt): {"zipmap": False}}  # Avoid dict returns
 onnx_model = convert_sklearn(bdt, initial_types=initial_type, options=options)
 
 # track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, [None, X["NSmallRJets"].astype(int), 4])
-track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, [None, 2, 4])
+track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, ["n_tracks", 4])
 onnx_model.graph.input.append(track_input)
 
 # Now we separate the output called "probabilities" in two separated outputs
@@ -170,28 +165,64 @@ original_output_name = graph.output[1].name  # "probabilities"
 #     # import pdb; pdb.set_trace()
 # print("*****************************************************")
 
-split_initializer = helper.make_tensor(
-    name="split_sizes",
-    data_type=TensorProto.INT64,
-    dims=[2],
-    vals=[1, 1]
+# TODO: is there a vway to make a simpler reshape?? 
+
+# squeeze_bdt_pggF, slice_bdt_pggF = create_sqeeze_reshape_layer("vbf")
+# squeeze_bdt_pVBF, slice_bdt_pVBF = create_sqeeze_reshape_layer("ggf")
+# graph.node.extend([slice_bdt_pggF, slice_bdt_pVBF])
+# graph.node.extend([squeeze_bdt_pggF, squeeze_bdt_pVBF])
+
+
+# Add constants for Slice node inputs
+starts_0 = helper.make_tensor("starts_0", TensorProto.INT64, [1], [0])
+ends_0 = helper.make_tensor("ends_0", TensorProto.INT64, [1], [1]) 
+starts_1 = helper.make_tensor("starts_1", TensorProto.INT64, [1], [1])
+ends_1 = helper.make_tensor("ends_1", TensorProto.INT64, [1], [2])
+axes = helper.make_tensor("axes", TensorProto.INT64, [1], [1])
+steps = helper.make_tensor("steps", TensorProto.INT64, [1], [1])
+squeeze_axes = helper.make_tensor("squeeze_axes", TensorProto.INT64, [1], [])
+
+for tensor in [starts_0, ends_0, starts_1, ends_1, axes, steps, squeeze_axes]:
+    if not any(init.name == tensor.name for init in graph.initializer):
+        graph.initializer.append(tensor)
+
+# Slice node for bdt_pggF
+slice_bdt_pggF = helper.make_node(
+    "Slice",
+    inputs=[original_output_name, "starts_0", "ends_0", "axes", "steps"],
+    outputs=["bdt_pggF_raw"],
+    name="slice_bdt_pggF"
 )
 
-split_node = helper.make_node(
-    'Split',
-    inputs=[original_output_name, "split_sizes"],  # split_sizes is the new entry
-    outputs=['bdt_pggF', 'bdt_pVBF'],
-    axis=1,
-    name='SplitProbabilities'
+# Slice node for bdt_pVBF
+slice_bdt_pVBF = helper.make_node(
+    "Slice",
+    inputs=[original_output_name, "starts_1", "ends_1", "axes", "steps"],
+    outputs=["bdt_pVBF_raw"],
+    name="slice_bdt_pVBF"
 )
 
-graph.initializer.append(split_initializer)
-graph.node.append(split_node)
+graph.node.extend([slice_bdt_pggF, slice_bdt_pVBF])
+
+squeeze_bdt_pggF = helper.make_node(
+    "Squeeze",
+    inputs=["bdt_pggF_raw", "squeeze_axes"],
+    outputs=["bdt_pggF"],
+    name="squeeze_bdt_pggF"
+)
+
+squeeze_bdt_pVBF = helper.make_node(
+    "Squeeze",
+    inputs=["bdt_pVBF_raw", "squeeze_axes"],
+    outputs=["bdt_pVBF"],
+    name="squeeze_bdt_pVBF"
+)
+graph.node.extend([squeeze_bdt_pggF, squeeze_bdt_pVBF])
 
 # Add news outputs 
 graph.output.extend([
-    helper.make_tensor_value_info('bdt_pggF', TensorProto.FLOAT, [None, 1]),
-    helper.make_tensor_value_info('bdt_pVBF', TensorProto.FLOAT, [None, 1]),
+    helper.make_tensor_value_info('bdt_pggF', TensorProto.FLOAT, shape=[1]),
+    helper.make_tensor_value_info('bdt_pVBF', TensorProto.FLOAT, shape=[1]),
 ])
 
 for output_name in ["label", "probabilities"]:
@@ -204,6 +235,7 @@ for output in onnx_model.graph.output:
     print("Output name:", output.name)
 
 # Save the file .onnx
+os.makedirs("ML_models", exist_ok=True)
 with open("ML_models/bdt_model.onnx", "wb") as f:
     f.write(onnx_model.SerializeToString())
 
