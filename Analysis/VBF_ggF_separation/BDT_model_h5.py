@@ -18,12 +18,14 @@ import plotting_BDT
 # file_VBF = "HHARD_input_h5files/mva_VBFHHbbttEFT_ONE_PASS.h5"
 # file_VBF = "HHARD_input_h5files/mva_VBFHHbbttEFT_TWO_PASS.h5"
 
-list_VBF = ["mva_VBFHHbbttEFT_ONE_PASS.h5", "mva_VBFHHbbttEFT_TWO_PASS.h5"]
+hhard_path_folder = "HHARD_input_h5files/"
+
+list_VBF = ["mva_VBFHHbbttEFT_TWO_PASS.h5"]
 
 frames_VBF = []
 
 for file_name in list_VBF:
-    file_VBF_name = "HHARD_input_h5files/"+file_name
+    file_VBF_name = hhard_path_folder+file_name
     # Open file HDF5
     with h5py.File(file_VBF_name, "r") as f:
         # Convert the 'events' branch in a df
@@ -48,7 +50,7 @@ list_ggF = ["mva_ggFHHbbttSM_ONE_PASS.h5", "mva_ggFHHbbttSM_TWO_PASS.h5"]
 frames_ggF = []
 
 for file_name in list_ggF:
-    file_ggF_name = "HHARD_input_h5files/"+file_name
+    file_ggF_name = hhard_path_folder+file_name
     # Open file HDF5
     with h5py.File(file_ggF_name, "r") as f:
         # Convert the 'events' branch in a df
@@ -66,7 +68,7 @@ print(len(df_ggF_events))
 
 # variables to use in the training part
 
-# features = ["two_jets_j12_m", "Hbb_j1_Pt", "NSmallRJets", "mHH", "two_jets_j12_dR", "Htt_j1_dEta", "Hbb_j2_dEta", "Hbb_j2_dR"]
+features_to_keep = ["two_jets_j12_m", "Hbb_j1_Pt", "NSmallRJets", "mHH", "two_jets_j12_dR", "Htt_j1_dEta", "Hbb_j2_dEta", "Hbb_j2_dR"]
 
 features = ["two_jets_j12_m", "two_jets_eta0eta1", "two_jets_j12_deta", "two_jets_j12_dphi", "two_jets_j12_dR", 
             "Htt_j1_Pt", "Htt_j1_dR", "Htt_j1_dEta", "Htt_j1_dPhi", "Htt_j2_Pt", "Htt_j2_dR", "Htt_j2_dEta", 
@@ -80,6 +82,12 @@ y_VBF = df_VBF_events["class_label"].copy()
 X_ggF = df_ggF_events[features].copy()
 y_ggF = df_ggF_events["class_label"].copy()
 
+# keep only the 8 most relevant variables
+# X_VBF[[f for f in df_VBF_events.columns if f not in features_to_keep]] = 0
+# X_ggF[[f for f in df_VBF_events.columns if f not in features_to_keep]] = 0
+# X_VBF = X_VBF[features_to_keep]
+# X_ggF = X_ggF[features_to_keep]
+
 X = pd.concat([X_ggF, X_VBF]).astype(np.float32)
 y = pd.concat([y_ggF, y_VBF]).astype(int)
 
@@ -87,12 +95,13 @@ plotting_BDT.correlation_plots(X) # plotting correlation between variables
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=492)
 
-dt = DecisionTreeClassifier(max_depth=2) # maximum depth of the tree
-bdt = AdaBoostClassifier(dt,
-                        algorithm='SAMME', # SAMME discrete boosting algorithm
-                        n_estimators=12, # max number of estimators at which boosting is terminated
-                        learning_rate=0.5) # shrinks the contribution of each classifier by learning_rate
-
+dt = DecisionTreeClassifier(max_depth=5) # maximum depth of the tree
+bdt = AdaBoostClassifier(
+    dt,
+    algorithm='SAMME', # SAMME discrete boosting algorithm
+    n_estimators=12, # max number of estimators at which boosting is terminated
+    learning_rate=0.3 # shrinks the contribution of each classifier by learning_rate
+)
 start = time.time() # time at start of BDT fit
 bdt.fit(X_train, y_train)
 elapsed = time.time() - start # time after fitting BDT
@@ -180,7 +189,7 @@ starts_1 = helper.make_tensor("starts_1", TensorProto.INT64, [1], [1])
 ends_1 = helper.make_tensor("ends_1", TensorProto.INT64, [1], [2])
 axes = helper.make_tensor("axes", TensorProto.INT64, [1], [1])
 steps = helper.make_tensor("steps", TensorProto.INT64, [1], [1])
-squeeze_axes = helper.make_tensor("squeeze_axes", TensorProto.INT64, [1], [])
+squeeze_axes = helper.make_tensor("squeeze_axes", TensorProto.INT64, [0], [])
 
 for tensor in [starts_0, ends_0, starts_1, ends_1, axes, steps, squeeze_axes]:
     if not any(init.name == tensor.name for init in graph.initializer):
@@ -221,8 +230,8 @@ graph.node.extend([squeeze_bdt_pggF, squeeze_bdt_pVBF])
 
 # Add news outputs 
 graph.output.extend([
-    helper.make_tensor_value_info('bdt_pggF', TensorProto.FLOAT, shape=[1]),
-    helper.make_tensor_value_info('bdt_pVBF', TensorProto.FLOAT, shape=[1]),
+    helper.make_tensor_value_info('bdt_pggF', TensorProto.FLOAT, shape=[]),
+    helper.make_tensor_value_info('bdt_pVBF', TensorProto.FLOAT, shape=[]),
 ])
 
 for output_name in ["label", "probabilities"]:
