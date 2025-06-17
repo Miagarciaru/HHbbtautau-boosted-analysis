@@ -25,7 +25,12 @@ import plotting_BDT
 # file_VBF = "HHARD_input_h5files/mva_VBFHHbbttEFT_ONE_PASS.h5"
 # file_VBF = "HHARD_input_h5files/mva_VBFHHbbttEFT_TWO_PASS.h5"
 
-list_VBF = ["mva_VBFHHbbttEFT_ONE_PASS.h5", "mva_VBFHHbbttEFT_TWO_PASS.h5"]
+# list_VBF = ["mva_VBFHHbbttEFT_ONE_PASS.h5", "mva_VBFHHbbttEFT_TWO_PASS.h5", "mva_VBFHHbbttSM_ONE_PASS.h5",
+#             "mva_VBFHHbbttSM_TWO_PASS.h5"]
+
+list_VBF = ["mva_VBFHHbbttEFT_TWO_PASS.h5"]
+
+# list_VBF = ["mva_VBFHHbbttSM_ONE_PASS.h5", "mva_VBFHHbbttSM_TWO_PASS.h5"]
 
 frames_VBF = []
 
@@ -161,14 +166,6 @@ graph = onnx_model.graph
 
 # Original output name 
 original_output_name = graph.output[1].name  # "probabilities"
-
-# print(graph.output[0].name)
-# import pdb; pdb.set_trace()
-# print("*****************************************************")
-# for output in onnx_model.graph.output:
-#     print(output.name, output.type)
-#     # import pdb; pdb.set_trace()
-# print("*****************************************************")
 
 split_initializer = helper.make_tensor(
     name="split_sizes",
