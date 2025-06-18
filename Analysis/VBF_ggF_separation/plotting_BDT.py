@@ -1,22 +1,7 @@
-import uproot
-import pandas as pd
-import awkward as ak
 import matplotlib.pyplot as plt
 import numpy as np
-import time # to measure time to analyse
 import seaborn as sns
-import joblib
-import h5py
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.metrics import classification_report, roc_auc_score
-from sklearn.metrics import roc_curve, auc
-from skl2onnx import convert_sklearn
-from skl2onnx.common.data_types import FloatTensorType
-import onnx
-from onnx import helper, numpy_helper, TensorProto
+from sklearn.metrics import auc, roc_curve
 
 def correlation_plots(df):
     correlation_matrix = df.corr()
@@ -52,11 +37,11 @@ def roc_curve_plots(clf, X, y, X_test, y_test):
             histtype='step', # lineplot that's unfilled
             density=True, # normalize to form a probability density
             linestyle='--' ) # dashed line
-    plt.tight_layout()
     plt.xlabel('BDT output') # add x-axis label
     plt.ylabel('Arbitrary units') # add y-axis label
     plt.legend() # add legend
     #plt.show()
+    plt.tight_layout()
     plt.savefig("BDT_plots/distributions_BDT_score.pdf")
 
     # we then plot the ROC
