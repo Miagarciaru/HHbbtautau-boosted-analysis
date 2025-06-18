@@ -1,10 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from sklearn.metrics import roc_curve, auc
-import os
-
-os.makedirs("BDT_plots", exist_ok=True)
+from sklearn.metrics import auc, roc_curve
 
 def correlation_plots(df):
     correlation_matrix = df.corr()
@@ -40,11 +37,11 @@ def roc_curve_plots(clf, X, y, X_test, y_test):
             histtype='step', # lineplot that's unfilled
             density=True, # normalize to form a probability density
             linestyle='--' ) # dashed line
-    plt.tight_layout()
     plt.xlabel('BDT output') # add x-axis label
     plt.ylabel('Arbitrary units') # add y-axis label
     plt.legend() # add legend
     #plt.show()
+    plt.tight_layout()
     plt.savefig("BDT_plots/distributions_BDT_score.pdf")
 
     # we then plot the ROC
