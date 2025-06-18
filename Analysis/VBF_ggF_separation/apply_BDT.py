@@ -32,13 +32,20 @@ for file in files_h5:
     file_name = "HHARD_input_h5files/"+file
     with h5py.File(file_name, "r") as f:
         original_df = pd.DataFrame(f["events"][:])
-        
-        # Evaluar solo si es VBF o ggF
+        n_tracks_df = pd.DataFrame(f["objects"]["valid"])
+        n_tracks_df["n_tracks"] = n_tracks_df.sum(axis=1)    
+        n_tracks = n_tracks_df["n_tracks"].to_numpy()
+        max_tracks = max(n_tracks)
+
         X = original_df[features].copy()
         # print(X)
         X = X.astype(np.float32).to_numpy()
-        tracks_input = np.zeros((1, 2, 4), dtype=np.float32)   # 2 objects woith zeros entries values
-
+        # sec_tracks_input = np.zeros((1, 2, 4), dtype=np.float32)   # 2 objects with zeros entries values
+        # tracks_input = np.zeros((1, 2, 4), dtype=np.float32)   # 2 objects with zeros entries values
+        # tracks_input = [np.zeros((n, 4), dtype=np.float32) for n in n_tracks]
+        # tracks_input = np.zeros((len(n_tracks), max_tracks, 4), dtype=np.float32)
+        tracks_input = np.zeros((1, max_tracks, 4), dtype=np.float32)
+       
         outputs = sess.run(None, {
             "jet_features": X,
             "track_features": tracks_input

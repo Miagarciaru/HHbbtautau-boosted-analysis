@@ -156,7 +156,7 @@ def distribution_plots(samples_dict, samples_list):
 
     plt.xlabel("BDT output") # write x-axis label
     plt.ylabel("Arbitrary units") # write y-axis label
-    plt.legend(loc = "upper left") # add legend
+    plt.legend(loc = "upper center") # add legend
     plt.tight_layout()
     #plt.show()
     name_figure = "BDT_plots/comparison_samples_bdt_score.pdf"

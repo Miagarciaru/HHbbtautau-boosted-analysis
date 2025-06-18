@@ -107,7 +107,8 @@ def save_bdt_model(clf: AdaBoostClassifier, X_df: pd.DataFrame) -> None:
     onnx_model = convert_sklearn(clf, initial_types=initial_type, options=options)
 
     # track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, [None, X["NSmallRJets"].astype(int), 4])
-    track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, ["n_tracks", 4])
+    track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, [None, "n_tracks", 4])
+    # track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, [None, 2, 4])
     onnx_model.graph.input.append(track_input)
 
     # Now we separate the output called "probabilities" in two separated outputs
