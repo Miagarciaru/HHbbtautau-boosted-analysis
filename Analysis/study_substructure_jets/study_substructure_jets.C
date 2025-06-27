@@ -62,6 +62,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     compute_dR_min_index_fat_jets();
     define_classes(min_pT_recojet_cut_MeV);
     define_reconstructed_objects();
+    define_reco_truth_boosted_jets_hh();
     define_preselected_events(min_pT_recojet_cut_MeV);
     pairs_small_jets();
     compute_variables_for_topological_processes();
@@ -104,8 +105,8 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     counter_for_stat();
     // Fill the output files with the info for events passing the Boosted analysis or the resolved selection only
     //if( (class_event!=-1) || (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
-    if( (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
-    
+    // if( (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
+    if( class_event!=-1 ) outTree_root->Fill();
   }
   
   //****************************************************************************
@@ -327,7 +328,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   //Save Histograms in the output root file
   //****************************************************
   
-  write_histograms();
+  // write_histograms();
   
   outFile_root->Write();
   

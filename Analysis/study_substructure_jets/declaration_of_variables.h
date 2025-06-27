@@ -290,6 +290,9 @@ vector<float> *recojet_antikt10UFO_Split12;
 vector<float> *recojet_antikt10UFO_Split23;
 vector<char> *recojet_antikt10UFO_NOSYS_passesOR;
 
+vector<char> *is_truth_reco_boosted_bb_jet;
+vector<char> *is_truth_reco_boosted_tautau_jet;
+
 // Declaration idx and dRmin values
 
 Int_t idx_b1truth_recoak10_dRmin;

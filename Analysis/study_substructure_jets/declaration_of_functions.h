@@ -17,6 +17,7 @@ void define_preselected_events(float min_pT_cut_in_MeV);
 void define_reconstructed_objects();
 void define_output_branches();
 void define_classes();
+void define_reco_truth_boosted_jets_hh();
 void compute_dR_min_index_fat_jets();
 void compute_dR_min(int &idx, float &dR_min, float truth_pt, float truth_eta, float truth_phi, float truth_m);
 void define_truth_tau_and_b_jets();
@@ -1087,6 +1088,41 @@ void define_classes(float min_pT_cut_in_MeV){
     idx_tau2truth_recoak10_dRmin = -1;
   } 
 
+}
+
+// This function set a bool variable to determine which truth-recojet is the boosted one in boosted events
+void define_reco_truth_boosted_jets_hh(){
+
+  char boosted_bbjet = 0;
+  char boosted_tautaujet = 0;
+
+  for(int ii=0; ii<recojet_antikt10UFO_NOSYS_pt->size(); ii++){
+    if(class_event!=-1 && class_event!=0){
+      boosted_bbjet = 0;
+      // if(truth_reco_match_for_boosted_bb==true){
+      if(class_event==2 || class_event==3){
+        if(ii==idx_b1truth_recoak10_dRmin){
+          boosted_bbjet = 1;
+        }
+      }
+      is_truth_reco_boosted_bb_jet->push_back(boosted_bbjet);
+
+      boosted_tautaujet = 0;
+      // if(truth_reco_match_for_boosted_tautau==true){
+      if(class_event==1 || class_event==3){
+        if(ii==idx_tau1truth_recoak10_dRmin){
+          boosted_tautaujet = 1;
+        }
+      }
+      is_truth_reco_boosted_tautau_jet->push_back(boosted_tautaujet);
+    }
+    else{
+      boosted_bbjet = 0;
+      boosted_tautaujet = 0;
+      is_truth_reco_boosted_bb_jet->push_back(boosted_bbjet);
+      is_truth_reco_boosted_tautau_jet->push_back(boosted_tautaujet);
+    }
+  }
 }
 
 // This function give us the min deltaR between the truth_objects and the objects in the recojets_ak10UFO fat-jets

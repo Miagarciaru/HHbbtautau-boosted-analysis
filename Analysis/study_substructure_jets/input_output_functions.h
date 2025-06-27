@@ -228,6 +228,8 @@ void define_output_branches(TTree *outTree){
 
   outTree->Branch("recojet_antikt10UFO_GN2Xv01_phbb", &recojet_antikt10UFO_GN2Xv01_phbb);
   outTree->Branch("recojet_antikt10UFO_GN2Xv01_pqcd", &recojet_antikt10UFO_GN2Xv01_pqcd);
+  outTree->Branch("recojet_antikt10UFO_GN2Xv01_phcc", &recojet_antikt10UFO_GN2Xv01_phcc);
+  outTree->Branch("recojet_antikt10UFO_GN2Xv01_ptop", &recojet_antikt10UFO_GN2Xv01_ptop);
 
   outTree->Branch("recojet_antikt10UFO_NOSYS_pt", &recojet_antikt10UFO_NOSYS_pt);
   outTree->Branch("recojet_antikt10UFO_eta", &recojet_antikt10UFO_eta);
@@ -235,7 +237,17 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("recojet_antikt10UFO_m", &recojet_antikt10UFO_m);
   outTree->Branch("recojet_antikt10UFO_Tau1_wta", &recojet_antikt10UFO_Tau1_wta);
   outTree->Branch("recojet_antikt10UFO_Tau2_wta", &recojet_antikt10UFO_Tau2_wta);
-  
+  outTree->Branch("recojet_antikt10UFO_Tau3_wta", &recojet_antikt10UFO_Tau3_wta);
+
+  outTree->Branch("recojet_antikt10UFO_ECF1", &recojet_antikt10UFO_ECF1);
+  outTree->Branch("recojet_antikt10UFO_ECF2", &recojet_antikt10UFO_ECF2);
+  outTree->Branch("recojet_antikt10UFO_ECF3", &recojet_antikt10UFO_ECF3);
+  outTree->Branch("recojet_antikt10UFO_Split12", &recojet_antikt10UFO_Split12);
+  outTree->Branch("recojet_antikt10UFO_Split23", &recojet_antikt10UFO_Split23);
+
+  outTree->Branch("is_truth_reco_boosted_bb_jet", &is_truth_reco_boosted_bb_jet);
+  outTree->Branch("is_truth_reco_boosted_tautau_jet", &is_truth_reco_boosted_tautau_jet);
+
   outTree->Branch("idx_b1truth_recoak10_dRmin", &idx_b1truth_recoak10_dRmin);
   outTree->Branch("idx_b2truth_recoak10_dRmin", &idx_b2truth_recoak10_dRmin);
   outTree->Branch("idx_tau1truth_recoak10_dRmin", &idx_tau1truth_recoak10_dRmin);
@@ -262,7 +274,8 @@ void define_output_branches(TTree *outTree){
   outTree->Branch("reco_bbtt_tautau_m_BA", &reco_bbtt_tautau_m_BA);
 
   outTree->Branch("class_event", &class_event);
-
+  outTree->Branch("truth_reco_match_for_boosted_bb", &truth_reco_match_for_boosted_bb);
+  outTree->Branch("truth_reco_match_for_boosted_tautau", &truth_reco_match_for_boosted_tautau);
   outTree->Branch("idx_b1_preselected", &idx_b1_preselected);
   outTree->Branch("idx_b2_preselected", &idx_b2_preselected);
   outTree->Branch("idx_tau1_preselected", &idx_tau1_preselected);
