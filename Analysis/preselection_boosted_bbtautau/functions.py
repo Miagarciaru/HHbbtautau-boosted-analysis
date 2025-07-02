@@ -1,5 +1,4 @@
 import time  # to measure time to analyse
-import h5py
 import numpy as np
 import pandas as pd
 from onnx import TensorProto, helper
@@ -11,6 +10,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 import uproot3
 import plotting_BDT
+import ROOT
+import xgboost as xgb
+from xgboost import XGBClassifier
+from onnxmltools.convert import convert_xgboost
+from onnxmltools.convert.common.data_types import FloatTensorType
 
 def get_df_with_info_jets(df_events: pd.DataFrame, explode_branches: list, boosted_idx_name: str) -> pd.DataFrame:
 
@@ -28,10 +32,7 @@ def get_df_with_info_jets(df_events: pd.DataFrame, explode_branches: list, boost
          name_column = "is_boosted_tautau_jet"
 
     df_jets[name_column] = np.vectorize(is_boosted_jet)(df_jets["class_event"], df_jets["jet_index"], df_jets[boosted_idx_name], boosted_idx_name)
-    # df_copy = df_jets[["class_event", "jet_index", boosted_idx_name, "is_boosted_bb_jet"]].copy()
-
-    # print(df_copy[df_copy["class_event"]==1].head(15))
-
+    
     # Result
     print(len(df_jets[df_jets[name_column]==1])/len(df_jets)*100)
     print(df_jets.columns)
@@ -68,21 +69,25 @@ def read_root_files(list_of_samples: list, features: list, base_folder: str) -> 
     return df_events
 
 
-def train_bdt_model(X_df: pd.DataFrame, y_df: pd.DataFrame):
+def train_bdt_model(X_df, y_df):
     """
         This functions trained the bdt model and returns the classifier with the splitted dataframes 
         samples.
     """
+    
     start = time.time() # time at start of BDT fit
-    X_train, X_test, y_train, y_test = train_test_split(X_df, y_df, test_size=0.3, random_state=492)
-    dt = DecisionTreeClassifier(max_depth=3, class_weight='balanced') # maximum depth of the tree
-    bdt = AdaBoostClassifier(
-        dt,
-        algorithm='SAMME', # SAMME discrete boosting algorithm
-        n_estimators=100, # max number of estimators at which boosting is terminated
-        learning_rate=0.1 # shrinks the contribution of each classifier by learning_rate
-        # random_state=42   
-    )
+    X_train, X_test, y_train, y_test = train_test_split(X_df, y_df, test_size=0.3, random_state=42)
+    
+    scale_pos_weight = np.sum(y_train == 0) / np.sum(y_train == 1)
+
+    bdt = XGBClassifier(n_estimators=100, 
+                        max_depth=3, 
+                        learning_rate=0.1,
+                        seed = 42, 
+                        scale_pos_weight=scale_pos_weight,
+                        eval_metric='logloss'
+                        )
+
     bdt.fit(X_train, y_train)
     elapsed = time.time() - start # time after fitting BDT
     print("Time taken to fit BDT: "+str(round(elapsed,1))+"s") # print total time taken to fit BDT
@@ -119,15 +124,40 @@ def definition_validation_plots(clf: AdaBoostClassifier, X_df: pd.DataFrame, y_d
     """
         This function computes the needed values to plot the ROC Curve and the overtraining check.
     """
-    y_predicted = clf.predict(X_test) # get predicted y for test set
+    y_predicted = clf.predict(X_test)
+    # y_predicted = pd.Series(probas, index=y_test.index)
+
     print (classification_report(y_test, y_predicted,
                                 target_names=["background", "signal"]))
+
     print ("Area under ROC curve for test data: %.4f"%(roc_auc_score(y_test,
-                                                        clf.decision_function(X_test))) )
+                                                        clf.predict_proba(X_test)[:, 1])) )
 
     plotting_BDT.roc_curve_plots(clf, X_df, y_df, X_test, y_test, name_boosted_jet) # plotting roc curve for the bdt
 
     plotting_BDT.compare_train_test(clf, X_train, y_train, X_test, y_test, name_boosted_jet) # plotting overtraining check
+    return
+
+def save_model_with_TMVA(clf, X_df, name_boosted_jet):
+   
+    output_path = f"ML_models/tmva101_{name_boosted_jet}.root"
+    name_bdt = "myBDT_"+name_boosted_jet
+    import pdb; pdb.set_trace()
+    ROOT.TMVA.Experimental.SaveXGBoost(clf, name_bdt, output_path, X_df.shape[1])
+
+    # Accessing the Booster
+    booster = clf.get_booster()
+
+    # Define el tipo de entrada (asegúrate que sea float32)
+    initial_type = [('jet_features', FloatTensorType([1, X_df.shape[1]]))]
+
+    # Conversión
+    onnx_model = convert_xgboost(booster, initial_types=initial_type, target_opset=12)
+
+    # Guarda el modelo ONNX
+    with open(f"ML_models/bdt_model_{name_boosted_jet}.onnx", "wb") as f:
+        f.write(onnx_model.SerializeToString())
+
     return
 
 def save_bdt_model(clf: AdaBoostClassifier, X_df: pd.DataFrame, name_boosted_jet: str) -> None:
@@ -135,18 +165,23 @@ def save_bdt_model(clf: AdaBoostClassifier, X_df: pd.DataFrame, name_boosted_jet
         Convert the model into a ONNX file with the correct format required by HHARD
     """
 
+    if(name_boosted_jet=="bb_jets"):
+        bkg_label = "non boosted bb jets"
+        sgl_label = "boosted bb jets"
+
+    if(name_boosted_jet=="tautau_jets"):
+        bkg_label = "non boosted tautau jets"
+        sgl_label = "boosted tautau jets"
+
     input_name = "jet_features"  # input name
 
-    initial_type = [(input_name, FloatTensorType([None, X_df.shape[1]]))]
+    # initial_type = [(input_name, FloatTensorType([None, X_df.shape[1]]))]
+    initial_type = [(input_name, FloatTensorType([1, X_df.shape[1]]))]
 
     # Forcing to save the onnx as predict proba 2d array
     options = {id(clf): {"zipmap": False}}  # Avoid dict returns
-    onnx_model = convert_sklearn(clf, initial_types=initial_type, options=options)
-
-    # track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, [None, X["NSmallRJets"].astype(int), 4])
-    track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, [None, "n_tracks", 4])
-    # track_input = helper.make_tensor_value_info("track_features", TensorProto.FLOAT, [None, 2, 4])
-    onnx_model.graph.input.append(track_input)
+    # options = {id(clf): {'dtype': 'float32'}}
+    onnx_model = convert_sklearn(clf, initial_types=initial_type, options=options, target_opset=13 )
 
     # Now we separate the output called "probabilities" in two separated outputs
     graph = onnx_model.graph
@@ -171,55 +206,55 @@ def save_bdt_model(clf: AdaBoostClassifier, X_df: pd.DataFrame, name_boosted_jet
 
 
     # Add constants for Slice node inputs
-    starts_0 = helper.make_tensor("starts_0", TensorProto.INT64, [1], [0])
-    ends_0 = helper.make_tensor("ends_0", TensorProto.INT64, [1], [1]) 
-    starts_1 = helper.make_tensor("starts_1", TensorProto.INT64, [1], [1])
-    ends_1 = helper.make_tensor("ends_1", TensorProto.INT64, [1], [2])
-    axes = helper.make_tensor("axes", TensorProto.INT64, [1], [1])
-    steps = helper.make_tensor("steps", TensorProto.INT64, [1], [1])
-    squeeze_axes = helper.make_tensor("squeeze_axes", TensorProto.INT64, [0], [])
+    starts_0 = helper.make_tensor("starts_0", TensorProto.FLOAT, [1], [0])
+    ends_0 = helper.make_tensor("ends_0", TensorProto.FLOAT, [1], [1]) 
+    starts_1 = helper.make_tensor("starts_1", TensorProto.FLOAT, [1], [1])
+    ends_1 = helper.make_tensor("ends_1", TensorProto.FLOAT, [1], [2])
+    axes = helper.make_tensor("axes", TensorProto.FLOAT, [1], [1])
+    steps = helper.make_tensor("steps", TensorProto.FLOAT, [1], [1])
+    squeeze_axes = helper.make_tensor("squeeze_axes", TensorProto.FLOAT, [0], [])
 
     for tensor in [starts_0, ends_0, starts_1, ends_1, axes, steps, squeeze_axes]:
         if not any(init.name == tensor.name for init in graph.initializer):
             graph.initializer.append(tensor)
 
     # Slice node for bdt_pggF
-    slice_bdt_pggF = helper.make_node(
+    slice_bdt_prob_non_boosted_jet = helper.make_node(
         "Slice",
         inputs=[original_output_name, "starts_0", "ends_0", "axes", "steps"],
-        outputs=["bdt_pggF_raw"],
-        name="slice_bdt_pggF"
+        outputs=["bdt_prob_non_boosted_jet_raw"],
+        name="slice_bdt_prob_non_boosted_jet"
     )
 
     # Slice node for bdt_pVBF
-    slice_bdt_pVBF = helper.make_node(
+    slice_bdt_prob_boosted_jet = helper.make_node(
         "Slice",
         inputs=[original_output_name, "starts_1", "ends_1", "axes", "steps"],
-        outputs=["bdt_pVBF_raw"],
-        name="slice_bdt_pVBF"
+        outputs=["bdt_prob_boosted_jet_raw"],
+        name="slice_bdt_prob_boosted_jet"
     )
 
-    graph.node.extend([slice_bdt_pggF, slice_bdt_pVBF])
+    graph.node.extend([slice_bdt_prob_non_boosted_jet, slice_bdt_prob_boosted_jet])
 
-    squeeze_bdt_pggF = helper.make_node(
+    squeeze_bdt_prob_non_boosted_jet = helper.make_node(
         "Squeeze",
-        inputs=["bdt_pggF_raw", "squeeze_axes"],
-        outputs=["bdt_pggF"],
-        name="squeeze_bdt_pggF"
+        inputs=["bdt_prob_non_boosted_jet_raw", "squeeze_axes"],
+        outputs=["bdt_prob_non_boosted_jet"],
+        name="squeeze_bdt_prob_non_boosted_jet"
     )
 
-    squeeze_bdt_pVBF = helper.make_node(
+    squeeze_bdt_prob_boosted_jet = helper.make_node(
         "Squeeze",
-        inputs=["bdt_pVBF_raw", "squeeze_axes"],
-        outputs=["bdt_pVBF"],
-        name="squeeze_bdt_pVBF"
+        inputs=["bdt_prob_boosted_jet_raw", "squeeze_axes"],
+        outputs=["bdt_prob_boosted_jet"],
+        name="squeeze_bdt_prob_boosted_jet"
     )
-    graph.node.extend([squeeze_bdt_pggF, squeeze_bdt_pVBF])
+    graph.node.extend([squeeze_bdt_prob_non_boosted_jet, squeeze_bdt_prob_boosted_jet])
 
     # Add news outputs 
     graph.output.extend([
-        helper.make_tensor_value_info('bdt_pggF', TensorProto.FLOAT, shape=[]),
-        helper.make_tensor_value_info('bdt_pVBF', TensorProto.FLOAT, shape=[]),
+        helper.make_tensor_value_info('bdt_prob_non_boosted_jet', TensorProto.FLOAT, shape=[]),
+        helper.make_tensor_value_info('bdt_prob_boosted_jet', TensorProto.FLOAT, shape=[]),
     ])
 
     for output_name in ["label", "probabilities"]:
@@ -236,4 +271,5 @@ def save_bdt_model(clf: AdaBoostClassifier, X_df: pd.DataFrame, name_boosted_jet
         f.write(onnx_model.SerializeToString())
 
     print("Saved model in ONNX format in 'ML_models/bdt_model_"+name_boosted_jet+".onnx'")
+    
     return

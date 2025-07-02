@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import functions
 
-input_folder = "output_analysis/"
+input_folder = "output_analysis_2/"
 
 # Creating folders to save the plots
 os.makedirs("ML_models", exist_ok=True)
@@ -48,8 +48,13 @@ y_bb_jets = df_bb_jets["is_boosted_bb_jet"].astype(int)
 print(X_bb_jets.columns)
 print(y_bb_jets)
 
+X_bb_jets_array = X_bb_jets.to_numpy()
+y_bb_jets_array = y_bb_jets.to_numpy()
+
+# import pdb; pdb.set_trace()
+
 # Training the BDT for boosted bb jets
-bdt_bb_jets, X_train_bb_jets, X_test_bb_jets, y_train_bb_jets, y_test_bb_jets = functions.train_bdt_model(X_bb_jets, y_bb_jets)
+bdt_bb_jets, X_train_bb_jets, X_test_bb_jets, y_train_bb_jets, y_test_bb_jets = functions.train_bdt_model(X_bb_jets_array, y_bb_jets_array)
 
 # Plotting ranking of variables and their correlation matrix
 functions.ranking_relevant_variables(bdt_bb_jets, X_bb_jets, "bb_jets")
@@ -57,12 +62,9 @@ functions.ranking_relevant_variables(bdt_bb_jets, X_bb_jets, "bb_jets")
 # Plotting ROC Curve and Overtraining checking
 functions.definition_validation_plots(bdt_bb_jets, X_bb_jets, y_bb_jets, X_train_bb_jets, y_train_bb_jets, X_test_bb_jets, y_test_bb_jets, "bb_jets")
 
-print(X_bb_jets.dtypes)
-print(y_bb_jets.dtypes)
-
 # # Saving the model in onnx format
-functions.save_bdt_model(bdt_bb_jets, X_bb_jets, "bb_jets")
-
+# functions.save_bdt_model(bdt_bb_jets, X_bb_jets, "bb_jets")
+functions.save_model_with_TMVA(bdt_bb_jets, X_bb_jets_array, "bb_jets")
 
 # Definition of the X and y dataframes, which are used to train the bdt model. X and y dataframes contains
 # the jets that are boosted in a single dataframe and the class label, respectively.
@@ -70,11 +72,11 @@ functions.save_bdt_model(bdt_bb_jets, X_bb_jets, "bb_jets")
 X_tautau_jets = df_tautau_jets[features_to_keep].astype(np.float32)
 y_tautau_jets = df_tautau_jets["is_boosted_tautau_jet"].astype(int)
 
-print(X_tautau_jets.columns)
-print(y_tautau_jets)
+X_tautau_jets_array = X_tautau_jets.to_numpy()
+y_tautau_jets_array = y_tautau_jets.to_numpy()
 
 # Training the BDT for boosted bb jets
-bdt_tautau_jets, X_train_tautau_jets, X_test_tautau_jets, y_train_tautau_jets, y_test_tautau_jets = functions.train_bdt_model(X_tautau_jets, y_tautau_jets)
+bdt_tautau_jets, X_train_tautau_jets, X_test_tautau_jets, y_train_tautau_jets, y_test_tautau_jets = functions.train_bdt_model(X_tautau_jets_array, y_tautau_jets_array)
 
 # Plotting ranking of variables and their correlation matrix
 functions.ranking_relevant_variables(bdt_tautau_jets, X_tautau_jets, "tautau_jets")
@@ -82,8 +84,6 @@ functions.ranking_relevant_variables(bdt_tautau_jets, X_tautau_jets, "tautau_jet
 # Plotting ROC Curve and Overtraining checking
 functions.definition_validation_plots(bdt_tautau_jets, X_tautau_jets, y_tautau_jets, X_train_tautau_jets, y_train_tautau_jets, X_test_tautau_jets, y_test_tautau_jets, "tautau_jets")
 
-print(X_tautau_jets.dtypes)
-print(y_tautau_jets.dtypes)
-
 # # Saving the model in onnx format
-functions.save_bdt_model(bdt_tautau_jets, X_tautau_jets, "tautau_jets")
+# functions.save_bdt_model(bdt_tautau_jets, X_tautau_jets, "tautau_jets")
+functions.save_model_with_TMVA(bdt_tautau_jets, X_tautau_jets, "tautau_jets")

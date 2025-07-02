@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from sklearn.metrics import auc, roc_curve
+import pandas as pd
 
 def correlation_plots(df, name_boosted_jet):
     correlation_matrix = df.corr()
@@ -24,9 +25,7 @@ def ranking_variables_plot(features, importances, indices, name_boosted_jet):
 
 def roc_curve_plots(clf, X, y, X_test, y_test, name_boosted_jet):
     # we first plot the Neural Network output
-    # signal_decisions = bdt.decision_function(X[y>0.5]).ravel() # get probabilities on signal
-    # background_decisions = bdt.decision_function(X[y<0.5]).ravel() # get decisions on background
-
+    
     if(name_boosted_jet=="bb_jets"):
         bkg_label = "non boosted bb jets"
         sgl_label = "boosted bb jets"
@@ -55,11 +54,11 @@ def roc_curve_plots(clf, X, y, X_test, y_test, name_boosted_jet):
     # we then plot the ROC
     plt.figure() # make new figure 
 
-    decisions = clf.decision_function(X_test).ravel() # get probabilities on test set
-
-    # Compute ROC curve and area under the curve
+    # decisions = clf.decision_function(X_test).ravel() # get probabilities on test set
+    probas = clf.predict_proba(X_test)[:, 1] # get probabilities on test set
+    
     fpr, tpr, _ = roc_curve(y_test, # actual
-                            decisions ) # predicted
+                            probas ) # predicted
 
     # Compute area under the curve for training set
     roc_auc = auc(fpr, # false positive rate 
@@ -94,13 +93,12 @@ def compare_train_test(clf, X_train, y_train, X_test, y_test, name_boosted_jet):
 
     decisions = [] # list to hold decisions of classifier
     for X,y in ((X_train, y_train), (X_test, y_test)): # train and test
-        #d1 = clf.decision_function(X[y<0.5]).ravel() # background
-        #d2 = clf.decision_function(X[y>0.5]).ravel() # signal
         d1 = clf.predict_proba(X[y<0.5])[:, 1] # background
         d2 = clf.predict_proba(X[y>0.5])[:, 1] # signal
         decisions += [d1, d2] # add to list of classifier decision
     
     highest_decision = max(np.max(d) for d in decisions) # get maximum score
+    # highest_decision = 1.1 # get maximum score
     bin_edges = [] # list to hold bin edges
     bin_edge = -0.1 # start counter for bin_edges
     while bin_edge < highest_decision: # up to highest score
