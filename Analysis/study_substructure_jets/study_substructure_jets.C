@@ -6,6 +6,11 @@
 #include <cstdlib>
 #include <fstream>
 #include <iomanip>
+#include "TMVA/RTensor.hxx"
+using namespace TMVA::Experimental;
+ 
+// #include <TMVA::RModelParser_ONNX.hxx>
+// #include "TMVA/Experimental/ONNX/ONNXRuntime.hxx"
 
 void study_substructure_jets(TString sample, TString output_folder, string min_pT){
 
@@ -32,6 +37,15 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
  
   TFile* outFile_root = new TFile(path_output_file, "RECREATE");
   TTree* outTree_root = new TTree("AnalysisMiniTree", "AnalysisMiniTree");
+
+  // Load the models
+  string path_base_models = "../preselection_boosted_bbtautau/ML_models_2/";
+  string path_model_1 = path_base_models+"bdt_model_bb_jets.onnx";
+  string path_model_2 = path_base_models+"bdt_model_tautau_jets.onnx";
+
+  SOFIE::RModelParser_ONNX parser;
+  SOFIE::RModel model_boosted_bb = parser.Parse(path_model_1);
+  SOFIE::RModel model_boosted_tautau = parser.Parse(path_model_2);
   
   cout << "----------------------------------------------------------------------------------------------------------------" << endl;
   cout << "Processing: " << process_name << endl;
@@ -63,7 +77,8 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     define_classes(min_pT_recojet_cut_MeV);
     define_reconstructed_objects();
     define_reco_truth_boosted_jets_hh();
-    define_preselected_events(min_pT_recojet_cut_MeV);
+    define_preselected_events(min_pT_recojet_cut_MeV, model_boosted_bb, model_boosted_tautau);
+    // define_preselected_events(min_pT_recojet_cut_MeV);
     pairs_small_jets();
     compute_variables_for_topological_processes();
     cutflow_small_R_jets();
@@ -106,7 +121,9 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     // Fill the output files with the info for events passing the Boosted analysis or the resolved selection only
     //if( (class_event!=-1) || (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
     // if( (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
-    if( class_event!=-1 ) outTree_root->Fill();
+    // if( class_event!=-1 ) outTree_root->Fill();
+    outTree_root->Fill();
+  
   }
   
   //****************************************************************************
@@ -328,7 +345,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   //Save Histograms in the output root file
   //****************************************************
   
-  // write_histograms();
+  write_histograms();
   
   outFile_root->Write();
   
