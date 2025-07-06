@@ -13,8 +13,8 @@ import plotting_BDT
 import ROOT
 import xgboost as xgb
 from xgboost import XGBClassifier
-from onnxmltools.convert import convert_xgboost
-from onnxmltools.convert.common.data_types import FloatTensorType
+# from onnxmltools.convert import convert_xgboost
+# from onnxmltools.convert.common.data_types import FloatTensorType
 
 def get_df_with_info_jets(df_events: pd.DataFrame, explode_branches: list, boosted_idx_name: str) -> pd.DataFrame:
 
@@ -25,13 +25,16 @@ def get_df_with_info_jets(df_events: pd.DataFrame, explode_branches: list, boost
     df_jets.reset_index(drop=True, inplace=True)
 
     name_column = ""
+    is_boosted_label = ""
     if(boosted_idx_name == "idx_b1truth_recoak10_dRmin"):
         name_column = "is_boosted_bb_jet"
+        is_boosted_label = "truth_reco_match_for_boosted_bb"
 
     if(boosted_idx_name == "idx_tau1truth_recoak10_dRmin"):
          name_column = "is_boosted_tautau_jet"
+         is_boosted_label = "truth_reco_match_for_boosted_tautau"
 
-    df_jets[name_column] = np.vectorize(is_boosted_jet)(df_jets["class_event"], df_jets["jet_index"], df_jets[boosted_idx_name], boosted_idx_name)
+    df_jets[name_column] = np.vectorize(is_boosted_jet)(df_jets[is_boosted_label], df_jets["jet_index"], df_jets[boosted_idx_name], boosted_idx_name)
     
     # Result
     print(len(df_jets[df_jets[name_column]==1])/len(df_jets)*100)
@@ -39,16 +42,16 @@ def get_df_with_info_jets(df_events: pd.DataFrame, explode_branches: list, boost
 
     return df_jets
 
-def is_boosted_jet(class_event, jet_idx, boosted_jet_idx, name_boosted_jet):
+def is_boosted_jet(is_boosted_label, jet_idx, boosted_jet_idx, name_boosted_jet):
     
     if(name_boosted_jet == "idx_b1truth_recoak10_dRmin"):
-        if((class_event==2 or class_event==3) and jet_idx == boosted_jet_idx):
+        if(is_boosted_label==True and jet_idx == boosted_jet_idx):
             return 1
         else:
             return 0
 
     if(name_boosted_jet == "idx_tau1truth_recoak10_dRmin"):
-        if((class_event==1 or class_event==3) and jet_idx == boosted_jet_idx):
+        if(is_boosted_label==True and jet_idx == boosted_jet_idx):
             return 1
         else:
             return 0
@@ -142,21 +145,21 @@ def save_model_with_TMVA(clf, X_df, name_boosted_jet):
    
     output_path = f"ML_models/tmva101_{name_boosted_jet}.root"
     name_bdt = "myBDT_"+name_boosted_jet
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     ROOT.TMVA.Experimental.SaveXGBoost(clf, name_bdt, output_path, X_df.shape[1])
 
-    # Accessing the Booster
-    booster = clf.get_booster()
+    # # Accessing the Booster
+    # booster = clf.get_booster()
 
-    # Define el tipo de entrada (asegúrate que sea float32)
-    initial_type = [('jet_features', FloatTensorType([1, X_df.shape[1]]))]
+    # # Define el tipo de entrada (asegúrate que sea float32)
+    # initial_type = [('jet_features', FloatTensorType([1, X_df.shape[1]]))]
 
     # Conversión
-    onnx_model = convert_xgboost(booster, initial_types=initial_type, target_opset=12)
+    # onnx_model = convert_xgboost(booster, initial_types=initial_type, target_opset=12)
 
-    # Guarda el modelo ONNX
-    with open(f"ML_models/bdt_model_{name_boosted_jet}.onnx", "wb") as f:
-        f.write(onnx_model.SerializeToString())
+    # # Guarda el modelo ONNX
+    # with open(f"ML_models/bdt_model_{name_boosted_jet}.onnx", "wb") as f:
+    #     f.write(onnx_model.SerializeToString())
 
     return
 
