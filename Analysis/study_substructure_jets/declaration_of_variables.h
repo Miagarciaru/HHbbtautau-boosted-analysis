@@ -10,7 +10,7 @@
 
 string process_name = "";
 string process_type_like = "";
-string name_output_root_file = "";
+TString name_output_root_file = "";
 int class_label;
 float fraction = 1.0;
 

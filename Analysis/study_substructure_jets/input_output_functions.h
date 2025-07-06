@@ -419,11 +419,6 @@ void define_output_branches(TTree *outTree){
 // Write histograms in the output root file
 void write_histograms(){
 
-  // truth_object_histograms
-  hist_truth_b1_m->Write();
-  hist_truth_b2_m->Write();
-  hist_truth_b1_plus_b2_m->Write();
-
   //********************************************************************************************
   //********************************************************************************************
   // Distributions histograms
@@ -452,6 +447,7 @@ void write_histograms(){
   hist_matched_recojet_bb_ak10_ECF3->Write();
   hist_matched_recojet_bb_ak10_Split12->Write();
   hist_matched_recojet_bb_ak10_Split23->Write();
+  hist_matched_recojet_bb_score_bdt_Hbb->Write();
   hist_matched_recojet_bb_ak10_passesOR->Write();
   hist_matched_recojet_bb_dR->Write();
 
@@ -477,6 +473,7 @@ void write_histograms(){
   hist_matched_recojet_tautau_ak10_ECF3->Write();
   hist_matched_recojet_tautau_ak10_Split12->Write();
   hist_matched_recojet_tautau_ak10_Split23->Write();
+  hist_matched_recojet_tautau_score_bdt_Htautau->Write();
   hist_matched_recojet_tautau_ak10_passesOR->Write();
   hist_matched_recojet_tautau_dR->Write();
 
@@ -541,6 +538,7 @@ void write_histograms(){
   hist_non_matched_recojet_bb_ak10_ECF3->Write();
   hist_non_matched_recojet_bb_ak10_Split12->Write();
   hist_non_matched_recojet_bb_ak10_Split23->Write();
+  hist_non_matched_recojet_bb_score_bdt_Hbb->Write();
   hist_non_matched_recojet_bb_ak10_passesOR->Write();
   
   hist_non_matched_recojet_tautau_m->Write();
@@ -561,6 +559,7 @@ void write_histograms(){
   hist_non_matched_recojet_tautau_ak10_ECF3->Write();
   hist_non_matched_recojet_tautau_ak10_Split12->Write();
   hist_non_matched_recojet_tautau_ak10_Split23->Write();
+  hist_non_matched_recojet_tautau_score_bdt_Htautau->Write();
   hist_non_matched_recojet_tautau_ak10_passesOR->Write();
   
   hist_nevents_per_class->Write();
@@ -665,7 +664,8 @@ void write_histograms(){
   hist_matched_preselected_bb_ak10_ECF3->Write();
   hist_matched_preselected_bb_ak10_Split12->Write();
   hist_matched_preselected_bb_ak10_Split23->Write();
-  
+  hist_matched_preselected_bb_score_bdt_Hbb->Write();
+
   hist_matched_preselected_bb_m_only_Hbb_tagger->Write();
   hist_matched_preselected_bb_m_until_nsubjettiness->Write();
   hist_matched_preselected_bb_m_order_by_nsubjettiness->Write();
@@ -684,7 +684,8 @@ void write_histograms(){
   hist_matched_preselected_tautau_ak10_ECF3->Write();
   hist_matched_preselected_tautau_ak10_Split12->Write();
   hist_matched_preselected_tautau_ak10_Split23->Write();
-  
+  hist_matched_preselected_tautau_score_bdt_Htautau->Write();
+
   hist_matched_preselected_tautau_m_only_Hbb_tagger->Write();
   hist_matched_preselected_tautau_m_until_nsubjettiness->Write();
 
@@ -706,7 +707,8 @@ void write_histograms(){
   hist_non_matched_preselected_bb_ak10_ECF3->Write();
   hist_non_matched_preselected_bb_ak10_Split12->Write();
   hist_non_matched_preselected_bb_ak10_Split23->Write();
-  
+  hist_non_matched_preselected_bb_score_bdt_Hbb->Write();
+
   hist_non_matched_preselected_tautau_m->Write();
   hist_non_matched_preselected_tautau_pt->Write();
   hist_non_matched_preselected_tautau_eta->Write();
@@ -721,6 +723,7 @@ void write_histograms(){
   hist_non_matched_preselected_tautau_ak10_ECF3->Write();
   hist_non_matched_preselected_tautau_ak10_Split12->Write();
   hist_non_matched_preselected_tautau_ak10_Split23->Write();
+  hist_non_matched_preselected_tautau_score_bdt_Htautau->Write();
 
   //***********************************************************************************
   // preselected non truth-reco info

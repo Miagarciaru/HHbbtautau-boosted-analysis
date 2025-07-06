@@ -39,13 +39,12 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   TTree* outTree_root = new TTree("AnalysisMiniTree", "AnalysisMiniTree");
 
   // Load the models
-  string path_base_models = "../preselection_boosted_bbtautau/ML_models_2/";
-  string path_model_1 = path_base_models+"bdt_model_bb_jets.onnx";
-  string path_model_2 = path_base_models+"bdt_model_tautau_jets.onnx";
+  string path_base_models = "../preselection_boosted_bbtautau/ML_models/";
+  string path_model_1 = path_base_models+"tmva101_bb_jets.root";
+  string path_model_2 = path_base_models+"tmva101_tautau_jets.root";
 
-  SOFIE::RModelParser_ONNX parser;
-  SOFIE::RModel model_boosted_bb = parser.Parse(path_model_1);
-  SOFIE::RModel model_boosted_tautau = parser.Parse(path_model_2);
+  TMVA::Experimental::RBDT model_bb_jets("myBDT_bb_jets", path_model_1);
+  TMVA::Experimental::RBDT model_tautau_jets("myBDT_tautau_jets", path_model_2);
   
   cout << "----------------------------------------------------------------------------------------------------------------" << endl;
   cout << "Processing: " << process_name << endl;
@@ -76,8 +75,8 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     compute_dR_min_index_fat_jets();
     define_classes(min_pT_recojet_cut_MeV);
     define_reconstructed_objects();
-    define_reco_truth_boosted_jets_hh();
-    define_preselected_events(min_pT_recojet_cut_MeV, model_boosted_bb, model_boosted_tautau);
+    // define_reco_truth_boosted_jets_hh();
+    define_preselected_events(min_pT_recojet_cut_MeV, model_bb_jets, model_tautau_jets);
     // define_preselected_events(min_pT_recojet_cut_MeV);
     pairs_small_jets();
     compute_variables_for_topological_processes();
@@ -119,10 +118,9 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
         
     counter_for_stat();
     // Fill the output files with the info for events passing the Boosted analysis or the resolved selection only
-    //if( (class_event!=-1) || (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
-    // if( (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
-    // if( class_event!=-1 ) outTree_root->Fill();
-    outTree_root->Fill();
+    // if( (truth_reco_match_for_boosted_bb==true || truth_reco_match_for_boosted_tautau==true) || (matched_preselection == true) || (bbtt_HH_vis_m > 0) ) outTree_root->Fill();
+    if( (truth_reco_match_for_boosted_bb==true || truth_reco_match_for_boosted_tautau==true) || bbtt_HH_vis_m > 0 ) outTree_root->Fill();
+    // outTree_root->Fill();
   
   }
   
@@ -344,6 +342,8 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   //****************************************************
   //Save Histograms in the output root file
   //****************************************************
+  
+  outFile_root->cd();
   
   write_histograms();
   

@@ -132,7 +132,6 @@ TH1F *hist_non_matched_preselected_tautau_ak10_Split12 = new TH1F("hist_non_matc
 TH1F *hist_non_matched_info_preselected_tautau_ak10_Split12 = new TH1F("hist_non_matched_info_preselected_tautau_ak10_Split12", "Split12 for non boosted tautau jets; Split12;Events", 50, 0, 150);
 
 // Histograms for the Split23 of the chosen fatjets for bb and tautau jets
-
 TH1F *hist_matched_preselected_bb_ak10_Split23 = new TH1F("hist_matched_preselected_bb_ak10_Split23", "Split23 for boosted bb jets; Split23;Events", 50, 0, 100);
 TH1F *hist_non_matched_preselected_bb_ak10_Split23 = new TH1F("hist_non_matched_preselected_bb_ak10_Split23", "Split23 for non boosted bb jets; Split23;Events", 50, 0, 100);
 TH1F *hist_non_matched_info_preselected_bb_ak10_Split23 = new TH1F("hist_non_matched_info_preselected_bb_ak10_Split23", "Split23 for non boosted bb jets; Split23;Events", 50, 0, 100);
@@ -140,6 +139,14 @@ TH1F *hist_non_matched_info_preselected_bb_ak10_Split23 = new TH1F("hist_non_mat
 TH1F *hist_matched_preselected_tautau_ak10_Split23 = new TH1F("hist_matched_preselected_tautau_ak10_Split23", "Split23 for boosted tautau jets; Split23;Events", 50, 0, 100);
 TH1F *hist_non_matched_preselected_tautau_ak10_Split23 = new TH1F("hist_non_matched_preselected_tautau_ak10_Split23", "Split23 for non boosted tautau jets; Split23;Events", 50, 0, 100);
 TH1F *hist_non_matched_info_preselected_tautau_ak10_Split23 = new TH1F("hist_non_matched_info_preselected_tautau_ak10_Split23", "Split23 for non boosted tautau jets; Split23;Events", 50, 0, 100);
+
+// Histograms of the score for preselected boosted bb jets
+TH1F *hist_matched_preselected_bb_score_bdt_Hbb = new TH1F("hist_matched_preselected_bb_score_bdt_Hbb", "Score Hbb for boosted bb jets; Score bdt Hbb;Events", 50, 0, 1.0);
+TH1F *hist_non_matched_preselected_bb_score_bdt_Hbb = new TH1F("hist_non_matched_preselected_bb_score_bdt_Hbb", "Score Hbb for non boosted bb jets; Score bdt Hbb;Events", 50, 0, 1.0);
+
+// Histograms of the score for preselected boosted tautau jets
+TH1F *hist_matched_preselected_tautau_score_bdt_Htautau = new TH1F("hist_matched_preselected_tautau_score_bdt_Htautau", "Score Htautau for boosted tautau jets; Score bdt Htautau;Events", 50, 0, 1.0);
+TH1F *hist_non_matched_preselected_tautau_score_bdt_Htautau = new TH1F("hist_non_matched_preselected_tautau_score_bdt_Htautau", "Score Htautau for boosted tautau jets; Score bdt Htautau;Events", 50, 0, 1.0);
 
 //***************************************************************************************************************
 // Topological variable histograms of VBF processes

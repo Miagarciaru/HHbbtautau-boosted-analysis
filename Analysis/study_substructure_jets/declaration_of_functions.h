@@ -4,6 +4,12 @@
 using namespace TMVA::Experimental;
 
 // *************************************
+// Constant variables
+// *************************************
+float bdt_boosted_bb_jet_cut = 0.7;
+float bdt_boosted_tautau_jet_cut = 0.7;
+
+// *************************************
 // Declaration of functions
 // *************************************
 
@@ -14,8 +20,8 @@ void default_values_for_topological_processes();
 void compute_statistical_parameters();
 void counting_statistical_parameters();
 void correct_match_between_truth_reco_and_preselected_objects();
-void define_preselected_events(float min_pT_cut_in_MeV, SOFIE::RModel& model_bb, SOFIE::RModel &model_tautau);
-void evaluate_bdt_model(SOFIE::RModel& model, const std::vector<float>& jet_features);
+void define_preselected_events(float min_pT_cut_in_MeV, TMVA::Experimental::RBDT& model_bb, TMVA::Experimental::RBDT& model_tautau);
+float evaluate_bdt_model(TMVA::Experimental::RBDT& model, const std::vector<float>& jet_features);
 void define_reconstructed_objects();
 void define_output_branches();
 void define_classes();
@@ -752,18 +758,15 @@ void correct_match_between_truth_reco_and_preselected_objects(){
   
 }
 
-void evaluate_bdt_model(SOFIE::RModel &model, const std::vector<float>& jet_features){
+float evaluate_bdt_model(TMVA::Experimental::RBDT& model, const std::vector<float>& jet_features){
 
-  RTensor<float> input({1, 10});
-  for(int ii=0; ii < jet_features.size(); ii++){
-    input(0, ii) = jet_features.at(ii);
-  }
-  auto output = model.infer(input);
-  return output["bdt_prob_boosted_jet"];  // score for boosted jet
+  std::vector<float> score = model.Compute(jet_features);
+
+  return score[0];  // score for boosted jet
 
 }
 
-void define_preselected_events(float min_pT_cut_in_MeV, SOFIE::RModel& model_bb, SOFIE::RModel& model_tautau){
+void define_preselected_events(float min_pT_cut_in_MeV, TMVA::Experimental::RBDT& model_bb, TMVA::Experimental::RBDT& model_tautau){
 
   // Assign default values for preselected bb and tautau objects
   default_values_for_preselected_variables();
@@ -778,45 +781,76 @@ void define_preselected_events(float min_pT_cut_in_MeV, SOFIE::RModel& model_bb,
     //Selecting preselected boosted bb jet 
     for(Int_t ii=0; ii<recojet_antikt10UFO_NOSYS_pt->size(); ii++){
       
+      std::vector jet_features = {
+        recojet_antikt10UFO_NOSYS_pt->at(ii),
+        recojet_antikt10UFO_eta->at(ii),
+        recojet_antikt10UFO_phi->at(ii),
+        recojet_antikt10UFO_m->at(ii),
+        recojet_antikt10UFO_Tau1_wta->at(ii),
+        recojet_antikt10UFO_Tau2_wta->at(ii),
+        recojet_antikt10UFO_Tau3_wta->at(ii),
+        recojet_antikt10UFO_ECF1->at(ii),
+        recojet_antikt10UFO_ECF2->at(ii),
+        recojet_antikt10UFO_ECF3->at(ii),
+        recojet_antikt10UFO_Split12->at(ii),
+        recojet_antikt10UFO_Split23->at(ii),
+        recojet_antikt10UFO_GN2Xv01_phbb->at(ii),
+        recojet_antikt10UFO_GN2Xv01_pqcd->at(ii),
+        recojet_antikt10UFO_GN2Xv01_phcc->at(ii),
+        recojet_antikt10UFO_GN2Xv01_ptop->at(ii)
+      };
+
+      float score_truth_reco_boosted_bb = evaluate_bdt_model(model_bb, jet_features);
+      if(truth_reco_match_for_boosted_bb == true && ii==idx_b1truth_recoak10_dRmin){
+        hist_matched_recojet_bb_score_bdt_Hbb->Fill(score_truth_reco_boosted_bb);
+      }
+      else{
+        hist_non_matched_recojet_bb_score_bdt_Hbb->Fill(score_truth_reco_boosted_bb);
+      }
+
+      float score_truth_reco_boosted_tautau = evaluate_bdt_model(model_tautau, jet_features);
+      if(truth_reco_match_for_boosted_tautau == true && ii==idx_tau1truth_recoak10_dRmin){
+        hist_matched_recojet_tautau_score_bdt_Htautau->Fill(score_truth_reco_boosted_tautau);
+      }
+      else{
+        hist_non_matched_recojet_tautau_score_bdt_Htautau->Fill(score_truth_reco_boosted_tautau);
+      }
+
       float max_score_bb_current = 0.0;
       float max_score_bb_previous = 0.0;
       float max_score_tautau_current = 0.0;
       float max_score_tautau_previous = 0.0;
 
       if(recojet_antikt10UFO_NOSYS_pt->at(ii) > min_pT_cut_in_MeV){
-        std::vector jet_features = {
-          recojet_antikt10UFO_NOSYS_pt->at(ii), 
-          recojet_antikt10UFO_m->at(ii), 
-          recojet_antikt10UFO_Tau1_wta->at(ii),
-          recojet_antikt10UFO_Tau2_wta->at(ii), 
-          recojet_antikt10UFO_ECF1->at(ii), 
-          recojet_antikt10UFO_ECF2->at(ii), 
-          recojet_antikt10UFO_ECF3->at(ii),
-          recojet_antikt10UFO_Split12->at(ii), 
-          recojet_antikt10UFO_Split23->at(ii), 
-          recojet_antikt10UFO_GN2Xv01_phbb->at(ii)
-        };
-
+        
         float score_preselected_boosted_bb = evaluate_bdt_model(model_bb, jet_features);
-        if( score_preselected_boosted_bb > 0.5 ){
-	        max_score_bb_current = recojet_antikt10UFO_NOSYS_pt->at(ii);
+        if( score_preselected_boosted_bb > bdt_boosted_bb_jet_cut ){
+	        max_score_bb_current = score_preselected_boosted_bb;
         	if(max_score_bb_current >= max_score_bb_previous){
 	          max_score_bb_previous = max_score_bb_current;
 	          idx_b1_preselected = ii;
 	          idx_b2_preselected = ii;
 	          matched_preselected_bb = true;
+            hist_matched_preselected_bb_score_bdt_Hbb->Fill(score_preselected_boosted_bb);
           }
+        }
+        else{
+          hist_non_matched_preselected_bb_score_bdt_Hbb->Fill(score_preselected_boosted_bb);
         }
 
         float score_preselected_boosted_tautau = evaluate_bdt_model(model_tautau, jet_features);
-        if( score_preselected_boosted_tautau > 0.5 ){
-	        max_score_tautau_current = recojet_antikt10UFO_NOSYS_pt->at(ii);
+        if( score_preselected_boosted_tautau > bdt_boosted_tautau_jet_cut ){
+	        max_score_tautau_current = score_preselected_boosted_tautau;
         	if(max_score_tautau_current >= max_score_tautau_previous){
 	          max_score_tautau_previous = max_score_tautau_current;
 	          idx_tau1_preselected = ii;
 	          idx_tau2_preselected = ii;
 	          matched_preselected_tautau = true;
+            hist_matched_preselected_tautau_score_bdt_Htautau->Fill(score_preselected_boosted_tautau);
           }
+        }
+        else{
+          hist_non_matched_preselected_tautau_score_bdt_Htautau->Fill(score_preselected_boosted_tautau);
         }
       }
     }
@@ -867,185 +901,6 @@ void define_preselected_events(float min_pT_cut_in_MeV, SOFIE::RModel& model_bb,
     }
   }
 }
-
-// void define_preselected_events(float min_pT_cut_in_MeV){
-
-//   // Assign default values for preselected bb and tautau objects
-//   default_values_for_preselected_variables();
-    
-//   matched_preselected_bb = false;
-//   matched_preselected_tautau = false;
-//   matched_preselection = false;
- 
-//   int number_of_tagged_bb_jets = 0;
-  
-//   if( recojet_antikt10UFO_NOSYS_pt->size() >= 2 ){
-
-//     float min_tagger_Hbb_value = 0.85;
-    
-//     float ECF2_bb_cut_value = 500.0;
-//     float split12_bb_cut_value = 20.0;
-//     float mHH_bb_cut_value = 50.0;
-//     float n1_nsubjettiness_bb_cut_value = 0.1;
-    
-//     float max_pT_bb_current = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
-//     float max_pT_bb_previous = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
-    
-//     //Selecting preselected boosted bb jet 
-//     for(Int_t ii=0; ii<recojet_antikt10UFO_GN2Xv01_phbb->size(); ii++){
-      
-//       if(recojet_antikt10UFO_NOSYS_pt->at(ii) > min_pT_cut_in_MeV){
-//         bool taggerHbb_score_cut = false; 
-//         if(recojet_antikt10UFO_GN2Xv01_phbb->at(ii) >= min_tagger_Hbb_value){
-// 	        taggerHbb_score_cut = true;
-// 	        hist_matched_preselected_bb_m_only_Hbb_tagger->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
-//         }
-      
-//         bool nsubjettiness_bb_cut = false;
-//         //tau_n2_over_n1_subjettiness_bb = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
-//         if( recojet_antikt10UFO_Tau1_wta->at(ii) >= n1_nsubjettiness_bb_cut_value ){
-// 	        nsubjettiness_bb_cut = true;
-// 	        hist_matched_preselected_bb_m_until_nsubjettiness->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
-//         }
-
-//         bool ECF2_bb_cut = false;
-//         if( recojet_antikt10UFO_ECF2->at(ii)/10000000.0 >= ECF2_bb_cut_value ){
-// 	        ECF2_bb_cut = true;
-//         }
-
-//         bool split12_bb_cut = false;
-//         if( recojet_antikt10UFO_Split12->at(ii)/1000.0 >= split12_bb_cut_value ){
-// 	        split12_bb_cut = true;
-//         }
-
-//         bool mHH_bb_cut = false;
-//         if( recojet_antikt10UFO_m->at(ii)/1000.0 >= mHH_bb_cut_value ){
-// 	        mHH_bb_cut = true;
-//         }
-
-//         if( (taggerHbb_score_cut==true) && (nsubjettiness_bb_cut==true) && (ECF2_bb_cut==true) && (split12_bb_cut==true) && (mHH_bb_cut==true) ){
-	
-// 	        max_pT_bb_current = recojet_antikt10UFO_NOSYS_pt->at(ii);
-	
-//         	if(max_pT_bb_current >= max_pT_bb_previous){
-// 	          max_pT_bb_previous = max_pT_bb_current;
-// 	          idx_b1_preselected = ii;
-// 	          idx_b2_preselected = ii;
-// 	          matched_preselected_bb = true;
-//             }
-//         }
-//       }
-//     }
-
-//     float max_pT_tautau_current = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
-//     float max_pT_tautau_previous = *std::min_element(recojet_antikt10UFO_NOSYS_pt->begin(), recojet_antikt10UFO_NOSYS_pt->end());
-
-//     float max_tagger_Hbb_for_tautau_value = 0.15;
-//     float min_tagger_hcc_for_tautau_value = 0.15;
-//     float max_nsubjetiness_value_for_tautau = 0.30;
-//     float ECF2_tautau_cut_value = 500.0;
-//     float split12_tautau_cut_value = 20.0;
-//     float mHH_tautau_cut_value = 50.0;
-    
-//     for(Int_t ii=0; ii < recojet_antikt10UFO_Tau2_wta->size(); ii++){
-      
-//       if(recojet_antikt10UFO_NOSYS_pt->at(ii) > min_pT_cut_in_MeV){
-//         if( matched_preselected_bb == true && ii == idx_b1_preselected ){
-// 	        continue;
-//         }
-
-//         bool taggerHbb_score_cut = false;
-//         if(recojet_antikt10UFO_GN2Xv01_phbb->at(ii) <= max_tagger_Hbb_for_tautau_value){
-// 	        taggerHbb_score_cut = true;
-// 	        //hist_matched_preselected_tautau_m_only_Hbb_tagger->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
-//         }
-
-//         bool taggerhcc_score_cut = false;
-//         if(recojet_antikt10UFO_GN2Xv01_phcc->at(ii) >= min_tagger_hcc_for_tautau_value){
-// 	        taggerhcc_score_cut = true;
-//         }
-      
-//         bool nsubjettiness_cut = false;
-//         //tau_n2_over_n1_subjettiness_tautau = recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii);
-      
-//         if( recojet_antikt10UFO_Tau2_wta->at(ii)/recojet_antikt10UFO_Tau1_wta->at(ii) <= max_nsubjetiness_value_for_tautau ){
-// 	        nsubjettiness_cut = true;
-// 	        //hist_matched_preselected_tautau_m_until_nsubjettiness->Fill(recojet_antikt10UFO_m->at(ii)/1000.);
-//         }
-      
-//         bool ECF2_tautau_cut = false;
-//         if( recojet_antikt10UFO_ECF2->at(ii)/10000000.0 >= ECF2_tautau_cut_value ){
-// 	        ECF2_tautau_cut = true;
-//         }
-
-//         bool split12_tautau_cut = false;
-//         if( recojet_antikt10UFO_Split12->at(ii)/1000.0 >= split12_tautau_cut_value ){
-// 	       split12_tautau_cut = true;
-//         }
-
-//         bool mHH_tautau_cut = false;
-//         if( recojet_antikt10UFO_m->at(ii)/1000.0 >= mHH_tautau_cut_value ){
-// 	        mHH_tautau_cut = true;
-//         }
-      
-//         if( (taggerHbb_score_cut==true) && (taggerhcc_score_cut==true) && (nsubjettiness_cut==true) && (ECF2_tautau_cut==true) && (split12_tautau_cut==true) && (mHH_tautau_cut==true) ){
-	
-// 	        max_pT_tautau_current = recojet_antikt10UFO_NOSYS_pt->at(ii);
-	
-// 	        if(max_pT_tautau_current >= max_pT_tautau_previous){
-// 	          max_pT_tautau_previous = max_pT_tautau_current;
-// 	          idx_tau1_preselected = ii;
-// 	          idx_tau2_preselected = ii;
-// 	          matched_preselected_tautau = true;
-//           }
-//         }          
-//       }
-//     }
-
-//     if( matched_preselected_bb == true && matched_preselected_tautau == true ){
-//       matched_preselection = true;
-//     }
-    
-//     // Save the values for bb, tautau and HH objects if it was posible to find the preselected bb and tautau boosted jets
-
-//     TLorentzVector bb = TLorentzVector();
-//     TLorentzVector tautau = TLorentzVector();
-//     TLorentzVector HH = TLorentzVector();
-    
-//     if( matched_preselected_bb == true ){
-      
-//       preselected_bb_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_b1_preselected);
-//       preselected_bb_eta = recojet_antikt10UFO_eta->at(idx_b1_preselected);
-//       preselected_bb_phi = recojet_antikt10UFO_phi->at(idx_b1_preselected);
-//       preselected_bb_m = recojet_antikt10UFO_m->at(idx_b1_preselected);
-        
-//       bb.SetPtEtaPhiM(preselected_bb_pt, preselected_bb_eta, preselected_bb_phi, preselected_bb_m);
-     
-//     }
-
-//     if( matched_preselected_tautau == true ){
-      
-//       preselected_tautau_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_tau1_preselected);
-//       preselected_tautau_eta = recojet_antikt10UFO_eta->at(idx_tau1_preselected);
-//       preselected_tautau_phi = recojet_antikt10UFO_phi->at(idx_tau1_preselected);
-//       preselected_tautau_m = recojet_antikt10UFO_m->at(idx_tau1_preselected);
-      
-//       tautau.SetPtEtaPhiM(preselected_tautau_pt, preselected_tautau_eta, preselected_tautau_phi, preselected_tautau_m);
-      
-//     }
-
-//     if( matched_preselection == true ){
-      
-//       HH = bb + tautau;
-      
-//       preselected_HH_pt = HH.Pt();
-//       preselected_HH_eta = HH.Eta();
-//       preselected_HH_phi = HH.Phi();
-//       preselected_HH_m = HH.M();	
-      
-//     }
-//   }
-// }
 
 void define_reconstructed_objects(){
   
@@ -1158,48 +1013,55 @@ void define_classes(float min_pT_cut_in_MeV){
   truth_reco_match_for_boosted_tautau = false;
   truth_reco_match_for_boosted_bbtautau = false;
   
-  if( (idx_b1truth_recoak10_dRmin != -1) && (idx_b2truth_recoak10_dRmin != -1) && (idx_tau1truth_recoak10_dRmin != -1) && (idx_tau2truth_recoak10_dRmin != -1) ){
-
-    if( (idx_b1truth_recoak10_dRmin!=idx_tau1truth_recoak10_dRmin) && (idx_b1truth_recoak10_dRmin!=idx_tau2truth_recoak10_dRmin) && (idx_b2truth_recoak10_dRmin!=idx_tau1truth_recoak10_dRmin) && (idx_b2truth_recoak10_dRmin!=idx_tau2truth_recoak10_dRmin)){      
-     
-      if(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)>min_pT_cut_in_MeV && recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin)>min_pT_cut_in_MeV && recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)>min_pT_cut_in_MeV && recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin)>min_pT_cut_in_MeV){
+  if( (idx_b1truth_recoak10_dRmin!=idx_tau1truth_recoak10_dRmin) && (idx_b1truth_recoak10_dRmin!=idx_tau2truth_recoak10_dRmin) && (idx_b2truth_recoak10_dRmin!=idx_tau1truth_recoak10_dRmin) && (idx_b2truth_recoak10_dRmin!=idx_tau2truth_recoak10_dRmin)){
+    if( (idx_b1truth_recoak10_dRmin != -1) && (idx_b2truth_recoak10_dRmin != -1) ){
+      if(recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin)>min_pT_cut_in_MeV && recojet_antikt10UFO_NOSYS_pt->at(idx_b2truth_recoak10_dRmin)>min_pT_cut_in_MeV ){
         if( idx_b1truth_recoak10_dRmin == idx_b2truth_recoak10_dRmin ){
           truth_reco_match_for_boosted_bb = true;
         }
+      }
+    }
+    
+    if( (idx_tau1truth_recoak10_dRmin != -1) && (idx_tau2truth_recoak10_dRmin != -1) ){
+      if(recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin)>min_pT_cut_in_MeV && recojet_antikt10UFO_NOSYS_pt->at(idx_tau2truth_recoak10_dRmin)>min_pT_cut_in_MeV ){
         if( idx_tau1truth_recoak10_dRmin == idx_tau2truth_recoak10_dRmin ){
           truth_reco_match_for_boosted_tautau = true;
         }
-        if( truth_reco_match_for_boosted_bb==true && truth_reco_match_for_boosted_tautau==true ){
-          truth_reco_match_for_boosted_bbtautau = true;
-        }
-        
-        // ************************************
-        // For the boosted and resolved jets that are correctly identified matched to fat jets
-        
-        // For the R_bb R_tautau class
-        if( (truth_reco_match_for_boosted_bb==false) && (truth_reco_match_for_boosted_tautau==false) ){
-          class_event = 0;
-        }
-        
-        // For the R_bb B_tautau class
-        if( (truth_reco_match_for_boosted_bb==false) && (truth_reco_match_for_boosted_tautau==true) ){
-          class_event = 1;
-        }
-        
-        // For the B_bb R_tautau class
-        if( (truth_reco_match_for_boosted_bb==true) && (truth_reco_match_for_boosted_tautau==false) ){
-          class_event = 2;
-        }
-
-        // For the B_bb B_tautau class
-        if( (truth_reco_match_for_boosted_bb==true) && (truth_reco_match_for_boosted_tautau==true) ){
-          class_event = 3;
-        }
       }
     }
+   
+    if( truth_reco_match_for_boosted_bb==true && truth_reco_match_for_boosted_tautau==true ){
+      truth_reco_match_for_boosted_bbtautau = true;
+    }
+
+    // ************************************
+    // For the boosted and resolved jets that are correctly identified matched to fat jets
+    
+    if( (idx_b1truth_recoak10_dRmin != -1) && (idx_b2truth_recoak10_dRmin != -1) && (idx_tau1truth_recoak10_dRmin != -1) && (idx_tau2truth_recoak10_dRmin != -1) ){
+      // For the R_bb R_tautau class
+      if( (truth_reco_match_for_boosted_bb==false) && (truth_reco_match_for_boosted_tautau==false) ){
+        class_event = 0;
+      }
+      
+      // For the R_bb B_tautau class
+      if( (truth_reco_match_for_boosted_bb==false) && (truth_reco_match_for_boosted_tautau==true) ){
+        class_event = 1;
+      }
+      
+      // For the B_bb R_tautau class
+      if( (truth_reco_match_for_boosted_bb==true) && (truth_reco_match_for_boosted_tautau==false) ){
+        class_event = 2;
+      }
+
+      // For the B_bb B_tautau class
+      if( (truth_reco_match_for_boosted_bb==true) && (truth_reco_match_for_boosted_tautau==true) ){
+        class_event = 3;
+      }
+    }
+
   }
   
-  if(class_event==-1){
+  if(class_event==-1 && truth_reco_match_for_boosted_bb==false && truth_reco_match_for_boosted_tautau==false){
     idx_b1truth_recoak10_dRmin = -1;
     idx_b2truth_recoak10_dRmin = -1;
     idx_tau1truth_recoak10_dRmin = -1;

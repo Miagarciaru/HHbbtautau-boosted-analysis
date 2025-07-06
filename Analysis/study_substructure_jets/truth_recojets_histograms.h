@@ -14,7 +14,6 @@ TH1F *hist_non_matched_recojet_tautau_ak10_GN2Xv01_phbb = new TH1F("hist_non_mat
 
 TH1F *hist_taggedHbb_recojet_bb_per_event = new TH1F("hist_taggedHbb_recojet_bb_per_event", "Number of tagged boosted bb jets per event; Number of boosted bb; Events", 10, 0, 10);
 
-
 // pqcd GN2X
 TH1F *hist_matched_recojet_bb_ak10_GN2Xv01_pqcd = new TH1F("hist_matched_recojet_bb_ak10_GN2Xv01_pqcd", "GN2X pqcd for boosted bb jets; GN2X pqcd Score;Events", 25, 0, 1);
 TH1F *hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd = new TH1F("hist_matched_recojet_tautau_ak10_GN2Xv01_pqcd", "GN2X pqcd for boosted tautau jets; GN2X pqcd Score;Events", 25, 0, 1);
@@ -152,6 +151,14 @@ TH1F *hist_non_matched_recojet_bb_ak10_Split23 = new TH1F("hist_non_matched_reco
 
 TH1F *hist_matched_recojet_tautau_ak10_Split23 = new TH1F("hist_matched_recojet_tautau_ak10_Split23", "Split23 for boosted tautau jets; Split23;Events", 50, 0, 100);
 TH1F *hist_non_matched_recojet_tautau_ak10_Split23 = new TH1F("hist_non_matched_recojet_tautau_ak10_Split23", "Split23 for non boosted tautau jets; Split23;Events", 50, 0, 100);
+
+// Histograms of the score for recojet boosted bb jets
+TH1F *hist_matched_recojet_bb_score_bdt_Hbb = new TH1F("hist_matched_recojet_bb_score_bdt_Hbb", "Score Hbb for boosted bb jets; Score bdt Hbb;Events", 50, 0, 1.0);
+TH1F *hist_non_matched_recojet_bb_score_bdt_Hbb = new TH1F("hist_non_matched_recojet_bb_score_bdt_Hbb", "Score Hbb for non boosted bb jets; Score bdt Hbb;Events", 50, 0, 1.0);
+
+// Histograms of the score for preselected boosted tautau jets
+TH1F *hist_matched_recojet_tautau_score_bdt_Htautau = new TH1F("hist_matched_recojet_tautau_score_bdt_Htautau", "Score Htautau for boosted tautau jets; Score bdt Htautau;Events", 50, 0, 1.0);
+TH1F *hist_non_matched_recojet_tautau_score_bdt_Htautau = new TH1F("hist_non_matched_recojet_tautau_score_bdt_Htautau", "Score Htautau for boosted tautau jets; Score bdt Htautau;Events", 50, 0, 1.0);
 
 // Histograms for the passesOR of the chosen fatjets for bb and tautau jets
 
