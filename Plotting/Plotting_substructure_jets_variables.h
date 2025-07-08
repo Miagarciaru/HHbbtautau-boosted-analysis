@@ -196,7 +196,7 @@ void plot_distributions_comparisons_cpr(const std::unordered_map<std::string, st
     const std::string& nameVar = name_distribution.first;
     const auto& histograms = name_distribution.second;
 
-    string name_image = distributions_comparison_cpr_folder+nameVar+"_cpr.png";
+    string name_image = distributions_comparison_cpr_folder+nameVar+"_cpr.pdf";
     
     ///// Plotting
     TCanvas* can = new TCanvas(("can_"+nameVar+"_cpr").c_str(),"", 800, 600);
@@ -311,7 +311,7 @@ void plot_distributions_comparisons(const std::unordered_map<std::string, std::v
     const std::string& nameVar = name_distribution.first;
     const auto& histograms = name_distribution.second;
 
-    string name_image = distributions_comparison_folder+nameVar+".png";
+    string name_image = distributions_comparison_folder+nameVar+".pdf";
     
     ///// Plotting
     TCanvas* can = new TCanvas(("can_"+nameVar).c_str(),"", 800, 600);
@@ -398,7 +398,7 @@ void plot_distributions(const std::unordered_map<std::string, TH1F>& distributio
     const std::string& nameVar = name_distribution.first;
     const auto& histo = name_distribution.second;
     
-    string name_image = substructure_jets_folder+nameVar+".png";
+    string name_image = substructure_jets_folder+nameVar+".pdf";
 
     ///// Plotting
     TCanvas *can = new TCanvas(("can_"+nameVar).c_str(),"", 800, 600);
@@ -453,7 +453,7 @@ void plot_2D_distributions(const std::string& sample, const std::string& name_pl
     variable = "statistical_parameters";
   }
 
-  string name_image = percentages_folder+name_output_root_file+"_"+variable+"_"+minpT+"GeV.png";
+  string name_image = percentages_folder+name_output_root_file+"_"+variable+"_"+minpT+"GeV.pdf";
   
   double y_max = 1.25*hist->GetMaximum();
   

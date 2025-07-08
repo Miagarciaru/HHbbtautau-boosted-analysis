@@ -118,7 +118,7 @@ void plotDistributionsComparisons(const std::vector<std::string>& sampleFiles,
   
   string name_image = "";
   
-  name_image = "output_plots/"+min_pT+"GeV/grouped_distributions_plots/"+nameVar+"_min_pT"+min_pT+"GeV_comparison.png";
+  name_image = "output_plots/"+min_pT+"GeV/grouped_distributions_plots/"+nameVar+"_min_pT"+min_pT+"GeV_comparison.pdf";
   
   double dely = 0.05;
   myText(0.2, 0.7, kBlack, description1.c_str());

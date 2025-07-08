@@ -69,7 +69,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
     //ratio_hist.SetMarkerColor(colors[color_number]);
     
     //ratio_hist.Draw();
-    //string name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"_ratio_r1_"+sample_name+".png";
+    //string name_image = "output_combined_ratios_plots/"+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"_ratio_r1_"+sample_name+".pdf";
     //canvas->SaveAs(name_image.c_str());
 
     if(sample_name.find("ggF_lambda10_hh_600460")!=std::string::npos){ hist_ggF_lambda10_hh_600460 = ratio_hist; }
@@ -141,7 +141,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   
   if(proper==true){
     description1 = "Proper B_{bb}-B_{#tau#tau} class";
-    name_image = base_output_folder+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"GeV_proper_ratios_"+ratio+"_comparison.png";
+    name_image = base_output_folder+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"GeV_proper_ratios_"+ratio+"_comparison.pdf";
   }
   if(proper==false){
     if(nameVar.find("HH")!=std::string::npos){
@@ -153,7 +153,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
     if(nameVar.find("tautau")!=std::string::npos){
       description1 = "#tau#tau-only";
     }
-    name_image = base_output_folder+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"GeV_ratios_"+ratio+"_comparison.png";
+    name_image = base_output_folder+min_pT+"GeV/"+nameVar+"_min_pT"+min_pT+"GeV_ratios_"+ratio+"_comparison.pdf";
   }
   
   double dely = 0.05;

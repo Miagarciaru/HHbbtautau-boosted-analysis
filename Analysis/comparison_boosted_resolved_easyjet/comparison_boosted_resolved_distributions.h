@@ -126,7 +126,7 @@ void plot_distributions(TString name_plot){
   TH1F *hist_boosted = new TH1F();
   TH1F *hist_resolved = new TH1F();
   TString name_image = "plots_comparison/";
-  name_image+=name_plot+".png";
+  name_image+=name_plot+".pdf";
   
   if(name_plot=="tautau_m"){
     hist_boosted = hist_mH_tautau_boosted;

@@ -34,7 +34,12 @@ for minpT in min_pT_recojets:
         # Add as many samples as you need
     ]
 
-    
+    # sample_paths = [
+    #     base_analysis_folder + "VBF_cvv1p5_hh_502985_pT"+minpT+"GeV.root", # vbf HH Cvv=1.5 had-had channel
+    #     base_analysis_folder + "VBF_cvv1p5_lh_502996_pT"+minpT+"GeV.root" # vbf HH Cvv=1.5 lep-had channel
+    #     # Add as many samples as you need
+    # ]
+
     output_pT_folder = minpT+"GeV"
     output_pT_folder = os.path.join(output_root_folder, output_pT_folder)
     os.makedirs(output_pT_folder, exist_ok=True)
