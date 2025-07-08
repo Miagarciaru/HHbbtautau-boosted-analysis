@@ -26,13 +26,8 @@ def ranking_variables_plot(features, importances, indices, name_boosted_jet):
 def roc_curve_plots(clf, X, y, X_test, y_test, name_boosted_jet):
     # we first plot the Neural Network output
     
-    if(name_boosted_jet=="bb_jets"):
-        bkg_label = "non boosted bb jets"
-        sgl_label = "boosted bb jets"
-
-    if(name_boosted_jet=="tautau_jets"):
-        bkg_label = "non boosted tautau jets"
-        sgl_label = "boosted tautau jets"
+    bkg_label = "non boosted bbtautau events"
+    sgl_label = "boosted bbtautau events"
 
     signal_decisions = clf.predict_proba(X[y>0.5])[:, 1] # get probabilities on signal
     background_decisions = clf.predict_proba(X[y<0.5])[:, 1] # get decisions on background
@@ -83,13 +78,8 @@ def roc_curve_plots(clf, X, y, X_test, y_test, name_boosted_jet):
 ### BDT Overtraining check
 def compare_train_test(clf, X_train, y_train, X_test, y_test, name_boosted_jet):
     
-    if(name_boosted_jet=="bb_jets"):
-        bkg_label = "non boosted bb jets"
-        sgl_label = "boosted bb jets"
-
-    if(name_boosted_jet=="tautau_jets"):
-        bkg_label = "non boosted tautau jets"
-        sgl_label = "boosted tautau jets"
+    bkg_label = "non boosted bbtautau events"
+    sgl_label = "boosted bbtautau events"
 
     decisions = [] # list to hold decisions of classifier
     for X,y in ((X_train, y_train), (X_test, y_test)): # train and test

@@ -16,6 +16,35 @@ from xgboost import XGBClassifier
 # from onnxmltools.convert import convert_xgboost
 # from onnxmltools.convert.common.data_types import FloatTensorType
 
+# def expand_jet_features(df, features, max_jets=15):
+#     df_base = df.copy()
+
+#     # List to acumulate df with expanded columns
+#     expanded_cols = []
+
+#     for feature in features:
+#         expanded = pd.DataFrame(
+#             df[feature].apply(
+#                 lambda x: list(x) + [0.0] * (max_jets - len(x))  # padding
+#             ).to_list(),
+#             columns=[f"{feature}{i}" for i in range(max_jets)]
+#         )
+#         expanded_cols.append(expanded)
+
+#     # Concatenate all in a single final df
+#     df_final = pd.concat([df_base] + expanded_cols, axis=1)
+
+#     return df_final
+
+def expand_jet_features(df, features, max_jets):
+    df_expanded = df.copy()
+    for feature in features:
+        for i in range(max_jets):
+            df_expanded[f"{feature}_{i}"] = df[feature].apply(
+                lambda x: x[i] if i < len(x) else 0.0
+            )
+    return df_expanded
+
 def get_df_with_info_jets(df_events: pd.DataFrame, explode_branches: list, boosted_idx_name: str) -> pd.DataFrame:
 
     df_jets = df_events.explode(explode_branches)
