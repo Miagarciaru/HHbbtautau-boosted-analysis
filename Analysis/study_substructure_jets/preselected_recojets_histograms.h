@@ -148,6 +148,10 @@ TH1F *hist_non_matched_preselected_bb_score_bdt_Hbb = new TH1F("hist_non_matched
 TH1F *hist_matched_preselected_tautau_score_bdt_Htautau = new TH1F("hist_matched_preselected_tautau_score_bdt_Htautau", "Score Htautau for boosted tautau jets; Score bdt Htautau;Events", 50, 0, 1.0);
 TH1F *hist_non_matched_preselected_tautau_score_bdt_Htautau = new TH1F("hist_non_matched_preselected_tautau_score_bdt_Htautau", "Score Htautau for boosted tautau jets; Score bdt Htautau;Events", 50, 0, 1.0);
 
+// Histograms of the score for preselected boosted tautau jets
+TH1F *hist_matched_preselected_bbtautau_score_bdt_HHbbtautau = new TH1F("hist_matched_preselected_bbtautau_score_bdt_HHbbtautau", "Score HHbbtautau for boosted bbtautau events; Score bdt bbtautau;Events", 50, 0, 1.0);
+TH1F *hist_non_matched_preselected_bbtautau_score_bdt_HHbbtautau = new TH1F("hist_non_matched_preselected_bbtautau_score_bdt_HHbbtautau", "Score HHbbtautau for boosted bbtautau events; Score bdt bbtautau;Events", 50, 0, 1.0);
+
 //***************************************************************************************************************
 // Topological variable histograms of VBF processes
 //***************************************************************************************************************

@@ -689,6 +689,9 @@ void write_histograms(){
   hist_matched_preselected_tautau_m_only_Hbb_tagger->Write();
   hist_matched_preselected_tautau_m_until_nsubjettiness->Write();
 
+  hist_matched_preselected_bbtautau_score_bdt_HHbbtautau->Write();
+  hist_non_matched_preselected_bbtautau_score_bdt_HHbbtautau->Write();
+
   //***********************************************************************************
   // non matched preselected
   //***********************************************************************************

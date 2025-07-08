@@ -42,9 +42,11 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   string path_base_models = "../preselection_boosted_bbtautau/ML_models/";
   string path_model_1 = path_base_models+"tmva101_bb_jets.root";
   string path_model_2 = path_base_models+"tmva101_tautau_jets.root";
+  string path_model_3 = path_base_models+"tmva101_bbtautau_events.root";
 
   TMVA::Experimental::RBDT model_bb_jets("myBDT_bb_jets", path_model_1);
   TMVA::Experimental::RBDT model_tautau_jets("myBDT_tautau_jets", path_model_2);
+  TMVA::Experimental::RBDT model_bbtautau_events("myBDT_bbtautau_events", path_model_3);
   
   cout << "----------------------------------------------------------------------------------------------------------------" << endl;
   cout << "Processing: " << process_name << endl;
@@ -76,7 +78,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     define_classes(min_pT_recojet_cut_MeV);
     define_reconstructed_objects();
     // define_reco_truth_boosted_jets_hh();
-    define_preselected_events(min_pT_recojet_cut_MeV, model_bb_jets, model_tautau_jets);
+    define_preselected_events(min_pT_recojet_cut_MeV, model_bb_jets, model_tautau_jets, model_bbtautau_events);
     // define_preselected_events(min_pT_recojet_cut_MeV);
     pairs_small_jets();
     compute_variables_for_topological_processes();

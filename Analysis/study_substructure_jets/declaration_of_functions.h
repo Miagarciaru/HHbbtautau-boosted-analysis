@@ -8,6 +8,8 @@ using namespace TMVA::Experimental;
 // *************************************
 float bdt_boosted_bb_jet_cut = 0.7;
 float bdt_boosted_tautau_jet_cut = 0.7;
+float bdt_boosted_bbtautau_event_cut = 0.7;
+const int max_jets = 15;
 
 // *************************************
 // Declaration of functions
@@ -20,7 +22,7 @@ void default_values_for_topological_processes();
 void compute_statistical_parameters();
 void counting_statistical_parameters();
 void correct_match_between_truth_reco_and_preselected_objects();
-void define_preselected_events(float min_pT_cut_in_MeV, TMVA::Experimental::RBDT& model_bb, TMVA::Experimental::RBDT& model_tautau);
+void define_preselected_events(float min_pT_cut_in_MeV, TMVA::Experimental::RBDT& model_bb, TMVA::Experimental::RBDT& model_tautau, TMVA::Experimental::RBDT& model_bbtautau_events);
 float evaluate_bdt_model(TMVA::Experimental::RBDT& model, const std::vector<float>& jet_features);
 void define_reconstructed_objects();
 void define_output_branches();
@@ -518,9 +520,9 @@ void counting_statistical_parameters(){
   // Counting TP, FP, TN and FN boosted bb
   //******************************************************************************************
 
-  if( (class_event == 2 || class_event == 3) ){ // All truth-reco Bbb
+  if( truth_reco_match_for_boosted_bb == true ){ // All truth-reco Bbb
     // Since Bbb has the same index for b1 and b2, we only compare the b1 indexes
-    if( truth_reco_matched_preselected_Bbb == true ){
+    if( matched_preselected_bb == true && idx_b1truth_recoak10_dRmin==idx_b1_preselected ){
       // Truth Boosted bb that are preselected as boosted bb (Correct clasiffication)
       TP_Bbb++;
     }
@@ -544,9 +546,9 @@ void counting_statistical_parameters(){
   // Counting TP, FP, TN and FN boosted tautau
   //******************************************************************************************
 
-  if( (class_event == 1 || class_event == 3) ){ // All truth-reco Btautau
+  if( truth_reco_match_for_boosted_tautau== true ){ // All truth-reco Btautau
     // Since Btautau has the same index for tau1 and tau2, we only compare the b1 indexes
-    if( truth_reco_matched_preselected_Btautau == true ){ 
+    if( matched_preselected_tautau == true && idx_tau1truth_recoak10_dRmin==idx_tau1_preselected ){ 
       // Truth Boosted tautau that are preselected as boosted tautau (Correct clasiffication)
       TP_Btautau++;
     }
@@ -570,8 +572,8 @@ void counting_statistical_parameters(){
   // Counting TP, FP, TN and FN boosted bbtautau
   //******************************************************************************************
 
-  if( class_event == 3 ){ // All truth-reco Btautau
-    if( truth_reco_matched_preselected_BbbBtautau == true ){ 
+  if( truth_reco_match_for_boosted_bbtautau == true ){ // All truth-reco Btautau
+    if( matched_preselected_bbtautau == true ){ 
       // Truth Boosted BbbBtautau that are preselected as boosted BbbBtautau (Correct clasiffication)
       TP_BbbBtautau++;
     }
@@ -581,7 +583,7 @@ void counting_statistical_parameters(){
     }
   }
   else{
-    if( matched_preselection == true ){
+    if( matched_preselected_bbtautau == true ){
       // False Boosted BbbBtautau that are preselected as boosted BbbBtautau (Wrong classification)
       FP_BbbBtautau++;
     }
@@ -766,7 +768,7 @@ float evaluate_bdt_model(TMVA::Experimental::RBDT& model, const std::vector<floa
 
 }
 
-void define_preselected_events(float min_pT_cut_in_MeV, TMVA::Experimental::RBDT& model_bb, TMVA::Experimental::RBDT& model_tautau){
+void define_preselected_events(float min_pT_cut_in_MeV, TMVA::Experimental::RBDT& model_bb, TMVA::Experimental::RBDT& model_tautau, TMVA::Experimental::RBDT& model_bbtautau_events){
 
   // Assign default values for preselected bb and tautau objects
   default_values_for_preselected_variables();
@@ -774,7 +776,8 @@ void define_preselected_events(float min_pT_cut_in_MeV, TMVA::Experimental::RBDT
   matched_preselected_bb = false;
   matched_preselected_tautau = false;
   matched_preselection = false;
- 
+  matched_preselected_bbtautau = false;
+
   int number_of_tagged_bb_jets = 0;
   
   if( recojet_antikt10UFO_NOSYS_pt->size() >= 2 ){
@@ -860,7 +863,7 @@ void define_preselected_events(float min_pT_cut_in_MeV, TMVA::Experimental::RBDT
         matched_preselection = true;
       }
     }
-    
+
     // Save the values for bb, tautau and HH objects if it was posible to find the preselected bb and tautau boosted jets
 
     TLorentzVector bb = TLorentzVector();
@@ -899,6 +902,185 @@ void define_preselected_events(float min_pT_cut_in_MeV, TMVA::Experimental::RBDT
       preselected_HH_m = HH.M();	
       
     }
+  }
+  
+  // std::vector<std::vector<float>> jet_features_vector_list = {
+  //   recojet_antikt10UFO_NOSYS_pt,
+  //   recojet_antikt10UFO_eta,
+  //   recojet_antikt10UFO_phi,
+  //   recojet_antikt10UFO_m,
+  //   recojet_antikt10UFO_Tau1_wta,
+  //   recojet_antikt10UFO_Tau2_wta,
+  //   recojet_antikt10UFO_Tau3_wta,
+  //   recojet_antikt10UFO_ECF1,
+  //   recojet_antikt10UFO_ECF2,
+  //   recojet_antikt10UFO_ECF3,
+  //   recojet_antikt10UFO_Split12,
+  //   recojet_antikt10UFO_Split23,
+  //   recojet_antikt10UFO_GN2Xv01_phbb,
+  //   recojet_antikt10UFO_GN2Xv01_pqcd,
+  //   recojet_antikt10UFO_GN2Xv01_phcc,
+  //   recojet_antikt10UFO_GN2Xv01_ptop
+  // };
+
+  std::vector<float> features_event;
+  
+  // Add number of large R jets as fisrt input
+
+  int n_largeR_jets = recojet_antikt10UFO_NOSYS_pt->size();
+  features_event.push_back(static_cast<float>(n_largeR_jets));
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_NOSYS_pt->size()) {
+      features_event.push_back(recojet_antikt10UFO_NOSYS_pt->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_eta->size()) {
+      features_event.push_back(recojet_antikt10UFO_eta->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_phi->size()) {
+      features_event.push_back(recojet_antikt10UFO_phi->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_m->size()) {
+      features_event.push_back(recojet_antikt10UFO_m->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_Tau1_wta->size()) {
+      features_event.push_back(recojet_antikt10UFO_Tau1_wta->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_Tau2_wta->size()) {
+      features_event.push_back(recojet_antikt10UFO_Tau2_wta->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_Tau3_wta->size()) {
+      features_event.push_back(recojet_antikt10UFO_Tau3_wta->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_ECF1->size()) {
+      features_event.push_back(recojet_antikt10UFO_ECF1->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+  
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_ECF2->size()) {
+      features_event.push_back(recojet_antikt10UFO_ECF2->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_ECF3->size()) {
+      features_event.push_back(recojet_antikt10UFO_ECF3->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_Split12->size()) {
+      features_event.push_back(recojet_antikt10UFO_Split12->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_Split23->size()) {
+      features_event.push_back(recojet_antikt10UFO_Split23->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_GN2Xv01_phbb->size()) {
+      features_event.push_back(recojet_antikt10UFO_GN2Xv01_phbb->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_GN2Xv01_pqcd->size()) {
+      features_event.push_back(recojet_antikt10UFO_GN2Xv01_pqcd->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_GN2Xv01_phcc->size()) {
+      features_event.push_back(recojet_antikt10UFO_GN2Xv01_phcc->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  for (int ii = 0; ii < max_jets; ii++) {
+    if (ii < recojet_antikt10UFO_GN2Xv01_ptop->size()) {
+      features_event.push_back(recojet_antikt10UFO_GN2Xv01_ptop->at(ii));
+    } 
+    else {
+      features_event.push_back(0.0f);
+    }
+  }
+
+  float score_bbtautau_event = evaluate_bdt_model(model_bbtautau_events, features_event);
+  if(score_bbtautau_event>bdt_boosted_bbtautau_event_cut){
+    matched_preselected_bbtautau = true;
+    hist_matched_preselected_bbtautau_score_bdt_HHbbtautau->Fill(score_bbtautau_event);
+  }
+  else{
+    hist_non_matched_preselected_bbtautau_score_bdt_HHbbtautau->Fill(score_bbtautau_event);
   }
 }
 

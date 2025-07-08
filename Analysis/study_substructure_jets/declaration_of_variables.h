@@ -345,6 +345,7 @@ Float_t preselected_HH_phi;
 Float_t preselected_HH_m;
 
 bool matched_preselection; // Tell us if the bb and tautau objects were defined with the preselection cuts on recovariables
+bool matched_preselected_bbtautau;
 bool correct_matched_preselected_BbbBtautau;
 bool wrong_matched_preselected_BbbBtautau;
 bool matched_preselected_BbbBtautau_non_matched_truth_reco_info;
