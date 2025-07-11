@@ -6,9 +6,9 @@ using namespace TMVA::Experimental;
 // *************************************
 // Constant variables
 // *************************************
-float bdt_boosted_bb_jet_cut = 0.7;
-float bdt_boosted_tautau_jet_cut = 0.7;
-float bdt_boosted_bbtautau_event_cut = 0.7;
+float bdt_boosted_bb_jet_cut = 0.8;
+float bdt_boosted_tautau_jet_cut = 0.9;
+float bdt_boosted_bbtautau_event_cut = 0.9;
 const int max_jets = 15;
 
 // *************************************
@@ -415,7 +415,8 @@ void compute_statistical_parameters(){
   efficiency_Bbb = 100.0*TP_Bbb/(TP_Bbb+FN_Bbb);
   purity_Bbb = 100.0*TP_Bbb/(TP_Bbb+FP_Bbb);
   accuracy_Bbb = 100.0*(TP_Bbb+TN_Bbb)/(TP_Bbb+FP_Bbb+TN_Bbb+FN_Bbb);
-  
+  significance_Bbb = TP_Bbb/TMath::Sqrt(TN_Bbb);
+
   //***************************************************************************
   // Parameters for Boosted tautau
   //***************************************************************************
@@ -423,6 +424,7 @@ void compute_statistical_parameters(){
   efficiency_Btautau = 100.0*TP_Btautau/(TP_Btautau+FN_Btautau);
   purity_Btautau = 100.0*TP_Btautau/(TP_Btautau+FP_Btautau);
   accuracy_Btautau = 100.0*(TP_Btautau+TN_Btautau)/(TP_Btautau+FP_Btautau+TN_Btautau+FN_Btautau);
+  significance_Btautau = TP_Btautau/TMath::Sqrt(TN_Btautau);
 
   //***************************************************************************
   // Parameters for Boosted bbtautau
@@ -431,36 +433,42 @@ void compute_statistical_parameters(){
   efficiency_BbbBtautau = 100.0*TP_BbbBtautau/(TP_BbbBtautau+FN_BbbBtautau);
   purity_BbbBtautau = 100.0*TP_BbbBtautau/(TP_BbbBtautau+FP_BbbBtautau);
   accuracy_BbbBtautau = 100.0*(TP_BbbBtautau+TN_BbbBtautau)/(TP_BbbBtautau+FP_BbbBtautau+TN_BbbBtautau+FN_BbbBtautau);
+  significance_BbbBtautau = TP_BbbBtautau/TMath::Sqrt(TN_BbbBtautau);
 
   // Saving the parameters in the TH2F histogram
   percentages_statistical_parameters_for_preselected_events->SetBinContent(1, 1, efficiency_BbbBtautau);
   percentages_statistical_parameters_for_preselected_events->SetBinContent(1, 2, purity_BbbBtautau);
   percentages_statistical_parameters_for_preselected_events->SetBinContent(1, 3, accuracy_BbbBtautau);
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(1, 4, significance_BbbBtautau);
 
   percentages_statistical_parameters_for_preselected_events->SetBinContent(2, 1, efficiency_Bbb);
   percentages_statistical_parameters_for_preselected_events->SetBinContent(2, 2, purity_Bbb);
   percentages_statistical_parameters_for_preselected_events->SetBinContent(2, 3, accuracy_Bbb);
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(2, 4, significance_Bbb);
 
   percentages_statistical_parameters_for_preselected_events->SetBinContent(3, 1, efficiency_Btautau);
   percentages_statistical_parameters_for_preselected_events->SetBinContent(3, 2, purity_Btautau);
   percentages_statistical_parameters_for_preselected_events->SetBinContent(3, 3, accuracy_Btautau);
-
+  percentages_statistical_parameters_for_preselected_events->SetBinContent(3, 4, significance_Btautau);
   
   percentages_statistical_parameters_for_preselected_events->GetXaxis()->SetBinLabel(1, "B_{bb}-B_{#tau#tau} Preselected Events");
   percentages_statistical_parameters_for_preselected_events->GetXaxis()->SetBinLabel(2, "B_{bb} Preselected Events");
   percentages_statistical_parameters_for_preselected_events->GetXaxis()->SetBinLabel(3, "B_{#tau#tau} Preselected Events");
-
+  
   percentages_statistical_parameters_for_preselected_events->GetYaxis()->SetBinLabel(1, "Efficency (%)");
   percentages_statistical_parameters_for_preselected_events->GetYaxis()->SetBinLabel(2, "Purity (%)");
   percentages_statistical_parameters_for_preselected_events->GetYaxis()->SetBinLabel(3, "Accuracy (%)");
+  percentages_statistical_parameters_for_preselected_events->GetYaxis()->SetBinLabel(4, "Significance (%)");
 
   cout << "Efficiency for Bbb: " << efficiency_Bbb << endl;
   cout << "Purity for Bbb: " << purity_Bbb << endl;
   cout << "Accuracy for Bbb: " << accuracy_Bbb << endl;
+  cout << "Significance for Bbb: " << significance_Bbb << endl;  
   cout << "--------------------------------" << endl;
   cout << "Efficiency for Bbb: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(2,1) << endl;
-  cout << "Purity for Bbb: " <<percentages_statistical_parameters_for_preselected_events->GetBinContent(2,2) << endl;
+  cout << "Purity for Bbb: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(2,2) << endl;
   cout << "Accuracy for Bbb: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(2,3) << endl;
+  cout << "Significance for Bbb: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(2,4) << endl;
   
   // Fill percentages Bbb
   
@@ -478,7 +486,6 @@ void compute_statistical_parameters(){
   percentages_matched_and_preselected_events_only_Bbb->GetYaxis()->SetBinLabel(2, "Correct");
   percentages_matched_and_preselected_events_only_Bbb->GetYaxis()->SetBinLabel(3, "No info match");
 
-
   // Fill percentages Btautau
   
   percentages_matched_and_preselected_events_only_Btautau->SetBinContent(1, 1, 100.0*matched_tautau_non_preselected/matched_tautau_events); // Matched events percentages wrongly preselected                         
@@ -494,7 +501,6 @@ void compute_statistical_parameters(){
   percentages_matched_and_preselected_events_only_Btautau->GetYaxis()->SetBinLabel(1, "Wrong");
   percentages_matched_and_preselected_events_only_Btautau->GetYaxis()->SetBinLabel(2, "Correct");
   percentages_matched_and_preselected_events_only_Btautau->GetYaxis()->SetBinLabel(3, "No info match");
-
 
   // Fill percentages Bbb-Btautau
   
@@ -512,7 +518,6 @@ void compute_statistical_parameters(){
   percentages_matched_and_preselected_events_BbbBtautau->GetYaxis()->SetBinLabel(2, "Correct");
   percentages_matched_and_preselected_events_BbbBtautau->GetYaxis()->SetBinLabel(3, "No info match");  
 }
-
 
 void counting_statistical_parameters(){
 

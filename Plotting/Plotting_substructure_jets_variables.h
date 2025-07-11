@@ -158,12 +158,14 @@ void reading_distributions_histograms(const std::string& sample,
   outFile << "Purity Bbb-Btautau: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(1, 2) << "% " << endl;
   outFile << "Accuracy Bbb-Btautau: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(1, 3) << "% " << endl;
   outFile << "Performance Bbb-Btautau: " << (percentages_statistical_parameters_for_preselected_events->GetBinContent(1, 1)+percentages_statistical_parameters_for_preselected_events->GetBinContent(1, 2)+percentages_statistical_parameters_for_preselected_events->GetBinContent(1, 3))/3.0 << "% " << endl;
+  outFile << "Significance Bbb-Btautau: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(1, 4) << endl;
   outFile << "/--------" << endl;
   outFile << "\t Statistical Parameters of Bbb for "+name_output_root_file+" process: " << endl;
   outFile << "Efficiency Bbb: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(2, 1) << "% " << endl;
   outFile << "Purity Bbb: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(2, 2) << "% " << endl;
   outFile << "Accuracy Bbb: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(2, 3) << "% " << endl;
   outFile << "Performance Bbb: " << (percentages_statistical_parameters_for_preselected_events->GetBinContent(2, 1)+percentages_statistical_parameters_for_preselected_events->GetBinContent(2, 2)+percentages_statistical_parameters_for_preselected_events->GetBinContent(2, 3))/3.0 << "% " << endl;
+  outFile << "Significance Bbb: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(2, 4) << endl;
   outFile << "/--------" << endl;
   
   outFile << "\t Statistical Parameters of Btautau for "+name_output_root_file+" process: " << endl;
@@ -171,6 +173,7 @@ void reading_distributions_histograms(const std::string& sample,
   outFile << "Purity Btautau: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(3, 2) << "% " << endl;
   outFile << "Accuracy Btautau: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(3, 3) << "% " << endl;
   outFile << "Performance Btautau: " << (percentages_statistical_parameters_for_preselected_events->GetBinContent(3, 1)+percentages_statistical_parameters_for_preselected_events->GetBinContent(3, 2)+percentages_statistical_parameters_for_preselected_events->GetBinContent(3, 3))/3.0 << "% " << endl;
+  outFile << "Significance Btautau: " << percentages_statistical_parameters_for_preselected_events->GetBinContent(3, 4) << endl;
   outFile << "/--------" << endl;
   
   outFile << "/----------------------------------------------------------------------" << endl;

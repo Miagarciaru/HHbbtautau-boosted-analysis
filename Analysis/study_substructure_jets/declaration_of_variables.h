@@ -154,6 +154,7 @@ int FN_Bbb = 0;
 float efficiency_Bbb = 0;
 float purity_Bbb = 0;
 float accuracy_Bbb = 0;
+float significance_Bbb = 0;
 
 // Truth reco matching for boosted events
 bool truth_reco_match_for_boosted_bb;
@@ -179,6 +180,7 @@ int FN_Btautau = 0;
 float efficiency_Btautau = 0;
 float purity_Btautau = 0;
 float accuracy_Btautau = 0;
+float significance_Btautau = 0;
 
 // for preselected-matched Bbb-Btautau
 
@@ -199,6 +201,7 @@ int FN_BbbBtautau = 0;
 float efficiency_BbbBtautau = 0;
 float purity_BbbBtautau = 0;
 float accuracy_BbbBtautau = 0;
+float significance_BbbBtautau = 0;
 
 // *************************************
 // Declaration of leaf variables

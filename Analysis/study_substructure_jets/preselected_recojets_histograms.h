@@ -7,7 +7,7 @@ TH2F *percentages_matched_and_preselected_events_BbbBtautau = new TH2F("percenta
 TH2F *percentages_matched_and_preselected_events_only_Bbb = new TH2F("percentages_matched_and_preselected_events_only_Bbb", "Percentages between matched and preselected events for B_{bb}", 2, 0, 2, 3, 0, 3);
 TH2F *percentages_matched_and_preselected_events_only_Btautau = new TH2F("percentages_matched_and_preselected_events_only_Btautau", "Percentages between matched and preselected events for B_{#tau#tau}", 2, 0, 2, 3, 0, 3);
 
-TH2F *percentages_statistical_parameters_for_preselected_events = new TH2F("percentages_statistical_parameters_for_preselected_events", "Statistical parameters between matched and preselected events", 3, 0, 3, 3, 0, 3);
+TH2F *percentages_statistical_parameters_for_preselected_events = new TH2F("percentages_statistical_parameters_for_preselected_events", "Statistical parameters between matched and preselected events", 4, 0, 4, 4, 0, 4);
 
 //***************************************************************************
 //Preselected events variables histograms 

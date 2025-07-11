@@ -79,7 +79,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     define_reconstructed_objects();
     // define_reco_truth_boosted_jets_hh();
     define_preselected_events(min_pT_recojet_cut_MeV, model_bb_jets, model_tautau_jets, model_bbtautau_events);
-    // define_preselected_events(min_pT_recojet_cut_MeV);
+    
     pairs_small_jets();
     compute_variables_for_topological_processes();
     cutflow_small_R_jets();

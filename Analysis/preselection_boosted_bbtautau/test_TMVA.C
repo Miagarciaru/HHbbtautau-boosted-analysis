@@ -9,11 +9,8 @@ void test_TMVA(){
 
     // Load model
     // auto model = RBDT::LoadFromFile("ML_models/tmva101_bb_jets.root");
-    TMVA::Experimental::RBDT model("myBDT_bb_jets", "ML_models/tmva101_bb_jets.root");
-
-//     "recojet_antikt10UFO_NOSYS_pt", "recojet_antikt10UFO_m", "recojet_antikt10UFO_Tau1_wta",
-// "recojet_antikt10UFO_Tau2_wta", "recojet_antikt10UFO_ECF1", "recojet_antikt10UFO_ECF2", "recojet_antikt10UFO_ECF3",
-// "recojet_antikt10UFO_Split12", "recojet_antikt10UFO_Split23", "recojet_antikt10UFO_GN2Xv01_phbb"
+    // TMVA::Experimental::RBDT model("myBDT_bb_jets", "ML_models/tmva101_bb_jets.root");
+    TMVA::Experimental::RBDT model("myBDT_bb_jets", "ML_models/tmva101_bbtautau_events.root");
 
     std::vector<float> input = {251620.0, 120232.0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.85 };  // tus 10 variables
     // Shape del tensor: [1, 10]
