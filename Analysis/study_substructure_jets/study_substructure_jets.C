@@ -318,11 +318,11 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   fix_underflow_overflow(hist_matched_recojet_bb_ak10_Split23);
   fix_underflow_overflow(hist_non_matched_recojet_bb_ak10_Split23);
 
-  fix_underflow_overflow(hist_boosted_jet12_m);
-  fix_underflow_overflow(hist_boosted_jet12_pt);
-  fix_underflow_overflow(hist_boosted_jet12_deta);
-  fix_underflow_overflow(hist_boosted_jet12_dphi);
-  fix_underflow_overflow(hist_boosted_jet12_dR);
+  fix_underflow_overflow(hist_boosted_preselected_j12_m);
+  fix_underflow_overflow(hist_boosted_preselected_j12_pt);
+  fix_underflow_overflow(hist_boosted_preselected_j12_deta);
+  fix_underflow_overflow(hist_boosted_preselected_j12_dphi);
+  fix_underflow_overflow(hist_boosted_preselected_j12_dR);
 
   hist_boosted_cutflow_small_jets->SetBinContent(1, 100.0*matched_preselected_bbtautau_events/matched_preselected_bbtautau_events);
   hist_boosted_cutflow_small_jets->SetBinContent(2, 100.0*overlap_jj_selection_methods/matched_preselected_bbtautau_events);

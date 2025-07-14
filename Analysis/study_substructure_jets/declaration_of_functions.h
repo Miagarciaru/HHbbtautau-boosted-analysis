@@ -18,6 +18,7 @@ const int max_jets = 15;
 void cutflow_small_R_jets();
 void compute_variables_for_topological_processes();
 void pairs_small_jets();
+void compute_small_jets_index(int &idx_small_jet1_mjj, int &idx_small_jet2_mjj, int &idx_small_jet1_ptjj, int &idx_small_jet2_ptjj, int idx_h1_jet, int idx_h2_jet, bool bbtautau_event, bool &is_jet12_ptjj_sel, bool &is_jet12_mjj_sel);
 void default_values_for_topological_processes();
 void compute_statistical_parameters();
 void counting_statistical_parameters();
@@ -41,38 +42,38 @@ void default_values_for_preselected_variables();
 // This function tries to develop different cuts on the selected pair of small jets
 void cutflow_small_R_jets(){
 
-  if( is_jet12_matched_mjj_sel == true ){
+  if( matched_preselected_j12_mjj_sel == true ){
 
     // Verify if the two small jets chosen by mjj method are the ones for the highest pT pair
-    if( idx_jet1_VBF_topology_mjj_sel==idx_jet1_VBF_topology_ptjj_sel && idx_jet2_VBF_topology_mjj_sel==idx_jet2_VBF_topology_ptjj_sel ){
+    if( idx_preselected_small_j1_mjj_sel==idx_preselected_small_j1_ptjj_sel && idx_preselected_small_j2_mjj_sel==idx_preselected_small_j2_ptjj_sel ){
       overlap_jj_selection_methods++;
     }
 
     // Verify if the candidates have an opposite eta sign
-    if( recojet_antikt4PFlow_eta->at(idx_jet1_VBF_topology_mjj_sel)*recojet_antikt4PFlow_eta->at(idx_jet2_VBF_topology_mjj_sel) < 0 ){
+    if( recojet_antikt4PFlow_eta->at(idx_preselected_small_j1_mjj_sel)*recojet_antikt4PFlow_eta->at(idx_preselected_small_j2_mjj_sel) < 0 ){
       eta_smalljets_cutflow++;
     }
     
     // Verify that each chosen jets pass the pt>30GeV
-    if( recojet_antikt4PFlow_NOSYS_pt->at(idx_jet2_VBF_topology_mjj_sel) > 30000){
+    if( recojet_antikt4PFlow_NOSYS_pt->at(idx_preselected_small_j2_mjj_sel) > 30000){
       minpt_smalljets_cutflow++;
     }
 
     // Verify if the invariant mass of the two jets is larger than 500 GeV
-    if( two_jets_j12_m > 500000 ){
+    if( preselected_j12_m > 500000 ){
       min_mjj_smalljets_cutflow++;
     }
 
     // Verify if the dR of the two jets is larger than 3
-    if( two_jets_j12_dR > 5.0 ){
+    if( preselected_j12_dR > 5.0 ){
       min_dR_smalljets_cutflow++;
     }
 
-    bool cond_pt_sel = idx_jet1_VBF_topology_mjj_sel==idx_jet1_VBF_topology_ptjj_sel && idx_jet2_VBF_topology_mjj_sel==idx_jet2_VBF_topology_ptjj_sel;
-    bool cond_eta_sig = recojet_antikt4PFlow_eta->at(idx_jet1_VBF_topology_mjj_sel)*recojet_antikt4PFlow_eta->at(idx_jet2_VBF_topology_mjj_sel) < 0;
-    bool cond_minpt = recojet_antikt4PFlow_NOSYS_pt->at(idx_jet2_VBF_topology_mjj_sel) > 30000;
-    bool cond_min_mjj = two_jets_j12_m > 500000;
-    bool cond_min_dR = two_jets_j12_dR > 5.0;
+    bool cond_pt_sel = idx_preselected_small_j1_mjj_sel==idx_preselected_small_j1_ptjj_sel && idx_preselected_small_j2_mjj_sel==idx_preselected_small_j2_ptjj_sel;
+    bool cond_eta_sig = recojet_antikt4PFlow_eta->at(idx_preselected_small_j1_mjj_sel)*recojet_antikt4PFlow_eta->at(idx_preselected_small_j2_mjj_sel) < 0;
+    bool cond_minpt = recojet_antikt4PFlow_NOSYS_pt->at(idx_preselected_small_j2_mjj_sel) > 30000;
+    bool cond_min_mjj = preselected_j12_m > 500000;
+    bool cond_min_dR = preselected_j12_dR > 5.0;
     
     if( cond_eta_sig==true && cond_minpt==true && cond_min_mjj==true && cond_min_dR==true){
       all_cuts_applied_cutflow++;
@@ -83,68 +84,139 @@ void cutflow_small_R_jets(){
 
 void default_values_for_topological_processes(){
 
+  //****************************************************************************
+  // Recojet variables
+  //****************************************************************************
+
   // Two small jets j1 and j2 variables
-  two_jets_j12_m = -99;
-  two_jets_j12_pt = -99;
-  two_jets_j12_eta = -99;
-  two_jets_j12_phi = -99;
-  two_jets_j12_deta = -99;
-  two_jets_j12_dphi = -99;
-  two_jets_j12_dR = -99;
+  recojet_j12_m = -99;
+  recojet_j12_pt = -99;
+  recojet_j12_eta = -99;
+  recojet_j12_phi = -99;
+  recojet_j12_deta = -99;
+  recojet_j12_dphi = -99;
+  recojet_j12_dR = -99;
 
   // Boosted bb and boosted tautau variables
-  boosted_bb_tautau_system_m = -99;
-  boosted_bb_tautau_system_pt = -99;
-  boosted_bb_tautau_system_eta = -99;
-  boosted_bb_tautau_system_phi = -99;
-  boosted_bb_tautau_system_deta = -99;
-  boosted_bb_tautau_system_dphi = -99;
-  boosted_bb_tautau_system_dR = -99;
+  recojet_bbtautau_system_m = -99;
+  recojet_bbtautau_system_pt = -99;
+  recojet_bbtautau_system_eta = -99;
+  recojet_bbtautau_system_phi = -99;
+  recojet_bbtautau_system_deta = -99;
+  recojet_bbtautau_system_dphi = -99;
+  recojet_bbtautau_system_dR = -99;
 
   // Boosted bb and small jets j1 variables
-  boosted_bb_j1_system_m = -99;
-  boosted_bb_j1_system_pt = -99;
-  boosted_bb_j1_system_eta = -99;
-  boosted_bb_j1_system_phi = -99;
-  boosted_bb_j1_system_deta = -99;
-  boosted_bb_j1_system_dphi = -99;
-  boosted_bb_j1_system_dR = -99;
+  recojet_bb_j1_system_m = -99;
+  recojet_bb_j1_system_pt = -99;
+  recojet_bb_j1_system_eta = -99;
+  recojet_bb_j1_system_phi = -99;
+  recojet_bb_j1_system_deta = -99;
+  recojet_bb_j1_system_dphi = -99;
+  recojet_bb_j1_system_dR = -99;
 
   // Boosted tautau and small jets j1 variables
-  boosted_tautau_j1_system_m = -99;
-  boosted_tautau_j1_system_pt = -99;
-  boosted_tautau_j1_system_eta = -99;
-  boosted_tautau_j1_system_phi = -99;
-  boosted_tautau_j1_system_deta = -99;
-  boosted_tautau_j1_system_dphi = -99;
-  boosted_tautau_j1_system_dR = -99;
+  recojet_tautau_j1_system_m = -99;
+  recojet_tautau_j1_system_pt = -99;
+  recojet_tautau_j1_system_eta = -99;
+  recojet_tautau_j1_system_phi = -99;
+  recojet_tautau_j1_system_deta = -99;
+  recojet_tautau_j1_system_dphi = -99;
+  recojet_tautau_j1_system_dR = -99;
   
   // Boosted bb and small jets j2 variables
-  boosted_bb_j2_system_m = -99;
-  boosted_bb_j2_system_pt = -99;
-  boosted_bb_j2_system_eta = -99;
-  boosted_bb_j2_system_phi = -99;
-  boosted_bb_j2_system_deta = -99;
-  boosted_bb_j2_system_dphi = -99;
-  boosted_bb_j2_system_dR = -99;
+  recojet_bb_j2_system_m = -99;
+  recojet_bb_j2_system_pt = -99;
+  recojet_bb_j2_system_eta = -99;
+  recojet_bb_j2_system_phi = -99;
+  recojet_bb_j2_system_deta = -99;
+  recojet_bb_j2_system_dphi = -99;
+  recojet_bb_j2_system_dR = -99;
   
   // Boosted tautau and small jets j1 variables
-  boosted_tautau_j2_system_m = -99;
-  boosted_tautau_j2_system_pt = -99;
-  boosted_tautau_j2_system_eta = -99;
-  boosted_tautau_j2_system_phi = -99;
-  boosted_tautau_j2_system_deta = -99;
-  boosted_tautau_j2_system_dphi = -99;
-  boosted_tautau_j2_system_dR = -99;
+  recojet_tautau_j2_system_m = -99;
+  recojet_tautau_j2_system_pt = -99;
+  recojet_tautau_j2_system_eta = -99;
+  recojet_tautau_j2_system_phi = -99;
+  recojet_tautau_j2_system_deta = -99;
+  recojet_tautau_j2_system_dphi = -99;
+  recojet_tautau_j2_system_dR = -99;
 
   // All jets system variables
-  boosted_all_jets_system_m = -99;
-  boosted_all_jets_system_pt = -99;
-  boosted_all_jets_system_eta = -99;
-  boosted_all_jets_system_phi = -99;
-  boosted_all_jets_system_deta = -99;
-  boosted_all_jets_system_dphi = -99;
-  boosted_all_jets_system_dR = -99;
+  recojet_all_jets_system_m = -99;
+  recojet_all_jets_system_pt = -99;
+  recojet_all_jets_system_eta = -99;
+  recojet_all_jets_system_phi = -99;
+  recojet_all_jets_system_deta = -99;
+  recojet_all_jets_system_dphi = -99;
+  recojet_all_jets_system_dR = -99;
+
+  //****************************************************************************
+  // Preselected variables
+  //****************************************************************************
+
+  // Two small jets j1 and j2 variables
+  preselected_j12_m = -99;
+  preselected_j12_pt = -99;
+  preselected_j12_eta = -99;
+  preselected_j12_phi = -99;
+  preselected_j12_deta = -99;
+  preselected_j12_dphi = -99;
+  preselected_j12_dR = -99;
+
+  // Boosted bb and boosted tautau variables
+  preselected_bbtautau_system_m = -99;
+  preselected_bbtautau_system_pt = -99;
+  preselected_bbtautau_system_eta = -99;
+  preselected_bbtautau_system_phi = -99;
+  preselected_bbtautau_system_deta = -99;
+  preselected_bbtautau_system_dphi = -99;
+  preselected_bbtautau_system_dR = -99;
+
+  // Boosted bb and small jets j1 variables
+  preselected_bb_j1_system_m = -99;
+  preselected_bb_j1_system_pt = -99;
+  preselected_bb_j1_system_eta = -99;
+  preselected_bb_j1_system_phi = -99;
+  preselected_bb_j1_system_deta = -99;
+  preselected_bb_j1_system_dphi = -99;
+  preselected_bb_j1_system_dR = -99;
+
+  // Boosted tautau and small jets j1 variables
+  preselected_tautau_j1_system_m = -99;
+  preselected_tautau_j1_system_pt = -99;
+  preselected_tautau_j1_system_eta = -99;
+  preselected_tautau_j1_system_phi = -99;
+  preselected_tautau_j1_system_deta = -99;
+  preselected_tautau_j1_system_dphi = -99;
+  preselected_tautau_j1_system_dR = -99;
+  
+  // Boosted bb and small jets j2 variables
+  preselected_bb_j2_system_m = -99;
+  preselected_bb_j2_system_pt = -99;
+  preselected_bb_j2_system_eta = -99;
+  preselected_bb_j2_system_phi = -99;
+  preselected_bb_j2_system_deta = -99;
+  preselected_bb_j2_system_dphi = -99;
+  preselected_bb_j2_system_dR = -99;
+  
+  // Boosted tautau and small jets j1 variables
+  preselected_tautau_j2_system_m = -99;
+  preselected_tautau_j2_system_pt = -99;
+  preselected_tautau_j2_system_eta = -99;
+  preselected_tautau_j2_system_phi = -99;
+  preselected_tautau_j2_system_deta = -99;
+  preselected_tautau_j2_system_dphi = -99;
+  preselected_tautau_j2_system_dR = -99;
+
+  // All jets system variables
+  preselected_all_jets_system_m = -99;
+  preselected_all_jets_system_pt = -99;
+  preselected_all_jets_system_eta = -99;
+  preselected_all_jets_system_phi = -99;
+  preselected_all_jets_system_deta = -99;
+  preselected_all_jets_system_dphi = -99;
+  preselected_all_jets_system_dR = -99;
 
 }
 
@@ -152,8 +224,9 @@ void default_values_for_topological_processes(){
 void compute_variables_for_topological_processes(){
 
   default_values_for_topological_processes();
-    
-  if( is_jet12_matched_mjj_sel == true ){
+  
+  // For truth-reco variables
+  if( matched_recojet_j12_mjj_sel == true && class_event == 3 ){
 
     TLorentzVector jet1 = TLorentzVector();
     TLorentzVector jet2 = TLorentzVector();
@@ -167,15 +240,128 @@ void compute_variables_for_topological_processes(){
     TLorentzVector bb_tautau = TLorentzVector();
     TLorentzVector all_jets = TLorentzVector();
     
-    float jet1_pt = recojet_antikt4PFlow_NOSYS_pt->at(idx_jet1_VBF_topology_mjj_sel);
-    float jet1_eta = recojet_antikt4PFlow_eta->at(idx_jet1_VBF_topology_mjj_sel);
-    float jet1_phi = recojet_antikt4PFlow_phi->at(idx_jet1_VBF_topology_mjj_sel);
-    float jet1_m = recojet_antikt4PFlow_m->at(idx_jet1_VBF_topology_mjj_sel);
+    float jet1_pt = recojet_antikt4PFlow_NOSYS_pt->at(idx_recojet_small_j1_mjj_sel);
+    float jet1_eta = recojet_antikt4PFlow_eta->at(idx_recojet_small_j1_mjj_sel);
+    float jet1_phi = recojet_antikt4PFlow_phi->at(idx_recojet_small_j1_mjj_sel);
+    float jet1_m = recojet_antikt4PFlow_m->at(idx_recojet_small_j1_mjj_sel);
     
-    float jet2_pt = recojet_antikt4PFlow_NOSYS_pt->at(idx_jet2_VBF_topology_mjj_sel);
-    float jet2_eta = recojet_antikt4PFlow_eta->at(idx_jet2_VBF_topology_mjj_sel);
-    float jet2_phi = recojet_antikt4PFlow_phi->at(idx_jet2_VBF_topology_mjj_sel);
-    float jet2_m = recojet_antikt4PFlow_m->at(idx_jet2_VBF_topology_mjj_sel);
+    float jet2_pt = recojet_antikt4PFlow_NOSYS_pt->at(idx_recojet_small_j2_mjj_sel);
+    float jet2_eta = recojet_antikt4PFlow_eta->at(idx_recojet_small_j2_mjj_sel);
+    float jet2_phi = recojet_antikt4PFlow_phi->at(idx_recojet_small_j2_mjj_sel);
+    float jet2_m = recojet_antikt4PFlow_m->at(idx_recojet_small_j2_mjj_sel);
+
+    float Hbb_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_b1truth_recoak10_dRmin);
+    float Hbb_eta = recojet_antikt10UFO_eta->at(idx_b1truth_recoak10_dRmin);
+    float Hbb_phi = recojet_antikt10UFO_phi->at(idx_b1truth_recoak10_dRmin);
+    float Hbb_m = recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin);
+    
+    float Htautau_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_tau1truth_recoak10_dRmin);
+    float Htautau_eta = recojet_antikt10UFO_eta->at(idx_tau1truth_recoak10_dRmin);
+    float Htautau_phi = recojet_antikt10UFO_phi->at(idx_tau1truth_recoak10_dRmin);
+    float Htautau_m = recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin);
+      
+    jet1.SetPtEtaPhiM(jet1_pt, jet1_eta, jet1_phi, jet1_m);
+    jet2.SetPtEtaPhiM(jet2_pt, jet2_eta, jet2_phi, jet2_m);
+    Hbb.SetPtEtaPhiM(Hbb_pt, Hbb_eta, Hbb_phi, Hbb_m);
+    Htautau.SetPtEtaPhiM(Htautau_pt, Htautau_eta, Htautau_phi, Htautau_m);
+    
+    jet12 = jet1 + jet2;
+    bb_jet1 = Hbb + jet1;
+    bb_jet2 = Hbb + jet2;
+    tautau_jet1 = Htautau + jet1;
+    tautau_jet2 = Htautau + jet2;
+    bb_tautau = Hbb + Htautau;
+    all_jets = Hbb + Htautau + jet1 + jet2;
+
+    recojet_j12_m = jet12.M();
+    recojet_j12_pt = jet12.Pt();
+    recojet_j12_eta = jet12.Eta();
+    recojet_j12_phi = jet12.Phi();
+    recojet_j12_deta = std::abs(jet1.Eta()-jet2.Eta());
+    recojet_j12_dphi = std::abs(jet1.Phi()-jet2.Phi());
+    recojet_j12_dR = jet1.DeltaR(jet2);
+
+    // Boosted bb and boosted tautau variables
+    recojet_bbtautau_system_m = bb_tautau.M();
+    recojet_bbtautau_system_pt = bb_tautau.Pt();
+    recojet_bbtautau_system_eta = bb_tautau.Eta();
+    recojet_bbtautau_system_phi = bb_tautau.Phi();
+    recojet_bbtautau_system_deta = std::abs(Hbb.Eta()-Htautau.Eta());
+    recojet_bbtautau_system_dphi = std::abs(Hbb.Phi()-Htautau.Phi());
+    recojet_bbtautau_system_dR = Hbb.DeltaR(Htautau);
+    
+    // Boosted bb and small jets j1 variables
+    recojet_bb_j1_system_m = bb_jet1.M();
+    recojet_bb_j1_system_pt = bb_jet1.Pt();
+    recojet_bb_j1_system_eta = bb_jet1.Eta();
+    recojet_bb_j1_system_phi = bb_jet1.Phi();
+    recojet_bb_j1_system_deta = std::abs(Hbb.Eta()-jet1.Eta());
+    recojet_bb_j1_system_dphi = std::abs(Hbb.Phi()-jet1.Phi());
+    recojet_bb_j1_system_dR = Hbb.DeltaR(jet1);
+    
+    // Boosted tautau and small jets j1 variables
+    recojet_tautau_j1_system_m = tautau_jet1.M();
+    recojet_tautau_j1_system_pt = tautau_jet1.Pt();
+    recojet_tautau_j1_system_eta = tautau_jet1.Eta();
+    recojet_tautau_j1_system_phi = tautau_jet1.Phi();
+    recojet_tautau_j1_system_deta = std::abs(Htautau.Eta()-jet1.Eta());
+    recojet_tautau_j1_system_dphi = std::abs(Htautau.Phi()-jet1.Phi());
+    recojet_tautau_j1_system_dR = Htautau.DeltaR(jet1);
+    
+    // Boosted bb and small jets j2 variables
+    recojet_bb_j2_system_m = bb_jet2.M();
+    recojet_bb_j2_system_pt = bb_jet2.Pt();
+    recojet_bb_j2_system_eta = bb_jet2.Eta();
+    recojet_bb_j2_system_phi = bb_jet2.Phi();
+    recojet_bb_j2_system_deta = std::abs(Hbb.Eta()-jet2.Eta());
+    recojet_bb_j2_system_dphi = std::abs(Hbb.Phi()-jet2.Phi());
+    recojet_bb_j2_system_dR = Hbb.DeltaR(jet2);
+    
+    // Boosted tautau and small jets j1 variables
+    recojet_tautau_j2_system_m = tautau_jet2.M();
+    recojet_tautau_j2_system_pt = tautau_jet2.Pt();
+    recojet_tautau_j2_system_eta = tautau_jet2.Eta();
+    recojet_tautau_j2_system_phi = tautau_jet2.Phi();
+    recojet_tautau_j2_system_deta = std::abs(Htautau.Eta()-jet2.Eta());
+    recojet_tautau_j2_system_dphi = std::abs(Htautau.Phi()-jet2.Phi());
+    recojet_tautau_j2_system_dR = Htautau.DeltaR(jet2);
+
+    // All jets system variables
+    recojet_all_jets_system_m = all_jets.M();
+    recojet_all_jets_system_pt = all_jets.Pt();
+    recojet_all_jets_system_eta = all_jets.Eta();
+    recojet_all_jets_system_phi = all_jets.Phi();
+    recojet_all_jets_system_deta = std::abs(bb_tautau.Eta()-jet12.Eta());
+    recojet_all_jets_system_dphi = std::abs(bb_tautau.Eta()-jet12.Eta());
+    recojet_all_jets_system_dR = bb_tautau.DeltaR(jet12);
+  
+  }
+
+  // For preselected variables
+
+  if( matched_preselected_j12_mjj_sel == true ){
+
+    TLorentzVector jet1 = TLorentzVector();
+    TLorentzVector jet2 = TLorentzVector();
+    TLorentzVector Hbb = TLorentzVector();
+    TLorentzVector Htautau = TLorentzVector();
+    TLorentzVector jet12 = TLorentzVector();
+    TLorentzVector bb_jet1 = TLorentzVector();
+    TLorentzVector bb_jet2 = TLorentzVector();
+    TLorentzVector tautau_jet1 = TLorentzVector();
+    TLorentzVector tautau_jet2 = TLorentzVector();
+    TLorentzVector bb_tautau = TLorentzVector();
+    TLorentzVector all_jets = TLorentzVector();
+    
+    float jet1_pt = recojet_antikt4PFlow_NOSYS_pt->at(idx_preselected_small_j1_mjj_sel);
+    float jet1_eta = recojet_antikt4PFlow_eta->at(idx_preselected_small_j1_mjj_sel);
+    float jet1_phi = recojet_antikt4PFlow_phi->at(idx_preselected_small_j1_mjj_sel);
+    float jet1_m = recojet_antikt4PFlow_m->at(idx_preselected_small_j1_mjj_sel);
+    
+    float jet2_pt = recojet_antikt4PFlow_NOSYS_pt->at(idx_preselected_small_j2_mjj_sel);
+    float jet2_eta = recojet_antikt4PFlow_eta->at(idx_preselected_small_j2_mjj_sel);
+    float jet2_phi = recojet_antikt4PFlow_phi->at(idx_preselected_small_j2_mjj_sel);
+    float jet2_m = recojet_antikt4PFlow_m->at(idx_preselected_small_j2_mjj_sel);
 
     float Hbb_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_b1_preselected);
     float Hbb_eta = recojet_antikt10UFO_eta->at(idx_b1_preselected);
@@ -200,67 +386,67 @@ void compute_variables_for_topological_processes(){
     bb_tautau = Hbb + Htautau;
     all_jets = Hbb + Htautau + jet1 + jet2;
 
-    two_jets_j12_m = jet12.M();
-    two_jets_j12_pt = jet12.Pt();
-    two_jets_j12_eta = jet12.Eta();
-    two_jets_j12_phi = jet12.Phi();
-    two_jets_j12_deta = std::abs(jet1.Eta()-jet2.Eta());
-    two_jets_j12_dphi = std::abs(jet1.Phi()-jet2.Phi());
-    two_jets_j12_dR = jet1.DeltaR(jet2);
+    preselected_j12_m = jet12.M();
+    preselected_j12_pt = jet12.Pt();
+    preselected_j12_eta = jet12.Eta();
+    preselected_j12_phi = jet12.Phi();
+    preselected_j12_deta = std::abs(jet1.Eta()-jet2.Eta());
+    preselected_j12_dphi = std::abs(jet1.Phi()-jet2.Phi());
+    preselected_j12_dR = jet1.DeltaR(jet2);
 
     // Boosted bb and boosted tautau variables
-    boosted_bb_tautau_system_m = bb_tautau.M();
-    boosted_bb_tautau_system_pt = bb_tautau.Pt();
-    boosted_bb_tautau_system_eta = bb_tautau.Eta();
-    boosted_bb_tautau_system_phi = bb_tautau.Phi();
-    boosted_bb_tautau_system_deta = std::abs(Hbb.Eta()-Htautau.Eta());
-    boosted_bb_tautau_system_dphi = std::abs(Hbb.Phi()-Htautau.Phi());
-    boosted_bb_tautau_system_dR = Hbb.DeltaR(Htautau);
+    preselected_bbtautau_system_m = bb_tautau.M();
+    preselected_bbtautau_system_pt = bb_tautau.Pt();
+    preselected_bbtautau_system_eta = bb_tautau.Eta();
+    preselected_bbtautau_system_phi = bb_tautau.Phi();
+    preselected_bbtautau_system_deta = std::abs(Hbb.Eta()-Htautau.Eta());
+    preselected_bbtautau_system_dphi = std::abs(Hbb.Phi()-Htautau.Phi());
+    preselected_bbtautau_system_dR = Hbb.DeltaR(Htautau);
     
     // Boosted bb and small jets j1 variables
-    boosted_bb_j1_system_m = bb_jet1.M();
-    boosted_bb_j1_system_pt = bb_jet1.Pt();
-    boosted_bb_j1_system_eta = bb_jet1.Eta();
-    boosted_bb_j1_system_phi = bb_jet1.Phi();
-    boosted_bb_j1_system_deta = std::abs(Hbb.Eta()-jet1.Eta());
-    boosted_bb_j1_system_dphi = std::abs(Hbb.Phi()-jet1.Phi());
-    boosted_bb_j1_system_dR = Hbb.DeltaR(jet1);
+    preselected_bb_j1_system_m = bb_jet1.M();
+    preselected_bb_j1_system_pt = bb_jet1.Pt();
+    preselected_bb_j1_system_eta = bb_jet1.Eta();
+    preselected_bb_j1_system_phi = bb_jet1.Phi();
+    preselected_bb_j1_system_deta = std::abs(Hbb.Eta()-jet1.Eta());
+    preselected_bb_j1_system_dphi = std::abs(Hbb.Phi()-jet1.Phi());
+    preselected_bb_j1_system_dR = Hbb.DeltaR(jet1);
     
     // Boosted tautau and small jets j1 variables
-    boosted_tautau_j1_system_m = tautau_jet1.M();
-    boosted_tautau_j1_system_pt = tautau_jet1.Pt();
-    boosted_tautau_j1_system_eta = tautau_jet1.Eta();
-    boosted_tautau_j1_system_phi = tautau_jet1.Phi();
-    boosted_tautau_j1_system_deta = std::abs(Htautau.Eta()-jet1.Eta());
-    boosted_tautau_j1_system_dphi = std::abs(Htautau.Phi()-jet1.Phi());
-    boosted_tautau_j1_system_dR = Htautau.DeltaR(jet1);
+    preselected_tautau_j1_system_m = tautau_jet1.M();
+    preselected_tautau_j1_system_pt = tautau_jet1.Pt();
+    preselected_tautau_j1_system_eta = tautau_jet1.Eta();
+    preselected_tautau_j1_system_phi = tautau_jet1.Phi();
+    preselected_tautau_j1_system_deta = std::abs(Htautau.Eta()-jet1.Eta());
+    preselected_tautau_j1_system_dphi = std::abs(Htautau.Phi()-jet1.Phi());
+    preselected_tautau_j1_system_dR = Htautau.DeltaR(jet1);
     
     // Boosted bb and small jets j2 variables
-    boosted_bb_j2_system_m = bb_jet2.M();
-    boosted_bb_j2_system_pt = bb_jet2.Pt();
-    boosted_bb_j2_system_eta = bb_jet2.Eta();
-    boosted_bb_j2_system_phi = bb_jet2.Phi();
-    boosted_bb_j2_system_deta = std::abs(Hbb.Eta()-jet2.Eta());
-    boosted_bb_j2_system_dphi = std::abs(Hbb.Phi()-jet2.Phi());
-    boosted_bb_j2_system_dR = Hbb.DeltaR(jet2);
+    preselected_bb_j2_system_m = bb_jet2.M();
+    preselected_bb_j2_system_pt = bb_jet2.Pt();
+    preselected_bb_j2_system_eta = bb_jet2.Eta();
+    preselected_bb_j2_system_phi = bb_jet2.Phi();
+    preselected_bb_j2_system_deta = std::abs(Hbb.Eta()-jet2.Eta());
+    preselected_bb_j2_system_dphi = std::abs(Hbb.Phi()-jet2.Phi());
+    preselected_bb_j2_system_dR = Hbb.DeltaR(jet2);
     
     // Boosted tautau and small jets j1 variables
-    boosted_tautau_j2_system_m = tautau_jet2.M();
-    boosted_tautau_j2_system_pt = tautau_jet2.Pt();
-    boosted_tautau_j2_system_eta = tautau_jet2.Eta();
-    boosted_tautau_j2_system_phi = tautau_jet2.Phi();
-    boosted_tautau_j2_system_deta = std::abs(Htautau.Eta()-jet2.Eta());
-    boosted_tautau_j2_system_dphi = std::abs(Htautau.Phi()-jet2.Phi());
-    boosted_tautau_j2_system_dR = Htautau.DeltaR(jet2);
+    preselected_tautau_j2_system_m = tautau_jet2.M();
+    preselected_tautau_j2_system_pt = tautau_jet2.Pt();
+    preselected_tautau_j2_system_eta = tautau_jet2.Eta();
+    preselected_tautau_j2_system_phi = tautau_jet2.Phi();
+    preselected_tautau_j2_system_deta = std::abs(Htautau.Eta()-jet2.Eta());
+    preselected_tautau_j2_system_dphi = std::abs(Htautau.Phi()-jet2.Phi());
+    preselected_tautau_j2_system_dR = Htautau.DeltaR(jet2);
 
     // All jets system variables
-    boosted_all_jets_system_m = all_jets.M();
-    boosted_all_jets_system_pt = all_jets.Pt();
-    boosted_all_jets_system_eta = all_jets.Eta();
-    boosted_all_jets_system_phi = all_jets.Phi();
-    boosted_all_jets_system_deta = std::abs(bb_tautau.Eta()-jet12.Eta());
-    boosted_all_jets_system_dphi = std::abs(bb_tautau.Eta()-jet12.Eta());
-    boosted_all_jets_system_dR = bb_tautau.DeltaR(jet12);
+    preselected_all_jets_system_m = all_jets.M();
+    preselected_all_jets_system_pt = all_jets.Pt();
+    preselected_all_jets_system_eta = all_jets.Eta();
+    preselected_all_jets_system_phi = all_jets.Phi();
+    preselected_all_jets_system_deta = std::abs(bb_tautau.Eta()-jet12.Eta());
+    preselected_all_jets_system_dphi = std::abs(bb_tautau.Eta()-jet12.Eta());
+    preselected_all_jets_system_dR = bb_tautau.DeltaR(jet12);
   
   }
   
@@ -269,18 +455,54 @@ void compute_variables_for_topological_processes(){
 // This functions pairs the 2 small jets in the VBF topology
 void pairs_small_jets(){
 
-  idx_jet1_VBF_topology_ptjj_sel = -99;
-  idx_jet2_VBF_topology_ptjj_sel = -99;
+  idx_recojet_small_j1_mjj_sel = -99; 
+  idx_recojet_small_j2_mjj_sel = -99;
+  idx_recojet_small_j1_ptjj_sel = -99; 
+  idx_recojet_small_j2_ptjj_sel = -99;
+  matched_recojet_j12_mjj_sel = false;
+  matched_recojet_j12_ptjj_sel = false;
 
-  idx_jet1_VBF_topology_mjj_sel = -99;
-  idx_jet2_VBF_topology_mjj_sel = -99;
-  
-  is_jet12_matched_ptjj_sel = false;
-  is_jet12_matched_mjj_sel = false;
-  
+  // Only for the Bbb-Btautau class
+  if(class_event==3){
+    compute_small_jets_index(
+      idx_recojet_small_j1_mjj_sel, 
+      idx_recojet_small_j2_mjj_sel, 
+      idx_recojet_small_j1_ptjj_sel, 
+      idx_recojet_small_j2_ptjj_sel, 
+      idx_b1truth_recoak10_dRmin, 
+      idx_tau1truth_recoak10_dRmin, 
+      truth_reco_match_for_boosted_bbtautau, 
+      matched_recojet_j12_ptjj_sel, 
+      matched_recojet_j12_mjj_sel
+    );
+  }
+
+  idx_preselected_small_j1_mjj_sel = -99; 
+  idx_preselected_small_j2_mjj_sel = -99;
+  idx_preselected_small_j1_ptjj_sel = -99; 
+  idx_preselected_small_j2_ptjj_sel = -99;
+  matched_preselected_j12_mjj_sel = false;
+  matched_preselected_j12_ptjj_sel = false;
+
+  compute_small_jets_index(
+    idx_preselected_small_j1_mjj_sel, 
+    idx_preselected_small_j2_mjj_sel, 
+    idx_preselected_small_j1_ptjj_sel, 
+    idx_preselected_small_j2_ptjj_sel, 
+    idx_b1_preselected, 
+    idx_tau1_preselected, 
+    matched_preselection, //TODO: Modify it to use the bdt bbtautau model selection, not the bb and tautau taggers bdt models
+    matched_preselected_j12_ptjj_sel, 
+    matched_preselected_j12_mjj_sel
+  );
+
+}
+
+void compute_small_jets_index(int &idx_small_jet1_mjj, int &idx_small_jet2_mjj, int &idx_small_jet1_ptjj, int &idx_small_jet2_ptjj, int idx_h1_jet, int idx_h2_jet, bool bbtautau_event, bool &is_jet12_ptjj_sel, bool &is_jet12_mjj_sel){
+     
   float dR_min = 1.0;
   
-  if( matched_preselection == true ){
+  if( bbtautau_event == true ){
 
     int idx_leading_jet = 0;
     int idx_subleading_jet = 0;
@@ -298,15 +520,15 @@ void pairs_small_jets(){
       float small_jet_phi = recojet_antikt4PFlow_phi->at(ii);
       float small_jet_m = recojet_antikt4PFlow_m->at(ii);
 
-      float large_R1_jet_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_b1_preselected);
-      float large_R1_jet_eta = recojet_antikt10UFO_eta->at(idx_b1_preselected);
-      float large_R1_jet_phi = recojet_antikt10UFO_phi->at(idx_b1_preselected);
-      float large_R1_jet_m = recojet_antikt10UFO_m->at(idx_b1_preselected);
+      float large_R1_jet_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_h1_jet);
+      float large_R1_jet_eta = recojet_antikt10UFO_eta->at(idx_h1_jet);
+      float large_R1_jet_phi = recojet_antikt10UFO_phi->at(idx_h1_jet);
+      float large_R1_jet_m = recojet_antikt10UFO_m->at(idx_h1_jet);
 
-      float large_R2_jet_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_tau1_preselected);
-      float large_R2_jet_eta = recojet_antikt10UFO_eta->at(idx_tau1_preselected);
-      float large_R2_jet_phi = recojet_antikt10UFO_phi->at(idx_tau1_preselected);
-      float large_R2_jet_m = recojet_antikt10UFO_m->at(idx_tau1_preselected);
+      float large_R2_jet_pt = recojet_antikt10UFO_NOSYS_pt->at(idx_h2_jet);
+      float large_R2_jet_eta = recojet_antikt10UFO_eta->at(idx_h2_jet);
+      float large_R2_jet_phi = recojet_antikt10UFO_phi->at(idx_h2_jet);
+      float large_R2_jet_m = recojet_antikt10UFO_m->at(idx_h2_jet);
       
       large_R1_jet.SetPtEtaPhiM(large_R1_jet_pt, large_R1_jet_eta, large_R1_jet_phi, large_R1_jet_m);
       large_R2_jet.SetPtEtaPhiM(large_R2_jet_pt, large_R2_jet_eta, large_R2_jet_phi, large_R2_jet_m);
@@ -342,9 +564,9 @@ void pairs_small_jets(){
 	      }
       }
       
-      idx_jet1_VBF_topology_ptjj_sel = idx_leading_jet;
-      idx_jet2_VBF_topology_ptjj_sel = idx_subleading_jet;
-      is_jet12_matched_ptjj_sel = true;
+      idx_small_jet1_ptjj = idx_leading_jet;
+      idx_small_jet2_ptjj = idx_subleading_jet;
+      is_jet12_ptjj_sel = true;
 
       // Method 2 (largest mjj)
       float current_jet12_m = 0;
@@ -380,30 +602,31 @@ void pairs_small_jets(){
 	    
 	          // Takes the jet1 as the highest pT jet and the jet2 as the subleading jet
 	          if(jet1_pt < jet2_pt){
-	            idx_jet1_VBF_topology_mjj_sel = idx_jet2;
-	            idx_jet2_VBF_topology_mjj_sel = idx_jet1;
+	            idx_small_jet1_mjj = idx_jet2;
+	            idx_small_jet2_mjj = idx_jet1;
 	          }
       	    else{
-	            idx_jet1_VBF_topology_mjj_sel = idx_jet1;
-	            idx_jet2_VBF_topology_mjj_sel = idx_jet2;
+	            idx_small_jet1_mjj = idx_jet1;
+	            idx_small_jet2_mjj = idx_jet2;
 	          }
 	    
-      	    is_jet12_matched_mjj_sel = true;
+      	    is_jet12_mjj_sel = true;
 	        }
         }
       }
       
-      if( (recojet_antikt4PFlow_NOSYS_pt->at(idx_jet1_VBF_topology_ptjj_sel) < recojet_antikt4PFlow_NOSYS_pt->at(idx_jet2_VBF_topology_ptjj_sel)) || (recojet_antikt4PFlow_NOSYS_pt->at(idx_jet1_VBF_topology_mjj_sel) < recojet_antikt4PFlow_NOSYS_pt->at(idx_jet2_VBF_topology_mjj_sel)) ){
+      if( (recojet_antikt4PFlow_NOSYS_pt->at(idx_small_jet1_ptjj) < recojet_antikt4PFlow_NOSYS_pt->at(idx_small_jet2_ptjj)) || (recojet_antikt4PFlow_NOSYS_pt->at(idx_small_jet1_mjj) < recojet_antikt4PFlow_NOSYS_pt->at(idx_small_jet2_mjj)) ){
 	      //cout << "The jets are not organized by pT" << endl;
 	      number_of_desordered_small_jets_pT_candidates++;
-	      cout << "idx leading jet " << recojet_antikt4PFlow_NOSYS_pt->at(idx_jet1_VBF_topology_ptjj_sel) << endl;
-	      cout << "idx subleading jet " << recojet_antikt4PFlow_NOSYS_pt->at(idx_jet2_VBF_topology_ptjj_sel) << endl;
+	      cout << "pT leading jet " << recojet_antikt4PFlow_NOSYS_pt->at(idx_small_jet1_ptjj) << endl;
+	      cout << "pT subleading jet " << recojet_antikt4PFlow_NOSYS_pt->at(idx_small_jet2_ptjj) << endl;
 
-	      cout << "idx jet1 mjj " << recojet_antikt4PFlow_NOSYS_pt->at(idx_jet1_VBF_topology_mjj_sel) << endl;
-	      cout << "idx jet2 mjj " << recojet_antikt4PFlow_NOSYS_pt->at(idx_jet2_VBF_topology_mjj_sel) << endl;
+	      cout << "pT jet1 mjj " << recojet_antikt4PFlow_NOSYS_pt->at(idx_small_jet1_mjj) << endl;
+	      cout << "pT jet2 mjj " << recojet_antikt4PFlow_NOSYS_pt->at(idx_small_jet2_mjj) << endl;
       }
     }
   }
+
 }
 
 void compute_statistical_parameters(){

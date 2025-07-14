@@ -47,13 +47,91 @@ int count_truth_HH_m_pos_values = 0;
 // New variables for VBF topology
 // *******************************************************************
 
+//***************************************************************** 
+// Truth-reco variables
+//*****************************************************************
+
+int idx_recojet_small_j1_mjj_sel;
+int idx_recojet_small_j2_mjj_sel;
+int idx_recojet_small_j1_ptjj_sel;
+int idx_recojet_small_j2_ptjj_sel;
+bool matched_recojet_j12_mjj_sel;
+bool matched_recojet_j12_ptjj_sel;
+
+// Two small jets j1 and j2 variables
+float recojet_j12_m;
+float recojet_j12_pt;
+float recojet_j12_eta;
+float recojet_j12_phi;
+float recojet_j12_deta;
+float recojet_j12_dphi;
+float recojet_j12_dR;
+
+// Boosted bb and boosted tautau variables
+float recojet_bbtautau_system_m;
+float recojet_bbtautau_system_pt;
+float recojet_bbtautau_system_eta;
+float recojet_bbtautau_system_phi;
+float recojet_bbtautau_system_deta;
+float recojet_bbtautau_system_dphi;
+float recojet_bbtautau_system_dR;
+
+// Boosted bb and small jets j1 variables
+float recojet_bb_j1_system_m;
+float recojet_bb_j1_system_pt;
+float recojet_bb_j1_system_eta;
+float recojet_bb_j1_system_phi;
+float recojet_bb_j1_system_deta;
+float recojet_bb_j1_system_dphi;
+float recojet_bb_j1_system_dR;
+
+// Boosted tautau and small jets j1 variables
+float recojet_tautau_j1_system_m;
+float recojet_tautau_j1_system_pt;
+float recojet_tautau_j1_system_eta;
+float recojet_tautau_j1_system_phi;
+float recojet_tautau_j1_system_deta;
+float recojet_tautau_j1_system_dphi;
+float recojet_tautau_j1_system_dR;
+
+// Boosted bb and small jets j2 variables
+float recojet_bb_j2_system_m;
+float recojet_bb_j2_system_pt;
+float recojet_bb_j2_system_eta;
+float recojet_bb_j2_system_phi;
+float recojet_bb_j2_system_deta;
+float recojet_bb_j2_system_dphi;
+float recojet_bb_j2_system_dR;
+
+// Boosted tautau and small jets j1 variables
+float recojet_tautau_j2_system_m;
+float recojet_tautau_j2_system_pt;
+float recojet_tautau_j2_system_eta;
+float recojet_tautau_j2_system_phi;
+float recojet_tautau_j2_system_deta;
+float recojet_tautau_j2_system_dphi;
+float recojet_tautau_j2_system_dR;
+
+// All jets system variables
+float recojet_all_jets_system_m;
+float recojet_all_jets_system_pt;
+float recojet_all_jets_system_eta;
+float recojet_all_jets_system_phi;
+float recojet_all_jets_system_deta;
+float recojet_all_jets_system_dphi;
+float recojet_all_jets_system_dR;
+
+//***************************************************************** 
+// Preselected variables
+//********************************************************************
+
 // small jets matching variables
-int idx_jet1_VBF_topology_mjj_sel;
-int idx_jet2_VBF_topology_mjj_sel;
-int idx_jet1_VBF_topology_ptjj_sel;
-int idx_jet2_VBF_topology_ptjj_sel;
-bool is_jet12_matched_mjj_sel;
-bool is_jet12_matched_ptjj_sel;
+int idx_preselected_small_j1_mjj_sel;
+int idx_preselected_small_j2_mjj_sel;
+int idx_preselected_small_j1_ptjj_sel;
+int idx_preselected_small_j2_ptjj_sel;
+bool matched_preselected_j12_mjj_sel;
+bool matched_preselected_j12_ptjj_sel;
 
 int count_bb_candidates;
 int count_tautau_candidates;
@@ -71,67 +149,67 @@ int smallR_jets_n;
 int largeR_jets_n;
 
 // Two small jets j1 and j2 variables
-float two_jets_j12_m;
-float two_jets_j12_pt;
-float two_jets_j12_eta;
-float two_jets_j12_phi;
-float two_jets_j12_deta;
-float two_jets_j12_dphi;
-float two_jets_j12_dR;
+float preselected_j12_m;
+float preselected_j12_pt;
+float preselected_j12_eta;
+float preselected_j12_phi;
+float preselected_j12_deta;
+float preselected_j12_dphi;
+float preselected_j12_dR;
 
 // Boosted bb and boosted tautau variables
-float boosted_bb_tautau_system_m;
-float boosted_bb_tautau_system_pt;
-float boosted_bb_tautau_system_eta;
-float boosted_bb_tautau_system_phi;
-float boosted_bb_tautau_system_deta;
-float boosted_bb_tautau_system_dphi;
-float boosted_bb_tautau_system_dR;
+float preselected_bbtautau_system_m;
+float preselected_bbtautau_system_pt;
+float preselected_bbtautau_system_eta;
+float preselected_bbtautau_system_phi;
+float preselected_bbtautau_system_deta;
+float preselected_bbtautau_system_dphi;
+float preselected_bbtautau_system_dR;
 
 // Boosted bb and small jets j1 variables
-float boosted_bb_j1_system_m;
-float boosted_bb_j1_system_pt;
-float boosted_bb_j1_system_eta;
-float boosted_bb_j1_system_phi;
-float boosted_bb_j1_system_deta;
-float boosted_bb_j1_system_dphi;
-float boosted_bb_j1_system_dR;
+float preselected_bb_j1_system_m;
+float preselected_bb_j1_system_pt;
+float preselected_bb_j1_system_eta;
+float preselected_bb_j1_system_phi;
+float preselected_bb_j1_system_deta;
+float preselected_bb_j1_system_dphi;
+float preselected_bb_j1_system_dR;
 
 // Boosted tautau and small jets j1 variables
-float boosted_tautau_j1_system_m;
-float boosted_tautau_j1_system_pt;
-float boosted_tautau_j1_system_eta;
-float boosted_tautau_j1_system_phi;
-float boosted_tautau_j1_system_deta;
-float boosted_tautau_j1_system_dphi;
-float boosted_tautau_j1_system_dR;
+float preselected_tautau_j1_system_m;
+float preselected_tautau_j1_system_pt;
+float preselected_tautau_j1_system_eta;
+float preselected_tautau_j1_system_phi;
+float preselected_tautau_j1_system_deta;
+float preselected_tautau_j1_system_dphi;
+float preselected_tautau_j1_system_dR;
 
 // Boosted bb and small jets j2 variables
-float boosted_bb_j2_system_m;
-float boosted_bb_j2_system_pt;
-float boosted_bb_j2_system_eta;
-float boosted_bb_j2_system_phi;
-float boosted_bb_j2_system_deta;
-float boosted_bb_j2_system_dphi;
-float boosted_bb_j2_system_dR;
+float preselected_bb_j2_system_m;
+float preselected_bb_j2_system_pt;
+float preselected_bb_j2_system_eta;
+float preselected_bb_j2_system_phi;
+float preselected_bb_j2_system_deta;
+float preselected_bb_j2_system_dphi;
+float preselected_bb_j2_system_dR;
 
 // Boosted tautau and small jets j1 variables
-float boosted_tautau_j2_system_m;
-float boosted_tautau_j2_system_pt;
-float boosted_tautau_j2_system_eta;
-float boosted_tautau_j2_system_phi;
-float boosted_tautau_j2_system_deta;
-float boosted_tautau_j2_system_dphi;
-float boosted_tautau_j2_system_dR;
+float preselected_tautau_j2_system_m;
+float preselected_tautau_j2_system_pt;
+float preselected_tautau_j2_system_eta;
+float preselected_tautau_j2_system_phi;
+float preselected_tautau_j2_system_deta;
+float preselected_tautau_j2_system_dphi;
+float preselected_tautau_j2_system_dR;
 
 // All jets system variables
-float boosted_all_jets_system_m;
-float boosted_all_jets_system_pt;
-float boosted_all_jets_system_eta;
-float boosted_all_jets_system_phi;
-float boosted_all_jets_system_deta;
-float boosted_all_jets_system_dphi;
-float boosted_all_jets_system_dR;
+float preselected_all_jets_system_m;
+float preselected_all_jets_system_pt;
+float preselected_all_jets_system_eta;
+float preselected_all_jets_system_phi;
+float preselected_all_jets_system_deta;
+float preselected_all_jets_system_dphi;
+float preselected_all_jets_system_dR;
 
 // preselected matched counter variables
 
