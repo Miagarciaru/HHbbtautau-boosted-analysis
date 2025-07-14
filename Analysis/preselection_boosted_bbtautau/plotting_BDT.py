@@ -37,6 +37,10 @@ def roc_curve_plots(clf, X, y, X_test, y_test, name_boosted_jet):
         bkg_label = "non boosted bbtautau events"
         sgl_label = "boosted bbtautau events"
 
+    if(name_boosted_jet=="VBF_ggF_separation"):
+        bkg_label = "ggF events"
+        sgl_label = "VBF events"
+
     signal_decisions = clf.predict_proba(X[y>0.5])[:, 1] # get probabilities on signal
     background_decisions = clf.predict_proba(X[y<0.5])[:, 1] # get decisions on background
 
@@ -94,8 +98,13 @@ def compare_train_test(clf, X_train, y_train, X_test, y_test, name_boosted_jet):
         bkg_label = "non boosted tautau jets"
         sgl_label = "boosted tautau jets"
 
-    bkg_label = "bbtautau_events"
-    sgl_label = "boosted bbtautau events"
+    if(name_boosted_jet=="bbtautau_events"):
+        bkg_label = "bbtautau_events"
+        sgl_label = "boosted bbtautau events"
+
+    if(name_boosted_jet=="VBF_ggF_separation"):
+        bkg_label = "ggF events"
+        sgl_label = "VBF events"
 
     decisions = [] # list to hold decisions of classifier
     for X,y in ((X_train, y_train), (X_test, y_test)): # train and test
