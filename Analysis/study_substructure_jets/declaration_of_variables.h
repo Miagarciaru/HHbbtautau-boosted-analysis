@@ -142,6 +142,7 @@ int minpt_smalljets_cutflow = 0;
 int min_mjj_smalljets_cutflow = 0;
 int min_dR_smalljets_cutflow = 0;
 int all_cuts_applied_cutflow = 0;
+int n_VBF_events_bdt_cut = 0;
 
 int number_of_desordered_small_jets_pT_candidates = 0;
 

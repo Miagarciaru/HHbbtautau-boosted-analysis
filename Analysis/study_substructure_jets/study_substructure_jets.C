@@ -43,10 +43,12 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   string path_model_1 = path_base_models+"tmva101_bb_jets.root";
   string path_model_2 = path_base_models+"tmva101_tautau_jets.root";
   string path_model_3 = path_base_models+"tmva101_bbtautau_events.root";
+  string path_model_4 = path_base_models+"tmva101_VBF_ggF_separation.root";
 
   TMVA::Experimental::RBDT model_bb_jets("myBDT_bb_jets", path_model_1);
   TMVA::Experimental::RBDT model_tautau_jets("myBDT_tautau_jets", path_model_2);
   TMVA::Experimental::RBDT model_bbtautau_events("myBDT_bbtautau_events", path_model_3);
+  TMVA::Experimental::RBDT model_VBF_ggF_separation("myBDT_VBF_ggF_separation", path_model_4);
   
   cout << "----------------------------------------------------------------------------------------------------------------" << endl;
   cout << "Processing: " << process_name << endl;
@@ -331,6 +333,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   hist_boosted_cutflow_small_jets->SetBinContent(5, 100.0*min_mjj_smalljets_cutflow/matched_preselected_bbtautau_events);
   hist_boosted_cutflow_small_jets->SetBinContent(6, 100.0*min_dR_smalljets_cutflow/matched_preselected_bbtautau_events);
   hist_boosted_cutflow_small_jets->SetBinContent(7, 100.0*all_cuts_applied_cutflow/matched_preselected_bbtautau_events);
+  hist_boosted_cutflow_small_jets->SetBinContent(8, 100.0*n_VBF_events_bdt_cut/matched_preselected_bbtautau_events);
 
   hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(1, "Total Events");
   hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(2, "pT same sel");
@@ -339,7 +342,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
   hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(5, "min mjj > 500 GeV");
   hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(6, "dR > 5");
   hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(7, "all cuts ap.");
-  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(8, "BDT cut > 0.8");
+  hist_boosted_cutflow_small_jets->GetXaxis()->SetBinLabel(8, "BDT VBF cut > 0.6");
 
   //****************************************************
   //Save Histograms in the output root file
