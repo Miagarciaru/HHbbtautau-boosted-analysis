@@ -42,22 +42,24 @@ df_events = functions_boosted_bbtautau_events.read_root_files(list_VBF, features
 print(df_events.head(5))
 
 # variables to use in the training part
-features_to_expand = ["recojet_antikt10UFO_NOSYS_pt", 
-                    "recojet_antikt10UFO_eta", 
-                    "recojet_antikt10UFO_phi", 
-                    "recojet_antikt10UFO_m", 
-                    "recojet_antikt10UFO_Tau1_wta", 
-                    "recojet_antikt10UFO_Tau2_wta", 
-                    "recojet_antikt10UFO_Tau3_wta",
-                    "recojet_antikt10UFO_ECF1", 
-                    "recojet_antikt10UFO_ECF2", 
-                    "recojet_antikt10UFO_ECF3",
-                    "recojet_antikt10UFO_Split12", 
-                    "recojet_antikt10UFO_Split23", 
-                    "recojet_antikt10UFO_GN2Xv01_phbb", 
-                    "recojet_antikt10UFO_GN2Xv01_pqcd", 
-                    "recojet_antikt10UFO_GN2Xv01_phcc",
-                    "recojet_antikt10UFO_GN2Xv01_ptop"]
+features_to_expand = [
+    "recojet_antikt10UFO_NOSYS_pt", 
+    "recojet_antikt10UFO_eta", 
+    "recojet_antikt10UFO_phi", 
+    "recojet_antikt10UFO_m", 
+    "recojet_antikt10UFO_Tau1_wta", 
+    "recojet_antikt10UFO_Tau2_wta", 
+    "recojet_antikt10UFO_Tau3_wta",
+    "recojet_antikt10UFO_ECF1", 
+    "recojet_antikt10UFO_ECF2", 
+    "recojet_antikt10UFO_ECF3",
+    "recojet_antikt10UFO_Split12", 
+    "recojet_antikt10UFO_Split23", 
+    "recojet_antikt10UFO_GN2Xv01_phbb", 
+    "recojet_antikt10UFO_GN2Xv01_pqcd", 
+    "recojet_antikt10UFO_GN2Xv01_phcc",
+    "recojet_antikt10UFO_GN2Xv01_ptop"
+    ]
 
 df_events["n_largeR_jets"] = df_events['recojet_antikt10UFO_NOSYS_pt'].apply(len)
 df_events = df_events[df_events["n_largeR_jets"]>=2]

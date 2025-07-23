@@ -9,7 +9,7 @@ def correlation_plots(df, name_boosted_jet):
     plt.figure(figsize=(20, 16)) # make new figure
     sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f", cbar_kws={"shrink": 0.8})
     plt.title("Variables correlation matrix for "+name_boosted_jet)
-    plt.tight_layout() 
+    # plt.tight_layout() 
     plt.savefig("BDT_plots/correlation_matrix_"+name_boosted_jet+".pdf")
     plt.figure()
 
@@ -18,7 +18,7 @@ def ranking_variables_plot(features, importances, indices, name_boosted_jet):
     plt.title("Importance of each variable for "+name_boosted_jet)
     plt.bar(range(len(features)), importances[indices], align="center")
     plt.xticks(range(len(features)), features[indices], rotation=90)
-    plt.tight_layout()
+    # plt.tight_layout()
     plt.savefig("BDT_plots/importance_ranking_BDT_"+name_boosted_jet+".pdf")
     plt.figure()
     #plt.show()
@@ -55,7 +55,7 @@ def roc_curve_plots(clf, X, y, X_test, y_test, name_boosted_jet):
     plt.ylabel('Arbitrary units') # add y-axis label
     plt.legend() # add legend
     #plt.show()
-    plt.tight_layout()
+    # plt.tight_layout()
     plt.savefig("BDT_plots/distributions_BDT_score_"+name_boosted_jet+".pdf")
 
     # we then plot the ROC
@@ -75,12 +75,12 @@ def roc_curve_plots(clf, X, y, X_test, y_test, name_boosted_jet):
     plt.plot([0, 1], # x from 0 to 1
             [0, 1], # y from 0 to 1
             '--', # dashed line
-            color='grey', label='Luck')
+            color='grey', label='Random Classifier')
 
     plt.xlabel('False Positive Rate') # x-axis label
     plt.ylabel('True Positive Rate') # y-axis label
     plt.title('Receiver operating characteristic (ROC) curve for '+name_boosted_jet) # title
-    plt.tight_layout()
+    # plt.tight_layout()
     plt.legend() # add legend
     plt.grid() # add grid
     #plt.show()
@@ -156,7 +156,7 @@ def compare_train_test(clf, X_train, y_train, X_test, y_test, name_boosted_jet):
     
     plt.errorbar(x=center, y=hist_signal, yerr=err_signal, fmt='o', # circles
                  c='blue', label=sgl_label+' (test)' ) # Signal (test)
-    plt.tight_layout()
+    # plt.tight_layout()
     plt.xlabel("BDT output") # write x-axis label
     plt.ylabel("Arbitrary units") # write y-axis label
     plt.legend() # add legend
@@ -195,7 +195,7 @@ def distribution_plots(samples_dict, samples_list, name_boosted_jet):
     plt.xlabel("BDT output") # write x-axis label
     plt.ylabel("Arbitrary units") # write y-axis label
     plt.legend(loc = "upper center") # add legend
-    plt.tight_layout()
+    # plt.tight_layout()
     #plt.show()
     name_figure = "BDT_plots/comparison_samples_bdt_score_"+name_boosted_jet+".pdf"
     plt.savefig(name_figure)
