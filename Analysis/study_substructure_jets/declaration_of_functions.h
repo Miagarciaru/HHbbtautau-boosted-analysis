@@ -16,7 +16,7 @@ const int max_jets = 15;
 // Declaration of functions
 // *************************************
 
-void cutflow_small_R_jets();
+void cutflow_small_R_jets(TMVA::Experimental::RBDT& model_VBF);
 void compute_variables_for_topological_processes();
 void pairs_small_jets();
 void compute_small_jets_index(int &idx_small_jet1_mjj, int &idx_small_jet2_mjj, int &idx_small_jet1_ptjj, int &idx_small_jet2_ptjj, int idx_h1_jet, int idx_h2_jet, bool bbtautau_event, bool &is_jet12_ptjj_sel, bool &is_jet12_mjj_sel);
@@ -41,7 +41,7 @@ void default_values_for_preselected_variables();
 // *************************************
 
 // This function tries to develop different cuts on the selected pair of small jets
-void cutflow_small_R_jets(){
+void cutflow_small_R_jets(TMVA::Experimental::RBDT& model_VBF){
 
   if( matched_preselected_j12_mjj_sel == true ){
 
@@ -81,36 +81,36 @@ void cutflow_small_R_jets(){
     }
 
     std::vector<float> VBF_variables = {
-      recojet_j12_m, 
-      recojet_j12_deta, 
-      recojet_j12_dphi, 
-      recojet_j12_dR, 
-      recojet_tautau_j1_system_pt,
-      recojet_tautau_j1_system_deta,
-      recojet_tautau_j1_system_dphi,
-      recojet_tautau_j1_system_dR,
-      recojet_tautau_j2_system_pt,
-      recojet_tautau_j2_system_deta,
-      recojet_tautau_j2_system_dphi,
-      recojet_tautau_j2_system_dR,
-      recojet_bb_j1_system_pt,
-      recojet_bb_j1_system_deta,
-      recojet_bb_j1_system_dphi,
-      recojet_bb_j1_system_dR,
-      recojet_bb_j2_system_pt,
-      recojet_bb_j2_system_deta,
-      recojet_bb_j2_system_dphi,
-      recojet_bb_j2_system_dR,
-      recojet_bbtautau_system_m,
-      recojet_bbtautau_system_pt,
-      recojet_bbtautau_system_eta,
-      recojet_bbtautau_system_phi,
-      recojet_bbtautau_system_deta,
-      recojet_bbtautau_system_dphi,
-      recojet_bbtautau_system_dR
+      preselected_j12_m, 
+      preselected_j12_deta, 
+      preselected_j12_dphi, 
+      preselected_j12_dR, 
+      preselected_tautau_j1_system_pt,
+      preselected_tautau_j1_system_deta,
+      preselected_tautau_j1_system_dphi,
+      preselected_tautau_j1_system_dR,
+      preselected_tautau_j2_system_pt,
+      preselected_tautau_j2_system_deta,
+      preselected_tautau_j2_system_dphi,
+      preselected_tautau_j2_system_dR,
+      preselected_bb_j1_system_pt,
+      preselected_bb_j1_system_deta,
+      preselected_bb_j1_system_dphi,
+      preselected_bb_j1_system_dR,
+      preselected_bb_j2_system_pt,
+      preselected_bb_j2_system_deta,
+      preselected_bb_j2_system_dphi,
+      preselected_bb_j2_system_dR,
+      preselected_bbtautau_system_m,
+      preselected_bbtautau_system_pt,
+      preselected_bbtautau_system_eta,
+      preselected_bbtautau_system_phi,
+      preselected_bbtautau_system_deta,
+      preselected_bbtautau_system_dphi,
+      preselected_bbtautau_system_dR
     };
 
-    float score_VBF_event = evaluate_bdt_model(model_VBF_ggF_separation, VBF_variables);
+    float score_VBF_event = evaluate_bdt_model(model_VBF, VBF_variables);
     if( score_VBF_event >= bdt_boosted_VBF_event_cut ){
       n_VBF_events_bdt_cut++;
     }
@@ -837,7 +837,7 @@ void counting_statistical_parameters(){
   //******************************************************************************************
 
   if( truth_reco_match_for_boosted_bbtautau == true ){ // All truth-reco Btautau
-    if( matched_preselected_bbtautau == true ){ 
+    if( matched_preselected_bbtautau == true && idx_b1truth_recoak10_dRmin==idx_b1_preselected && idx_tau1truth_recoak10_dRmin==idx_tau1_preselected ){ 
       // Truth Boosted BbbBtautau that are preselected as boosted BbbBtautau (Correct clasiffication)
       TP_BbbBtautau++;
     }

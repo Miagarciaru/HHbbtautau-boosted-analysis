@@ -84,7 +84,7 @@ void study_substructure_jets(TString sample, TString output_folder, string min_p
     
     pairs_small_jets();
     compute_variables_for_topological_processes();
-    cutflow_small_R_jets();
+    cutflow_small_R_jets(model_VBF_ggF_separation);
     correct_match_between_truth_reco_and_preselected_objects();
     counting_statistical_parameters();
     process_like();
