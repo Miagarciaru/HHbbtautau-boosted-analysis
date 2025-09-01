@@ -61,7 +61,7 @@ def roc_curve_plots(clf, X, y, X_test, y_test):
     plt.plot([0, 1], # x from 0 to 1
             [0, 1], # y from 0 to 1
             '--', # dashed line
-            color='grey', label='Luck')
+            color='grey', label='Random Classifier')
 
     plt.xlabel('False Positive Rate') # x-axis label
     plt.ylabel('True Positive Rate') # y-axis label

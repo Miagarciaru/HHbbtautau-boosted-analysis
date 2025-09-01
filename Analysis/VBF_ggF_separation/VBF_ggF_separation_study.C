@@ -58,7 +58,7 @@ void VBF_ggF_separation_study(TString sample, TString output_folder){
     smallR_jets_n = recojet_antikt4PFlow_pt___NOSYS->size();
     largeR_jets_n = recojet_antikt10UFO_pt___NOSYS->size();
     
-    if(is_boosted_bbtautau == true && is_jet12_matched_mjj_sel == true){
+    if(is_boosted_bbtautau == true && matched_preselected_j12_mjj_sel == true){
       fill_histograms();
       hist_boosted_njets->Fill(recojet_antikt4PFlow_pt___NOSYS->size());
       count_matched_events++;
@@ -67,14 +67,14 @@ void VBF_ggF_separation_study(TString sample, TString output_folder){
     hist_boosted_bb_candidates->Fill(count_bb_candidates);
     hist_boosted_tautau_candidates->Fill(count_tautau_candidates);
 
-    if(is_boosted_bbtautau == true && is_jet12_matched_mjj_sel == true) outTree_root->Fill();
+    if(is_boosted_bbtautau == true && matched_preselected_j12_mjj_sel == true) outTree_root->Fill();
   }
   
-  fix_underflow_overflow(hist_boosted_jet12_m);
-  fix_underflow_overflow(hist_boosted_jet12_pt);
-  fix_underflow_overflow(hist_boosted_jet12_deta);
-  fix_underflow_overflow(hist_boosted_jet12_dphi);
-  fix_underflow_overflow(hist_boosted_jet12_dR);
+  fix_underflow_overflow(hist_boosted_preselected_j12_m);
+  fix_underflow_overflow(hist_boosted_preselected_j12_pt);
+  fix_underflow_overflow(hist_boosted_preselected_j12_deta);
+  fix_underflow_overflow(hist_boosted_preselected_j12_dphi);
+  fix_underflow_overflow(hist_boosted_preselected_j12_dR);
 
   hist_boosted_cutflow_small_jets->SetBinContent(1, 100.0*count_matched_events/count_matched_events);
   hist_boosted_cutflow_small_jets->SetBinContent(2, 100.0*overlap_jj_selection_methods/count_matched_events);
