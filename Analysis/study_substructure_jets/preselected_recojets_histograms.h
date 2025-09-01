@@ -9,6 +9,8 @@ TH2F *percentages_matched_and_preselected_events_only_Btautau = new TH2F("percen
 
 TH2F *percentages_statistical_parameters_for_preselected_events = new TH2F("percentages_statistical_parameters_for_preselected_events", "Statistical parameters between matched and preselected events", 4, 0, 4, 4, 0, 4);
 
+TH2F *hist_matched_preselected_mHH_2D_BbbBtautau = new TH2F("hist_matched_preselected_mHH_2D_BbbBtautau", "mHH 2D histogram for preselected boosted HH candidates", 70, 0, 350, 70, 0, 350);
+
 //***************************************************************************
 //Preselected events variables histograms 
 //***************************************************************************

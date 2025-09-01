@@ -3,7 +3,7 @@
 // *************************************
 
 float x_min_mHH = 200.0;
-float x_max_mHH = 1500.0;
+float x_max_mHH = 2000.0;
 
 float x_min_ptHH = 200.0;
 float x_max_ptHH = 1000.0;

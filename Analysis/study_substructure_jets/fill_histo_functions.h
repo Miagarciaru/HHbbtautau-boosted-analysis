@@ -527,7 +527,13 @@ void fill_boosted_events_histograms_acceptance_ratios(){
 // This functions plots some distributions for the H_bb and H_tautau and compare the distributions
 // for the two configurations, boosted and resolved
 void fill_histograms_matched_truth_recojets(float min_pT_cut_in_MeV){
-  
+
+  if( truth_reco_match_for_boosted_bbtautau==true ){
+      float mass_recojet_Hbb = recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.;
+      float mass_recojet_Htautau = recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.;
+      hist_matched_recojet_mHH_2D_BbbBtautau->Fill(mass_recojet_Hbb, mass_recojet_Htautau);
+  }
+
   //**********************************************
   // Filling the mass, pT and eta distributions of the boosted bb and tautau objects
   //**********************************************
@@ -919,6 +925,12 @@ void fill_histograms_matched_truth_recojets(float min_pT_cut_in_MeV){
 
 void fill_histograms_preselected_jets(){
   
+  if( matched_preselected_bbtautau==true ){
+      float mass_preselected_Hbb = recojet_antikt10UFO_m->at(idx_b1_preselected)/1000.;
+      float mass_preselected_Htautau = recojet_antikt10UFO_m->at(idx_tau1_preselected)/1000.;
+      hist_matched_preselected_mHH_2D_BbbBtautau->Fill(mass_preselected_Hbb, mass_preselected_Htautau);
+  }
+
   //**********************************************
   // Filling the mass, pT and eta distributions of the boosted bb and tautau objects
   //**********************************************

@@ -501,6 +501,8 @@ void write_histograms(){
   //matched_recojets_histograms
   //********************************************************************************************
   
+  hist_matched_recojet_mHH_2D_BbbBtautau->Write();
+
   hist_matched_recojet_bb_m->Write();
   hist_matched_recojet_bb_pt->Write();
   hist_matched_recojet_bb_eta->Write();
@@ -722,6 +724,8 @@ void write_histograms(){
   // matched preselected
   //***********************************************************************************
   
+  hist_matched_preselected_mHH_2D_BbbBtautau->Write();
+
   hist_matched_preselected_bb_m->Write();
   hist_matched_preselected_bb_pt->Write();
   hist_matched_preselected_bb_eta->Write();

@@ -2,6 +2,8 @@
 // Declaration of histograms
 // *************************************
 
+TH2F *hist_matched_recojet_mHH_2D_BbbBtautau = new TH2F("hist_matched_recojet_mHH_2D_BbbBtautau", "mHH 2D histogram for truth-recojet boosted HH candidates", 70, 0, 350, 70, 0, 350);
+
 // Declaration of distributions for recojets variables
 
 // GN2X variables distributions
