@@ -11,7 +11,7 @@ variables = ["truth_mHH", "truth_ptHH", "truth_etaHH", "truth_phiHH", "truth_mHb
 variables = ["truth_mHH", "truth_ptHbb", "truth_ptHtautau", "preselected_mHH", "preselected_ptHbb", "preselected_ptHtautau", "mHH", "ptHbb", "ptHtautau"]
 """
 
-variables = ["truth_mHH", "preselected_mHH", "mHH"]
+variables = ["truth_mHH", "truth_etaHH", "truth_phiHH", "preselected_mHH", "mHH"]
 
 min_pT_recojets = ["100", "200", "300"] # in GeV
 #min_pT_recojets = ["100"] # in MeV  

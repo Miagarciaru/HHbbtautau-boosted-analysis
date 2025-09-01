@@ -134,7 +134,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
 
   string description1 = "";
   string description2 = "For min p_{T} > "+min_pT+"GeV";
-  string description3 = "For cut phbb > 0.85";
+  // string description3 = "For cut phbb > 0.85";
   //string description4 = "For cut n2/n1 subjetiness < 0.30";
   
   string name_image = "";
@@ -159,8 +159,8 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   double dely = 0.05;
   myText(0.2, 0.7, kBlack, description1.c_str());
   myText(0.2, 0.7-dely, kBlack, description2.c_str());
-  myText(0.2, 0.7-2*dely, kBlack, description3.c_str());
-  //myText(0.2, 0.7-3*dely, kBlack, description4.c_str());
+  // myText(0.2, 0.7-2*dely, kBlack, description3.c_str());
+  // myText(0.2, 0.7-3*dely, kBlack, description4.c_str());
   
   canvas->SaveAs(name_image.c_str());
   

@@ -6,8 +6,8 @@ import subprocess
 base_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/"
 
 #min_pT_recojets = ["100", "200", "300"] # in GeV
-#min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
-min_pT_recojets = ["100", "250"] # in GeV  
+min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
+# min_pT_recojets = ["100", "250"] # in GeV  
 
 # Root folder for storing output
 output_root_folder = "output_plots"
@@ -34,18 +34,12 @@ for minpT in min_pT_recojets:
         # Add as many samples as you need
     ]
 
-    # sample_paths = [
-    #     base_analysis_folder + "VBF_cvv1p5_hh_502985_pT"+minpT+"GeV.root", # vbf HH Cvv=1.5 had-had channel
-    #     base_analysis_folder + "VBF_cvv1p5_lh_502996_pT"+minpT+"GeV.root" # vbf HH Cvv=1.5 lep-had channel
-    #     # Add as many samples as you need
-    # ]
-
     output_pT_folder = minpT+"GeV"
     output_pT_folder = os.path.join(output_root_folder, output_pT_folder)
     os.makedirs(output_pT_folder, exist_ok=True)
 
     grouped_distributions_plots_folder = os.path.join(output_pT_folder, "grouped_distributions_plots")
-    os.makedirs(grouped_distributions_plots_folder, exist_ok=True)
+    # os.makedirs(grouped_distributions_plots_folder, exist_ok=True)
         
     # Loop over each sample
     for sample in sample_paths:
@@ -61,22 +55,22 @@ for minpT in min_pT_recojets:
     
         # Define plots_substructure_jets folder
         plots_substructure_jets = os.path.join(output_folder, "substructure_jets_plots")
-        #os.makedirs(plots_substructure_jets, exist_ok=True)
+        os.makedirs(plots_substructure_jets, exist_ok=True)
         
         # Define plots_substructure_jets folder
         plots_substructure_jets_comparison = os.path.join(output_folder, "distributions_comparison")
         os.makedirs(plots_substructure_jets_comparison, exist_ok=True)
 
         plots_substructure_jets_cpr_comparison = os.path.join(output_folder, "distributions_comparison_cpr")
-        #os.makedirs(plots_substructure_jets_cpr_comparison, exist_ok=True)
+        os.makedirs(plots_substructure_jets_cpr_comparison, exist_ok=True)
         
         # Define plots_comparison folder
         plots_comparison = os.path.join(output_folder, "plots_comparison")
-        #os.makedirs(plots_comparison, exist_ok=True)
+        os.makedirs(plots_comparison, exist_ok=True)
         
         # Define plots_ratios folder
         plots_ratios = os.path.join(output_folder, "plots_ratios")
-        #os.makedirs(plots_ratios, exist_ok=True)
+        os.makedirs(plots_ratios, exist_ok=True)
     
         # Construct the ROOT script command
         # The command includes a reference to your ROOT script, passing the path of the sample and output folder

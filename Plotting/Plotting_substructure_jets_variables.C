@@ -180,6 +180,6 @@ void Plotting_substructure_jets_variables(string sample, string output_folder, s
   plot_distributions_comparisons(comparison_distributions_histograms, output_folder, minpT);
   //plot_distributions_comparisons_cpr(distributions_histograms_cpr, output_folder, minpT);
 
-  //plot_distributions(distributions_histograms, output_folder, minpT);
+  plot_distributions(distributions_histograms, output_folder, minpT);
 
 }
