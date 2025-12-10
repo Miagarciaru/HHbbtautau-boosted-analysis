@@ -21,10 +21,10 @@ int count_preselected_bb_jets_ordered_by_nsubjettiness = 0;
 int count_b_tau_matched_recojets = 0;
 
 int count_non_matched_events = 0;
-int count_truth_Rbb_Rtautau = 0;
-int count_truth_Rbb_Btautau = 0;
-int count_truth_Bbb_Rtautau = 0;
-int count_truth_Bbb_Btautau = 0;
+int count_truthreco_Rbb_Rtautau = 0;
+int count_truthreco_Rbb_Btautau = 0;
+int count_truthreco_Bbb_Rtautau = 0;
+int count_truthreco_Bbb_Btautau = 0;
 
 int count_pos_resolved_b1_config = 0;
 int count_pos_resolved_b2_config = 0;
@@ -42,6 +42,9 @@ int count_all_objects_resolved_config = 0;
 
 int count_truth_HH_pt_pos_values = 0;
 int count_truth_HH_m_pos_values = 0;
+
+// Variable to count the number of events identified as truth only (without the trut-reco matching)
+int truth_events = 0;
 
 // *******************************************************************
 // New variables for VBF topology

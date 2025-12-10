@@ -12,7 +12,6 @@ void fill_boosted_events_histograms_acceptance_ratios();
 void fill_histograms_matched_truth_recojets(float min_pT_cut_in_MeV);
 void fill_histograms_preselected_jets();
 
-
 void fix_underflow_overflow(TH1F* histo){
   
   // Adding the underflow to the first bin
@@ -861,7 +860,11 @@ void fill_histograms_matched_truth_recojets(float min_pT_cut_in_MeV){
     // Fill m, pt, eta... distribution of those recojets that were not matched to be boosted bb (classes Rbb-Rtautau or Rbb-Btautua)
     
     if( (class_event == 0) || (class_event == 1) ){
-      
+    
+      // Fill mass histograms for resolved b truth-recojets 
+      hist_matched_recojet_resolved_b_m->Fill(recojet_antikt10UFO_m->at(idx_b1truth_recoak10_dRmin)/1000.);
+      hist_matched_recojet_resolved_b_m->Fill(recojet_antikt10UFO_m->at(idx_b2truth_recoak10_dRmin)/1000.);
+
       float tau_n2_over_n1_subjettiness = 0;
      
       float min_tagger_Hbb_value = 0.85;
@@ -890,6 +893,15 @@ void fill_histograms_matched_truth_recojets(float min_pT_cut_in_MeV){
       if( (taggerHbb_score_cut == true) && (nsubjettiness_cut == true) ){
 	hist_matched_recojet_tautau_m_until_nsubjettiness->Fill(recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
       }
+    }
+
+    // Fill m, pt, eta... distribution of those recojets that were not matched to be boosted tautau (classes Rbb-Rtautau or Bbb-Rtautau)
+    if( (class_event == 0) || (class_event == 2) ){
+
+      // Fill mass histograms for resolved tau truth-recojets 
+      hist_matched_recojet_resolved_tau_m->Fill(recojet_antikt10UFO_m->at(idx_tau1truth_recoak10_dRmin)/1000.);
+      hist_matched_recojet_resolved_tau_m->Fill(recojet_antikt10UFO_m->at(idx_tau2truth_recoak10_dRmin)/1000.);
+
     }
   }
   

@@ -318,7 +318,7 @@ void plot_distributions_comparisons(const std::unordered_map<std::string, std::v
     
     ///// Plotting
     TCanvas* can = new TCanvas(("can_"+nameVar).c_str(),"", 800, 600);
-    TLegend* leg = new TLegend(0.7, 0.75, 0.9, 0.9);
+    TLegend* leg = new TLegend(0.60, 0.60, 0.90, 0.75);
 
     TH1F hist_boosted;
     TH1F hist_non_boosted;

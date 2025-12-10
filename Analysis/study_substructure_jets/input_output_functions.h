@@ -9,7 +9,7 @@ void define_output_branches(TTree *outTree);
 void write_histograms();
 void print_list_of_branches(TTree* tree);
 void counter_for_stat();
-void print_stat(Int_t nentries);
+void print_stat(Int_t nentries, string min_pT);
 
 void process_like(){
 
@@ -504,6 +504,7 @@ void write_histograms(){
   hist_matched_recojet_mHH_2D_BbbBtautau->Write();
 
   hist_matched_recojet_bb_m->Write();
+  hist_matched_recojet_resolved_b_m->Write();
   hist_matched_recojet_bb_pt->Write();
   hist_matched_recojet_bb_eta->Write();
   hist_matched_recojet_bb_phi->Write();
@@ -530,6 +531,7 @@ void write_histograms(){
   hist_matched_recojet_bb_m_until_nsubjettiness->Write();
   
   hist_matched_recojet_tautau_m->Write();
+  hist_matched_recojet_resolved_tau_m->Write();
   hist_matched_recojet_tautau_pt->Write();
   hist_matched_recojet_tautau_eta->Write();
   hist_matched_recojet_tautau_phi->Write();
@@ -1553,10 +1555,10 @@ void print_list_of_branches(TTree* tree){
 void counter_for_stat(){
 
   if(class_event == -1){ count_non_matched_events+=1; }
-  if(class_event == 0){ count_truth_Rbb_Rtautau+=1; }
-  if(class_event == 1){ count_truth_Rbb_Btautau+=1; }
-  if(class_event == 2){ count_truth_Bbb_Rtautau+=1; }
-  if(class_event == 3){ count_truth_Bbb_Btautau+=1; }
+  if(class_event == 0){ count_truthreco_Rbb_Rtautau+=1; }
+  if(class_event == 1){ count_truthreco_Rbb_Btautau+=1; }
+  if(class_event == 2){ count_truthreco_Bbb_Rtautau+=1; }
+  if(class_event == 3){ count_truthreco_Bbb_Btautau+=1; }
   
   if(bbtt_Jet_b1_pt_NOSYS > 0){ count_pos_resolved_b1_config+=1;}
   if(bbtt_Jet_b2_pt_NOSYS > 0){ count_pos_resolved_b2_config+=1;}
@@ -1580,19 +1582,19 @@ void counter_for_stat(){
 
 }
 
-void print_stat(Int_t nentries){
+void print_stat(Int_t nentries, string min_pT){
 
-  int sum_all_events = count_non_matched_events + count_truth_Rbb_Rtautau + count_truth_Rbb_Btautau + count_truth_Bbb_Rtautau + count_truth_Bbb_Btautau;
+  int sum_all_events = count_non_matched_events + count_truthreco_Rbb_Rtautau + count_truthreco_Rbb_Btautau + count_truthreco_Bbb_Rtautau + count_truthreco_Bbb_Btautau;
 
-  int sum_truth_matching_events = count_truth_Rbb_Rtautau + count_truth_Rbb_Btautau + count_truth_Bbb_Rtautau + count_truth_Bbb_Btautau;
+  int sum_truth_matching_events = count_truthreco_Rbb_Rtautau + count_truthreco_Rbb_Btautau + count_truthreco_Bbb_Rtautau + count_truthreco_Bbb_Btautau;
 
-  cout << "There are " << count_truth_Rbb_Rtautau << " in the truth R_bb-R_tautau (" << 100.0*count_truth_Rbb_Rtautau/nentries << "% of the total entries)" << endl;
+  cout << "There are " << count_truthreco_Rbb_Rtautau << " in the truth R_bb-R_tautau (" << 100.0*count_truthreco_Rbb_Rtautau/nentries << "% of the total entries)" << endl;
 
-  cout << "There are " << count_truth_Rbb_Btautau << " in the truth R_bb-B_tautau (" << 100.0*count_truth_Rbb_Btautau/nentries << "% of the total entries)" << endl;
+  cout << "There are " << count_truthreco_Rbb_Btautau << " in the truth R_bb-B_tautau (" << 100.0*count_truthreco_Rbb_Btautau/nentries << "% of the total entries)" << endl;
 
-  cout << "There are " << count_truth_Bbb_Rtautau << " in the truth B_bb-R_tautau (" << 100.0*count_truth_Bbb_Rtautau/nentries << "% of the total entries)" << endl;
+  cout << "There are " << count_truthreco_Bbb_Rtautau << " in the truth B_bb-R_tautau (" << 100.0*count_truthreco_Bbb_Rtautau/nentries << "% of the total entries)" << endl;
 
-  cout << "There are " << count_truth_Bbb_Btautau << " in the truth B_bb-B_tautau (" << 100.0*count_truth_Bbb_Btautau/nentries << "% of the total entries)" << endl;
+  cout << "There are " << count_truthreco_Bbb_Btautau << " in the truth B_bb-B_tautau (" << 100.0*count_truthreco_Bbb_Btautau/nentries << "% of the total entries)" << endl;
   /*                                                                                                                                          
   cout << "The number of events in which there are one of the two taus and one of the two bb jets matched to the same recojet is " << count_b\
 _tau_matched_recojets << " of a total nentries " << nentries << " (" << 100.0*count_b_tau_matched_recojets/nentries << "% of the total nentri\
@@ -1602,7 +1604,7 @@ es)" << endl;
 
   cout << "There are " << count_non_matched_events << " events which have at least one truth object without a match with a fat jet (" << 100.0*count_non_matched_events/nentries << "% of the total entries)" << endl;
 
-  cout << "The sum of all the events which were correctly classified with resolved and boosted bb and tautau jets: " << sum_truth_matching_events << " (" << 100.0*sum_truth_matching_events/nentries << "% of the total entries)" << endl;
+  cout << "The sum of all the events which were correctly classified by the boosted analysis (all classes) is: " << sum_truth_matching_events << " (" << 100.0*sum_truth_matching_events/nentries << "% of the total entries)" << endl;
 
   cout << "Total entries: " << nentries << endl;
   /*
@@ -1618,7 +1620,7 @@ es)" << endl;
   cout << "Number of events that passed the resolved selection (counting bbtt_HH_vis_pt positive values): " << count_pos_resolved_HH_vis_pt_config << endl;
   */
   
-  cout << "Number of events that passed the resolved selection (counting bbtt_HH_vis_m positive values): " << count_pos_resolved_HH_vis_m_config << endl;
+  cout << "Number of events that passed the resolved selection (counting bbtt_HH_vis_m positive values): " << count_pos_resolved_HH_vis_m_config << "(" << 100.0*count_pos_resolved_HH_vis_m_config/nentries << "% of the total entries)" << endl;
 
   /*
   cout << "Number of events that passed the resolved selection (counting all possible objects values): " << count_all_objects_resolved_config << endl;
@@ -1627,4 +1629,52 @@ es)" << endl;
 
   cout << "The number of positive values for truth_HH_m is: " << count_truth_HH_m_pos_values << endl;
   */
+
+  cout << "The number of events where truth objects are identified is: " << truth_events << "(" << 100.0*truth_events/nentries << "% of the total entries)" << endl;
+
+  cout << "The efficiency of the truth-recojet matching is: " << 100*sum_truth_matching_events/truth_events << "%" << endl;
+
+  //*************************************************************
+  // Saving the info in the txt file:
+  //************************************************************* 
+
+  std::ofstream outFile("output_analysis/info_analysis_part.txt", std::ios::app); // Open in append mode
+
+  outFile << "----------------------------------------------------------------------------------------------------------------" << endl;
+  outFile << "Processing: " << process_name << " for " << min_pT << " GeV" << endl;
+  outFile << "----------------------------------------------------------------------------------------------------------------" << endl;
+
+  outFile << "There are " << count_truthreco_Rbb_Rtautau << " in the truth R_bb-R_tautau (" << 100.0*count_truthreco_Rbb_Rtautau/nentries << "% of the total entries)" << endl;
+
+  outFile << "There are " << count_truthreco_Rbb_Btautau << " in the truth R_bb-B_tautau (" << 100.0*count_truthreco_Rbb_Btautau/nentries << "% of the total entries)" << endl;
+
+  outFile << "There are " << count_truthreco_Bbb_Rtautau << " in the truth B_bb-R_tautau (" << 100.0*count_truthreco_Bbb_Rtautau/nentries << "% of the total entries)" << endl;
+
+  outFile << "There are " << count_truthreco_Bbb_Btautau << " in the truth B_bb-B_tautau (" << 100.0*count_truthreco_Bbb_Btautau/nentries << "% of the total entries)" << endl;
+  
+  outFile << "The sum of all the events into one of the given classes plus the number of events which have at least one truth object without a match with a fat jet is: " << sum_all_events << " (" << 100.0*sum_all_events/nentries << "% of the total entries)" << endl;
+
+  outFile << "There are " << count_non_matched_events << " events which have at least one truth object without a match with a fat jet (" << 100.0*count_non_matched_events/nentries << "% of the total entries)" << endl;
+
+  outFile << "The sum of all the events which were correctly classified by the boosted analysis (all classes) is: " << sum_truth_matching_events << " (" << 100.0*sum_truth_matching_events/nentries << "% of the total entries)" << endl;
+
+  outFile << "Total entries: " << nentries << endl;
+  
+  outFile << "Number of events that passed the resolved selection (counting bbtt_HH_vis_m positive values): " << count_pos_resolved_HH_vis_m_config << " (" << 100.0*count_pos_resolved_HH_vis_m_config/nentries << "% of the total entries)" << endl;
+  /*
+  outFile << "Number of events that passed the resolved selection (counting all possible objects values): " << count_all_objects_resolved_config << endl;
+
+  outFile << "The number of positive values for truth_HH_pt is: " << count_truth_HH_pt_pos_values << endl;
+
+  outFile << "The number of positive values for truth_HH_m is: " << count_truth_HH_m_pos_values << endl;
+  */
+
+  outFile << "The number of events where truth objects are identified is: " << truth_events << " (" << 100.0*truth_events/nentries << "% of the total entries)" << endl;
+
+  outFile << "The efficiency of the truth-recojet matching is: " << 100.0*sum_truth_matching_events/truth_events << "%" << endl;
+
+  outFile << "---------------------------" << endl;
+
+  outFile.close();
+ 
 }

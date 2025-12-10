@@ -4,7 +4,8 @@
 #include <unordered_map>
 #include <fstream>
 
-const string path_folder="/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
+// const string path_folder="../eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
+const string path_folder="/home/miagarciaru/Documents/Boosted-HHbbtautau/github-repo/HHbbtautau-boosted-analysis/Analysis/study_substructure_jets/output_analysis/";
 
 const string base_output_folder = "output_plots/acceptance_ratios_plots/";
 
@@ -96,17 +97,25 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   hist_VBF_SM_hh_502982.SetMarkerColor(kBlack);
   hist_VBF_SM_lh_502993.SetMarkerColor(kOrange);
 
+  // leg->AddEntry(&hist_ggF_lambda10_hh_600460, ("ggF_lambda10_hh_600460_"+ratio).c_str(), "lep");
+  // leg->AddEntry(&hist_ggF_lambda10_lh_600462, ("ggF_lambda10_lh_600462_"+ratio).c_str(), "lep");
+  // leg->AddEntry(&hist_ggF_SM_hh_600459, ("ggF_SM_hh_600459_"+ratio).c_str(), "lep");
+  // leg->AddEntry(&hist_ggF_SM_lh_600461, ("ggF_SM_lh_600461_"+ratio).c_str(), "lep");
 
-  leg->AddEntry(&hist_ggF_lambda10_hh_600460, ("ggF_lambda10_hh_600460_"+ratio).c_str(), "lep");
-  leg->AddEntry(&hist_ggF_lambda10_lh_600462, ("ggF_lambda10_lh_600462_"+ratio).c_str(), "lep");
-  leg->AddEntry(&hist_ggF_SM_hh_600459, ("ggF_SM_hh_600459_"+ratio).c_str(), "lep");
-  leg->AddEntry(&hist_ggF_SM_lh_600461, ("ggF_SM_lh_600461_"+ratio).c_str(), "lep");
+  // leg->AddEntry(&hist_VBF_cvv1p5_hh_502985, ("VBF_cvv1p5_hh_502985_"+ratio).c_str(), "lep");
+  // leg->AddEntry(&hist_VBF_cvv1p5_lh_502996, ("VBF_cvv1p5_lh_502996_"+ratio).c_str(), "lep");
+  // leg->AddEntry(&hist_VBF_SM_hh_502982, ("VBF_SM_hh_502982_"+ratio).c_str(), "lep");
+  // leg->AddEntry(&hist_VBF_SM_lh_502993, ("VBF_SM_lh_502993_"+ratio).c_str(), "lep");
 
-  leg->AddEntry(&hist_VBF_cvv1p5_hh_502985, ("VBF_cvv1p5_hh_502985_"+ratio).c_str(), "lep");
-  leg->AddEntry(&hist_VBF_cvv1p5_lh_502996, ("VBF_cvv1p5_lh_502996_"+ratio).c_str(), "lep");
-  leg->AddEntry(&hist_VBF_SM_hh_502982, ("VBF_SM_hh_502982_"+ratio).c_str(), "lep");
-  leg->AddEntry(&hist_VBF_SM_lh_502993, ("VBF_SM_lh_502993_"+ratio).c_str(), "lep");
- 
+  leg->AddEntry(&hist_ggF_lambda10_hh_600460, "ggF_l10_hh", "lep");
+  leg->AddEntry(&hist_ggF_lambda10_lh_600462, "ggF_l10_lh", "lep");
+  leg->AddEntry(&hist_ggF_SM_hh_600459, "ggF_SM_hh", "lep");
+  leg->AddEntry(&hist_ggF_SM_lh_600461, "ggF_SM_lh", "lep");
+
+  leg->AddEntry(&hist_VBF_cvv1p5_hh_502985, "VBF_cvv1p5_hh", "lep");
+  leg->AddEntry(&hist_VBF_cvv1p5_lh_502996, "VBF_cvv1p5_lh", "lep");
+  leg->AddEntry(&hist_VBF_SM_hh_502982, "VBF_SM_hh", "lep");
+  leg->AddEntry(&hist_VBF_SM_lh_502993, "VBF_SM_lh", "lep");
 
   hist_ggF_lambda10_hh_600460.Draw("AP");
   hist_ggF_lambda10_lh_600462.Draw("PSAME");
@@ -118,11 +127,13 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   hist_VBF_SM_hh_502982.Draw("PSAME");
   hist_VBF_SM_lh_502993.Draw("PSAME");
 
+  // hist_ggF_lambda10_hh_600460.GetYaxis().SetTitle(("Ratio "+ratio).c_str());
 
   gPad->Update();
   auto graph = hist_ggF_lambda10_hh_600460.GetPaintedGraph();
   graph->SetMinimum(0);
   graph->SetMaximum(1.7);
+  // graph->GetYaxis()->SetTitle(("Ratio "+ratio).c_str());
   
   gPad->Update();
   
@@ -133,7 +144,7 @@ void plotEfficiencies(const std::vector<std::string>& sampleFiles, const std::st
   leg->Draw();
 
   string description1 = "";
-  string description2 = "For min p_{T} > "+min_pT+"GeV";
+  string description2 = "Ratio "+ratio+" for min p_{T} > "+min_pT+"GeV";
   // string description3 = "For cut phbb > 0.85";
   //string description4 = "For cut n2/n1 subjetiness < 0.30";
   

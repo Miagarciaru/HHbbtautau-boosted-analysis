@@ -4,6 +4,7 @@ void Plotting_substructure_jets_variables(string sample, string output_folder, s
 
   std::vector<string> list_of_histograms = {
     "recojet_bb_m", 
+    "recojet_resolved_b_m",
     "recojet_bb_pt", 
     "recojet_bb_eta", 
     "recojet_bb_phi", 
@@ -23,6 +24,7 @@ void Plotting_substructure_jets_variables(string sample, string output_folder, s
     "recojet_bb_ak10_Split23", 
     "recojet_bb_ak10_passesOR",
     "recojet_tautau_m", 
+    "recojet_resolved_tau_m",
     "recojet_tautau_pt", 
     "recojet_tautau_eta", 
     "recojet_tautau_phi", 

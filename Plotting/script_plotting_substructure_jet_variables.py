@@ -3,11 +3,11 @@ import subprocess
 
 # List of root files to analyze
 
-base_analysis_folder = "/eos/user/g/garciarm/HHbbtautau-easyjet-framework-analysis/boosted-analysis/Analysis/study_substructure_jets/output_analysis/"
+base_analysis_folder = "/home/miagarciaru/Documents/Boosted-HHbbtautau/github-repo/HHbbtautau-boosted-analysis/Analysis/study_substructure_jets/output_analysis/"
 
-#min_pT_recojets = ["100", "200", "300"] # in GeV
-min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
-# min_pT_recojets = ["100", "250"] # in GeV  
+# min_pT_recojets = ["100", "200", "300"] # in GeV
+# min_pT_recojets = ["100", "150", "200", "250", "300", "350"] # in GeV
+min_pT_recojets = ["100", "250"] # in GeV  
 
 # Root folder for storing output
 output_root_folder = "output_plots"
@@ -84,13 +84,18 @@ for minpT in min_pT_recojets:
         subprocess.run(root_command, shell=True)
         
 
+# variables = ["preselected_bb_m", "preselected_bb_tau_n2_over_n1_subjettiness", "preselected_tautau_m",
+#              "preselected_tautau_tau_n2_over_n1_subjettiness", "preselected_bb_m_only_Hbb_tagger",
+#              "preselected_bb_m_until_nsubjettiness", "preselected_tautau_m_only_Hbb_tagger",
+#              "preselected_tautau_m_until_nsubjettiness", "recojet_tautau_m", "recojet_tautau_m_only_Hbb_tagger",
+#              "recojet_tautau_m_only_nsubjettiness", "recojet_tautau_m_until_nsubjettiness",
+#              "recojet_bb_m", "recojet_bb_m_only_Hbb_tagger",
+#              "recojet_bb_m_only_nsubjettiness", "recojet_bb_m_until_nsubjettiness"]
+
 variables = ["preselected_bb_m", "preselected_bb_tau_n2_over_n1_subjettiness", "preselected_tautau_m",
-             "preselected_tautau_tau_n2_over_n1_subjettiness", "preselected_bb_m_only_Hbb_tagger",
-             "preselected_bb_m_until_nsubjettiness", "preselected_tautau_m_only_Hbb_tagger",
-             "preselected_tautau_m_until_nsubjettiness", "recojet_tautau_m", "recojet_tautau_m_only_Hbb_tagger",
-             "recojet_tautau_m_only_nsubjettiness", "recojet_tautau_m_until_nsubjettiness",
-             "recojet_bb_m", "recojet_bb_m_only_Hbb_tagger",
-             "recojet_bb_m_only_nsubjettiness", "recojet_bb_m_until_nsubjettiness"]
+             "preselected_tautau_tau_n2_over_n1_subjettiness",
+             "preselected_tautau_m_until_nsubjettiness", "recojet_tautau_m", 
+             "recojet_bb_m"]
 
 #variables = ["preselected_bb_m"]
 

@@ -1627,68 +1627,68 @@ void define_truth_tau_and_b_jets(){
     if( sum_type_HH == 40 ){
       // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1bb_H2tautau scenario
       if( (sum_type_H1 == 10) && (sum_type_H2 == 30) ){
-	if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
-	  index_b1 = 1;
-	  index_b2 = 0;
-	}
+	      if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
+          index_b1 = 1;
+          index_b2 = 0;
+        }
 	
-	if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
-	  index_tau1 = 1;
-	  index_tau2 = 0;
-	}
-      
-	truth_b1_pt = truth_children_fromH1_pt->at(index_b1);
-	truth_b1_eta = truth_children_fromH1_eta->at(index_b1);
-	truth_b1_phi = truth_children_fromH1_phi->at(index_b1);
-	truth_b1_m = truth_children_fromH1_m->at(index_b1);
+        if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
+          index_tau1 = 1;
+          index_tau2 = 0;
+        }
+          
+        truth_b1_pt = truth_children_fromH1_pt->at(index_b1);
+        truth_b1_eta = truth_children_fromH1_eta->at(index_b1);
+        truth_b1_phi = truth_children_fromH1_phi->at(index_b1);
+        truth_b1_m = truth_children_fromH1_m->at(index_b1);
 
-	truth_b2_pt = truth_children_fromH1_pt->at(index_b2);
-	truth_b2_eta = truth_children_fromH1_eta->at(index_b2);
-	truth_b2_phi = truth_children_fromH1_phi->at(index_b2);
-	truth_b2_m = truth_children_fromH1_m->at(index_b2);
-	
-	truth_tau1_pt = truth_children_fromH2_pt->at(index_tau1);
-	truth_tau1_eta = truth_children_fromH2_eta->at(index_tau1);
-	truth_tau1_phi = truth_children_fromH2_phi->at(index_tau1);
-	truth_tau1_m = truth_children_fromH2_m->at(index_tau1);	
-	
-	truth_tau2_pt = truth_children_fromH2_pt->at(index_tau2);
-	truth_tau2_eta = truth_children_fromH2_eta->at(index_tau2);
-	truth_tau2_phi = truth_children_fromH2_phi->at(index_tau2);
-	truth_tau2_m = truth_children_fromH2_m->at(index_tau2);
+        truth_b2_pt = truth_children_fromH1_pt->at(index_b2);
+        truth_b2_eta = truth_children_fromH1_eta->at(index_b2);
+        truth_b2_phi = truth_children_fromH1_phi->at(index_b2);
+        truth_b2_m = truth_children_fromH1_m->at(index_b2);
+        
+        truth_tau1_pt = truth_children_fromH2_pt->at(index_tau1);
+        truth_tau1_eta = truth_children_fromH2_eta->at(index_tau1);
+        truth_tau1_phi = truth_children_fromH2_phi->at(index_tau1);
+        truth_tau1_m = truth_children_fromH2_m->at(index_tau1);	
+        
+        truth_tau2_pt = truth_children_fromH2_pt->at(index_tau2);
+        truth_tau2_eta = truth_children_fromH2_eta->at(index_tau2);
+        truth_tau2_phi = truth_children_fromH2_phi->at(index_tau2);
+        truth_tau2_m = truth_children_fromH2_m->at(index_tau2);
       } 
 
       if( (sum_type_H1 == 30) && (sum_type_H2 == 10) ){
 	
-	// Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1tautau_H2bb scenario
-	if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
-	  index_b1 = 1;
-	  index_b2 = 0;
-	} 
-	if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
-	  index_tau1 = 1;
-	  index_tau2 = 0;
-	}
-	
-	truth_b1_pt = truth_children_fromH2_pt->at(index_b1);
-	truth_b1_eta = truth_children_fromH2_eta->at(index_b1);
-	truth_b1_phi = truth_children_fromH2_phi->at(index_b1);
-	truth_b1_m = truth_children_fromH2_m->at(index_b1);
-	
-	truth_b2_pt = truth_children_fromH2_pt->at(index_b2);
-	truth_b2_eta = truth_children_fromH2_eta->at(index_b2);
-	truth_b2_phi = truth_children_fromH2_phi->at(index_b2);
-	truth_b2_m = truth_children_fromH2_m->at(index_b2);
-	
-	truth_tau1_pt = truth_children_fromH1_pt->at(index_tau1);
-	truth_tau1_eta = truth_children_fromH1_eta->at(index_tau1);
-	truth_tau1_phi = truth_children_fromH1_phi->at(index_tau1);
-	truth_tau1_m = truth_children_fromH1_m->at(index_tau1);	
-      
-	truth_tau2_pt = truth_children_fromH1_pt->at(index_tau2);
-	truth_tau2_eta = truth_children_fromH1_eta->at(index_tau2);
-	truth_tau2_phi = truth_children_fromH1_phi->at(index_tau2);
-	truth_tau2_m = truth_children_fromH1_m->at(index_tau2);	
+        // Here we swap the index for the b and taus if the leading jet has a lower pT than the subleading jet, in the H1tautau_H2bb scenario
+        if(truth_children_fromH2_pt->at(0) < truth_children_fromH2_pt->at(1)){
+          index_b1 = 1;
+          index_b2 = 0;
+        } 
+        if(truth_children_fromH1_pt->at(0) < truth_children_fromH1_pt->at(1)){
+          index_tau1 = 1;
+          index_tau2 = 0;
+        }
+        
+        truth_b1_pt = truth_children_fromH2_pt->at(index_b1);
+        truth_b1_eta = truth_children_fromH2_eta->at(index_b1);
+        truth_b1_phi = truth_children_fromH2_phi->at(index_b1);
+        truth_b1_m = truth_children_fromH2_m->at(index_b1);
+        
+        truth_b2_pt = truth_children_fromH2_pt->at(index_b2);
+        truth_b2_eta = truth_children_fromH2_eta->at(index_b2);
+        truth_b2_phi = truth_children_fromH2_phi->at(index_b2);
+        truth_b2_m = truth_children_fromH2_m->at(index_b2);
+        
+        truth_tau1_pt = truth_children_fromH1_pt->at(index_tau1);
+        truth_tau1_eta = truth_children_fromH1_eta->at(index_tau1);
+        truth_tau1_phi = truth_children_fromH1_phi->at(index_tau1);
+        truth_tau1_m = truth_children_fromH1_m->at(index_tau1);	
+            
+        truth_tau2_pt = truth_children_fromH1_pt->at(index_tau2);
+        truth_tau2_eta = truth_children_fromH1_eta->at(index_tau2);
+        truth_tau2_phi = truth_children_fromH1_phi->at(index_tau2);
+        truth_tau2_m = truth_children_fromH1_m->at(index_tau2);	
       }
 
       b1_jet.SetPtEtaPhiM(truth_b1_pt, truth_b1_eta, truth_b1_phi, truth_b1_m);
@@ -1715,6 +1715,8 @@ void define_truth_tau_and_b_jets(){
       truth_HH_eta = HH_jet.Eta();
       truth_HH_phi = HH_jet.Phi();
       truth_HH_m = HH_jet.M();	
+
+      truth_events++;
     }
   }
 }

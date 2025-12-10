@@ -83,12 +83,14 @@ TH1F *hist_matched_recojet_bb_m = new TH1F("hist_matched_recojet_bb_m", "Mass di
 TH1F *hist_matched_recojet_bb_m_only_Hbb_tagger = new TH1F("hist_matched_recojet_bb_m_only_Hbb_tagger", "Mass distribution of the recojets that are bb boosted jets (only tagger); m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_matched_recojet_bb_m_only_nsubjettiness = new TH1F("hist_matched_recojet_bb_m_only_nsubjettiness", "Mass distribution of the recojets that are bb boosted jets (only nsubjettiness); m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_matched_recojet_bb_m_until_nsubjettiness = new TH1F("hist_matched_recojet_bb_m_until_nsubjettiness", "Mass distribution of the recojets that are bb boosted jets (tagger and nsubjettiness); m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_matched_recojet_resolved_b_m = new TH1F("hist_matched_recojet_resolved_b_m", "Mass distribution of the recojets that are single b-jets; m_{b} [GeV];Events", 70, 0, 10);
 
 TH1F *hist_matched_recojet_tautau_m = new TH1F("hist_matched_recojet_tautau_m", "Mass distribution of the recojets that are #tau#tau boosted jets; m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_matched_recojet_tautau_m_only_Hbb_tagger = new TH1F("hist_matched_recojet_tautau_m_only_Hbb_tagger", "Mass distribution of the recojets that are #tau#tau boosted jets (only tagger); m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
 
 TH1F *hist_matched_recojet_tautau_m_only_nsubjettiness = new TH1F("hist_matched_recojet_tautau_m_only_nsubjettiness", "Mass distribution of the recojets that are #tau#tau boosted jets (only nsubjettiness); m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_matched_recojet_tautau_m_until_nsubjettiness = new TH1F("hist_matched_recojet_tautau_m_until_nsubjettiness", "Mass distribution of the recojets that are #tau#tau boosted jets (tagger and nsubjettiness); m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
+TH1F *hist_matched_recojet_resolved_tau_m = new TH1F("hist_matched_recojet_resolved_tau_m", "Mass distribution of the recojets that are single #tau-jets; m_{#tau} [GeV];Events", 70, 0, 5);
 
 TH1F *hist_non_matched_recojet_bb_m = new TH1F("hist_non_matched_recojet_bb_m", "Mass distribution of the recojets that are not bb boosted jets; m(H #rightarrow bb) [GeV];Events / 5 bins", 70, 0, 350);
 TH1F *hist_non_matched_recojet_tautau_m = new TH1F("hist_non_matched_recojet_tautau_m", "Mass distribution of the recojets that are not #tau#tau boosted jets; m(H #rightarrow #tau#tau) [GeV];Events / 5 bins", 70, 0, 350);
